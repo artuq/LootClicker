@@ -1,38 +1,38 @@
 graph TD
-    %% Style Definitions
+    %% Definicja stylów
     classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
     classDef todo fill:#d29922,stroke:#d29922,color:white,stroke-width:2px;
     classDef main fill:#0969da,stroke:#0969da,color:white,stroke-width:4px;
 
-    %% Main Node
+    %% Główny Węzeł
     Core((LOOT CLICKER)):::main
 
-    %% BRANCH 1: BASICS
+    %% GAŁĄŹ 1: PODSTAWY
     Core --> B1[Podstawy]:::done
     B1 --> B1a(Walka Automatyczna):::done
     B1 --> B1b(System HP i Złota):::done
     B1 --> B1c(Podstawowe UI):::done
 
-    %% BRANCH 2: LOOT
-    Core --> B2[Loot i Ekwipunek]:::done
-    B2 --> B2a(Drop Przedmiotów):::done
-    B2 --> B2b(Okno Ekwipunku):::done
-    B2 --> B2c(Zakładanie Broni):::done
+    %% GAŁĄŹ 2: DYNAMIKA WALKI
+    Core --> B2[System Walki 2.0]:::done
+    B2 --> B2a(Ataki Przeciwników):::done
+    B2 --> B2b(Bossowie co 5 Etapów):::done
+    B2 --> B2c(Skalowanie Wykładnicze 1.15^L):::done
 
-    %% BRANCH 3: PROGRESSION
+    %% GAŁĄŹ 3: ROZWÓJ I EKONOMIA
     Core --> B3[Rozwój Postaci]:::done
-    B3 --> B3a(System 20 Etapów):::done
-    B3 --> B3b(Boss co 5 Etapów):::done
-    B3 --> B3c(Mechanika Szczęścia):::done
+    B3 --> B3a(Statystyka Defense):::done
+    B3 --> B3b(Statystyka Atk Speed):::done
+    B3 --> B3c(Skalowanie Kosztów 1.3^L):::done
 
-    %% BRANCH 4: SKILL TREE
-    Core --> B4[Skill Tree 2.0]:::todo
-    B4 --> B4a(Logika Zależności):::todo
-    B4 --> B4b(Skalowanie 1.3^L):::done
-    B4 --> B4c(Aktywne vs Pasywne):::todo
+    %% GAŁĄŹ 4: SKILL TREE (UI)
+    Core --> B4[Skill Tree UI]:::todo
+    B4 --> B4a(Nowe Buttony: Def/Spd):::todo
+    B4 --> B4b(Zależności Węzłów):::todo
+    B4 --> B4c(Resetowanie Skilli):::todo
 
-    %% BRANCH 5: ANDROID
+    %% GAŁĄŹ 5: ANDROID I ART
     Core --> B5[Wizja i Android]:::todo
     B5 --> B5a(Mechanika Dotyku):::done
     B5 --> B5b(Fabuła i Intro):::todo
-    B5 --> B5c(Design dmcalle Asset):::todo
+    B5 --> B5c(Design z dmcalle Asset):::todo
