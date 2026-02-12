@@ -4,6 +4,7 @@ graph TD
     classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
     classDef fix fill:#bf3989,stroke:#bf3989,color:white,stroke-width:2px;
     classDef todo fill:#d29922,stroke:#d29922,color:white,stroke-width:2px;
+    classDef future fill:#6e7681,stroke:#6e7681,color:white,stroke-width:2px;
     classDef main fill:#0969da,stroke:#0969da,color:white,stroke-width:4px;
 
     %% GŁÓWNY WĘZEŁ
@@ -46,10 +47,15 @@ graph TD
     B4 --> B4b(Drop Chance 30%):::done
     B4 --> B4c(Auto-Equip Lepszej Broni):::done
 
-    %% --- GAŁĄŹ 5: PLANY (Przyszłość) ---
+    %% --- GAŁĄŹ 5: PLANY (JUTRO) ---
     Core --> B5[Do Zrobienia - JUTRO]:::todo
     B5 --> B5a(System Zapisu - Save/Load):::todo
     B5 --> B5b(Okno Ekwipunku - Lista Itemów):::todo
     B5 --> B5c(Animacje Sprite'a):::todo
     B5 --> B5d(Export na Androida .apk):::todo
 
+    %% --- GAŁĄŹ 6: PRZYSZŁOŚĆ (v0.3 Visual Update) ---
+    Core --> B6[Wizualizacja v0.3]:::future
+    B6 --> B6a(Asset: Worldmap Builder #2270):::future
+    B6a --> B6a1(Skill Tree 3.0 - Linie i Węzły):::future
+    B6a --> B6a2(Mapa Świata - Wybór Leveli):::future
