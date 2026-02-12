@@ -1,52 +1,86 @@
 ``` mermaid
 flowchart TD
-    %% Definicje stylów dla czytelności
+    %% --- STYLE DEFINITIONS ---
     classDef done fill:#2da44e,stroke:#1e7d3a,color:white,font-weight:bold;
     classDef todo fill:#d29922,stroke:#a4771b,color:white;
-    classDef main fill:#0969da,stroke:#054ada,color:white,font-weight:bold,font-size:18px;
+    classDef art fill:#6f42c1,stroke:#4a2c82,color:white,font-weight:bold;
     classDef story fill:#bf3989,stroke:#86265f,color:white,font-style:italic;
+    classDef main fill:#0969da,stroke:#054ada,color:white,font-weight:bold,font-size:20px;
 
-    %% Główny rdzeń projektu
-    Root((JOANNA INDIANA:<br/>LOOT CLICKER v0.2)):::main
+    %% --- GŁÓWNY WĘZEŁ ---
+    Root((JOANNA INDIANA:<br/>LOOT CLICKER PRO)):::main
 
-    %% FUNDAMENTY TECHNICZNE
-    Root --> FUN[FUNDAMENTY TECHNICZNE]:::done
-    FUN --> F1(✅ setup_enemy crash fix):::done
-    FUN --> F2(✅ Sygnały i Sync is_connected):::done
-    FUN --> F3(✅ Synchronizacja Gold i HP):::done
-    FUN --> F4(✅ Formatowanie tekstu %):::done
-    FUN --> F5(✅ Optymalizacja pod Androida):::done
+    %% --- FILAR 1: KOD I MECHANIKA (CORE) ---
+    Root --> COL1[CORE & CODE]:::done
+    
+    subgraph G_CORE [Fundamenty]
+        direction TB
+        C1(✅ Fix: setup_enemy crash):::done
+        C2(✅ Sygnały & Event Bus):::done
+        C3(✅ Sync: HP/Gold/Timery):::done
+    end
+    
+    subgraph G_MECH [Mechanika RPG]
+        direction TB
+        M1(✅ Floating Text System):::done
+        M2(✅ Boss System co 5 Stage):::done
+        M3(✅ Sklep: STR/DEF/Crit):::done
+        M4(✅ Skalowanie x1.2):::done
+    end
+    COL1 --> G_CORE
+    COL1 --> G_MECH
 
-    %% MECHANIKA ROZGRYWKI
-    Root --> MECH[MECHANIKA ROZGRYWKI]:::done
-    MECH --> M1(✅ System ataku i Timery):::done
-    MECH --> M2(✅ Floating Text DMG):::done
-    MECH --> M3(✅ Skalowanie trudności 1.2x):::done
-    MECH --> M4(✅ System Bossów co 5 Stage):::done
-    MECH --> M5(✅ Pasek postępu poziomu):::done
+    %% --- FILAR 2: GRAFIKA I OPTYMALIZACJA (TECH-ART) ---
+    Root --> COL2[GRAFIKA I OPTYMALIZACJA]:::art
 
-    %% EKONOMIA I SKLEP
-    Root --> SHOP[EKONOMIA I SKLEP]:::done
-    SHOP --> S1(✅ Upgrade Siły i Obrony):::done
-    SHOP --> S2(✅ Bonusy do Złota i Krytyków):::done
-    SHOP --> S3(✅ Redukcja czasu ataku):::done
-    SHOP --> S4(✅ System leczenia i limit HP):::done
+    subgraph G_OPT [Wydajność Android]
+        direction TB
+        O1(⚙️ Object Pooling):::art
+        O2(⚙️ Texture Atlases):::art
+        O3(⚙️ Kompresja ETC2/ASTC):::art
+        O4(⚙️ Batching Draw Calls):::art
+    end
 
-    %% ZADANIA DO WDROŻENIA
-    Root --> NEXT[SYSTEMY DO WDROŻENIA]:::todo
-    NEXT --> N1(🕒 Struktura pliku JSON):::todo
-    NEXT --> N2(🕒 Logika Save i Load):::todo
-    NEXT --> N3(🕒 Automatyczny zapis gry):::todo
+    subgraph G_JUICE [Game Feel & FX]
+        direction TB
+        J1(🎨 Particle System):::art
+        J2(🎨 Screen Shake):::art
+        J3(🎨 UI Tweening):::art
+        J4(🎨 Shadery: Hit Flash):::art
+    end
+    COL2 --> G_OPT
+    COL2 --> G_JUICE
 
-    %% EKWIPUNEK
-    Root --> EQ[EKWIPUNEK]:::todo
-    EQ --> E1(🕒 Okno UI Inventory):::todo
-    EQ --> E2(🕒 Tabela łupów - Loot table):::todo
-    EQ --> E3(🕒 System zakładania przedmiotów):::todo
+    %% --- FILAR 3: ZARZĄDZANIE ASSETAMI (PIPELINE) ---
+    Root --> COL3[ASSETY I SYSTEMY]:::todo
 
-    %% FABUŁA I LORE
-    Root --> LORE[FABUŁA: JOANNA INDIANA]:::story
-    LORE --> L1(🎬 Intro: Skok bez spadochronu):::story
-    LORE --> L2(💀 Boss: Saddam z Basenu):::story
-    LORE --> L3(🎒 Item: Bicz z gumy do żucia):::story
-    LORE --> L4(🔄 Reset: Kolejny Sequel):::story
+    subgraph G_SYS [Systemy Danych]
+        direction TB
+        S1(🕒 JSON Save/Load):::todo
+        S2(🕒 Szyfrowanie Danych):::todo
+        S3(🕒 Audio Manager):::todo
+        S4(🕒 Inventory Grid):::todo
+    end
+
+    subgraph G_ASSETS [Zasoby]
+        direction TB
+        A1(🕒 Import: Sprite Sheets):::todo
+        A2(🕒 Fonty: Custom .ttf):::todo
+        A3(🕒 SFX & Music Bus):::todo
+        A4(🕒 Ikony Ekwipunku):::todo
+    end
+    COL3 --> G_SYS
+    COL3 --> G_ASSETS
+
+    %% --- FILAR 4: FABUŁA I LORE (NARRACJA) ---
+    Root --> COL4[FABUŁA: JOANNA INDIANA]:::story
+
+    subgraph G_LORE [Scenariusz]
+        direction TB
+        L1(🎬 Intro: Skok w siano):::story
+        L2(💀 Boss: Saddam):::story
+        L3(🎒 Loot: Bicz z gumy):::story
+        L4(🔄 Prestiż: Sequel):::story
+        L5(📜 Dziennik: 20 wpisów):::story
+    end
+    COL4 --> G_LORE
