@@ -1,16 +1,6 @@
-# Mapa Rozwoju: Loot Clicker
-
-Legenda:
-::: green
-✅ ZROBIONE
-:::
-::: orange
-🛠️ W TRAKCIE / DO ZROBIENIA
-:::
-
 ```mermaid
 graph TD
-    %% Definicja stylów (Kolory)
+    %% Definicja stylów
     classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
     classDef todo fill:#d29922,stroke:#d29922,color:white,stroke-width:2px;
     classDef main fill:#0969da,stroke:#0969da,color:white,stroke-width:4px;
@@ -36,8 +26,14 @@ graph TD
     B3 --> B3b(Skill Tree UI):::todo
     B3 --> B3c(Logika Kupowania):::todo
 
-    %% GAŁĄŹ 4: SYSTEMY
+    %% GAŁĄŹ 4: SYSTEMY (MOBILE)
     Core --> B4[Systemy]:::todo
     B4 --> B4a(Save Game):::todo
-    B4 --> B4b(Klikanie Myszką):::todo
-    B4 --> B4c(Nowi Wrogowie):::todo
+    B4 --> B4b(Mechanika Dotyku):::todo
+    B4 --> B4c(Skalowanie Trudności):::todo
+
+    %% GAŁĄŹ 5: WIZJA I ART (NOWE!)
+    Core --> B5[Wizja i Art]:::todo
+    B5 --> B5a(Polerowanie Grafiki):::todo
+    B5 --> B5b(Fabuła / Intro):::todo
+    B5 --> B5c(Export na Androida):::todo
