@@ -52,4 +52,4 @@ graph TD
     B5 --> B5b(Okno Ekwipunku - Lista Itemów):::todo
     B5 --> B5c(Animacje Sprite'a):::todo
     B5 --> B5d(Export na Androida .apk):::todo
-```
+
