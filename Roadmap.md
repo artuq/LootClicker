@@ -1,3 +1,4 @@
+```mermaid
 graph TD
     %% DEFINICJA STYLÓW (KOLORY)
     classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
@@ -51,3 +52,4 @@ graph TD
     B5 --> B5b(Okno Ekwipunku - Lista Itemów):::todo
     B5 --> B5c(Animacje Sprite'a):::todo
     B5 --> B5d(Export na Androida .apk):::todo
+```
