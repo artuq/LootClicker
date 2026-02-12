@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://6lmhw6qpdnim"]
+
+[ext_resource type="Script" uid="uid://uqc2xy3j6g1b" path="res://damage_label.gd" id="1_u0oad"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_d7fbv"]
+font_size = 24
+font_color = Color(1, 0, 0, 1)
+outline_size = 2
+outline_color = Color(0, 0, 0, 1)
+
+[node name="DamageLabel" type="Label" unique_id=950713505]
+label_settings = SubResource("LabelSettings_d7fbv")
+script = ExtResource("1_u0oad")
