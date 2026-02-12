@@ -1,27 +1,45 @@
 ```mermaid
-graph TD
-    %% DEFINICJA STYLÓW (KOLORY)
-    classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
-    classDef fix fill:#bf3989,stroke:#bf3989,color:white,stroke-width:2px;
-    classDef todo fill:#d29922,stroke:#d29922,color:white,stroke-width:2px;
-    classDef future fill:#6e7681,stroke:#6e7681,color:white,stroke-width:2px;
-    classDef main fill:#0969da,stroke:#0969da,color:white,stroke-width:4px;
+mindmap
+  root((JOANNA INDIANA:<br/>LOOT CLICKER v0.2))
+    ::icon(fa fa-cube)
+    STABILNOSC_I_FUNDAMENTY_TRAWA
+      (OK) setup_enemy crash fix
+      (OK) Sygnaly i Sync: is_connected
+      (OK) Synchronizacja Gold i HP
+      (OK) Formatowanie tekstu %%
+      (OK) Optymalizacja pod Androida
+    SYSTEM_WALKI_KAMIEN
+      (OK) Mechanika klikania i ataku
+      (OK) Timery: Atak Gracza vs Wroga
+      (OK) Floating Text DMG (Pop-upy)
+      (OK) System Bossow (co 5 etap)
+      (OK) Skalowanie HP przeciwnikow 1.2x
+      (OK) Pasek postępu Stage
+    SKLEP_I_STATYSTYKI_ZIEMIA
+      (OK) Upgrade STR (Sila)
+      (OK) Upgrade DEF (Obrona)
+      (OK) Attack Speed (Skracanie timerow)
+      (OK) Crit Chance i Gold Bonus
+      (OK) System Leczenia (Heal)
+      (OK) Blokada maksymalnego HP
+    SYSTEM_ZAPISU_ZELAZO
+      TODO Struktura pliku JSON
+      TODO Logika Save (Zapis stanu)
+      TODO Logika Load (Wczytywanie)
+      TODO Auto-Save przy wyjsciu
+      TODO Szyfrowanie zapisu (opcjonalnie)
+    EKWIPUNEK_DIAMENT
+      TODO Okno UI Inventory (Grid)
+      TODO Lista przedmiotow (Loot table)
+      TODO Logika zakladania (Equip/Unequip)
+      TODO Statystyki przedmiotow (Item Lore)
+    FABULA_HOT_SHOTS_ZLOTO
+      TODO Intro: Skok w siano bez spadochronu
+      TODO Postac: Joanna Indiana (Bicz + Fedora)
+      TODO Boss: Saddam z Basenu (Absurdalny przeciwnik)
+      TODO Item: Bicz z gumy do zucia
+      TODO Reset: Kolejny Sequel (System Prestizu)
 
-    %% GŁÓWNY WĘZEŁ
-    Core((LOOT CLICKER<br/>v0.2 Alpha)):::main
-
-    %% --- GAŁĄŹ 1: TECHNICZNE (Stabilność) ---
-    Core --> B1[Stabilność i Architektura]:::fix
-    B1 --> B1a(Naprawa Crashu: setup_enemy):::done
-    B1 --> B1b(Bezpieczne Sygnały: is_connected):::done
-    B1 --> B1c(Synchronizacja UI: Złoto i HP):::done
-    B1 --> B1d(Formatowanie Tekstu: %%):::done
-
-    %% --- GAŁĄŹ 2: WALK (Gameplay) ---
-    Core --> B2[System Walki]:::done
-    B2 --> B2a(Atak Gracza: Timer + Speed):::done
-    B2 --> B2b(Atak Wroga: Timer 1.5s):::done
-    B2 --> B2c(Feedback Wizualny):::done
     B2c --> B2c1(Żółte Liczby - DMG wroga):::done
     B2c --> B2c2(Czerwone Liczby - DMG gracza):::done
     B2 --> B2d(Progresja Wroga):::done
