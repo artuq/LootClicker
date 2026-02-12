@@ -47,15 +47,20 @@ graph TD
     B4 --> B4b(Drop Chance 30%):::done
     B4 --> B4c(Auto-Equip Lepszej Broni):::done
 
-    %% --- GAŁĄŹ 5: PLANY (JUTRO) ---
+    %% --- GAŁĄŹ 5: PLANY NA JUTRO (Kluczowe) ---
     Core --> B5[Do Zrobienia - JUTRO]:::todo
     B5 --> B5a(System Zapisu - Save/Load):::todo
     B5 --> B5b(Okno Ekwipunku - Lista Itemów):::todo
     B5 --> B5c(Animacje Sprite'a):::todo
     B5 --> B5d(Export na Androida .apk):::todo
 
-    %% --- GAŁĄŹ 6: PRZYSZŁOŚĆ (v0.3 Visual Update) ---
-    Core --> B6[Wizualizacja v0.3]:::future
-    B6 --> B6a(Asset: Worldmap Builder #2270):::future
-    B6a --> B6a1(Skill Tree 3.0 - Linie i Węzły):::future
-    B6a --> B6a2(Mapa Świata - Wybór Leveli):::future
+    %% --- GAŁĄŹ 6: PRZYSZŁOŚĆ (Inspiracje Tap Titans) ---
+    Core --> B6[Rozwój v0.3 / v0.4]:::future
+    B6 --> B6a(Game Juice - Czucie Gry):::future
+    B6a --> B6a1(Screen Shake przy Crit):::future
+    B6a --> B6a2(Particles przy uderzeniu):::future
+    B6 --> B6b(Prestige System):::future
+    B6b --> B6b1(Reset gry za Relikty):::future
+    B6b --> B6b2(Artefakty - stałe bonusy):::future
+    B6 --> B6c(Big Numbers System 1aa, 1ab):::future
+    B6 --> B6d(Asset: Worldmap Builder - Mapa):::future
