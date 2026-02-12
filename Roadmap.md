@@ -1,4 +1,3 @@
-```mermaid
 graph TD
     %% Definicja stylów
     classDef done fill:#2da44e,stroke:#2da44e,color:white,stroke-width:2px;
@@ -21,19 +20,19 @@ graph TD
     B2 --> B2c(Zakładanie Broni):::done
 
     %% GAŁĄŹ 3: ROZWÓJ POSTACI
-    Core --> B3[Rozwój Postaci]:::todo
-    B3 --> B3a(Level Up):::done
-    B3 --> B3b(Skill Tree UI):::todo
-    B3 --> B3c(Logika Kupowania):::todo
+    Core --> B3[Rozwój Postaci]:::done
+    B3 --> B3a(System 20 Poziomów/Stage):::done
+    B3 --> B3b(Boss co 5 Etapów):::done
+    B3 --> B3c(Mechanika Szczęścia/Luck):::done
 
-    %% GAŁĄŹ 4: SYSTEMY (MOBILE)
-    Core --> B4[Systemy]:::todo
-    B4 --> B4a(Save Game):::todo
-    B4 --> B4b(Mechanika Dotyku):::todo
-    B4 --> B4c(Skalowanie Trudności):::todo
+    %% GAŁĄŹ 4: SKILL TREE (AKTUALIZACJA)
+    Core --> B4[Skill Tree 2.0]:::todo
+    B4 --> B4a(Logika Zależności Węzłów):::todo
+    B4 --> B4b(Skalowanie Kosztów 1.3^L):::done
+    B4 --> B4c(Aktywne vs Pasywne Skille):::todo
 
-    %% GAŁĄŹ 5: WIZJA I ART (NOWE!)
-    Core --> B5[Wizja i Art]:::todo
-    B5 --> B5a(Polerowanie Grafiki):::todo
-    B5 --> B5b(Fabuła / Intro):::todo
-    B5 --> B5c(Export na Androida):::todo
+    %% GAŁĄŹ 5: WIZJA I ANDROID
+    Core --> B5[Wizja i Android]:::todo
+    B5 --> B5a(Mechanika Dotyku/Tap):::done
+    B5 --> B5b(Fabuła i Boss Intro):::todo
+    B5 --> B5c(Design z dmcalle Asset):::todo
