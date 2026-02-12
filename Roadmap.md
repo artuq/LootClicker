@@ -1,5 +1,5 @@
+''' mermaid
 mindmap
-  mindmap
   root((JOANNA INDIANA:<br/>LOOT CLICKER v0.2))
     FUNDAMENTY TECHNICZNE
       (OK) setup_enemy crash fix
