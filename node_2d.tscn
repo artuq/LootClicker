@@ -177,6 +177,7 @@ tab_alignment = 1
 current_tab = 0
 
 [node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1776591159]
+unique_name_in_owner = true
 layout_mode = 2
 script = ExtResource("4_epypp")
 metadata/_tab_index = 0
@@ -237,6 +238,7 @@ layout_mode = 2
 text = "Heal"
 
 [node name="Inventory" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=717494449]
+unique_name_in_owner = true
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
