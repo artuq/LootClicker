@@ -28,9 +28,6 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
-	if not load_game():
-		spawn_enemy()
-
 	next_level_btn.visible = false
 	
 	# Połączenia UI
@@ -69,6 +66,10 @@ func _ready():
 	add_child(enemy_timer)
 	
 	player.skills_updated.connect(_on_skills_updated)
+	
+	# Load game AFTER connecting UI signals
+	if not load_game():
+		spawn_enemy()
 	
 	_start_combat()
 
@@ -126,6 +127,8 @@ func load_game(slot: int = 1):
 	player.speed_lvl = player_data["speed_lvl"]
 	player.def_lvl = player_data["def_lvl"]
 	player.heal_count = player_data.get("heal_count", 0)
+	
+	print("Loaded Slot %d: Stage %d, HP %d/%d, Gold %d" % [slot, current_stage, player.current_hp, player.max_hp, player.gold])
 	
 	player.inventory.clear()
 	player.equipped_item = null
