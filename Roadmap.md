@@ -57,8 +57,8 @@ flowchart TD
 
     subgraph G_SYS [Systemy Danych]
         direction TB
-        S1(🕒 JSON Save/Load):::in_progress
-        S2(🕒 Szyfrowanie Danych):::todo
+        S1(✅ JSON Save/Load):::done
+        S2(✅ Szyfrowanie Danych):::done
         S3(🕒 Audio Manager):::in_progress
         S4(🕒 Inventory Grid):::in_progress
     end
