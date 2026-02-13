@@ -21,6 +21,43 @@ font_color = Color(1, 1, 0, 1)
 
 [node name="Node2D" type="Node2D" unique_id=882799742]
 
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="Canopy" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0431373, 0.152941, 0.0431373, 1)
+
+[node name="Ground" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -180.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.129412, 0.0941176, 0.0392157, 1)
+
+[node name="VineLeft" type="ColorRect" parent="BackgroundLayer"]
+offset_left = 80.0
+offset_right = 100.0
+offset_bottom = 450.0
+color = Color(0.0784314, 0.235294, 0.0784314, 1)
+
+[node name="VineRight" type="ColorRect" parent="BackgroundLayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_right = -90.0
+offset_bottom = 500.0
+grow_horizontal = 0
+color = Color(0.0784314, 0.235294, 0.0784314, 1)
+
 [node name="BattleManager" type="Node" parent="." unique_id=315060686]
 script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("2_0hol4")
@@ -180,19 +217,51 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
-[node name="SaveButton" type="Button" parent="CanvasLayer"]
-offset_left = 880.0
-offset_top = 580.0
-offset_right = 980.0
-offset_bottom = 611.0
-text = "Save Game"
+[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 800.0
+offset_top = 450.0
+offset_right = 900.0
+offset_bottom = 560.0
 
-[node name="LoadButton" type="Button" parent="CanvasLayer"]
-offset_left = 880.0
-offset_top = 617.0
-offset_right = 980.0
-offset_bottom = 648.0
+[node name="Label" type="Label" parent="CanvasLayer/SaveSlots"]
+layout_mode = 2
+text = "Save Game"
+horizontal_alignment = 1
+
+[node name="Save1" type="Button" parent="CanvasLayer/SaveSlots"]
+layout_mode = 2
+text = "Slot 1"
+
+[node name="Save2" type="Button" parent="CanvasLayer/SaveSlots"]
+layout_mode = 2
+text = "Slot 2"
+
+[node name="Save3" type="Button" parent="CanvasLayer/SaveSlots"]
+layout_mode = 2
+text = "Slot 3"
+
+[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 920.0
+offset_top = 450.0
+offset_right = 1020.0
+offset_bottom = 560.0
+
+[node name="Label" type="Label" parent="CanvasLayer/LoadSlots"]
+layout_mode = 2
 text = "Load Game"
+horizontal_alignment = 1
+
+[node name="Load1" type="Button" parent="CanvasLayer/LoadSlots"]
+layout_mode = 2
+text = "Slot 1"
+
+[node name="Load2" type="Button" parent="CanvasLayer/LoadSlots"]
+layout_mode = 2
+text = "Slot 2"
+
+[node name="Load3" type="Button" parent="CanvasLayer/LoadSlots"]
+layout_mode = 2
+text = "Slot 3"
 
 [connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnStr" to="CanvasLayer/SkillTreeWindow" method="_on_btn_str_pressed"]
@@ -202,5 +271,9 @@ text = "Load Game"
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnDef" to="BattleManager" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnHeal" to="CanvasLayer/SkillTreeWindow" method="_on_btn_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/SaveButton" to="BattleManager" method="_on_save_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/LoadButton" to="BattleManager" method="_on_load_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveSlots/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/SaveSlots/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/SaveSlots/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/LoadSlots/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/LoadSlots/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/LoadSlots/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]

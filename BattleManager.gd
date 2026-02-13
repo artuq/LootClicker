@@ -76,7 +76,7 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game()
 
-func save_game():
+func save_game(slot: int = 1):
 	var save_data = {
 		"current_stage": current_stage,
 		"player": {
@@ -88,24 +88,29 @@ func save_game():
 			"greed_lvl": player.greed_lvl,
 			"speed_lvl": player.speed_lvl,
 			"def_lvl": player.def_lvl,
-			"items": []
+			"heal_count": player.heal_count,
+			"inventory": []
 		}
 	}
-	for item in player.items:
-		save_data["player"]["items"].append({
+	for item in player.inventory:
+		save_data["player"]["inventory"].append({
 			"name": item.name,
 			"damage_bonus": item.damage_bonus
 		})
 	
-	var file = FileAccess.open("user://savegame.json", FileAccess.WRITE)
+	var path = "user://savegame_slot%d.json" % slot
+	var file = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(save_data))
 	file.close()
+	print("Game saved to Slot %d!" % slot)
 
-func load_game():
-	if not FileAccess.file_exists("user://savegame.json"):
+func load_game(slot: int = 1):
+	var path = "user://savegame_slot%d.json" % slot
+	if not FileAccess.file_exists(path):
+		print("No save found in Slot %d" % slot)
 		return false
 	
-	var file = FileAccess.open("user://savegame.json", FileAccess.READ)
+	var file = FileAccess.open(path, FileAccess.READ)
 	var data = JSON.parse_string(file.get_as_text())
 	file.close()
 	
@@ -120,15 +125,22 @@ func load_game():
 	player.greed_lvl = player_data["greed_lvl"]
 	player.speed_lvl = player_data["speed_lvl"]
 	player.def_lvl = player_data["def_lvl"]
+	player.heal_count = player_data.get("heal_count", 0)
 	
-	for item_data in player_data["items"]:
+	player.inventory.clear()
+	player.equipped_item = null
+	
+	for item_data in player_data["inventory"]:
 		var new_item = GameItem.new(item_data["name"], item_data["damage_bonus"])
-		player.items.append(new_item)
+		player.inventory.append(new_item)
+		if player.equipped_item == null or new_item.damage_bonus > player.equipped_item.damage_bonus:
+			player.equipped_item = new_item
 
 	spawn_enemy()
 	player.health_changed.emit(player.current_hp, player.max_hp)
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
+	print("Game loaded from Slot %d!" % slot)
 	return true
 
 
@@ -231,10 +243,8 @@ func _spawn_floating_text(text: String, color: Color):
 	else:
 		lbl.global_position = hp_label.global_position + Vector2(40, 40)
 
-func _on_save_button_pressed():
-	save_game()
-	print("Game saved!")
+func _on_save_slot_pressed(slot: int):
+	save_game(slot)
 
-func _on_load_button_pressed():
-	load_game()
-	print("Game loaded!")
+func _on_load_slot_pressed(slot: int):
+	load_game(slot)
