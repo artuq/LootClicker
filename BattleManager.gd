@@ -80,6 +80,7 @@ func _notification(what):
 func save_game(slot: int = 1):
 	var save_data = {
 		"current_stage": current_stage,
+		"enemy_hp": current_enemy.current_hp if current_enemy else -1,
 		"player": {
 			"max_hp": player.max_hp,
 			"current_hp": player.current_hp,
@@ -116,6 +117,7 @@ func load_game(slot: int = 1):
 	file.close()
 	
 	current_stage = data["current_stage"]
+	var saved_enemy_hp = data.get("enemy_hp", -1)
 	
 	var player_data = data["player"]
 	player.max_hp = player_data["max_hp"]
@@ -139,7 +141,7 @@ func load_game(slot: int = 1):
 		if player.equipped_item == null or new_item.damage_bonus > player.equipped_item.damage_bonus:
 			player.equipped_item = new_item
 
-	spawn_enemy()
+	spawn_enemy(saved_enemy_hp)
 	player.health_changed.emit(player.current_hp, player.max_hp)
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
@@ -147,7 +149,10 @@ func load_game(slot: int = 1):
 	return true
 
 
-func spawn_enemy():
+func spawn_enemy(saved_hp: int = -1):
+	if current_enemy:
+		current_enemy.queue_free()
+		
 	current_enemy = Enemy.new()
 	add_child(current_enemy)
 	
@@ -167,11 +172,14 @@ func spawn_enemy():
 		enemy_sprite.scale = Vector2(1.0, 1.0)
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
+	if saved_hp != -1:
+		current_enemy.current_hp = saved_hp
+		
 	current_enemy.died.connect(_on_enemy_died)
 	
 	stage_label.text = "Stage: %d / 20" % current_stage
 	enemy_hp_bar.max_value = hp
-	enemy_hp_bar.value = hp
+	enemy_hp_bar.value = current_enemy.current_hp
 
 func _on_player_attack():
 	if current_enemy:
