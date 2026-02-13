@@ -6,6 +6,7 @@ flowchart TD
     classDef art fill:#6f42c1,stroke:#4a2c82,color:white,font-weight:bold;
     classDef story fill:#bf3989,stroke:#86265f,color:white,font-style:italic;
     classDef main fill:#0969da,stroke:#054ada,color:white,font-weight:bold,font-size:20px;
+    classDef in_progress fill:#ffc107,stroke:#e0a800,color:black,font-weight:bold;
 
     %% --- GŁÓWNY WĘZEŁ ---
     Root((JOANNA INDIANA:<br/>LOOT CLICKER PRO)):::main
@@ -56,10 +57,10 @@ flowchart TD
 
     subgraph G_SYS [Systemy Danych]
         direction TB
-        S1(🕒 JSON Save/Load):::todo
+        S1(🕒 JSON Save/Load):::in_progress
         S2(🕒 Szyfrowanie Danych):::todo
-        S3(🕒 Audio Manager):::todo
-        S4(🕒 Inventory Grid):::todo
+        S3(🕒 Audio Manager):::in_progress
+        S4(🕒 Inventory Grid):::in_progress
     end
 
     subgraph G_ASSETS [Zasoby]
