@@ -9,6 +9,10 @@
 [ext_resource type="Texture2D" uid="uid://2bnvf5rfx83m" path="res://Sadam-removebg-preview.png" id="7_sadam"]
 [ext_resource type="Texture2D" uid="uid://m2gnue60fm56" path="res://Snake-removebg-preview.png" id="8_snake"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_hp"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6r6c"]
@@ -16,10 +20,6 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdubu"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
-
-[sub_resource type="LabelSettings" id="LabelSettings_hp"]
-outline_size = 4
-outline_color = Color(0, 0, 0, 1)
 
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
@@ -205,23 +205,23 @@ layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
 
-[node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer"]
+[node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677874]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings" unique_id=1985415407]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="SaveLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+[node name="SaveLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox" unique_id=1941394385]
 layout_mode = 2
 text = "Save Game"
 horizontal_alignment = 1
 
-[node name="SaveButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+[node name="SaveButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox" unique_id=2096525624]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
@@ -244,12 +244,12 @@ custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 text = "Slot 3"
 
-[node name="LoadLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+[node name="LoadLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox" unique_id=764609153]
 layout_mode = 2
 text = "Load Game"
 horizontal_alignment = 1
 
-[node name="LoadButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+[node name="LoadButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox" unique_id=1456064950]
 layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
@@ -274,15 +274,15 @@ text = "Slot 3"
 
 [connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnStr" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_str_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnCrit" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_crit_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnGold" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_gold_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnSpd" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_spd_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnDef" to="BattleManager" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnHeal" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_heal_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
