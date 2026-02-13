@@ -65,6 +65,8 @@ func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game()
 
+const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
+
 func save_game(slot: int = 1):
 	var save_data = {
 		"current_stage": current_stage,
@@ -89,10 +91,11 @@ func save_game(slot: int = 1):
 		})
 	
 	var path = "user://savegame_slot%d.json" % slot
-	var file = FileAccess.open(path, FileAccess.WRITE)
-	file.store_string(JSON.stringify(save_data))
-	file.close()
-	print("Game saved to Slot %d!" % slot)
+	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.WRITE, SAVE_PASSWORD)
+	if file:
+		file.store_string(JSON.stringify(save_data))
+		file.close()
+		print("Game saved (encrypted) to Slot %d!" % slot)
 
 func load_game(slot: int = 1):
 	var path = "user://savegame_slot%d.json" % slot
@@ -100,14 +103,17 @@ func load_game(slot: int = 1):
 		print("No save found in Slot %d" % slot)
 		return false
 	
-	var file = FileAccess.open(path, FileAccess.READ)
+	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.READ, SAVE_PASSWORD)
+	if not file:
+		print("Error opening encrypted save file in Slot %d" % slot)
+		return false
+		
 	var data = JSON.parse_string(file.get_as_text())
 	file.close()
 	
-	current_stage = data["current_stage"]
-	var saved_enemy_hp = data.get("enemy_hp", -1)
-	
-	var player_data = data["player"]
+	if data == null:
+		print("Failed to parse save data in Slot %d (wrong password or corrupted)" % slot)
+		return false
 	player.max_hp = player_data["max_hp"]
 	player.current_hp = player_data["current_hp"]
 	player.gold = player_data["gold"]
