@@ -2,13 +2,43 @@
 
 [ext_resource type="Script" uid="uid://b41dh67avnsrf" path="res://BattleManager.gd" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://icon.svg" id="2_0e48y"]
+[ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="2_0hol4"]
+[ext_resource type="Script" uid="uid://l57vb5okvn5i" path="res://SkillTree.gd" id="3_epypp"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_0hol4"]
+font_size = 44
+
+[sub_resource type="LabelSettings" id="LabelSettings_q6r6c"]
+font_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6r6c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdubu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
 [node name="Node2D" type="Node2D" unique_id=882799742]
 
 [node name="BattleManager" type="Node" parent="." unique_id=315060686]
 script = ExtResource("1_wtcfe")
+damage_label_scene = ExtResource("2_0hol4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1271369561]
+
+[node name="NextLevelButton" type="Button" parent="CanvasLayer" unique_id=1498230124]
+offset_left = 322.0
+offset_top = 24.0
+offset_right = 649.0
+offset_bottom = 191.0
+text = "Next Level"
+
+[node name="StageLabel" type="Label" parent="CanvasLayer" unique_id=215256263]
+offset_left = 283.0
+offset_top = 1.0
+offset_right = 323.0
+offset_bottom = 24.0
 
 [node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=86886459]
 modulate = Color(0.12540002, 0.57, 0.3699301, 1)
@@ -40,13 +70,13 @@ text = "INVENTORY"
 visible = false
 offset_left = 41.0
 offset_top = 89.0
-offset_right = 113.0
-offset_bottom = 149.0
+offset_right = 164.0
+offset_bottom = 193.0
 
 [node name="ItemList" type="ItemList" parent="CanvasLayer/InventoryWindow" unique_id=2039248102]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 123.0
+offset_bottom = 104.0
 
 [node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer" unique_id=1846545664]
 anchors_preset = 8
@@ -64,3 +94,97 @@ grow_vertical = 2
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1854829240]
 position = Vector2(572, 399)
 texture = ExtResource("2_0e48y")
+
+[node name="SkillTreeWindow" type="Panel" parent="CanvasLayer" unique_id=520180016]
+custom_minimum_size = Vector2(500, 500)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 76.0
+offset_top = -326.0
+offset_right = 576.0
+offset_bottom = 174.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_epypp")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/SkillTreeWindow" unique_id=1368455743]
+custom_minimum_size = Vector2(500, 500)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 20.0
+offset_right = 502.0
+offset_bottom = 720.0
+
+[node name="SkillTree" type="Label" parent="CanvasLayer/SkillTreeWindow/VBoxContainer" unique_id=719700694]
+layout_mode = 2
+text = "SKILL TREE"
+label_settings = SubResource("LabelSettings_0hol4")
+
+[node name="PointsLabel" type="Label" parent="CanvasLayer/SkillTreeWindow/VBoxContainer" unique_id=243434369]
+layout_mode = 2
+text = "Points: 0"
+label_settings = SubResource("LabelSettings_q6r6c")
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/SkillTreeWindow/VBoxContainer" unique_id=913899001]
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 2
+
+[node name="BtnStr" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=1872353762]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+text = "Strenght +1"
+
+[node name="BtnCrit" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=429910394]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+text = "Critical +%"
+
+[node name="BtnGold" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=2119875590]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+text = "Gold +%"
+
+[node name="BtnSpd" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=1693296504]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+text = "Attack Speed"
+
+[node name="BtnDef" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=44039217]
+custom_minimum_size = Vector2(150, 100)
+layout_mode = 2
+text = "Defense +1"
+
+[node name="BtnHeal" type="Button" parent="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer" unique_id=1863915730]
+layout_mode = 2
+
+[node name="SkillButton" type="Button" parent="CanvasLayer" unique_id=1721681358]
+offset_left = 990.0
+offset_top = 617.0
+offset_right = 1049.0
+offset_bottom = 648.0
+text = "SKILLS"
+
+[node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=437473736]
+offset_left = 461.0
+offset_top = 308.0
+offset_right = 694.0
+offset_bottom = 511.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_0hol4")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_q6r6c")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
+action_mode = 0
+
+[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnStr" to="CanvasLayer/SkillTreeWindow" method="_on_btn_str_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnCrit" to="CanvasLayer/SkillTreeWindow" method="_on_btn_crit_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnGold" to="CanvasLayer/SkillTreeWindow" method="_on_btn_gold_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnSpd" to="CanvasLayer/SkillTreeWindow" method="_on_btn_spd_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnDef" to="BattleManager" method="_on_btn_def_pressed"]
+[connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnHeal" to="CanvasLayer/SkillTreeWindow" method="_on_btn_heal_pressed"]
+[connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
