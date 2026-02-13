@@ -112,57 +112,6 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
-[node name="SettingsContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=87983322]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -220.0
-offset_top = 20.0
-offset_right = -20.0
-offset_bottom = 160.0
-grow_horizontal = 0
-theme_override_constants/separation = 15
-
-[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer" unique_id=843914202]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=7543906]
-layout_mode = 2
-text = "Save"
-horizontal_alignment = 1
-
-[node name="Save1" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=1641931634]
-layout_mode = 2
-text = "1"
-
-[node name="Save2" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=19546587]
-layout_mode = 2
-text = "2"
-
-[node name="Save3" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=761189287]
-layout_mode = 2
-text = "3"
-
-[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer" unique_id=361588515]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=1446894971]
-layout_mode = 2
-text = "Load"
-horizontal_alignment = 1
-
-[node name="Load1" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=202193414]
-layout_mode = 2
-text = "1"
-
-[node name="Load2" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=857853399]
-layout_mode = 2
-text = "2"
-
-[node name="Load3" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=901740199]
-layout_mode = 2
-text = "3"
-
 [node name="BottomPanel" type="Panel" parent="CanvasLayer" unique_id=729446120]
 anchors_preset = 12
 anchor_top = 1.0
@@ -256,13 +205,81 @@ layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
 
+[node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="SaveLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+layout_mode = 2
+text = "Save Game"
+horizontal_alignment = 1
+
+[node name="SaveButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Save1" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons" unique_id=1641931634]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 1"
+
+[node name="Save2" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons" unique_id=19546587]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 2"
+
+[node name="Save3" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons" unique_id=761189287]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 3"
+
+[node name="LoadLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+layout_mode = 2
+text = "Load Game"
+horizontal_alignment = 1
+
+[node name="LoadButtons" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Load1" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons" unique_id=202193414]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 1"
+
+[node name="Load2" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons" unique_id=857853399]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 2"
+
+[node name="Load3" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons" unique_id=901740199]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+text = "Slot 3"
+
+[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnStr" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_str_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnCrit" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_crit_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnGold" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_gold_pressed"]
