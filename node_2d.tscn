@@ -180,6 +180,20 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
+[node name="SaveButton" type="Button" parent="CanvasLayer"]
+offset_left = 880.0
+offset_top = 580.0
+offset_right = 980.0
+offset_bottom = 611.0
+text = "Save Game"
+
+[node name="LoadButton" type="Button" parent="CanvasLayer"]
+offset_left = 880.0
+offset_top = 617.0
+offset_right = 980.0
+offset_bottom = 648.0
+text = "Load Game"
+
 [connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnStr" to="CanvasLayer/SkillTreeWindow" method="_on_btn_str_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnCrit" to="CanvasLayer/SkillTreeWindow" method="_on_btn_crit_pressed"]
@@ -188,3 +202,5 @@ action_mode = 0
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnDef" to="BattleManager" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/SkillTreeWindow/VBoxContainer/GridContainer/BtnHeal" to="CanvasLayer/SkillTreeWindow" method="_on_btn_heal_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
+[connection signal="pressed" from="CanvasLayer/SaveButton" to="BattleManager" method="_on_save_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/LoadButton" to="BattleManager" method="_on_load_button_pressed"]

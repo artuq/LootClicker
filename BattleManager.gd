@@ -231,3 +231,10 @@ func _spawn_floating_text(text: String, color: Color):
 	else:
 		lbl.global_position = hp_label.global_position + Vector2(40, 40)
 
+func _on_save_button_pressed():
+	save_game()
+	print("Game saved!")
+
+func _on_load_button_pressed():
+	load_game()
+	print("Game loaded!")
