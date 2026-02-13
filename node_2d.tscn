@@ -17,6 +17,10 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_hp"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1687472269]
@@ -55,12 +59,14 @@ layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Gold: 0"
+label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
 [node name="StageLabel" type="Label" parent="CanvasLayer/HUD" unique_id=2055441024]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Stage: 1"
+label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
 [node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574830]
@@ -82,12 +88,12 @@ text = "Next Level"
 
 [node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=1095850321]
 unique_name_in_owner = true
-modulate = Color(0.12540002, 0.57, 0.3699301, 1)
 offset_left = 20.0
 offset_top = 20.0
 offset_right = 150.0
 offset_bottom = 50.0
 text = "Player HP: 100/100"
+label_settings = SubResource("LabelSettings_hp")
 
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1119024854]
 unique_name_in_owner = true
