@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://2nn5mnsdx7xi"]
 
-[ext_resource type="Script" uid="uid://b41dh67avnsrf" path="res://BattleManager.gd" id="1_wtcfe"]
-[ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://icon.svg" id="2_0e48y"]
-[ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="2_0hol4"]
-[ext_resource type="Texture2D" uid="uid://bpffilr4rwjfd" path="res://Jungle.jpeg" id="4_jungle"]
-[ext_resource type="Texture2D" uid="uid://bjuk3kiecaxwa" path="res://Mumia-removebg-preview.png" id="5_mummy"]
-[ext_resource type="Texture2D" uid="uid://2bnvf5rfx83m" path="res://Sadam-removebg-preview.png" id="6_sadam"]
-[ext_resource type="Texture2D" uid="uid://m2gnue60fm56" path="res://Snake-removebg-preview.png" id="7_snake"]
+[ext_resource type="Script" path="res://BattleManager.gd" id="1_wtcfe"]
+[ext_resource type="Texture2D" path="res://icon.svg" id="2_0e48y"]
+[ext_resource type="PackedScene" path="res://DamageLabel.tscn" id="3_0hol4"]
+[ext_resource type="Script" path="res://SkillTree.gd" id="4_epypp"]
+[ext_resource type="Texture2D" path="res://Jungle.jpeg" id="5_jungle"]
+[ext_resource type="Texture2D" path="res://Mumia-removebg-preview.png" id="6_mummy"]
+[ext_resource type="Texture2D" path="res://Sadam-removebg-preview.png" id="7_sadam"]
+[ext_resource type="Texture2D" path="res://Snake-removebg-preview.png" id="8_snake"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
 
@@ -16,31 +17,31 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
-[node name="Node2D" type="Node2D" unique_id=882799742]
+[node name="Node2D" type="Node2D"]
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1824077322]
+[node name="BackgroundLayer" type="CanvasLayer" parent="."]
 layer = -1
 
-[node name="JungleBG" type="TextureRect" parent="BackgroundLayer" unique_id=907120266]
+[node name="JungleBG" type="TextureRect" parent="BackgroundLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("4_jungle")
+texture = ExtResource("5_jungle")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="BattleManager" type="Node" parent="." unique_id=315060686]
+[node name="BattleManager" type="Node" parent="."]
 script = ExtResource("1_wtcfe")
-damage_label_scene = ExtResource("2_0hol4")
-mummy_texture = ExtResource("5_mummy")
-snake_texture = ExtResource("7_snake")
-boss_texture = ExtResource("6_sadam")
+damage_label_scene = ExtResource("3_0hol4")
+mummy_texture = ExtResource("6_mummy")
+snake_texture = ExtResource("8_snake")
+boss_texture = ExtResource("7_sadam")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1271369561]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="HUD" type="VBoxContainer" parent="CanvasLayer" unique_id=2046017381]
+[node name="HUD" type="VBoxContainer" parent="CanvasLayer"]
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 120.0
@@ -48,26 +49,30 @@ grow_horizontal = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD" unique_id=2070027480]
+[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Gold: 0"
 horizontal_alignment = 1
 
-[node name="StageLabel" type="Label" parent="CanvasLayer/HUD" unique_id=215256263]
+[node name="StageLabel" type="Label" parent="CanvasLayer/HUD"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Stage: 1"
 horizontal_alignment = 1
 
-[node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1846545664]
+[node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(400, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 value = 100.0
 
-[node name="NextLevelButton" type="Button" parent="CanvasLayer" unique_id=1498230124]
+[node name="NextLevelButton" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
 visible = false
 offset_left = 412.0
 offset_top = 130.0
@@ -75,7 +80,8 @@ offset_right = 739.0
 offset_bottom = 200.0
 text = "Next Level"
 
-[node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=86886459]
+[node name="HPLabel" type="Label" parent="CanvasLayer"]
+unique_name_in_owner = true
 modulate = Color(0.12540002, 0.57, 0.3699301, 1)
 offset_left = 20.0
 offset_top = 20.0
@@ -83,11 +89,13 @@ offset_right = 150.0
 offset_bottom = 50.0
 text = "Player HP: 100/100"
 
-[node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1854829240]
+[node name="EnemySprite" type="Sprite2D" parent="CanvasLayer"]
+unique_name_in_owner = true
 position = Vector2(576, 324)
 texture = ExtResource("2_0e48y")
 
-[node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=437473736]
+[node name="ClickArea" type="Button" parent="CanvasLayer"]
+unique_name_in_owner = true
 offset_left = 376.0
 offset_top = 180.0
 offset_right = 776.0
@@ -98,7 +106,7 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
-[node name="SettingsContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=826312496]
+[node name="SettingsContainer" type="HBoxContainer" parent="CanvasLayer"]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -109,43 +117,43 @@ offset_bottom = 150.0
 grow_horizontal = 0
 theme_override_constants/separation = 10
 
-[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer" unique_id=382705242]
+[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=614763648]
+[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/SaveSlots"]
 layout_mode = 2
 text = "Save"
 horizontal_alignment = 1
 
-[node name="Save1" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=1930612697]
+[node name="Save1" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots"]
 layout_mode = 2
 text = "1"
 
-[node name="Save2" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=624465450]
+[node name="Save2" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots"]
 layout_mode = 2
 text = "2"
 
-[node name="Save3" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots" unique_id=1721764495]
+[node name="Save3" type="Button" parent="CanvasLayer/SettingsContainer/SaveSlots"]
 layout_mode = 2
 text = "3"
 
-[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer" unique_id=343166327]
+[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer/SettingsContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=1731514905]
+[node name="Label" type="Label" parent="CanvasLayer/SettingsContainer/LoadSlots"]
 layout_mode = 2
 text = "Load"
 horizontal_alignment = 1
 
-[node name="Load1" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=864251121]
+[node name="Load1" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots"]
 layout_mode = 2
 text = "1"
 
-[node name="Load2" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=249787874]
+[node name="Load2" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots"]
 layout_mode = 2
 text = "2"
 
-[node name="Load3" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots" unique_id=1160518525]
+[node name="Load3" type="Button" parent="CanvasLayer/SettingsContainer/LoadSlots"]
 layout_mode = 2
 text = "3"
 
@@ -169,51 +177,59 @@ tab_alignment = 1
 
 [node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer"]
 layout_mode = 2
-script = ExtResource("3_epypp")
+script = ExtResource("4_epypp")
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 10
 
-[node name="PointsLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=243434369]
+[node name="PointsLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Skill Points: 0"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=913899001]
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/h_separation = 20
 theme_override_constants/v_separation = 10
 columns = 2
 
-[node name="BtnStr" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1872353762]
+[node name="BtnStr" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Strength"
 
-[node name="BtnCrit" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=429910394]
+[node name="BtnCrit" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Critical"
 
-[node name="BtnGold" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=2119875590]
+[node name="BtnGold" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Gold"
 
-[node name="BtnSpd" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1693296504]
+[node name="BtnSpd" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Speed"
 
-[node name="BtnDef" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=44039217]
+[node name="BtnDef" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Defense"
 
-[node name="BtnHeal" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1863915730]
+[node name="BtnHeal" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 60)
 layout_mode = 2
 text = "Heal"
@@ -222,23 +238,24 @@ text = "Heal"
 visible = false
 layout_mode = 2
 
-[node name="ItemList" type="ItemList" parent="CanvasLayer/BottomPanel/TabContainer/Inventory" unique_id=2039248102]
+[node name="ItemList" type="ItemList" parent="CanvasLayer/BottomPanel/TabContainer/Inventory"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 250)
 layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
 
+[connection signal="pressed" from="CanvasLayer/HUD/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnStr" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_str_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnCrit" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_crit_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnGold" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_gold_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnSpd" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_spd_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnDef" to="BattleManager" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnHeal" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_heal_pressed"]
-[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/SaveSlots/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
 [connection signal="pressed" from="CanvasLayer/SettingsContainer/LoadSlots/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
-[connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]

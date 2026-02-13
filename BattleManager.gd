@@ -12,18 +12,18 @@ var enemy_timer: Timer
 @export var boss_texture: Texture2D
 
 # UI References
-@onready var hp_label = $"../CanvasLayer/HPLabel"
-@onready var gold_label = $"../CanvasLayer/HUD/GoldLabel"
-@onready var stage_label = $"../CanvasLayer/HUD/StageLabel"
-@onready var next_level_btn = $"../CanvasLayer/NextLevelButton"
+@onready var hp_label = %HPLabel
+@onready var gold_label = %GoldLabel
+@onready var stage_label = %StageLabel
+@onready var next_level_btn = %NextLevelButton
 
 # Okna
-@onready var skill_tree_window = $"../CanvasLayer/BottomPanel/TabContainer/Upgrades"
-@onready var inventory_window = $"../CanvasLayer/BottomPanel/TabContainer/Inventory"
+@onready var skill_tree_window = %Upgrades
+@onready var inventory_window = %Inventory
 
 # Grafika
-@onready var enemy_sprite = $"../CanvasLayer/EnemySprite"
-@onready var enemy_hp_bar = $"../CanvasLayer/HUD/EnemyHPBar"
+@onready var enemy_sprite = %EnemySprite
+@onready var enemy_hp_bar = %EnemyHPBar
 
 func _ready():
 	player = PlayerStats.new()
@@ -210,8 +210,8 @@ func _roll_for_loot():
 		_update_inventory_ui()
 
 func _update_inventory_ui():
-	if inventory_window and inventory_window.has_node("ItemList"):
-		var list = inventory_window.get_node("ItemList")
+	var list = %ItemList
+	if list:
 		list.clear()
 		for item in player.inventory:
 			list.add_item("%s (Dmg: +%d)" % [item.name, item.damage_bonus])
