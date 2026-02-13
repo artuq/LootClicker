@@ -21,10 +21,10 @@ font_color = Color(1, 1, 0, 1)
 
 [node name="Node2D" type="Node2D" unique_id=882799742]
 
-[node name="BackgroundLayer" type="CanvasLayer" parent="."]
+[node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1824077322]
 layer = -1
 
-[node name="Canopy" type="ColorRect" parent="BackgroundLayer"]
+[node name="Canopy" type="ColorRect" parent="BackgroundLayer" unique_id=1757594031]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -32,7 +32,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0431373, 0.152941, 0.0431373, 1)
 
-[node name="Ground" type="ColorRect" parent="BackgroundLayer"]
+[node name="Ground" type="ColorRect" parent="BackgroundLayer" unique_id=1132051345]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -42,13 +42,13 @@ grow_horizontal = 2
 grow_vertical = 0
 color = Color(0.129412, 0.0941176, 0.0392157, 1)
 
-[node name="VineLeft" type="ColorRect" parent="BackgroundLayer"]
+[node name="VineLeft" type="ColorRect" parent="BackgroundLayer" unique_id=1731029145]
 offset_left = 80.0
 offset_right = 100.0
 offset_bottom = 450.0
 color = Color(0.0784314, 0.235294, 0.0784314, 1)
 
-[node name="VineRight" type="ColorRect" parent="BackgroundLayer"]
+[node name="VineRight" type="ColorRect" parent="BackgroundLayer" unique_id=1246794532]
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
@@ -217,49 +217,49 @@ theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
 theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
-[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer"]
+[node name="SaveSlots" type="VBoxContainer" parent="CanvasLayer" unique_id=382705242]
 offset_left = 800.0
 offset_top = 450.0
 offset_right = 900.0
 offset_bottom = 560.0
 
-[node name="Label" type="Label" parent="CanvasLayer/SaveSlots"]
+[node name="Label" type="Label" parent="CanvasLayer/SaveSlots" unique_id=614763648]
 layout_mode = 2
 text = "Save Game"
 horizontal_alignment = 1
 
-[node name="Save1" type="Button" parent="CanvasLayer/SaveSlots"]
+[node name="Save1" type="Button" parent="CanvasLayer/SaveSlots" unique_id=1930612697]
 layout_mode = 2
 text = "Slot 1"
 
-[node name="Save2" type="Button" parent="CanvasLayer/SaveSlots"]
+[node name="Save2" type="Button" parent="CanvasLayer/SaveSlots" unique_id=624465450]
 layout_mode = 2
 text = "Slot 2"
 
-[node name="Save3" type="Button" parent="CanvasLayer/SaveSlots"]
+[node name="Save3" type="Button" parent="CanvasLayer/SaveSlots" unique_id=1721764495]
 layout_mode = 2
 text = "Slot 3"
 
-[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer"]
+[node name="LoadSlots" type="VBoxContainer" parent="CanvasLayer" unique_id=343166327]
 offset_left = 920.0
 offset_top = 450.0
 offset_right = 1020.0
 offset_bottom = 560.0
 
-[node name="Label" type="Label" parent="CanvasLayer/LoadSlots"]
+[node name="Label" type="Label" parent="CanvasLayer/LoadSlots" unique_id=1731514905]
 layout_mode = 2
 text = "Load Game"
 horizontal_alignment = 1
 
-[node name="Load1" type="Button" parent="CanvasLayer/LoadSlots"]
+[node name="Load1" type="Button" parent="CanvasLayer/LoadSlots" unique_id=864251121]
 layout_mode = 2
 text = "Slot 1"
 
-[node name="Load2" type="Button" parent="CanvasLayer/LoadSlots"]
+[node name="Load2" type="Button" parent="CanvasLayer/LoadSlots" unique_id=249787874]
 layout_mode = 2
 text = "Slot 2"
 
-[node name="Load3" type="Button" parent="CanvasLayer/LoadSlots"]
+[node name="Load3" type="Button" parent="CanvasLayer/LoadSlots" unique_id=1160518525]
 layout_mode = 2
 text = "Slot 3"
 
