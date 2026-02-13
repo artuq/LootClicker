@@ -28,6 +28,9 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
+	if not load_game():
+		spawn_enemy()
+
 	next_level_btn.visible = false
 	
 	# Połączenia UI
@@ -67,8 +70,67 @@ func _ready():
 	
 	player.skills_updated.connect(_on_skills_updated)
 	
-	spawn_enemy()
 	_start_combat()
+
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_game()
+
+func save_game():
+	var save_data = {
+		"current_stage": current_stage,
+		"player": {
+			"max_hp": player.max_hp,
+			"current_hp": player.current_hp,
+			"gold": player.gold,
+			"str_lvl": player.str_lvl,
+			"crit_lvl": player.crit_lvl,
+			"greed_lvl": player.greed_lvl,
+			"speed_lvl": player.speed_lvl,
+			"def_lvl": player.def_lvl,
+			"items": []
+		}
+	}
+	for item in player.items:
+		save_data["player"]["items"].append({
+			"name": item.name,
+			"damage_bonus": item.damage_bonus
+		})
+	
+	var file = FileAccess.open("user://savegame.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify(save_data))
+	file.close()
+
+func load_game():
+	if not FileAccess.file_exists("user://savegame.json"):
+		return false
+	
+	var file = FileAccess.open("user://savegame.json", FileAccess.READ)
+	var data = JSON.parse_string(file.get_as_text())
+	file.close()
+	
+	current_stage = data["current_stage"]
+	
+	var player_data = data["player"]
+	player.max_hp = player_data["max_hp"]
+	player.current_hp = player_data["current_hp"]
+	player.gold = player_data["gold"]
+	player.str_lvl = player_data["str_lvl"]
+	player.crit_lvl = player_data["crit_lvl"]
+	player.greed_lvl = player_data["greed_lvl"]
+	player.speed_lvl = player_data["speed_lvl"]
+	player.def_lvl = player_data["def_lvl"]
+	
+	for item_data in player_data["items"]:
+		var new_item = GameItem.new(item_data["name"], item_data["damage_bonus"])
+		player.items.append(new_item)
+
+	spawn_enemy()
+	player.health_changed.emit(player.current_hp, player.max_hp)
+	player.gold_changed.emit(player.gold)
+	player.skills_updated.emit()
+	return true
+
 
 func spawn_enemy():
 	current_enemy = Enemy.new()
@@ -125,6 +187,7 @@ func _roll_for_loot():
 		player.add_item(new_item)
 
 func _on_next_level_button_pressed():
+	save_game()
 	next_level_btn.visible = false
 	current_stage += 1
 	spawn_enemy()
