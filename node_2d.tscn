@@ -6,9 +6,9 @@
 [ext_resource type="Script" uid="uid://l57vb5okvn5i" path="res://SkillTree.gd" id="3_epypp"]
 
 [ext_resource type="Texture2D" uid="uid://cx6m4m7n4v6p4" path="res://Jungle.jpeg" id="4_jungle"]
-[ext_resource type="Texture2D" uid="uid://d3u4y6r7e8w9" path="res://Mumia.jpeg" id="5_mummy"]
-[ext_resource type="Texture2D" uid="uid://b1c2d3e4f5g6" path="res://Sadam.jpeg" id="6_sadam"]
-[ext_resource type="Texture2D" uid="uid://a1b2c3d4e5f6" path="res://Snake.jpeg" id="7_snake"]
+[ext_resource type="Texture2D" uid="uid://d3u4y6r7e8w1" path="res://Mumia-removebg-preview.png" id="5_mummy"]
+[ext_resource type="Texture2D" uid="uid://b1c2d3e4f5g2" path="res://Sadam-removebg-preview.png" id="6_sadam"]
+[ext_resource type="Texture2D" uid="uid://a1b2c3d4e5f2" path="res://Snake-removebg-preview.png" id="7_snake"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_0hol4"]
 font_size = 44
