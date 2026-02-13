@@ -26,9 +26,8 @@ var base_costs = {
 }
 
 func _ready():
-	health_changed.emit(current_hp, max_hp)
-	gold_changed.emit(gold)
-	skills_updated.emit()
+	# UI signals will be handled by BattleManager after initialization/loading
+	pass
 
 func get_skill_cost(id: String) -> int:
 	var lvl = 0
