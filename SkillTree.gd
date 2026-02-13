@@ -1,14 +1,14 @@
-extends Panel
+extends ScrollContainer
 
 var player: PlayerStats
 
-@onready var points_label = $VBoxContainer/PointsLabel
-@onready var btn_str = $VBoxContainer/GridContainer/BtnStr
-@onready var btn_crit = $VBoxContainer/GridContainer/BtnCrit
-@onready var btn_gold = $VBoxContainer/GridContainer/BtnGold
-@onready var btn_spd = $VBoxContainer/GridContainer/BtnSpd
-@onready var btn_def = $VBoxContainer/GridContainer/BtnDef
-@onready var btn_heal = $VBoxContainer/GridContainer/BtnHeal
+@onready var points_label = $VBox/PointsLabel
+@onready var btn_str = $VBox/GridContainer/BtnStr
+@onready var btn_crit = $VBox/GridContainer/BtnCrit
+@onready var btn_gold = $VBox/GridContainer/BtnGold
+@onready var btn_spd = $VBox/GridContainer/BtnSpd
+@onready var btn_def = $VBox/GridContainer/BtnDef
+@onready var btn_heal = $VBox/GridContainer/BtnHeal
 
 func setup(p_ref: PlayerStats):
 	player = p_ref

@@ -13,19 +13,17 @@ var enemy_timer: Timer
 
 # UI References
 @onready var hp_label = $"../CanvasLayer/HPLabel"
-@onready var gold_label = $"../CanvasLayer/GoldLabel"
-@onready var stage_label = $"../CanvasLayer/StageLabel"
+@onready var gold_label = $"../CanvasLayer/HUD/GoldLabel"
+@onready var stage_label = $"../CanvasLayer/HUD/StageLabel"
 @onready var next_level_btn = $"../CanvasLayer/NextLevelButton"
 
 # Okna
-@onready var skill_tree_window = $"../CanvasLayer/SkillTreeWindow"
-@onready var inventory_window = $"../CanvasLayer/InventoryWindow"
-@onready var inventory_button = $"../CanvasLayer/InventoryButton"
-@onready var skill_button = $"../CanvasLayer/SkillButton"
+@onready var skill_tree_window = $"../CanvasLayer/BottomPanel/TabContainer/Upgrades"
+@onready var inventory_window = $"../CanvasLayer/BottomPanel/TabContainer/Inventory"
 
 # Grafika
 @onready var enemy_sprite = $"../CanvasLayer/EnemySprite"
-@onready var enemy_hp_bar = $"../CanvasLayer/EnemyHPBar"
+@onready var enemy_hp_bar = $"../CanvasLayer/HUD/EnemyHPBar"
 
 func _ready():
 	player = PlayerStats.new()
@@ -38,25 +36,12 @@ func _ready():
 	player.health_changed.connect(func(c, m): hp_label.text = "HP: %d/%d" % [c, m])
 	player.item_added.connect(func(item): _spawn_floating_text("LOOT: " + item.name, Color.CYAN))
 
-	# Obsługa okien
-	inventory_button.pressed.connect(func(): 
-		inventory_window.visible = !inventory_window.visible
-		if inventory_window.visible: skill_tree_window.visible = false
-	)
-	
-	skill_button.pressed.connect(func(): 
-		skill_tree_window.visible = !skill_tree_window.visible
-		if skill_tree_window.visible: inventory_window.visible = false
-		if skill_tree_window.visible: skill_tree_window.update_ui()
-	)
-	
 	# --- NAPRAWA BŁĘDU Z OBRAZKA (Signal already connected) ---
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
 		next_level_btn.pressed.connect(_on_next_level_button_pressed)
 	
 	if skill_tree_window:
 		skill_tree_window.setup(player)
-		skill_tree_window.visible = false
 
 	# Timery
 	player_timer = Timer.new()
@@ -148,6 +133,7 @@ func load_game(slot: int = 1):
 	player.health_changed.emit(player.current_hp, player.max_hp)
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
+	_update_inventory_ui()
 	print("Game loaded from Slot %d!" % slot)
 	return true
 
@@ -221,6 +207,14 @@ func _roll_for_loot():
 		var dmg_bonus = current_stage + randi() % 3
 		var new_item = GameItem.new("Sword +" + str(dmg_bonus), dmg_bonus)
 		player.add_item(new_item)
+		_update_inventory_ui()
+
+func _update_inventory_ui():
+	if inventory_window and inventory_window.has_node("ItemList"):
+		var list = inventory_window.get_node("ItemList")
+		list.clear()
+		for item in player.inventory:
+			list.add_item("%s (Dmg: +%d)" % [item.name, item.damage_bonus])
 
 func _on_next_level_button_pressed():
 	save_game()
