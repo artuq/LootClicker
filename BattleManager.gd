@@ -114,6 +114,11 @@ func load_game(slot: int = 1):
 	if data == null:
 		print("Failed to parse save data in Slot %d (wrong password or corrupted)" % slot)
 		return false
+	
+	current_stage = data["current_stage"]
+	var saved_enemy_hp = data.get("enemy_hp", -1)
+	var player_data = data["player"]
+	
 	player.max_hp = player_data["max_hp"]
 	player.current_hp = player_data["current_hp"]
 	player.gold = player_data["gold"]
