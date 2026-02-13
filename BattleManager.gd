@@ -7,6 +7,9 @@ var player_timer: Timer
 var enemy_timer: Timer
 
 @export var damage_label_scene: PackedScene
+@export var mummy_texture: Texture2D
+@export var snake_texture: Texture2D
+@export var boss_texture: Texture2D
 
 # UI References
 @onready var hp_label = $"../CanvasLayer/HPLabel"
@@ -161,15 +164,25 @@ func spawn_enemy(saved_hp: int = -1):
 	var dmg = int(2 * pow(1.15, current_stage))
 	var gold = int(5 * pow(1.1, current_stage))
 	
+	var enemy_name = ""
 	if is_boss:
 		hp *= 4
 		dmg *= 2
 		gold *= 3
-		enemy_sprite.modulate = Color.RED
-		enemy_sprite.scale = Vector2(1.3, 1.3)
+		enemy_sprite.texture = boss_texture
+		enemy_sprite.modulate = Color.WHITE # No red modulate needed if using boss texture
+		enemy_sprite.scale = Vector2(0.5, 0.5) # Adjusting scale for potentially large JPEG
+		enemy_name = "BOSS: Raft Saddam"
 	else:
+		if current_stage <= 10:
+			enemy_sprite.texture = mummy_texture
+			enemy_name = "Toilet Paper Mummy"
+		else:
+			enemy_sprite.texture = snake_texture
+			enemy_name = "Confused Snake"
+		
 		enemy_sprite.modulate = Color.WHITE
-		enemy_sprite.scale = Vector2(1.0, 1.0)
+		enemy_sprite.scale = Vector2(0.3, 0.3) # Adjusting scale for JPEGs
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
 	if saved_hp != -1:
@@ -177,7 +190,7 @@ func spawn_enemy(saved_hp: int = -1):
 		
 	current_enemy.died.connect(_on_enemy_died)
 	
-	stage_label.text = "Stage: %d / 20" % current_stage
+	stage_label.text = "Stage: %d / 20\n%s" % [current_stage, enemy_name]
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
 

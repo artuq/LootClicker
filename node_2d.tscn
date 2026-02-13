@@ -5,6 +5,11 @@
 [ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="2_0hol4"]
 [ext_resource type="Script" uid="uid://l57vb5okvn5i" path="res://SkillTree.gd" id="3_epypp"]
 
+[ext_resource type="Texture2D" uid="uid://cx6m4m7n4v6p4" path="res://Jungle.jpeg" id="4_jungle"]
+[ext_resource type="Texture2D" uid="uid://d3u4y6r7e8w9" path="res://Mumia.jpeg" id="5_mummy"]
+[ext_resource type="Texture2D" uid="uid://b1c2d3e4f5g6" path="res://Sadam.jpeg" id="6_sadam"]
+[ext_resource type="Texture2D" uid="uid://a1b2c3d4e5f6" path="res://Snake.jpeg" id="7_snake"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_0hol4"]
 font_size = 44
 
@@ -24,43 +29,22 @@ font_color = Color(1, 1, 0, 1)
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1824077322]
 layer = -1
 
-[node name="Canopy" type="ColorRect" parent="BackgroundLayer" unique_id=1757594031]
+[node name="JungleBG" type="TextureRect" parent="BackgroundLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0431373, 0.152941, 0.0431373, 1)
-
-[node name="Ground" type="ColorRect" parent="BackgroundLayer" unique_id=1132051345]
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -180.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0.129412, 0.0941176, 0.0392157, 1)
-
-[node name="VineLeft" type="ColorRect" parent="BackgroundLayer" unique_id=1731029145]
-offset_left = 80.0
-offset_right = 100.0
-offset_bottom = 450.0
-color = Color(0.0784314, 0.235294, 0.0784314, 1)
-
-[node name="VineRight" type="ColorRect" parent="BackgroundLayer" unique_id=1246794532]
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -120.0
-offset_right = -90.0
-offset_bottom = 500.0
-grow_horizontal = 0
-color = Color(0.0784314, 0.235294, 0.0784314, 1)
+texture = ExtResource("4_jungle")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="BattleManager" type="Node" parent="." unique_id=315060686]
 script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("2_0hol4")
+mummy_texture = ExtResource("5_mummy")
+snake_texture = ExtResource("7_snake")
+boss_texture = ExtResource("6_sadam")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1271369561]
 
