@@ -2,8 +2,26 @@ extends Node
 
 # Proceduralny Manager Dźwięku dla LootClicker (Poprawiona wersja 16-bit)
 
+var music_player: AudioStreamPlayer
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	music_player = AudioStreamPlayer.new()
+	add_child(music_player)
+	
+	var music_stream = load("res://assets/audio/bg_music.mp3")
+	if music_stream:
+		music_player.stream = music_stream
+		music_player.volume_db = -10 # Lekko ciszej tło
+		music_player.bus = "Master"
+
+func play_music():
+	if music_player and not music_player.playing:
+		music_player.play()
+
+func stop_music():
+	if music_player:
+		music_player.stop()
 
 func play_hit_sound(pitch_shift: float = 1.0):
 	_play_generated_sound("hit", pitch_shift)

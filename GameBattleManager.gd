@@ -55,6 +55,9 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_music()
+	
 	victory_ui.visible = false
 	original_enemy_pos = enemy_sprite.position
 	

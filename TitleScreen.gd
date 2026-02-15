@@ -3,6 +3,10 @@ extends Control
 @onready var continue_btn = %ContinueButton
 
 func _ready():
+	# Uruchamiamy muzykę przez AudioManager (Autoload)
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_music()
+	
 	# Ustawiamy tło tak, aby nie blokowało kliknięć (dodatkowe zabezpieczenie w kodzie)
 	$Background.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	
