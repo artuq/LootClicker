@@ -29,6 +29,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @export var damage_container: Node # New export for damage labels
 
 var shake_intensity: float = 0.0
+var idle_tween: Tween 
 @onready var original_enemy_pos: Vector2 = enemy_sprite.position
 
 # Constants for scaling and balance
@@ -47,7 +48,6 @@ func _ready():
 	add_child(player)
 	
 	next_level_btn.visible = false
-	_start_idle_animation()
 	
 	# Połączenia UI
 	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
@@ -92,10 +92,11 @@ func _process(delta):
 		enemy_sprite.position = original_enemy_pos
 
 func _start_idle_animation():
-	var tween = create_tween().set_loops()
+	if idle_tween: idle_tween.kill()
+	idle_tween = create_tween().set_loops()
 	var base_scale = enemy_sprite.scale
-	tween.tween_property(enemy_sprite, "scale", base_scale * 1.05, 1.2).set_trans(Tween.TRANS_SINE)
-	tween.tween_property(enemy_sprite, "scale", base_scale, 1.2).set_trans(Tween.TRANS_SINE)
+	idle_tween.tween_property(enemy_sprite, "scale", base_scale * 1.05, 1.2).set_trans(Tween.TRANS_SINE)
+	idle_tween.tween_property(enemy_sprite, "scale", base_scale, 1.2).set_trans(Tween.TRANS_SINE)
 
 func _play_hit_effect(is_crit: bool):
 	shake_intensity = 15.0 if is_crit else 5.0
@@ -245,6 +246,9 @@ func spawn_enemy(saved_hp: int = -1):
 	# Pozycjonujemy przeciwnika WYŻEJ (y=180), by nie zasłaniał go HUD/Menu
 	enemy_sprite.position = Vector2(180, 180)
 	original_enemy_pos = enemy_sprite.position
+	
+	# RESETUJEMY ANIMACJĘ ODDECHU (by nie nadpisywała nowej skali)
+	_start_idle_animation()
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
 	if saved_hp != -1:
