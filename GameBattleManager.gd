@@ -22,6 +22,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var next_level_btn = %NextLevelButton
 @onready var xp_bar = %XPBar
 @onready var click_area = %ClickArea
+@onready var victory_ui = %VictoryUI
 
 # Okna
 @onready var inventory_window = %Inventory
@@ -53,7 +54,7 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
-	next_level_btn.visible = false
+	victory_ui.visible = false
 	original_enemy_pos = enemy_sprite.position
 	
 	# Połączenia UI
@@ -65,7 +66,6 @@ func _ready():
 		hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)]
 		_animate_label(hp_label)
 	)
-	player.item_added.connect(func(item): _spawn_floating_text("LOOT: " + item.name, Color.CYAN))
 	
 	# XP Bar
 	var update_xp = func():
@@ -74,7 +74,7 @@ func _ready():
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 
-	# --- NAPRAWA BŁĘDU Z OBRAZKA (Signal already connected) ---
+	# Połączenie przycisku Next Level
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
 		next_level_btn.pressed.connect(_on_next_level_button_pressed)
 	
@@ -98,16 +98,15 @@ func _ready():
 	
 	# WYBÓR TRYBU STARTU
 	if startup_mode == "new_game":
-		print("DEBUG: STARTING NEW GAME")
 		spawn_enemy()
 	else:
-		print("DEBUG: ATTEMPTING TO CONTINUE")
 		if not load_game():
 			spawn_enemy()
 	
-	# Inicjalizacja drzewka ulepszeń
-	if $CanvasLayer/BottomPanel/TabContainer/Upgrades:
-		$CanvasLayer/BottomPanel/TabContainer/Upgrades.setup(player)
+	# Inicjalizacja drzewka ulepszeń (pod przyciskiem Next Level)
+	var skill_tree = %VictoryUI/Upgrades
+	if skill_tree:
+		skill_tree.setup(player)
 	
 	_start_combat()
 
@@ -323,19 +322,27 @@ func _on_enemy_attack():
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)
-	# Nagroda XP: Stage 1 = 20 XP, Stage 2 = 25 XP... wolniejsze skalowanie
-	var xp_reward = 15 + (current_stage * 5)
+	
+	# Balans XP: Stage 1 gwarantuje level up (20 XP vs 20 req)
+	var xp_reward = 20 if current_stage == 1 else 15 + (current_stage * 5)
 	player.gain_xp(xp_reward) 
 	
+	# DROP ZASOBÓW
 	if res_type != "":
-		# Szansa na drop zasobu (np. Bandaże)
-		var res_chance = 0.5 # 50% szansy na surowiec
-		if current_stage % 5 == 0: res_chance = 1.0 # Boss zawsze dropi
+		var res_chance = 0.6 # 60% szansy
+		if current_stage == 1: res_chance = 1.0 # Gwarantowany drop na start
+		if current_stage % 5 == 0: res_chance = 1.0
 		
 		if randf() < res_chance:
 			player.resources[res_type] += 1
 			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
 			player.resources_updated.emit()
+			
+	# DROP POTIONÓW (20% szansy)
+	if randf() < 0.2:
+		player.current_hp = min(player.max_hp, player.current_hp + 20)
+		player.health_changed.emit(player.current_hp, player.max_hp)
+		_spawn_floating_text("HEAL +20", Color.GREEN)
 	
 	xp_bar.max_value = player.xp_required
 	xp_bar.value = player.xp
@@ -349,22 +356,18 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		
 	player_timer.stop()
 	enemy_timer.stop()
-	next_level_btn.visible = true
+	
+	# POKAZUJEMY EKRAN ZWYCIĘSTWA I ULEPSZEŃ
+	victory_ui.visible = true
 
 func _on_player_leveled_up(_new_level):
-	# Zamiast losowych kart, Level Up po prostu daje nam dostęp do nowych statystyk
-	# Możemy tu dodać komunikat lub efekt dźwiękowy
 	_spawn_floating_text("LEVEL UP!", Color.GOLD)
 	if get_node_or_null("/root/AudioManager"):
-		get_node("/root/AudioManager").play_coin_sound() # Tymczasowo ten sam dźwięk
-
-# Usuwamy stary system mieczy
-func _update_inventory_ui():
-	pass
+		get_node("/root/AudioManager").play_coin_sound()
 
 func _on_next_level_button_pressed():
 	save_game()
-	next_level_btn.visible = false
+	victory_ui.visible = false
 	current_stage += 1
 	spawn_enemy()
 	_start_combat()

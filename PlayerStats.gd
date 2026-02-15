@@ -12,7 +12,7 @@ signal resources_updated # Sygnał dla drzewka umiejętności
 var gold: int = 25
 var xp: int = 0
 var level: int = 1
-var xp_required: int = 50
+var xp_required: int = 20
 
 # Surowce klimatyczne
 var resources = {
@@ -36,7 +36,7 @@ var inventory: Array[GameItem] = []
 var equipped_item: GameItem = null
 
 var base_costs = {
-	"str": 10, "speed": 15, "crit": 40, "greed": 20, "def": 15, "heal": 5
+	"str": 1, "speed": 1, "crit": 2, "greed": 1, "def": 1, "heal": 5
 }
 
 func _ready():

@@ -103,20 +103,10 @@ unique_name_in_owner = true
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 5.0
-offset_bottom = 105.0
+offset_bottom = 115.0
 grow_horizontal = 2
 theme_override_constants/separation = 2
 alignment = 1
-
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574831]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(240, 14)
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
-value = 50.0
-show_percentage = false
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/HUD" unique_id=624552451]
 unique_name_in_owner = true
@@ -138,34 +128,117 @@ horizontal_alignment = 1
 
 [node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574830]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 20)
+custom_minimum_size = Vector2(280, 16)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
+show_percentage = false
 
-[node name="NextLevelButton" type="Button" parent="CanvasLayer" unique_id=184808651]
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574831]
 unique_name_in_owner = true
-process_mode = 3
+custom_minimum_size = Vector2(280, 12)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
+value = 50.0
+show_percentage = false
+
+[node name="VictoryUI" type="VBoxContainer" parent="CanvasLayer" unique_id=300000000]
+unique_name_in_owner = true
 visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -80.0
-offset_top = -100.0
-offset_right = 80.0
-offset_bottom = -60.0
+offset_left = -170.0
+offset_top = -120.0
+offset_right = 170.0
+offset_bottom = 180.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=184808651]
+unique_name_in_owner = true
+process_mode = 3
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 2
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
-text = "Next Level"
+text = "NEXT LEVEL"
+
+[node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/VictoryUI" unique_id=1135677875]
+custom_minimum_size = Vector2(340, 200)
+layout_mode = 2
+script = ExtResource("4_epypp")
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/VictoryUI/Upgrades"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="PointsLabel" type="Label" parent="CanvasLayer/VictoryUI/Upgrades/VBox" unique_id=1941394386]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resources: 0 B, 0 V, 0 S"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/h_separation = 10
+columns = 2
+
+[node name="BtnStr" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931635]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Strength"
+
+[node name="BtnCrit" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Crit Chance"
+
+[node name="BtnGold" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931637]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Greed"
+
+[node name="BtnSpd" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931638]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Attack Speed"
+
+[node name="BtnDef" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931639]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Defense"
+
+[node name="BtnHeal" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931640]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+text = "Heal"
 
 [node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=1095850321]
 unique_name_in_owner = true
@@ -228,60 +301,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
 
-[node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677875]
-layout_mode = 2
-script = ExtResource("4_epypp")
-metadata/_tab_index = 1
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 10
-
-[node name="PointsLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=1941394386]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Resources: 0 B, 0 V, 0 S"
-horizontal_alignment = 1
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox"]
-layout_mode = 2
-columns = 2
-
-[node name="BtnStr" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931635]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 50)
-layout_mode = 2
-text = "Strength"
-
-[node name="BtnCrit" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931636]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 50)
-layout_mode = 2
-text = "Crit Chance"
-
-[node name="BtnGold" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931637]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 50)
-layout_mode = 2
-text = "Greed"
-
-[node name="BtnSpd" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931638]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 50)
-layout_mode = 2
-text = "Attack Speed"
-
-[node name="BtnDef" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931639]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(160, 50)
-layout_mode = 2
-text = "Defense"
-
 [node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677874]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 1
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings" unique_id=1985415407]
 layout_mode = 2
