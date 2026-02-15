@@ -105,6 +105,10 @@ func _ready():
 		if not load_game():
 			spawn_enemy()
 	
+	# Inicjalizacja drzewka ulepszeń
+	if $CanvasLayer/BottomPanel/TabContainer/Upgrades:
+		$CanvasLayer/BottomPanel/TabContainer/Upgrades.setup(player)
+	
 	_start_combat()
 
 func _process(delta):

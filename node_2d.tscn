@@ -228,10 +228,60 @@ layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
 
+[node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677875]
+layout_mode = 2
+script = ExtResource("4_epypp")
+metadata/_tab_index = 1
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="PointsLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=1941394386]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Resources: 0 B, 0 V, 0 S"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox"]
+layout_mode = 2
+columns = 2
+
+[node name="BtnStr" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931635]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+text = "Strength"
+
+[node name="BtnCrit" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+text = "Crit Chance"
+
+[node name="BtnGold" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931637]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+text = "Greed"
+
+[node name="BtnSpd" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931638]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+text = "Attack Speed"
+
+[node name="BtnDef" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1641931639]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 50)
+layout_mode = 2
+text = "Defense"
+
 [node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677874]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings" unique_id=1985415407]
 layout_mode = 2
@@ -297,6 +347,11 @@ text = "Slot 3"
 
 [connection signal="pressed" from="CanvasLayer/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnStr" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_str_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnCrit" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_crit_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnGold" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_gold_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnSpd" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_spd_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnDef" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="GameManager" method="_on_save_slot_pressed" binds= [3]]
