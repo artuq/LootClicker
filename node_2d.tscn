@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://2nn5mnsdx7xi"]
 
-[ext_resource type="Script" uid="uid://b41dh67avnsrf" path="res://GameBattleManager.gd" id="1_wtcfe"]
+[ext_resource type="Script" path="res://GameBattleManager.gd" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://icon.svg" id="2_0e48y"]
 [ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="3_0hol4"]
 [ext_resource type="Script" uid="uid://l57vb5okvn5i" path="res://SkillTree.gd" id="4_epypp"]
@@ -88,7 +88,7 @@ texture = ExtResource("5_jungle")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="BattleManager" type="Node" parent="." unique_id=168535360]
+[node name="GameManager" type="Node" parent="." unique_id=168535360]
 script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("3_0hol4")
 upgrade_screen_scene = ExtResource("9_upgrade")
@@ -292,11 +292,11 @@ custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 text = "Slot 3"
 
-[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="BattleManager" method="_on_next_level_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/ClickArea" to="BattleManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="BattleManager" method="_on_save_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="BattleManager" method="_on_save_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="BattleManager" method="_on_save_slot_pressed" binds= [3]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="BattleManager" method="_on_load_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="BattleManager" method="_on_load_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="BattleManager" method="_on_load_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="GameManager" method="_on_save_slot_pressed" binds= [3]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="GameManager" method="_on_load_slot_pressed" binds= [1]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="GameManager" method="_on_load_slot_pressed" binds= [2]]
+[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="GameManager" method="_on_load_slot_pressed" binds= [3]]
