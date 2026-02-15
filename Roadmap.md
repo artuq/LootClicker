@@ -26,8 +26,9 @@ flowchart TD
         M1(✅ Floating Text System):::done
         M2(✅ Boss System co 5 Stage):::done
         M3(✅ Roguelite: 3 Cards Choice):::done
-        M4(🕒 Resources: Mummy Bandages etc.):::in_progress
+        M4(✅ Resources: Mummy Bandages etc.):::done
         M5(✅ Skalowanie x1.2):::done
+        M6(✅ Dodge & Block Mechanic):::done
     end
     COL1 --> G_CORE
     COL1 --> G_MECH
@@ -61,7 +62,7 @@ flowchart TD
         S1(✅ JSON Save/Load):::done
         S2(✅ Szyfrowanie Danych):::done
         S3(✅ Audio Manager: Procedural):::done
-        S4(🕒 Inventory Grid):::in_progress
+        S4(✅ Inventory Grid & Potions):::done
     end
 
     subgraph G_ASSETS [Zasoby]
