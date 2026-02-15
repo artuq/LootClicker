@@ -1,7 +1,7 @@
 [gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://SkillTreeScene.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/icons/tree_background.jpg" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/icons/tree_background.png" id="2_bg"]
 [ext_resource type="Script" path="res://SkillNode.gd" id="3_node_script"]
 [ext_resource type="Texture2D" path="res://assets/cards/card_str.png" id="4_icon_str"]
 [ext_resource type="Texture2D" path="res://assets/cards/card_crit.png" id="5_icon_crit"]
