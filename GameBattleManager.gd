@@ -41,14 +41,14 @@ var original_enemy_pos: Vector2
 
 # Constants for scaling and balance
 const HP_BASE = 20
-const HP_SCALE = 1.2
+const HP_SCALE = 1.18 # Slightly lower scaling (was 1.2)
 const DMG_BASE = 2
-const DMG_SCALE = 1.15
-const GOLD_BASE = 5
+const DMG_SCALE = 1.12 # Slightly lower scaling (was 1.15)
+const GOLD_BASE = 8    # More gold at start (was 5)
 const GOLD_SCALE = 1.1
-const BOSS_HP_MULT = 4
-const BOSS_DMG_MULT = 2
-const BOSS_GOLD_MULT = 3
+const BOSS_HP_MULT = 2.5 # Lowered boss HP (was 4)
+const BOSS_DMG_MULT = 1.5 # Lowered boss DMG (was 2)
+const BOSS_GOLD_MULT = 4  # More gold for boss kill
 
 # Static variable to control game start from other scenes
 static var startup_mode: String = "continue" # "continue" or "new_game"
@@ -75,12 +75,13 @@ func _ready():
 		_animate_label(hp_label)
 	)
 		
-	# XP Bar
+	# XP Bar - Reordered to set max_value first
 	var update_xp = func():
-		xp_bar.max_value = player.xp_required
-		xp_bar.value = player.xp
 		if %XPLabel:
 			%XPLabel.text = "XP: %d / %d" % [player.xp, player.xp_required]
+		xp_bar.max_value = player.xp_required
+		xp_bar.value = player.xp
+		
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 
@@ -378,28 +379,31 @@ func _on_player_attack():
 		var dmg = player.get_total_damage()
 		var is_crit = player.is_critical_hit()
 		if is_crit: dmg *= 2
-		current_enemy.take_damage(dmg)
-		enemy_hp_bar.value = current_enemy.current_hp
-		enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
-		_spawn_floating_text(format_number(dmg), Color.YELLOW)
 		
-		# Visual effects
-		_play_hit_effect(is_crit)
+		var result = current_enemy.take_damage(dmg)
 		
-		# Audio: Higher pitch for critical hit
-		if get_node_or_null("/root/AudioManager"):
-			get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
+		if result == "MISS":
+			_spawn_floating_text("MISS", Color.GRAY)
+		else:
+			enemy_hp_bar.value = current_enemy.current_hp
+			enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
+			_spawn_floating_text(result + ("!!" if is_crit else ""), Color.YELLOW if not is_crit else Color.ORANGE)
+			_play_hit_effect(is_crit)
+			if get_node_or_null("/root/AudioManager"):
+				get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
 
 func _on_enemy_attack():
 	if current_enemy and player.current_hp > 0:
-		var dmg = current_enemy.damage
-		player.take_damage(dmg)
-		_spawn_floating_text(format_number(dmg), Color(1, 0.2, 0.2)) # Red
-		if player.current_hp <= 0: _handle_player_death()
+		var result = player.take_damage(current_enemy.damage)
 		
-		# Audio: Lower pitch for enemy hit
-		if get_node_or_null("/root/AudioManager"):
-			get_node("/root/AudioManager").play_hit_sound(0.7)
+		if result == "DODGED":
+			_spawn_floating_text("DODGED", Color.AQUA)
+		else:
+			var color = Color.WHITE if "BLOCKED" in result else Color(1, 0.2, 0.2)
+			_spawn_floating_text(result, color)
+			if player.current_hp <= 0: _handle_player_death()
+			if get_node_or_null("/root/AudioManager"):
+				get_node("/root/AudioManager").play_hit_sound(0.7)
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)

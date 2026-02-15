@@ -37,6 +37,10 @@ var greed_lvl: int = 0
 var def_lvl: int = 0
 var heal_count: int = 0
 
+# New combat stats
+var dodge_chance: float = 0.05 # 5% base
+var block_chance: float = 0.0  # 0% base
+
 var inventory: Array[GameItem] = []
 var equipped_item: GameItem = null
 
@@ -83,15 +87,26 @@ func use_consumable(type: String):
 					return true
 	return false
 
-func take_damage(amount: int):
-	var dmg = max(1, amount - def_lvl)
+func take_damage(amount: int) -> String:
+	# Check for Dodge
+	if randf() < dodge_chance:
+		return "DODGED"
+		
+	# Check for Block (reduces damage by 50%)
+	var final_dmg = amount
+	var block_msg = ""
+	if randf() < block_chance:
+		final_dmg = int(amount * 0.5)
+		block_msg = "BLOCKED "
+		
+	var dmg = max(1, final_dmg - def_lvl)
 	current_hp -= dmg
 	if current_hp < 0: current_hp = 0
-	health_changed.emit(current_hp, max_hp)
+	health_changed.emit(current_hp, max_hp)        
 	
 	# Important: When we take damage, we must refresh the shop so the HEAL button enables!
 	skills_updated.emit()
-
+	return block_msg + str(dmg)
 # --- REST OF FUNCTIONS UNCHANGED ---
 func add_item(item: GameItem):
 	inventory.append(item)
