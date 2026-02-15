@@ -419,9 +419,8 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		if current_stage % 5 == 0: res_chance = 1.0
 		
 		if randf() < res_chance:
-			player.resources[res_type] += 1
+			player.add_resource(res_type, 1)
 			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
-			player.resources_updated.emit()
 			
 	# POTION DROP (30% chance)
 	if randf() < 0.3:

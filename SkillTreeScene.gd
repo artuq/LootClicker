@@ -70,16 +70,14 @@ func _on_node_pressed(node: SkillNode):
 			player.gold_changed.emit(player.gold)
 		else:
 			_play_error()
-	else:
-		var res_id = node._get_res_id()
-		if player.resources[res_id] >= cost:
-			player.resources[res_id] -= cost
-			_apply_skill(node.skill_id)
-			player.resources_updated.emit()
 		else:
-			_play_error()
-
-func _apply_skill(id: String):
+			var res_id = node._get_res_id()        
+			if player.resources[res_id] >= cost:   
+				player.add_resource(res_id, -cost)
+				_apply_skill(node.skill_id)    
+			else:
+				_play_error()
+	func _apply_skill(id: String):
 	match id:
 		"str": player.str_lvl += 1
 		"crit": player.crit_lvl += 1

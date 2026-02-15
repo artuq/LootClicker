@@ -54,7 +54,7 @@ func _on_node_pressed(node: SkillNode):
 	var res_id = node._get_res_id()
 	
 	if player.resources[res_id] >= cost:
-		player.resources[res_id] -= cost
+		player.add_resource(res_id, -cost)
 		match node.skill_id:
 			"str": player.str_lvl += 1
 			"crit": player.crit_lvl += 1
@@ -62,7 +62,6 @@ func _on_node_pressed(node: SkillNode):
 			"speed": player.speed_lvl += 1
 			"def": player.def_lvl += 1
 		
-		player.resources_updated.emit()
 		player.skills_updated.emit()
 	else:
-		player.error_occurred.emit("NOT ENOUGH %s!" % res_id.to_upper())
+		player.trigger_error("NOT ENOUGH %s!" % res_id.to_upper())

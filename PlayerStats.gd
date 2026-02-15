@@ -129,6 +129,14 @@ func gain_gold(amount: int):
 	gold += int(amount * (1.0 + (greed_lvl * 0.05)))
 	gold_changed.emit(gold)
 
+func add_resource(type: String, amount: int):
+	if resources.has(type):
+		resources[type] += amount
+		resources_updated.emit()
+
+func trigger_error(msg: String):
+	error_occurred.emit(msg)
+
 func gain_xp(amount: int):
 	xp += amount
 	if xp >= xp_required:
