@@ -59,7 +59,7 @@ flowchart TD
         direction TB
         S1(✅ JSON Save/Load):::done
         S2(✅ Szyfrowanie Danych):::done
-        S3(🕒 Audio Manager):::in_progress
+        S3(✅ Audio Manager: Procedural):::done
         S4(🕒 Inventory Grid):::in_progress
     end
 

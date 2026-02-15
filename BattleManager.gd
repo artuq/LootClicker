@@ -6,6 +6,8 @@ var current_enemy: Enemy
 var player_timer: Timer
 var enemy_timer: Timer
 
+const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
+
 @export var damage_label_scene: PackedScene
 @export var mummy_texture: Texture2D
 @export var snake_texture: Texture2D
@@ -24,6 +26,18 @@ var enemy_timer: Timer
 # Grafika
 @onready var enemy_sprite = %EnemySprite
 @onready var enemy_hp_bar = %EnemyHPBar
+@export var damage_container: Node # New export for damage labels
+
+# Constants for scaling and balance
+const HP_BASE = 20
+const HP_SCALE = 1.2
+const DMG_BASE = 2
+const DMG_SCALE = 1.15
+const GOLD_BASE = 5
+const GOLD_SCALE = 1.1
+const BOSS_HP_MULT = 4
+const BOSS_DMG_MULT = 2
+const BOSS_GOLD_MULT = 3
 
 func _ready():
 	player = PlayerStats.new()
@@ -32,8 +46,8 @@ func _ready():
 	next_level_btn.visible = false
 	
 	# Połączenia UI
-	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + str(g))
-	player.health_changed.connect(func(c, m): hp_label.text = "HP: %d/%d" % [c, m])
+	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
+	player.health_changed.connect(func(c, m): hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)])
 	player.item_added.connect(func(item): _spawn_floating_text("LOOT: " + item.name, Color.CYAN))
 
 	# --- NAPRAWA BŁĘDU Z OBRAZKA (Signal already connected) ---
@@ -54,6 +68,11 @@ func _ready():
 	add_child(enemy_timer)
 	
 	player.skills_updated.connect(_on_skills_updated)
+	player.error_occurred.connect(func(msg): 
+		_spawn_floating_text(msg, Color.ORANGE_RED)
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_error_sound()
+	)
 	
 	# Load game AFTER connecting UI signals
 	if not load_game():
@@ -64,8 +83,6 @@ func _ready():
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game()
-
-const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 func save_game(slot: int = 1):
 	var save_data = {
@@ -149,6 +166,13 @@ func load_game(slot: int = 1):
 	return true
 
 
+func format_number(n: int) -> String:
+	if n >= 1_000_000:
+		return "%.2fM" % (n / 1_000_000.0)
+	elif n >= 1_000:
+		return "%.1fk" % (n / 1_000.0)
+	return str(n)
+
 func spawn_enemy(saved_hp: int = -1):
 	if current_enemy:
 		current_enemy.queue_free()
@@ -157,19 +181,20 @@ func spawn_enemy(saved_hp: int = -1):
 	add_child(current_enemy)
 	
 	var is_boss = (current_stage % 5 == 0)
-	var hp = int(20 * pow(1.2, current_stage))
-	var dmg = int(2 * pow(1.15, current_stage))
-	var gold = int(5 * pow(1.1, current_stage))
+	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
+	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
+	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
 	var enemy_name = ""
 	if is_boss:
-		hp *= 4
-		dmg *= 2
-		gold *= 3
+		hp *= BOSS_HP_MULT
+		dmg *= BOSS_DMG_MULT
+		gold *= BOSS_GOLD_MULT
 		enemy_sprite.texture = boss_texture
 		enemy_sprite.modulate = Color.WHITE # No red modulate needed if using boss texture
 		enemy_sprite.scale = Vector2(0.5, 0.5) # Adjusting scale for potentially large JPEG
 		enemy_name = "BOSS: Raft Saddam"
+		enemy_hp_bar.modulate = Color(1, 0.3, 0.3) # Reddish for boss
 	else:
 		if current_stage <= 10:
 			enemy_sprite.texture = mummy_texture
@@ -180,6 +205,7 @@ func spawn_enemy(saved_hp: int = -1):
 		
 		enemy_sprite.modulate = Color.WHITE
 		enemy_sprite.scale = Vector2(0.3, 0.3) # Adjusting scale for JPEGs
+		enemy_hp_bar.modulate = Color.WHITE
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
 	if saved_hp != -1:
@@ -194,20 +220,31 @@ func spawn_enemy(saved_hp: int = -1):
 func _on_player_attack():
 	if current_enemy:
 		var dmg = player.get_total_damage()
-		if player.is_critical_hit(): dmg *= 2
+		var is_crit = player.is_critical_hit()
+		if is_crit: dmg *= 2
 		current_enemy.take_damage(dmg)
 		enemy_hp_bar.value = current_enemy.current_hp
-		_spawn_floating_text(str(dmg), Color.YELLOW)
+		_spawn_floating_text(format_number(dmg), Color.YELLOW)
+		
+		# Audio: Wyższy ton przy krytyku
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
 
 func _on_enemy_attack():
 	if current_enemy and player.current_hp > 0:
 		var dmg = current_enemy.damage
 		player.take_damage(dmg)
-		_spawn_floating_text(str(dmg), Color(1, 0.2, 0.2)) # Czerwony
+		_spawn_floating_text(format_number(dmg), Color(1, 0.2, 0.2)) # Czerwony
 		if player.current_hp <= 0: _handle_player_death()
+		
+		# Audio: Niższy ton uderzenia przeciwnika
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_hit_sound(0.7)
 
 func _on_enemy_died(_xp, gold):
 	player.gain_gold(gold)
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_coin_sound()
 	_roll_for_loot()
 	player_timer.stop()
 	enemy_timer.stop()
@@ -262,7 +299,11 @@ func _spawn_floating_text(text: String, color: Color):
 	var lbl = damage_label_scene.instantiate()
 	lbl.text = text
 	lbl.modulate = color
-	$"../CanvasLayer".add_child(lbl)
+	
+	if damage_container:
+		damage_container.add_child(lbl)
+	else:
+		add_child(lbl) # Fallback to current node
 	
 	if text.begins_with("LOOT"):
 		lbl.global_position = enemy_sprite.global_position + Vector2(0, -100)

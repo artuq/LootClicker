@@ -5,6 +5,7 @@ signal gold_changed(amount)
 signal health_changed(current, max_hp)
 signal skills_updated # Sygnał odświeżający ceny w sklepie
 signal item_added(item)
+signal error_occurred(msg) # Nowy sygnał dla błędów (np. brak złota)
 
 var gold: int = 25
 var max_hp: int = 100

@@ -67,7 +67,8 @@ func _on_btn_heal_pressed():
 		player.gold -= cost
 		player.heal_player()
 		player.gold_changed.emit(player.gold)
-		# update_ui() wywoła się automatycznie przez sygnał z heal_player
+	else:
+		player.error_occurred.emit("NOT ENOUGH GOLD!")
 		
 func _buy(id: String):
 	var cost = player.get_skill_cost(id)
@@ -82,3 +83,5 @@ func _buy(id: String):
 		
 		player.gold_changed.emit(player.gold)
 		player.skills_updated.emit()
+	else:
+		player.error_occurred.emit("NOT ENOUGH GOLD!")
