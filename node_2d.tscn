@@ -9,6 +9,12 @@
 [ext_resource type="Texture2D" uid="uid://2bnvf5rfx83m" path="res://Sadam-removebg-preview.png" id="7_sadam"]
 [ext_resource type="Texture2D" uid="uid://m2gnue60fm56" path="res://Snake-removebg-preview.png" id="8_snake"]
 [ext_resource type="PackedScene" path="res://UpgradeScreen.tscn" id="9_upgrade"]
+[ext_resource type="Texture2D" uid="uid://clyonscv4y6be" path="res://assets/kenney_ui/PNG/panel_brown.png" id="10_panel_brown"]
+[ext_resource type="Texture2D" uid="uid://0u48g8u672p2" path="res://assets/kenney_ui/PNG/buttonLong_beige.png" id="11_btn_beige"]
+[ext_resource type="Texture2D" uid="uid://dpxl1i30m2w8v" path="res://assets/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
+[ext_resource type="Texture2D" uid="uid://bsh6205q0x633" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
+[ext_resource type="Texture2D" uid="uid://dn77uol4cah8r" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
+[ext_resource type="Texture2D" uid="uid://cxof2a3wun7it" path="res://assets/kenney_ui/PNG/barBlue_horizontalMid.png" id="15_bar_blue"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
 outline_size = 4
@@ -22,12 +28,50 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp"]
-bg_color = Color(0.6, 0.2, 0.8, 1)
-corner_radius_top_left = 2
-corner_radius_top_right = 2
-corner_radius_bottom_right = 2
-corner_radius_bottom_left = 2
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
+texture = ExtResource("10_panel_brown")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+region_rect = Rect2(0, 0, 100, 100)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+texture = ExtResource("11_btn_beige")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 190, 49)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pr"]
+texture = ExtResource("12_btn_beige_pr")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 190, 45)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_bg"]
+texture = ExtResource("13_bar_bg")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_red"]
+texture = ExtResource("14_bar_red")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_blue"]
+texture = ExtResource("15_bar_blue")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
 
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
@@ -65,10 +109,11 @@ alignment = 1
 
 [node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574831]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(240, 10)
+custom_minimum_size = Vector2(240, 14)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_styles/fill = SubResource("StyleBoxFlat_xp")
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
 value = 50.0
 show_percentage = false
 
@@ -94,7 +139,8 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(280, 20)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer" unique_id=184808651]
@@ -112,6 +158,11 @@ offset_right = 80.0
 offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "Next Level"
 
 [node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=1095850321]
@@ -142,7 +193,6 @@ theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
 action_mode = 0
 
 [node name="BottomPanel" type="Panel" parent="CanvasLayer" unique_id=729446120]
-self_modulate = Color(1, 1, 1, 0.8)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -150,6 +200,7 @@ anchor_bottom = 1.0
 offset_top = -120.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
 
 [node name="TabContainer" type="TabContainer" parent="CanvasLayer/BottomPanel" unique_id=1726504651]
 layout_mode = 1
