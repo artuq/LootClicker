@@ -355,7 +355,7 @@ func _on_player_leveled_up(_new_level):
 	get_tree().paused = true
 	
 	var screen = upgrade_screen_scene.instantiate()
-	$CanvasLayer.add_child(screen)
+	%CanvasLayer.add_child(screen)
 	screen.setup(player)
 
 func _roll_for_loot():

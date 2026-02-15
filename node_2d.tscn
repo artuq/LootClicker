@@ -97,6 +97,7 @@ snake_texture = ExtResource("8_snake")
 boss_texture = ExtResource("7_sadam")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1254295188]
+unique_name_in_owner = true
 
 [node name="HUD" type="VBoxContainer" parent="CanvasLayer" unique_id=247026679]
 anchors_preset = 10

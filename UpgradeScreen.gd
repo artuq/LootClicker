@@ -13,6 +13,9 @@ func setup(player: PlayerStats):
 	# Pozwalamy oknu działać, gdy gra jest zapauzowana
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
+	if card_container == null:
+		card_container = %CardContainer
+	
 	# Emitujemy zmianę złota, żeby PlayerStats odświeżył UI jeśli trzeba
 	player.gold_changed.emit(player.gold)
 	
