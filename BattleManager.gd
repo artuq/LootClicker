@@ -19,6 +19,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var gold_label = %GoldLabel
 @onready var stage_label = %StageLabel
 @onready var next_level_btn = %NextLevelButton
+@onready var click_area = %ClickArea
 
 # Okna
 @onready var inventory_window = %Inventory
@@ -211,6 +212,7 @@ func spawn_enemy(saved_hp: int = -1):
 	add_child(current_enemy)
 	
 	enemy_sprite.visible = true # Pokazujemy postać
+	click_area.visible = true # Włączamy klikanie
 	var is_boss = (current_stage % 5 == 0)
 	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
 	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
@@ -291,6 +293,7 @@ func _on_enemy_died(_xp, gold):
 	player.gain_xp(_xp if _xp > 0 else 20 * current_stage) # Fallback if XP not defined
 	
 	enemy_sprite.visible = false # Ukrywamy postać, by nie zasłaniała przycisków
+	click_area.visible = false # Wyłączamy niewidoczny obszar klikania
 	if idle_tween: idle_tween.kill() # Zatrzymujemy animację
 	
 	if get_node_or_null("/root/AudioManager"):
