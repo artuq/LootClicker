@@ -8,6 +8,7 @@ signal item_added(item)
 signal error_occurred(msg)
 signal leveled_up(new_level) # Nowy sygnał awansu
 signal resources_updated # Sygnał dla drzewka umiejętności
+signal consumables_updated # Nowy sygnał dla mikstur
 
 var gold: int = 25
 var xp: int = 0
@@ -19,6 +20,10 @@ var resources = {
 	"bandages": 0,    # Z Mumii
 	"venom": 0,       # Z Węży
 	"relic_shards": 0 # Z Bossów
+}
+
+var consumables = {
+	"hp_potion": 0
 }
 
 var max_hp: int = 100
@@ -65,6 +70,18 @@ func heal_player():
 		heal_count += 1
 		health_changed.emit(current_hp, max_hp)
 		skills_updated.emit() # Odśwież UI (cena wzrośnie)
+
+func use_consumable(type: String):
+	if consumables.get(type, 0) > 0:
+		match type:
+			"hp_potion":
+				if current_hp < max_hp:
+					current_hp = min(max_hp, current_hp + 30)
+					consumables[type] -= 1
+					health_changed.emit(current_hp, max_hp)
+					consumables_updated.emit()
+					return true
+	return false
 
 func take_damage(amount: int):
 	var dmg = max(1, amount - def_lvl)

@@ -99,6 +99,7 @@ func _ready():
 	
 	player.skills_updated.connect(_on_skills_updated)
 	player.leveled_up.connect(_on_player_leveled_up)
+	player.consumables_updated.connect(_update_consumables_ui)
 	player.error_occurred.connect(func(msg): 
 		_spawn_floating_text(msg, Color.ORANGE_RED)
 		if get_node_or_null("/root/AudioManager"):
@@ -117,6 +118,7 @@ func _ready():
 	if skill_tree:
 		skill_tree.setup(player)
 	
+	_update_consumables_ui()
 	_start_combat()
 
 func _process(delta):
@@ -166,6 +168,7 @@ func save_game(slot: int = 1):
 			"def_lvl": player.def_lvl,
 			"heal_count": player.heal_count,
 			"resources": player.resources,
+			"consumables": player.consumables,
 			"inventory": []
 		}
 	}
@@ -214,6 +217,7 @@ func load_game(slot: int = 1):
 	player.def_lvl = player_data["def_lvl"]
 	player.heal_count = player_data.get("heal_count", 0)
 	player.resources = player_data.get("resources", player.resources)
+	player.consumables = player_data.get("consumables", player.consumables)
 	
 	print("Loaded Slot %d: Stage %d, HP %d/%d, Gold %d" % [slot, current_stage, player.current_hp, player.max_hp, player.gold])
 	
@@ -231,6 +235,7 @@ func load_game(slot: int = 1):
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
 	_update_inventory_ui()
+	_update_consumables_ui()
 	print("Game loaded from Slot %d!" % slot)
 	return true
 
@@ -246,6 +251,25 @@ func _update_inventory_ui():
 	# Placeholder for future resource inventory UI
 	pass
 
+func _update_consumables_ui():
+	var potion_btn = %CanvasLayer/HUD/PotionButton
+	if potion_btn:
+		var count = player.consumables.get("hp_potion", 0)
+		potion_btn.text = "HP Pot: %d" % count
+		potion_btn.disabled = count <= 0 or player.current_hp >= player.max_hp
+		
+		# Podpinamy akcję jeśli jeszcze nie ma
+		if not potion_btn.pressed.is_connected(_on_potion_button_pressed):
+			potion_btn.pressed.connect(_on_potion_button_pressed)
+
+func _on_potion_button_pressed():
+	if player.use_consumable("hp_potion"):
+		_spawn_floating_text("USED POTION +30", Color.SPRING_GREEN)
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_coin_sound() # Temporary sound
+		_update_consumables_ui()
+	else:
+		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
 func spawn_enemy(saved_hp: int = -1):
 	if current_enemy:
 		current_enemy.queue_free()
@@ -343,7 +367,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	# DROP ZASOBÓW
 	if res_type != "":
 		var res_chance = 0.6 # 60% szansy
-		if current_stage == 1: res_chance = 1.0 # Gwarantowany drop na start
+		if current_stage <= 3: res_chance = 1.0 # Większy drop na start
 		if current_stage % 5 == 0: res_chance = 1.0
 		
 		if randf() < res_chance:
@@ -351,8 +375,14 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
 			player.resources_updated.emit()
 			
-	# DROP POTIONÓW (20% szansy)
-	if randf() < 0.2:
+	# DROP POTIONÓW (30% szansy)
+	if randf() < 0.3:
+		player.consumables["hp_potion"] += 1
+		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
+		player.consumables_updated.emit()
+	
+	# Szansa na natychmiastowe uleczenie (15% szansy)
+	if randf() < 0.15:
 		player.current_hp = min(player.max_hp, player.current_hp + 20)
 		player.health_changed.emit(player.current_hp, player.max_hp)
 		_spawn_floating_text("HEAL +20", Color.GREEN)
