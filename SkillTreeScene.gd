@@ -20,6 +20,17 @@ func setup(p_ref: PlayerStats):
 				node.pressed.connect(_on_node_pressed.bind(node))
 			
 	update_ui()
+	animate_open()
+
+func animate_open():
+	# Ustawiamy punkt obrotu na środek dla ładnego skalowania
+	pivot_offset = size / 2
+	scale = Vector2.ZERO
+	modulate.a = 0
+	
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tween.tween_property(self, "scale", Vector2.ONE, 0.4)
+	tween.tween_property(self, "modulate:a", 1.0, 0.2)
 
 func update_ui():
 	if player == null: return
@@ -71,8 +82,12 @@ func _play_error():
 		get_node("/root/AudioManager").play_error_sound()
 
 func _on_back_button_pressed():
-	# Powrót do gry
-	visible = false
-	get_tree().paused = false
-	# Jeśli chcemy przeładować scenę walki, używamy change_scene, 
-	# ale tu po prostu ukrywamy nakładkę.
+	# Animacja wyjścia
+	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+	tween.tween_property(self, "scale", Vector2.ZERO, 0.3)
+	tween.tween_property(self, "modulate:a", 0.0, 0.2)
+	
+	tween.chain().finished.connect(func():
+		get_tree().paused = false
+		queue_free()
+	)
