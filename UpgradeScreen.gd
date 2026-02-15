@@ -10,6 +10,12 @@ func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func setup(player: PlayerStats):
+	# Pozwalamy oknu działać, gdy gra jest zapauzowana
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
+	# Emitujemy zmianę złota, żeby PlayerStats odświeżył UI jeśli trzeba
+	player.gold_changed.emit(player.gold)
+	
 	# Czyścimy stare karty
 	for child in card_container.get_children():
 		child.queue_free()
