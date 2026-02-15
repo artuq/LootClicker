@@ -1,0 +1,185 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://SkillTreeScene.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/tree_background.jpg" id="2_bg"]
+[ext_resource type="Script" path="res://SkillNode.gd" id="3_node_script"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/1.png" id="4_icon_str"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/10.png" id="5_icon_crit"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/25.png" id="6_icon_gold"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/50.png" id="7_icon_spd"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/18.png" id="8_icon_def"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/buttonLong_beige.png" id="9_btn_bg"]
+
+[node name="SkillTreeScene" type="Control"]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 40.0
+offset_right = 100.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 24
+text = "SKILL TREE"
+horizontal_alignment = 1
+
+[node name="PointsLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 80.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 12
+text = "Resources: 0 B, 0 V, 0 S"
+horizontal_alignment = 1
+
+[node name="TreeLayout" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -150.0
+offset_right = 180.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkillStr" type="Button" parent="TreeLayout"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -40.0
+offset_top = 0.0
+offset_right = 40.0
+offset_bottom = 80.0
+grow_horizontal = 2
+script = ExtResource("3_node_script")
+skill_id = "str"
+icon_texture = ExtResource("4_icon_str")
+
+[node name="SkillCrit" type="Button" parent="TreeLayout"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 50.0
+offset_top = 100.0
+offset_right = 130.0
+offset_bottom = 180.0
+grow_horizontal = 2
+script = ExtResource("3_node_script")
+skill_id = "crit"
+requirement_skill = "str"
+requirement_level = 1
+icon_texture = ExtResource("5_icon_crit")
+
+[node name="SkillGold" type="Button" parent="TreeLayout"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -130.0
+offset_top = 100.0
+offset_right = -50.0
+offset_bottom = 180.0
+grow_horizontal = 2
+script = ExtResource("3_node_script")
+skill_id = "greed"
+requirement_skill = "str"
+requirement_level = 1
+icon_texture = ExtResource("6_icon_gold")
+
+[node name="SkillSpd" type="Button" parent="TreeLayout"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -130.0
+offset_top = 200.0
+offset_right = -50.0
+offset_bottom = 280.0
+grow_horizontal = 2
+script = ExtResource("3_node_script")
+skill_id = "speed"
+requirement_skill = "greed"
+requirement_level = 1
+icon_texture = ExtResource("7_icon_spd")
+
+[node name="SkillDef" type="Button" parent="TreeLayout"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 50.0
+offset_top = 200.0
+offset_right = 130.0
+offset_bottom = 280.0
+grow_horizontal = 2
+script = ExtResource("3_node_script")
+skill_id = "def"
+requirement_skill = "crit"
+requirement_level = 1
+icon_texture = ExtResource("8_icon_def")
+
+[node name="BackButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "BACK TO FIGHT"
+
+[connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

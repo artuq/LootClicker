@@ -11,6 +11,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 @export var damage_label_scene: PackedScene
 @export var upgrade_screen_scene: PackedScene # New export for level up UI
+@export var skill_tree_scene: PackedScene # New export for full screen tree
 @export var mummy_texture: Texture2D
 @export var snake_texture: Texture2D
 @export var boss_texture: Texture2D
@@ -389,8 +390,15 @@ func _on_skills_updated():
 		if not player_timer.is_stopped(): player_timer.start()
 
 func _handle_player_death():
+	# Kara za śmierć: powrót do Stage 1 i utrata złota
+	player.gold = int(player.gold * 0.8)
+	current_stage = 1
 	player.current_hp = player.max_hp
 	player.health_changed.emit(player.current_hp, player.max_hp)
+	player.gold_changed.emit(player.gold)
+	
+	_spawn_floating_text("DEFEAT - STAGE RESET", Color.RED)
+	save_game()
 	spawn_enemy()
 	_start_combat()
 
@@ -418,6 +426,14 @@ func _on_save_slot_pressed(slot: int):
 
 func _on_load_slot_pressed(slot: int):
 	load_game(slot)
+
+func _on_open_skill_tree():
+	if !skill_tree_scene: return
+	# Pauzujemy grę na czas przeglądania drzewka
+	get_tree().paused = true
+	var tree = skill_tree_scene.instantiate()
+	%CanvasLayer.add_child(tree)
+	tree.setup(player)
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()

@@ -22,6 +22,8 @@
 [ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/50.png" id="21_icon_spd"]
 [ext_resource type="Script" path="res://SkillNode.gd" id="19_skill_node_gd"]
 
+[ext_resource type="PackedScene" path="res://SkillTreeScene.tscn" id="22_skill_scene"]
+
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
@@ -105,6 +107,7 @@ stretch_mode = 6
 script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("3_0hol4")
 upgrade_screen_scene = ExtResource("9_upgrade")
+skill_tree_scene = ExtResource("22_skill_scene")
 mummy_texture = ExtResource("6_mummy")
 snake_texture = ExtResource("8_snake")
 boss_texture = ExtResource("7_sadam")
@@ -440,6 +443,7 @@ layout_mode = 2
 text = "Slot 3"
 
 [connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VictoryUI/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
