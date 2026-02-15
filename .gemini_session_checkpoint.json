@@ -1,27 +1,29 @@
 {
-  "timestamp": "2026-02-15T17:30:00",
-  "project_status": "MVP Polishing & Bug Fixing",
+  "timestamp": "2026-02-15T19:00:00",
+  "project_status": "MVP Stabilized & Combat Overhaul",
   "recent_achievements": [
-    "Fixed startup crashes (PotionButton path, syntax errors, int division)",
-    "Implemented 'Juice' (Button scaling, Damage Label rotation)",
-    "Full English Localization for MVP",
-    "Added Resource Inventory UI & Consumables (Potions)",
-    "Implemented Stage 50 Final Boss logic"
+    "Fixed critical startup crashes and GDScript parse errors",
+    "Implemented Dodge and Block mechanics in combat",
+    "Balanced Saddam Boss (HP/DMG nerfed for early game)",
+    "Added Player HP bar and Enemy HP counter",
+    "Fixed XP bar sync bug (max_value priority)",
+    "Refactored PlayerStats to encapsulate signals (add_resource, trigger_error)"
   ],
   "active_context": {
-    "focus_areas": ["UI/UX Polish", "Game Balance", "Bug Fixes"],
+    "focus_areas": ["UI/UX Polish", "Combat Feedback", "Visual Assets"],
     "key_files": [
       "GameBattleManager.gd",
       "PlayerStats.gd",
-      "AudioManager.gd",
-      "UpgradeScreen.gd"
+      "UpgradeManager.gd",
+      "SkillTreeScene.gd"
     ]
   },
   "next_steps_queue": [
-    "Implement Particle Systems for clicks/hits",
-    "Expand Inventory system for equipment items",
-    "Add sound effects for UI interactions",
-    "Optimization: Batching Draw Calls"
+    "Dynamic HP Bar colors (Green -> Red)",
+    "Inventory Grid with icons",
+    "Particle System for clicks/hits",
+    "UI Sound Effects (hover/click)",
+    "Layout polish for Gold and Resources"
   ],
   "user_preferences": {
     "always_push_to_github": true,

@@ -1,24 +1,23 @@
-# Session Summary - 2026-02-15
+# Session Summary - 2026-02-15 (Part 2)
 
 ## Achievements
-- **Combat Overhaul**:
-    - Added **Dodge** (chance to avoid damage) and **Block** (chance to reduce damage by 50%) mechanics.
-    - Floating text now shows "DODGED", "MISS", or "BLOCKED" for better feedback.
-    - Updated `Enemy.gd` to allow enemies to dodge (after Stage 10).
-    - New Upgrade Cards: "Evasion" and "Bulwark".
-- **Rebalancing**:
-    - **Saddam Boss Nerfed**: Reduced HP multiplier (4x -> 2.5x) and DMG multiplier (2x -> 1.5x) to make early progression smoother.
-    - Increased starting gold gain to help with early upgrades.
-    - Smoothed out overall HP/DMG scaling.
-- **UI/UX Polish**:
-    - **XP Bug Fixed**: Reordered UI update sequence so `max_value` is set before `value`, preventing visual glitches where the bar looked full at 0 XP.
-    - Moved XP label onto the progress bar for a cleaner look.
+- **Stability & Bug Fixes**:
+    - Resolved persistent "NEW GAME" crashes by fixing `UpgradeManager` and `SkillTreeScene` logic.
+    - Fixed "Mixed tabs/spaces" and "Unused Signal" warnings.
+    - Safe scene transition implementation in `TitleScreen.gd`.
+- **Combat & Balance**:
+    - Added **Dodge** and **Block** mechanics to Player and Enemies.
+    - Balanced **Saddam Boss** multipliers for better early flow.
+    - New Upgrade Cards: **Evasion** (Dodge) and **Bulwark** (Block).
+- **UI Improvements**:
+    - Fixed XP bar visual sync (max_value update sequence).
+    - Added Player HP Bar and Enemy HP numerical labels.
 
-## Technical Notes
-- `GameBattleManager.gd` was completely reformatted to ensure strict tab indentation.
-- Scene communication improved using static class members for `startup_mode`.
+## Planned for Next Session
+- **Dynamic UI**: Progress bars changing colors based on % HP.
+- **Inventory Overhaul**: Grid system with icons instead of a list.
+- **Juice**: Particle systems for combat hits.
+- **Audio**: UI interaction sounds.
 
-## Next Steps
-- Implement Particle Systems for clicks/hits.
-- Expand Inventory system for equipment items.
-- Add sound effects for UI interactions.
+## GitHub Status
+- All changes committed and pushed to `origin/main`.
