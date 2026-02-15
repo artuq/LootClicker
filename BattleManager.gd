@@ -219,17 +219,21 @@ func spawn_enemy(saved_hp: int = -1):
 	current_enemy = Enemy.new()
 	add_child(current_enemy)
 	
-	enemy_sprite.visible = true # Pokazujemy postać
-	click_area.visible = true # Włączamy klikanie
+	enemy_sprite.visible = true
+	click_area.visible = true
 	var is_boss = (current_stage % 5 == 0)
 	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
 	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
+	if is_boss:
+		hp *= BOSS_HP_MULT
+		dmg *= BOSS_DMG_MULT
+		gold *= BOSS_GOLD_MULT
+	
 	var enemy_name = ""
 	var res_type = ""
 	
-	# Dobieramy teksturę i surowiec
 	if is_boss:
 		enemy_sprite.texture = boss_texture
 		enemy_name = "BOSS: Raft Saddam"
@@ -249,15 +253,12 @@ func spawn_enemy(saved_hp: int = -1):
 	# --- AUTOMATYCZNE SKALOWANIE ---
 	var target_size = 200.0
 	var tex_size = enemy_sprite.texture.get_size()
-	var final_scale = target_size / max(tex_size.x, tex_size.y)
-	
-	enemy_sprite.scale = Vector2(final_scale, final_scale)
+	var f_scale = target_size / max(tex_size.x, tex_size.y)
+	enemy_sprite.scale = Vector2(f_scale, f_scale)
 		
-	# Pozycjonujemy przeciwnika w centrum pola walki (Y=240)
 	enemy_sprite.position = Vector2(180, 240)
 	original_enemy_pos = enemy_sprite.position
 	
-	# RESETUJEMY ANIMACJĘ ODDECHU (by nie nadpisywała nowej skali)
 	_start_idle_animation()
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10 + current_stage, res_type)
