@@ -25,6 +25,9 @@ func _on_new_game_button_pressed():
 	print("DEBUG: CLICKED NEW GAME")
 	_start_game("new_game")
 
+func _on_settings_button_pressed():
+	get_tree().change_scene_to_file("res://SettingsScene.tscn")
+
 func _start_game(mode: String):
 	# Używamy bezpiecznego ładowania klasy
 	var manager = load("res://GameBattleManager.gd")

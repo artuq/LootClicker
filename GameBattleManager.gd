@@ -84,6 +84,9 @@ func _ready():
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
 		next_level_btn.pressed.connect(_on_next_level_button_pressed)
 	
+	if %SettingsHUD and not %SettingsHUD.pressed.is_connected(_on_settings_hud_pressed):
+		%SettingsHUD.pressed.connect(_on_settings_hud_pressed)
+	
 	# Timery
 	player_timer = Timer.new()
 	player_timer.timeout.connect(_on_player_attack)
@@ -437,6 +440,11 @@ func _on_open_skill_tree():
 	var tree = skill_tree_scene.instantiate()
 	%CanvasLayer.add_child(tree)
 	tree.setup(player)
+
+func _on_settings_hud_pressed():
+	get_tree().paused = true
+	var settings = load("res://SettingsScene.tscn").instantiate()
+	%CanvasLayer.add_child(settings)
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()
