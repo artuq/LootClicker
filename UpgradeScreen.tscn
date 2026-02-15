@@ -1,8 +1,7 @@
-[gd_scene format=3 uid="uid://c8k8l8x8x8x8"]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Texture2D" uid="uid://799" path="res://assets/kenney_ui/PNG/panel_brown.png" id="1_panel"]
-
-[ext_resource type="Script" uid="uid://c8k8l8x8x8x9" path="res://UpgradeScreen.gd" id="2_script"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/panel_brown.png" id="1_panel"]
+[ext_resource type="Script" path="res://UpgradeScreen.gd" id="2_script"]
 
 [node name="UpgradeScreen" type="Control"]
 script = ExtResource("2_script")

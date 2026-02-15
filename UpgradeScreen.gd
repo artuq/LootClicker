@@ -5,6 +5,10 @@ signal upgrade_selected(id)
 @onready var card_container = %CardContainer
 var upgrade_manager = UpgradeManager.new()
 
+func _ready():
+	# Pozwalamy oknu działać, gdy gra jest zapauzowana
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
 func setup(player: PlayerStats):
 	# Czyścimy stare karty
 	for child in card_container.get_children():

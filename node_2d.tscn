@@ -21,7 +21,7 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
-[ext_resource type="PackedScene" uid="uid://c8k8l8x8x8x8" path="res://UpgradeScreen.tscn" id="9_upgrade"]
+[ext_resource type="PackedScene" path="res://UpgradeScreen.tscn" id="9_upgrade"]
 
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
