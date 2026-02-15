@@ -22,6 +22,13 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xp"]
+bg_color = Color(0.6, 0.2, 0.8, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1687472269]
@@ -51,16 +58,18 @@ boss_texture = ExtResource("7_sadam")
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 5.0
-offset_bottom = 85.0
+offset_bottom = 105.0
 grow_horizontal = 2
 theme_override_constants/separation = 2
 alignment = 1
 
 [node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574831]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 4)
+custom_minimum_size = Vector2(240, 10)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_styles/fill = SubResource("StyleBoxFlat_xp")
+value = 50.0
 show_percentage = false
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/HUD" unique_id=624552451]

@@ -247,7 +247,9 @@ func spawn_enemy(saved_hp: int = -1):
 		enemy_hp_bar.modulate = Color.WHITE
 
 	# --- AUTOMATYCZNE SKALOWANIE ---
-	# ... (kod skalowania bez zmian) ...
+	var target_size = 200.0
+	var tex_size = enemy_sprite.texture.get_size()
+	var final_scale = target_size / max(tex_size.x, tex_size.y)
 	
 	enemy_sprite.scale = Vector2(final_scale, final_scale)
 		

@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://cxyp8q7n4v6p4"]
 
-[ext_resource type="Script" path="res://TitleScreen.gd" id="1_script"]
+[ext_resource type="Script" uid="uid://08v50bi48pa1" path="res://TitleScreen.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bakddmxluonog" path="res://Title game.png" id="2_image"]
 
-[node name="TitleScreen" type="Control"]
+[node name="TitleScreen" type="Control" unique_id=689749475]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1513469769]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,7 +23,7 @@ texture = ExtResource("2_image")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="PlayButton" type="Button" parent="."]
+[node name="PlayButton" type="Button" parent="." unique_id=1989506633]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
