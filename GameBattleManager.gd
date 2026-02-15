@@ -255,7 +255,7 @@ func _update_inventory_ui():
 	pass
 
 func _update_consumables_ui():
-	var potion_btn = %CanvasLayer/HUD/PotionButton
+	var potion_btn = %PotionButton
 	if potion_btn:
 		var count = player.consumables.get("hp_potion", 0)
 		potion_btn.text = "HP Pot: %d" % count

@@ -57,7 +57,7 @@ func get_skill_cost(id: String) -> int:
 		"greed": lvl = greed_lvl
 		"def": lvl = def_lvl
 		"heal": lvl = heal_count
-		"hp": lvl = int((max_hp - 100) / 20)
+		"hp": lvl = int((max_hp - 100) / 20.0)
 	
 	var multiplier = 1.7 if (id == "heal" or id == "hp") else 1.5
 	return int(base_costs[id] * pow(multiplier, lvl))

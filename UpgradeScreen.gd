@@ -28,8 +28,7 @@ func setup(player: PlayerStats):
 	
 	for opt in options:
 		var btn = Button.new()
-		btn.text = "%s
-%s" % [opt.name, opt.desc]
+		btn.text = "%s\n%s" % [opt.name, opt.desc]
 		btn.custom_minimum_size = Vector2(200, 60)
 		btn.pressed.connect(_on_card_pressed.bind(opt.id, player))
 		card_container.add_child(btn)
