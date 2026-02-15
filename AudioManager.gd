@@ -38,8 +38,14 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 		
 		match type:
 			"hit":
-				var env = exp(-t * 40.0)
-				sample = (sin(t * 300.0 * PI) * 0.4 + (randf() - 0.5) * 0.6) * env
+				var is_crit = p_shift > 1.2
+				var freq = 300.0 if not is_crit else 450.0
+				var env = exp(-t * (40.0 if not is_crit else 25.0))
+				# Normal: thud-like, Crit: snappy and metallic
+				var osc = sin(t * freq * PI) * 0.4
+				if is_crit:
+					osc += sin(t * freq * 2.5 * PI) * 0.2 # Harmonics for crit
+				sample = (osc + (randf() - 0.5) * 0.6) * env
 			"coin":
 				var freq = 1500.0 if t < 0.1 else 2000.0
 				var env = exp(-(t if t < 0.1 else t-0.1) * 25.0)

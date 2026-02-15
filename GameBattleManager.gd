@@ -153,6 +153,7 @@ func save_game(slot: int = 1):
 			"speed_lvl": player.speed_lvl,
 			"def_lvl": player.def_lvl,
 			"heal_count": player.heal_count,
+			"resources": player.resources,
 			"inventory": []
 		}
 	}
@@ -200,6 +201,7 @@ func load_game(slot: int = 1):
 	player.speed_lvl = player_data["speed_lvl"]
 	player.def_lvl = player_data["def_lvl"]
 	player.heal_count = player_data.get("heal_count", 0)
+	player.resources = player_data.get("resources", player.resources)
 	
 	print("Loaded Slot %d: Stage %d, HP %d/%d, Gold %d" % [slot, current_stage, player.current_hp, player.max_hp, player.gold])
 	
@@ -348,9 +350,23 @@ func _on_player_leveled_up(_new_level):
 	screen.setup(player)
 
 func _roll_for_loot():
-	if randf() < 0.3: # 30% szansy na loot
-		var dmg_bonus = current_stage + randi() % 3
-		var new_item = GameItem.new("Sword +" + str(dmg_bonus), dmg_bonus)
+	if randf() < 0.35: # 35% szansy na loot
+		var roll = randf()
+		var rarity = "Common"
+		var mult = 1.0
+		
+		if roll < 0.05:
+			rarity = "Legendary"
+			mult = 3.0
+		elif roll < 0.15:
+			rarity = "Epic"
+			mult = 2.0
+		elif roll < 0.40:
+			rarity = "Rare"
+			mult = 1.5
+			
+		var dmg_bonus = int((current_stage + randi() % 3) * mult)
+		var new_item = GameItem.new(rarity + " Sword", dmg_bonus, rarity)
 		player.add_item(new_item)
 		_update_inventory_ui()
 
@@ -359,7 +375,8 @@ func _update_inventory_ui():
 	if list:
 		list.clear()
 		for item in player.inventory:
-			list.add_item("%s (Dmg: +%d)" % [item.name, item.damage_bonus])
+			var idx = list.add_item("[%s] %s (+%d)" % [item.rarity.substr(0,1), item.name, item.damage_bonus])
+			list.set_item_custom_fg_color(idx, item.get_color())
 
 func _on_next_level_button_pressed():
 	save_game()

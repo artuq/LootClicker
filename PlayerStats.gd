@@ -7,6 +7,7 @@ signal skills_updated
 signal item_added(item)
 signal error_occurred(msg)
 signal leveled_up(new_level) # Nowy sygnał awansu
+signal resources_updated # Sygnał dla drzewka umiejętności
 
 var gold: int = 25
 var xp: int = 0
