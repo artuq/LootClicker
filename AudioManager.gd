@@ -58,13 +58,24 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 		match type:
 			"hit":
 				var is_crit = p_shift > 1.2
-				var freq = 300.0 if not is_crit else 450.0
-				var env = exp(-t * (40.0 if not is_crit else 25.0))
-				# Normal: thud-like, Crit: snappy and metallic
-				var osc = sin(t * freq * PI) * 0.4
+				var freq = randf_range(200.0, 350.0) if not is_crit else randf_range(400.0, 600.0)
+				var env = exp(-t * (50.0 if not is_crit else 30.0))
+				
+				# Base impact wave
+				var osc = sin(t * freq * PI) * 0.5
+				
+				# Add "crunch" using noise and high-pass frequency
+				var noise = (randf() - 0.5) * 0.8 * env
+				
+				# Pitch slide for "punchy" feel
+				var pitch_slide = exp(-t * 15.0)
+				osc = sin(t * freq * (1.0 + pitch_slide) * PI) * 0.4
+				
 				if is_crit:
-					osc += sin(t * freq * 2.5 * PI) * 0.2 # Harmonics for crit
-				sample = (osc + (randf() - 0.5) * 0.6) * env
+					osc += sin(t * freq * 2.0 * PI) * 0.2 # Extra harmonics for crit
+					osc += (randf() - 0.5) * 0.4 * env # Extra grit
+				
+				sample = (osc + noise) * env
 			"coin":
 				var freq = 1500.0 if t < 0.1 else 2000.0
 				var env = exp(-(t if t < 0.1 else t-0.1) * 25.0)

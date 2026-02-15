@@ -100,9 +100,9 @@ func _ready():
 	enemy_timer.timeout.connect(_on_enemy_attack)
 	add_child(enemy_timer)
 	
-	player.skills_updated.connect(_on_skills_updated)
 	player.leveled_up.connect(_on_player_leveled_up)
 	player.consumables_updated.connect(_update_consumables_ui)
+	player.resources_updated.connect(_update_inventory_ui)
 	player.error_occurred.connect(func(msg): 
 		_spawn_floating_text(msg, Color.ORANGE_RED)
 		if get_node_or_null("/root/AudioManager"):
@@ -122,6 +122,7 @@ func _ready():
 		skill_tree.setup(player)
 	
 	_update_consumables_ui()
+	_update_inventory_ui()
 	_start_combat()
 
 func _process(delta):
@@ -251,8 +252,20 @@ func format_number(n: int) -> String:
 	return str(n)
 
 func _update_inventory_ui():
-	# Placeholder for future resource inventory UI
-	pass
+	var list = %ItemList
+	if not list: return
+	
+	list.clear()
+	# Display Resources
+	for res_id in player.resources.keys():
+		var count = player.resources[res_id]
+		if count > 0:
+			var display_name = res_id.capitalize()
+			list.add_item("%s: %d" % [display_name, count], null, false)
+	
+	# Display Equipment
+	if player.equipped_item:
+		list.add_item("EQUIPPED: %s (+%d DMG)" % [player.equipped_item.name, player.equipped_item.damage_bonus], null, false)
 
 func _update_consumables_ui():
 	var potion_btn = %PotionButton
@@ -297,11 +310,16 @@ func spawn_enemy(saved_hp: int = -1):
 	enemy_sprite.visible = true
 	click_area.visible = true
 	var is_boss = (current_stage % 5 == 0)
+	var is_final_boss = (current_stage == 50)
 	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
 	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
-	if is_boss:
+	if is_final_boss:
+		hp *= 10 # Massive scaling for final boss
+		dmg *= 3
+		gold *= 10
+	elif is_boss:
 		hp *= BOSS_HP_MULT
 		dmg *= BOSS_DMG_MULT
 		gold *= BOSS_GOLD_MULT
@@ -309,7 +327,12 @@ func spawn_enemy(saved_hp: int = -1):
 	var enemy_name = ""
 	var res_type = ""
 	
-	if is_boss:
+	if is_final_boss:
+		enemy_sprite.texture = boss_texture
+		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
+		enemy_hp_bar.modulate = Color(1, 0, 0)
+		res_type = "relic_shards"
+	elif is_boss:
 		enemy_sprite.texture = boss_texture
 		enemy_name = "BOSS: Raft Saddam"
 		enemy_hp_bar.modulate = Color(1, 0.3, 0.3)
@@ -343,7 +366,7 @@ func spawn_enemy(saved_hp: int = -1):
 		
 	current_enemy.died.connect(_on_enemy_died)
 	
-	stage_label.text = "Stage: %d / 20\n%s" % [current_stage, enemy_name]
+	stage_label.text = "Stage: %d\n%s" % [current_stage, enemy_name]
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
 
