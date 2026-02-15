@@ -12,7 +12,7 @@ signal resources_updated # Sygnał dla drzewka umiejętności
 var gold: int = 25
 var xp: int = 0
 var level: int = 1
-var xp_required: int = 20
+var xp_required: int = 50
 
 # Surowce klimatyczne
 var resources = {

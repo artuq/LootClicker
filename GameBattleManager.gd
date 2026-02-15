@@ -319,75 +319,44 @@ func _on_enemy_attack():
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)
-	# Nagroda XP skaluje się z poziomem: Stage 1 = 20 XP (Level up!), Stage 2 = 40 XP itd.
-	var xp_reward = 20 * current_stage
+	# Nagroda XP: Stage 1 = 20 XP, Stage 2 = 25 XP... wolniejsze skalowanie
+	var xp_reward = 15 + (current_stage * 5)
 	player.gain_xp(xp_reward) 
 	
 	if res_type != "":
-		player.resources[res_type] += 1
-		_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
+		# Szansa na drop zasobu (np. Bandaże)
+		var res_chance = 0.5 # 50% szansy na surowiec
+		if current_stage % 5 == 0: res_chance = 1.0 # Boss zawsze dropi
+		
+		if randf() < res_chance:
+			player.resources[res_type] += 1
+			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
+			player.resources_updated.emit()
 	
 	xp_bar.max_value = player.xp_required
 	xp_bar.value = player.xp
 	
-	enemy_sprite.visible = false # Ukrywamy postać, by nie zasłaniała przycisków
-	click_area.visible = false # Wyłączamy niewidoczny obszar klikania
-	if idle_tween: idle_tween.kill() # Zatrzymujemy animację
+	enemy_sprite.visible = false
+	click_area.visible = false
+	if idle_tween: idle_tween.kill()
 	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
-	
-	# ZWIĘKSZAMY SZANSĘ NA LOOT: 40% szansy po każdym wrogu, 100% po bossie
-	var loot_chance = 0.4
-	if current_stage % 5 == 0: loot_chance = 1.0
-	
-	if randf() < loot_chance:
-		_roll_for_loot()
 		
 	player_timer.stop()
 	enemy_timer.stop()
 	next_level_btn.visible = true
 
 func _on_player_leveled_up(_new_level):
-	if !upgrade_screen_scene: return
-	
-	# Pauzujemy grę na czas wyboru
-	get_tree().paused = true
-	
-	var screen = upgrade_screen_scene.instantiate()
-	%CanvasLayer.add_child(screen)
-	screen.setup(player)
+	# Zamiast losowych kart, Level Up po prostu daje nam dostęp do nowych statystyk
+	# Możemy tu dodać komunikat lub efekt dźwiękowy
+	_spawn_floating_text("LEVEL UP!", Color.GOLD)
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_coin_sound() # Tymczasowo ten sam dźwięk
 
-func _roll_for_loot():
-	var roll = randf()
-	var rarity = "Common"
-	var mult = 1.0
-	
-	# Szanse na rzadkość (poprawione pod stage)
-	var epic_boost = current_stage * 0.01 # Każdy stage zwiększa szansę o 1%
-	
-	if roll < 0.05 + (epic_boost * 0.5):
-		rarity = "Legendary"
-		mult = 3.5
-	elif roll < 0.15 + epic_boost:
-		rarity = "Epic"
-		mult = 2.5
-	elif roll < 0.45 + epic_boost:
-		rarity = "Rare"
-		mult = 1.8
-		
-	var dmg_bonus = int((current_stage + randi() % 5) * mult)
-	var new_item = GameItem.new(rarity + " Sword", dmg_bonus, rarity)
-	player.add_item(new_item)
-	_update_inventory_ui()
-
+# Usuwamy stary system mieczy
 func _update_inventory_ui():
-	var list = %ItemList
-	if list:
-		list.clear()
-		for item in player.inventory:
-			var idx = list.add_item("[%s] %s (+%d)" % [item.rarity.substr(0,1), item.name, item.damage_bonus])
-			list.set_item_custom_fg_color(idx, item.get_color())
+	pass
 
 func _on_next_level_button_pressed():
 	save_game()

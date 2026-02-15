@@ -21,59 +21,39 @@ func setup(p_ref: PlayerStats):
 func update_ui():
 	if player == null or not is_node_ready() or points_label == null: return
 	
-	points_label.text = "Gold: " + str(player.gold)
+	points_label.text = "Resources: %d B, %d V, %d S" % [
+		player.resources["bandages"], 
+		player.resources["venom"], 
+		player.resources["relic_shards"]
+	]
 	
-	_upd(btn_str, "str", "Strength +1", player.str_lvl)
-	_upd(btn_crit, "crit", "Crit +1%", player.crit_lvl)
-	_upd(btn_gold, "greed", "Gold +5%", player.greed_lvl)
-	_upd(btn_spd, "speed", "Speed (Wait: %.2fs)" % player.get_attack_speed(), player.speed_lvl)
-	_upd(btn_def, "def", "Defense +1", player.def_lvl)
-	
-	# --- LOGIKA HEAL ---
-	if btn_heal:
-		var cost = player.get_skill_cost("heal")
-		var is_full = player.current_hp >= player.max_hp
-		
-		if is_full:
-			btn_heal.text = "HP FULL"
-			btn_heal.disabled = true
-			btn_heal.modulate = Color(0.5, 1, 0.5, 0.5) # Zielonkawy, ale przezroczysty
-		else:
-			# Używamy %% dla znaku procenta
-			btn_heal.text = "HEAL 100%%\nCost: %d G" % cost
-			btn_heal.disabled = player.gold < cost
-			btn_heal.modulate = Color(1, 1, 1, 1) if not btn_heal.disabled else Color(0.5, 0.5, 0.5)
+	_upd(btn_str, "str", "Strength", player.str_lvl, "bandages")
+	_upd(btn_crit, "crit", "Crit Chance", player.crit_lvl, "venom")
+	_upd(btn_gold, "greed", "Greed", player.greed_lvl, "bandages")
+	_upd(btn_spd, "speed", "Attack Speed", player.speed_lvl, "venom")
+	_upd(btn_def, "def", "Defense", player.def_lvl, "relic_shards")
 
-func _upd(btn, id, text, lvl):
+func _upd(btn, id, text, lvl, res_id):
 	if btn:
 		var cost = player.get_skill_cost(id)
-		btn.text = "%s (L%d)\n%d G" % [text, lvl, cost]
-		btn.disabled = player.gold < cost
+		var current_res = player.resources[res_id]
+		btn.text = "%s (L%d)\n%d %s" % [text, lvl, cost, res_id.capitalize()]
+		btn.disabled = current_res < cost
 
-# --- SYGNAŁY ---
-func _on_btn_str_pressed(): _buy("str")
-func _on_btn_crit_pressed(): _buy("crit")
-func _on_btn_gold_pressed(): _buy("greed")
-func _on_btn_def_pressed(): _buy("def")
-func _on_btn_spd_pressed(): _buy("speed")
-
-# --- TO MUSI BYĆ PODŁĄCZONE W EDYTORZE ---
-func _on_btn_heal_pressed():
-	# Sprawdzamy warunki jeszcze raz dla bezpieczeństwa
-	if player.current_hp >= player.max_hp: return
-	
-	var cost = player.get_skill_cost("heal")
-	if player.gold >= cost:
-		player.gold -= cost
-		player.heal_player()
-		player.gold_changed.emit(player.gold)
-	else:
-		player.error_occurred.emit("NOT ENOUGH GOLD!")
-		
 func _buy(id: String):
+	# Mapowanie ulepszenia na surowiec
+	var res_map = {
+		"str": "bandages",
+		"crit": "venom",
+		"greed": "bandages",
+		"speed": "venom",
+		"def": "relic_shards"
+	}
+	var res_id = res_map[id]
 	var cost = player.get_skill_cost(id)
-	if player.gold >= cost:
-		player.gold -= cost
+	
+	if player.resources[res_id] >= cost:
+		player.resources[res_id] -= cost
 		match id:
 			"str": player.str_lvl += 1
 			"crit": player.crit_lvl += 1
@@ -81,7 +61,7 @@ func _buy(id: String):
 			"speed": player.speed_lvl += 1
 			"def": player.def_lvl += 1
 		
-		player.gold_changed.emit(player.gold)
+		player.resources_updated.emit()
 		player.skills_updated.emit()
 	else:
-		player.error_occurred.emit("NOT ENOUGH GOLD!")
+		player.error_occurred.emit("NOT ENOUGH %s!" % res_id.to_upper())
