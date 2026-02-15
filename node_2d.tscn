@@ -154,19 +154,19 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -170.0
-offset_top = -120.0
-offset_right = 170.0
-offset_bottom = 180.0
+offset_left = -175.0
+offset_top = -150.0
+offset_right = 175.0
+offset_bottom = 200.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=184808651]
 unique_name_in_owner = true
 process_mode = 3
-custom_minimum_size = Vector2(200, 60)
+custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
@@ -177,68 +177,97 @@ theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "NEXT LEVEL"
 
 [node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/VictoryUI" unique_id=1135677875]
-custom_minimum_size = Vector2(340, 200)
+custom_minimum_size = Vector2(350, 280)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
 script = ExtResource("4_epypp")
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/VictoryUI/Upgrades"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 10
+size_flags_vertical = 3
+theme_override_constants/separation = 5
 
 [node name="PointsLabel" type="Label" parent="CanvasLayer/VictoryUI/Upgrades/VBox" unique_id=1941394386]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_font_sizes/font_size = 10
 text = "Resources: 0 B, 0 V, 0 S"
 horizontal_alignment = 1
 
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
+[node name="TreeLayout" type="Control" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
+custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 10
-columns = 2
 
-[node name="BtnStr" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931635]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Strength"
+[node name="SkillStr" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -30.0
+offset_top = 10.0
+offset_right = 30.0
+offset_bottom = 70.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_node")
+script = ExtResource("5_node_gd")
+skill_id = "str"
+icon_texture = ExtResource("16_icon_str")
 
-[node name="BtnCrit" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931636]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Crit Chance"
+[node name="SkillCrit" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 40.0
+offset_top = 80.0
+offset_right = 100.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_node")
+script = ExtResource("5_node_gd")
+skill_id = "crit"
+requirement_skill = "str"
+requirement_level = 1
+icon_texture = ExtResource("16_icon_str")
 
-[node name="BtnGold" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931637]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Greed"
+[node name="SkillGold" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 80.0
+offset_right = -40.0
+offset_bottom = 140.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_node")
+script = ExtResource("5_node_gd")
+skill_id = "greed"
+requirement_skill = "str"
+requirement_level = 1
+icon_texture = ExtResource("17_icon_gold")
 
-[node name="BtnSpd" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931638]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Attack Speed"
-
-[node name="BtnDef" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931639]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Defense"
-
-[node name="BtnHeal" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/GridContainer" unique_id=1641931640]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Heal"
+[node name="SkillDef" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -30.0
+offset_top = 150.0
+offset_right = 30.0
+offset_bottom = 210.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_node")
+script = ExtResource("5_node_gd")
+skill_id = "def"
+requirement_skill = "str"
+requirement_level = 3
+icon_texture = ExtResource("18_icon_def")
 
 [node name="HPLabel" type="Label" parent="CanvasLayer" unique_id=1095850321]
 unique_name_in_owner = true
