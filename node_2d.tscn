@@ -107,7 +107,8 @@ label_settings = SubResource("LabelSettings_hp")
 
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1119024854]
 unique_name_in_owner = true
-position = Vector2(180, 300)
+position = Vector2(180, 220)
+scale = Vector2(1, 1)
 texture = ExtResource("2_0e48y")
 
 [node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=47519466]

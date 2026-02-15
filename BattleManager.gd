@@ -236,14 +236,14 @@ func spawn_enemy(saved_hp: int = -1):
 	enemy_sprite.modulate = Color.WHITE
 	var tex_w = enemy_sprite.texture.get_width()
 	
-	# Chcemy, aby mob zajmował ok. 120px szerokości, a boss ok. 180px
-	var target_width = 180.0 if is_boss else 120.0
+	# Chcemy, aby mob był mały (np. 100px szerokości), a boss ok. 150px
+	var target_width = 150.0 if is_boss else 100.0
 	var final_scale = target_width / tex_w
 	
 	enemy_sprite.scale = Vector2(final_scale, final_scale)
 		
-	# Pozycjonujemy przeciwnika tak, by był dokładnie na środku obszaru walki
-	enemy_sprite.position = Vector2(180, 240)
+	# Pozycjonujemy przeciwnika WYŻEJ (y=180), by nie zasłaniał go HUD/Menu
+	enemy_sprite.position = Vector2(180, 180)
 	original_enemy_pos = enemy_sprite.position
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
