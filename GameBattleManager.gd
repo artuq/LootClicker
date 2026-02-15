@@ -319,7 +319,9 @@ func _on_enemy_attack():
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)
-	player.gain_xp(_xp if _xp > 0 else 20 * current_stage) # Fallback if XP not defined
+	# Nagroda XP skaluje się z poziomem: Stage 1 = 20 XP (Level up!), Stage 2 = 40 XP itd.
+	var xp_reward = 20 * current_stage
+	player.gain_xp(xp_reward) 
 	
 	if res_type != "":
 		player.resources[res_type] += 1
@@ -334,7 +336,14 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
-	_roll_for_loot()
+	
+	# ZWIĘKSZAMY SZANSĘ NA LOOT: 40% szansy po każdym wrogu, 100% po bossie
+	var loot_chance = 0.4
+	if current_stage % 5 == 0: loot_chance = 1.0
+	
+	if randf() < loot_chance:
+		_roll_for_loot()
+		
 	player_timer.stop()
 	enemy_timer.stop()
 	next_level_btn.visible = true
@@ -350,25 +359,27 @@ func _on_player_leveled_up(_new_level):
 	screen.setup(player)
 
 func _roll_for_loot():
-	if randf() < 0.35: # 35% szansy na loot
-		var roll = randf()
-		var rarity = "Common"
-		var mult = 1.0
+	var roll = randf()
+	var rarity = "Common"
+	var mult = 1.0
+	
+	# Szanse na rzadkość (poprawione pod stage)
+	var epic_boost = current_stage * 0.01 # Każdy stage zwiększa szansę o 1%
+	
+	if roll < 0.05 + (epic_boost * 0.5):
+		rarity = "Legendary"
+		mult = 3.5
+	elif roll < 0.15 + epic_boost:
+		rarity = "Epic"
+		mult = 2.5
+	elif roll < 0.45 + epic_boost:
+		rarity = "Rare"
+		mult = 1.8
 		
-		if roll < 0.05:
-			rarity = "Legendary"
-			mult = 3.0
-		elif roll < 0.15:
-			rarity = "Epic"
-			mult = 2.0
-		elif roll < 0.40:
-			rarity = "Rare"
-			mult = 1.5
-			
-		var dmg_bonus = int((current_stage + randi() % 3) * mult)
-		var new_item = GameItem.new(rarity + " Sword", dmg_bonus, rarity)
-		player.add_item(new_item)
-		_update_inventory_ui()
+	var dmg_bonus = int((current_stage + randi() % 5) * mult)
+	var new_item = GameItem.new(rarity + " Sword", dmg_bonus, rarity)
+	player.add_item(new_item)
+	_update_inventory_ui()
 
 func _update_inventory_ui():
 	var list = %ItemList
