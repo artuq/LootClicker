@@ -45,6 +45,9 @@ const BOSS_HP_MULT = 4
 const BOSS_DMG_MULT = 2
 const BOSS_GOLD_MULT = 3
 
+# Zmienna statyczna pozwalająca kontrolować start gry z innych scen
+static var startup_mode: String = "continue" # "continue" lub "new_game"
+
 func _ready():
 	player = PlayerStats.new()
 	add_child(player)
@@ -86,9 +89,14 @@ func _ready():
 			get_node("/root/AudioManager").play_error_sound()
 	)
 	
-	# Load game AFTER connecting UI signals
-	if not load_game():
+	# WYBÓR TRYBU STARTU
+	if startup_mode == "new_game":
+		print("DEBUG: STARTING NEW GAME")
 		spawn_enemy()
+	else:
+		print("DEBUG: ATTEMPTING TO CONTINUE")
+		if not load_game():
+			spawn_enemy()
 	
 	_start_combat()
 

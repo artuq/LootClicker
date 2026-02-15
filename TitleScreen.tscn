@@ -2,6 +2,24 @@
 
 [ext_resource type="Script" uid="uid://08v50bi48pa1" path="res://TitleScreen.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bakddmxluonog" path="res://Title game.png" id="2_image"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/buttonLong_beige.png" id="3_btn_beige"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/buttonLong_beige_pressed.png" id="4_btn_beige_pr"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
+texture = ExtResource("3_btn_beige")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 190, 49)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn_pr"]
+texture = ExtResource("4_btn_beige_pr")
+texture_margin_left = 6.0
+texture_margin_top = 4.0
+texture_margin_right = 6.0
+texture_margin_bottom = 4.0
+region_rect = Rect2(0, 0, 190, 45)
 
 [node name="TitleScreen" type="Control" unique_id=689749475]
 layout_mode = 3
@@ -23,20 +41,52 @@ texture = ExtResource("2_image")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="PlayButton" type="Button" parent="." unique_id=1989506633]
+[node name="MenuButtons" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = 200.0
-offset_right = 150.0
-offset_bottom = 300.0
+offset_left = -100.0
+offset_top = 50.0
+offset_right = 100.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 48
-text = "PLAY"
+theme_override_constants/separation = 15
+alignment = 1
 
-[connection signal="pressed" from="PlayButton" to="." method="_on_play_button_pressed"]
+[node name="ContinueButton" type="Button" parent="MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+text = "CONTINUE"
+
+[node name="NewGameButton" type="Button" parent="MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+text = "NEW GAME"
+
+[node name="ExitButton" type="Button" parent="MenuButtons"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+text = "EXIT"
+
+[connection signal="pressed" from="MenuButtons/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MenuButtons/NewGameButton" to="." method="_on_new_game_button_pressed"]
+[connection signal="pressed" from="MenuButtons/ExitButton" to="." method="_on_exit_button_pressed"]
