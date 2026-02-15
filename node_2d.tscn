@@ -11,6 +11,16 @@
 [ext_resource type="PackedScene" path="res://UpgradeScreen.tscn" id="9_upgrade"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6r6c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdubu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
