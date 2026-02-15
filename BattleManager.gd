@@ -28,6 +28,9 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var enemy_hp_bar = %EnemyHPBar
 @export var damage_container: Node # New export for damage labels
 
+var shake_intensity: float = 0.0
+@onready var original_enemy_pos: Vector2 = enemy_sprite.position
+
 # Constants for scaling and balance
 const HP_BASE = 20
 const HP_SCALE = 1.2
@@ -44,6 +47,7 @@ func _ready():
 	add_child(player)
 	
 	next_level_btn.visible = false
+	_start_idle_animation()
 	
 	# Połączenia UI
 	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
@@ -79,6 +83,33 @@ func _ready():
 		spawn_enemy()
 	
 	_start_combat()
+
+func _process(delta):
+	if shake_intensity > 0:
+		enemy_sprite.position = original_enemy_pos + Vector2(randf_range(-1, 1), randf_range(-1, 1)) * shake_intensity
+		shake_intensity = move_toward(shake_intensity, 0, delta * 50.0)
+	else:
+		enemy_sprite.position = original_enemy_pos
+
+func _start_idle_animation():
+	var tween = create_tween().set_loops()
+	var base_scale = enemy_sprite.scale
+	tween.tween_property(enemy_sprite, "scale", base_scale * 1.05, 1.2).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(enemy_sprite, "scale", base_scale, 1.2).set_trans(Tween.TRANS_SINE)
+
+func _play_hit_effect(is_crit: bool):
+	shake_intensity = 15.0 if is_crit else 5.0
+	
+	# Hit Flash (Visual)
+	var tween = create_tween()
+	enemy_sprite.modulate = Color(10, 10, 10) # Overbright white
+	tween.tween_property(enemy_sprite, "modulate", Color.WHITE, 0.1)
+	
+	# Squash Effect
+	var base_scale = Vector2(0.5, 0.5) if (current_stage % 5 == 0) else Vector2(0.3, 0.3)
+	var hit_tween = create_tween()
+	enemy_sprite.scale = base_scale * 0.8
+	hit_tween.tween_property(enemy_sprite, "scale", base_scale, 0.2).set_trans(Tween.TRANS_ELASTIC)
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
@@ -225,6 +256,9 @@ func _on_player_attack():
 		current_enemy.take_damage(dmg)
 		enemy_hp_bar.value = current_enemy.current_hp
 		_spawn_floating_text(format_number(dmg), Color.YELLOW)
+		
+		# Visual effects
+		_play_hit_effect(is_crit)
 		
 		# Audio: Wyższy ton przy krytyku
 		if get_node_or_null("/root/AudioManager"):
