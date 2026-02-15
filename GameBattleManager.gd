@@ -25,10 +25,10 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var click_area = %ClickArea
 @onready var victory_ui = %VictoryUI
 
-# Okna
+# Windows
 @onready var inventory_window = %Inventory
 
-# Grafika
+# Graphics
 @onready var enemy_sprite = %EnemySprite
 @onready var enemy_hp_bar = %EnemyHPBar
 @export var damage_container: Node # New export for damage labels
@@ -48,8 +48,8 @@ const BOSS_HP_MULT = 4
 const BOSS_DMG_MULT = 2
 const BOSS_GOLD_MULT = 3
 
-# Zmienna statyczna pozwalająca kontrolować start gry z innych scen
-static var startup_mode: String = "continue" # "continue" lub "new_game"
+# Static variable to control game start from other scenes
+static var startup_mode: String = "continue" # "continue" or "new_game"
 
 func _ready():
 	player = PlayerStats.new()
@@ -61,7 +61,7 @@ func _ready():
 	victory_ui.visible = false
 	original_enemy_pos = enemy_sprite.position
 	
-	# Połączenia UI
+	# UI Connections
 	player.gold_changed.connect(func(g): 
 		gold_label.text = "Gold: " + format_number(g)
 		_animate_label(gold_label)
@@ -80,14 +80,17 @@ func _ready():
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 
-	# Połączenie przycisku Next Level
+	# Next Level Button Connection
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
 		next_level_btn.pressed.connect(_on_next_level_button_pressed)
+	_add_button_juice(next_level_btn)
+	_add_button_juice(%OpenTreeButton)
 	
 	if %SettingsHUD and not %SettingsHUD.pressed.is_connected(_on_settings_hud_pressed):
 		%SettingsHUD.pressed.connect(_on_settings_hud_pressed)
+	_add_button_juice(%SettingsHUD)
 	
-	# Timery
+	# Timers
 	player_timer = Timer.new()
 	player_timer.timeout.connect(_on_player_attack)
 	add_child(player_timer)
@@ -106,14 +109,14 @@ func _ready():
 			get_node("/root/AudioManager").play_error_sound()
 	)
 	
-	# WYBÓR TRYBU STARTU
+	# START MODE SELECTION
 	if startup_mode == "new_game":
 		spawn_enemy()
 	else:
 		if not load_game():
 			spawn_enemy()
 	
-	# Inicjalizacja drzewka ulepszeń (pod przyciskiem Next Level)
+	# Initialize skill tree (under Next Level button)
 	var skill_tree = %VictoryUI/Upgrades
 	if skill_tree:
 		skill_tree.setup(player)
@@ -143,7 +146,7 @@ func _play_hit_effect(is_crit: bool):
 	enemy_sprite.modulate = Color(10, 10, 10) # Overbright white
 	tween.tween_property(enemy_sprite, "modulate", Color.WHITE, 0.1)
 	
-	# Squash Effect - używamy aktualnej skali zamiast stałych
+	# Squash Effect - use current scale instead of fixed values
 	var base_scale = enemy_sprite.scale
 	var hit_tween = create_tween()
 	enemy_sprite.scale = base_scale * 0.8
@@ -258,9 +261,22 @@ func _update_consumables_ui():
 		potion_btn.text = "HP Pot: %d" % count
 		potion_btn.disabled = count <= 0 or player.current_hp >= player.max_hp
 		
-		# Podpinamy akcję jeśli jeszcze nie ma
+		# Connect action if not already connected
 		if not potion_btn.pressed.is_connected(_on_potion_button_pressed):
 			potion_btn.pressed.connect(_on_potion_button_pressed)
+			_add_button_juice(potion_btn)
+
+func _add_button_juice(btn: Button):
+	if not btn: return
+	btn.pivot_offset = btn.size / 2
+	btn.button_down.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.05)
+	)
+	btn.button_up.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	)
 
 func _on_potion_button_pressed():
 	if player.use_consumable("hp_potion"):
@@ -270,6 +286,7 @@ func _on_potion_button_pressed():
 		_update_consumables_ui()
 	else:
 		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
+
 func spawn_enemy(saved_hp: int = -1):
 	if current_enemy:
 		current_enemy.queue_free()
@@ -308,7 +325,7 @@ func spawn_enemy(saved_hp: int = -1):
 			res_type = "venom"
 		enemy_hp_bar.modulate = Color.WHITE
 
-	# --- AUTOMATYCZNE SKALOWANIE ---
+	# --- AUTOMATIC SCALING ---
 	print("DEBUG: SCALING ENEMY")
 	var target_size = 200.0
 	var tex_size = enemy_sprite.texture.get_size()
@@ -342,7 +359,7 @@ func _on_player_attack():
 		# Visual effects
 		_play_hit_effect(is_crit)
 		
-		# Audio: Wyższy ton przy krytyku
+		# Audio: Higher pitch for critical hit
 		if get_node_or_null("/root/AudioManager"):
 			get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
 
@@ -350,24 +367,24 @@ func _on_enemy_attack():
 	if current_enemy and player.current_hp > 0:
 		var dmg = current_enemy.damage
 		player.take_damage(dmg)
-		_spawn_floating_text(format_number(dmg), Color(1, 0.2, 0.2)) # Czerwony
+		_spawn_floating_text(format_number(dmg), Color(1, 0.2, 0.2)) # Red
 		if player.current_hp <= 0: _handle_player_death()
 		
-		# Audio: Niższy ton uderzenia przeciwnika
+		# Audio: Lower pitch for enemy hit
 		if get_node_or_null("/root/AudioManager"):
 			get_node("/root/AudioManager").play_hit_sound(0.7)
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)
 	
-	# Balans XP: Stage 1 gwarantuje level up (20 XP vs 20 req)
+	# XP Balance: Stage 1 guarantees level up (20 XP vs 20 req)
 	var xp_reward = 20 if current_stage == 1 else 15 + (current_stage * 5)
 	player.gain_xp(xp_reward) 
 	
-	# DROP ZASOBÓW
+	# RESOURCE DROP
 	if res_type != "":
-		var res_chance = 0.6 # 60% szansy
-		if current_stage <= 3: res_chance = 1.0 # Większy drop na start
+		var res_chance = 0.6 # 60% chance
+		if current_stage <= 3: res_chance = 1.0 # Higher drop at start
 		if current_stage % 5 == 0: res_chance = 1.0
 		
 		if randf() < res_chance:
@@ -375,13 +392,13 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
 			player.resources_updated.emit()
 			
-	# DROP POTIONÓW (30% szansy)
+	# POTION DROP (30% chance)
 	if randf() < 0.3:
 		player.consumables["hp_potion"] += 1
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
-	# Szansa na natychmiastowe uleczenie (15% szansy)
+	# Chance for immediate healing (15% chance)
 	if randf() < 0.15:
 		player.current_hp = min(player.max_hp, player.current_hp + 20)
 		player.health_changed.emit(player.current_hp, player.max_hp)
@@ -400,7 +417,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	player_timer.stop()
 	enemy_timer.stop()
 	
-	# POKAZUJEMY EKRAN ZWYCIĘSTWA I ULEPSZEŃ
+	# SHOW VICTORY AND UPGRADE SCREEN
 	victory_ui.visible = true
 
 func _on_player_leveled_up(_new_level):
@@ -408,7 +425,7 @@ func _on_player_leveled_up(_new_level):
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
 	
-	# Wywołujemy ekran wyboru kart
+	# Instantiate card choice screen
 	var card_scene = load("res://CardChoiceScene.tscn")
 	if card_scene:
 		var instance = card_scene.instantiate()
@@ -434,12 +451,12 @@ func _on_skills_updated():
 
 func _handle_player_death():
 	print("PLAYER DIED - GAME OVER")
-	# Kara za śmierć
+	# Death penalty
 	player.gold = int(player.gold * 0.8)
 	current_stage = 1
 	save_game()
 	
-	# Powrót do menu głównego
+	# Return to main menu
 	var title_screen = load("res://TitleScreen.gd")
 	if title_screen:
 		title_screen.last_run_result = "DEFEAT"
@@ -473,7 +490,7 @@ func _on_load_slot_pressed(slot: int):
 
 func _on_open_skill_tree():
 	if !skill_tree_scene: return
-	# Pauzujemy grę na czas przeglądania drzewka
+	# Pause game while browsing skill tree
 	get_tree().paused = true
 	var tree = skill_tree_scene.instantiate()
 	%CanvasLayer.add_child(tree)

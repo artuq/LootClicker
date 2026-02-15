@@ -3,7 +3,7 @@ extends Control
 @onready var volume_slider = %VolumeSlider
 
 func _ready():
-	# Inicjalizujemy suwak aktualną wartością
+	# Initialize slider with current value
 	if get_node_or_null("/root/SettingsManager"):
 		volume_slider.value = get_node("/root/SettingsManager").master_volume
 
@@ -17,10 +17,10 @@ func _on_back_button_pressed():
 	if get_node_or_null("/root/SettingsManager"):
 		get_node("/root/SettingsManager").save_settings()
 	
-	# Jeśli jesteśmy nakładką (podczas pauzy), po prostu usuwamy się
+	# If we are an overlay (during pause), just remove ourselves
 	if get_parent() is CanvasLayer:
 		queue_free()
 		get_tree().paused = false
 	else:
-		# Jeśli jesteśmy osobną sceną z menu głównego
+		# If we are a separate scene from the main menu
 		get_tree().change_scene_to_file("res://TitleScreen.tscn")

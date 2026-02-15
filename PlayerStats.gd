@@ -6,20 +6,20 @@ signal health_changed(current, max_hp)
 signal skills_updated 
 signal item_added(item)
 signal error_occurred(msg)
-signal leveled_up(new_level) # Nowy sygnał awansu
-signal resources_updated # Sygnał dla drzewka umiejętności
-signal consumables_updated # Nowy sygnał dla mikstur
+signal leveled_up(new_level) # New level up signal
+signal resources_updated # Signal for skill tree
+signal consumables_updated # New signal for potions
 
 var gold: int = 25
 var xp: int = 0
 var level: int = 1
 var xp_required: int = 20
 
-# Surowce klimatyczne
+# Atmospheric resources
 var resources = {
-	"bandages": 0,    # Z Mumii
-	"venom": 0,       # Z Węży
-	"relic_shards": 0 # Z Bossów
+	"bandages": 0,    # From Mummies
+	"venom": 0,       # From Snakes
+	"relic_shards": 0 # From Bosses
 }
 
 var consumables = {
@@ -27,7 +27,7 @@ var consumables = {
 }
 
 var max_hp: int = 100
-# ZMIANA: Startujemy z pełnym życiem
+# CHANGE: Start with full health
 var current_hp: int = 100 
 
 var str_lvl: int = 0
@@ -62,14 +62,14 @@ func get_skill_cost(id: String) -> int:
 	var multiplier = 1.7 if (id == "heal" or id == "hp") else 1.5
 	return int(base_costs[id] * pow(multiplier, lvl))
 
-# --- LECZENIE ---
+# --- HEALING ---
 func heal_player():
-	# Lecz tylko jeśli jest co leczyć
+	# Heal only if there's something to heal
 	if current_hp < max_hp:
 		current_hp = max_hp
 		heal_count += 1
 		health_changed.emit(current_hp, max_hp)
-		skills_updated.emit() # Odśwież UI (cena wzrośnie)
+		skills_updated.emit() # Refresh UI (price increases)
 
 func use_consumable(type: String):
 	if consumables.get(type, 0) > 0:
@@ -89,10 +89,10 @@ func take_damage(amount: int):
 	if current_hp < 0: current_hp = 0
 	health_changed.emit(current_hp, max_hp)
 	
-	# Ważne: Kiedy obrywamy, musimy odświeżyć sklep, żeby przycisk HEAL się włączył!
+	# Important: When we take damage, we must refresh the shop so the HEAL button enables!
 	skills_updated.emit()
 
-# --- RESZTA FUNKCJI BEZ ZMIAN ---
+# --- REST OF FUNCTIONS UNCHANGED ---
 func add_item(item: GameItem):
 	inventory.append(item)
 	item_added.emit(item)
@@ -119,5 +119,5 @@ func gain_xp(amount: int):
 	if xp >= xp_required:
 		xp -= xp_required
 		level += 1
-		xp_required = int(xp_required * 1.4) # Skalowanie trudności levelowania
+		xp_required = int(xp_required * 1.4) # Leveling difficulty scaling
 		leveled_up.emit(level)

@@ -15,7 +15,22 @@ func setup(p_ref: PlayerStats):
 	if icon_texture:
 		icon = icon_texture
 		expand_icon = true
+	
+	pivot_offset = size / 2
+	if not button_down.is_connected(_on_button_down):
+		button_down.connect(_on_button_down)
+	if not button_up.is_connected(_on_button_up):
+		button_up.connect(_on_button_up)
+		
 	update_state()
+
+func _on_button_down():
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(0.9, 0.9), 0.05)
+
+func _on_button_up():
+	var tween = create_tween()
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 
 func update_state():
 	if player == null: return

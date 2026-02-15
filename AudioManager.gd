@@ -1,6 +1,6 @@
 extends Node
 
-# Proceduralny Manager Dźwięku dla LootClicker (Poprawiona wersja 16-bit)
+# Procedural Sound Manager for LootClicker (16-bit version)
 
 var music_player: AudioStreamPlayer
 
@@ -12,7 +12,7 @@ func _ready():
 	var music_stream = load("res://assets/audio/bg_music.mp3")
 	if music_stream:
 		music_player.stream = music_stream
-		music_player.volume_db = -10 # Lekko ciszej tło
+		music_player.volume_db = -10 # Slightly quieter background
 		music_player.bus = "Master"
 		music_player.finished.connect(func(): music_player.play())
 
@@ -38,8 +38,8 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 	add_child(player)
 	
 	var stream = AudioStreamWAV.new()
-	stream.format = AudioStreamWAV.FORMAT_16_BITS # Zmiana na 16 bitów dla lepszej kompatybilności
-	stream.mix_rate = 44100 # Standardowa jakość
+	stream.format = AudioStreamWAV.FORMAT_16_BITS # 16-bit for better compatibility
+	stream.mix_rate = 44100 # Standard quality
 	stream.stereo = false
 	
 	var duration = 0.1
@@ -48,7 +48,7 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 	
 	var num_samples = int(duration * stream.mix_rate)
 	var data = PackedByteArray()
-	# Każdy sampel 16-bit zajmuje 2 bajty
+	# Each 16-bit sample takes 2 bytes
 	data.resize(num_samples * 2)
 	
 	for i in range(num_samples):
@@ -73,17 +73,17 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 				var env = exp(-t * 20.0)
 				sample = (sin(t * 80.0 * PI) + sin(t * 120.0 * PI)) * env * 0.4
 		
-		# Konwersja float (-1.0 do 1.0) na Signed 16-bit Int (-32768 do 32767)
+		# Convert float (-1.0 to 1.0) to Signed 16-bit Int (-32768 to 32767)
 		var int_sample = int(clamp(sample, -1.0, 1.0) * 32767)
 		
-		# Zapisywanie 2 bajtów (Little Endian)
+		# Store 2 bytes (Little Endian)
 		data[i * 2] = int_sample & 0xFF
 		data[i * 2 + 1] = (int_sample >> 8) & 0xFF
 	
 	stream.data = data
 	player.stream = stream
 	player.pitch_scale = p_shift
-	player.bus = "Master" # Upewniamy się, że gra na głównym kanale
+	player.bus = "Master" # Ensure it plays on Master bus
 	player.play()
 	
 	player.finished.connect(func(): player.queue_free())

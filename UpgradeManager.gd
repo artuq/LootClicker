@@ -1,7 +1,7 @@
 extends Node
 class_name UpgradeManager
 
-# Definicje możliwych ulepszeń (Karty)
+# Definitions for possible upgrades (Cards)
 var available_cards = [
 	{"id": "str", "name": "Brawn", "desc": "Strength +2", "icon": "res://assets/cards/card_str.png"},
 	{"id": "crit", "name": "Precision", "desc": "Crit Chance +5%", "icon": "res://assets/cards/card_crit.png"},

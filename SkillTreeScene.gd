@@ -6,24 +6,38 @@ var player: PlayerStats
 func setup(p_ref: PlayerStats):
 	player = p_ref
 	
-	# Podpinamy odświeżanie
+	# Connect refresh
 	if not player.skills_updated.is_connected(update_ui):
 		player.skills_updated.connect(update_ui)
 	if not player.resources_updated.is_connected(update_ui):
 		player.resources_updated.connect(update_ui)
 		
-	# Inicjalizujemy wszystkie węzły
+	# Initialize all nodes
 	for node in %TreeLayout.get_children():
 		if node is SkillNode:
 			node.setup(player)
 			if not node.pressed.is_connected(_on_node_pressed.bind(node)):
 				node.pressed.connect(_on_node_pressed.bind(node))
+	
+	if has_node("BackButton"):
+		_add_button_juice($BackButton)
 			
 	update_ui()
 	animate_open()
 
+func _add_button_juice(btn: Button):
+	btn.pivot_offset = btn.size / 2
+	btn.button_down.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.05)
+	)
+	btn.button_up.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	)
+
 func animate_open():
-	# Ustawiamy punkt obrotu na środek dla ładnego skalowania
+	# Set pivot point to center for nice scaling
 	pivot_offset = size / 2
 	scale = Vector2.ZERO
 	modulate.a = 0
@@ -82,7 +96,7 @@ func _play_error():
 		get_node("/root/AudioManager").play_error_sound()
 
 func _on_back_button_pressed():
-	# Animacja wyjścia
+	# Exit animation
 	var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 	tween.tween_property(self, "scale", Vector2.ZERO, 0.3)
 	tween.tween_property(self, "modulate:a", 0.0, 0.2)

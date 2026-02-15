@@ -6,24 +6,24 @@ signal upgrade_selected(id)
 var upgrade_manager = UpgradeManager.new()
 
 func _ready():
-	# Pozwalamy oknu działać, gdy gra jest zapauzowana
+	# Allow window to process while game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
 
 func setup(player: PlayerStats):
-	# Pozwalamy oknu działać, gdy gra jest zapauzowana
+	# Allow window to process while game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
 	if card_container == null:
 		card_container = %CardContainer
 	
-	# Emitujemy zmianę złota, żeby PlayerStats odświeżył UI jeśli trzeba
+	# Emit gold change to refresh UI in PlayerStats if needed
 	player.gold_changed.emit(player.gold)
 	
-	# Czyścimy stare karty
+	# Clear old cards
 	for child in card_container.get_children():
 		child.queue_free()
 	
-	# Losujemy 3 opcje
+	# Roll 3 options
 	var options = upgrade_manager.get_random_options(3)
 	
 	for opt in options:

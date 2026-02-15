@@ -6,13 +6,13 @@ var player: PlayerStats
 
 func setup(p_ref: PlayerStats):
 	player = p_ref
-	get_tree().paused = true # Zatrzymujemy walkę
+	get_tree().paused = true # Stop combat
 	
-	# Czyścimy stare karty
+	# Clear old cards
 	for child in card_container.get_children():
 		child.queue_free()
 	
-	# Losujemy 3 opcje
+	# Roll 3 options
 	var options = upgrade_manager.get_random_options(3)
 	
 	for opt in options:
@@ -49,6 +49,22 @@ func create_card(opt: Dictionary) -> Button:
 	vbox.add_child(lbl)
 	
 	btn.pressed.connect(_on_card_selected.bind(opt.id))
+	
+	# Add juice
+	btn.pivot_offset = btn.custom_minimum_size / 2
+	btn.mouse_entered.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.05, 1.05), 0.1)
+	)
+	btn.mouse_exited.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1)
+	)
+	btn.button_down.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(0.95, 0.95), 0.05)
+	)
+	
 	return btn
 
 func _on_card_selected(id: String):

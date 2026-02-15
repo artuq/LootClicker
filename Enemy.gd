@@ -10,7 +10,7 @@ var gold_reward: int
 var xp_reward: int
 var enemy_resource: String = ""
 
-# NAPRAWA: Funkcja przyjmuje teraz 5 argumentów dla zasobów
+# FIX: Function now takes 5 arguments for resources
 func setup_enemy(hp: int, dmg: int, gold: int, xp: int, res_type: String = ""):
 	max_hp = hp
 	current_hp = hp
