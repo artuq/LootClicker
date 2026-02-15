@@ -15,9 +15,11 @@
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
-[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/cursorSword_gold.png" id="16_icon_str"]
-[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/iconCircle_brown.png" id="17_icon_gold"]
-[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/cursorGauntlet_blue.png" id="18_icon_def"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/1.png" id="16_icon_str"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/25.png" id="17_icon_gold"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/18.png" id="18_icon_def"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/10.png" id="20_icon_crit"]
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/50.png" id="21_icon_spd"]
 [ext_resource type="Script" path="res://SkillNode.gd" id="19_skill_node_gd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
@@ -147,15 +149,36 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
 show_percentage = false
 
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD"]
+[node name="PlayerStatsBox" type="VBoxContainer" parent="CanvasLayer"]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 160.0
+offset_bottom = 60.0
+theme_override_constants/separation = 0
+
+[node name="HPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 12)
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 12
+text = "HP: 100/100"
+label_settings = SubResource("LabelSettings_hp")
+pivot_offset = Vector2(65, 10)
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/PlayerStatsBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(140, 8)
+layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
 value = 50.0
 show_percentage = false
+
+[node name="XPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "XP: 0/50"
+horizontal_alignment = 2
 
 [node name="VictoryUI" type="VBoxContainer" parent="CanvasLayer"]
 unique_name_in_owner = true
@@ -189,7 +212,7 @@ text = "NEXT LEVEL"
 
 [node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/VictoryUI"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 280)
+custom_minimum_size = Vector2(350, 300)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
 script = ExtResource("4_epypp")
@@ -208,7 +231,7 @@ text = "Resources: 0 B, 0 V, 0 S"
 horizontal_alignment = 1
 
 [node name="TreeLayout" type="Control" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
-custom_minimum_size = Vector2(0, 240)
+custom_minimum_size = Vector2(0, 300)
 layout_mode = 2
 
 [node name="SkillStr" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
@@ -233,9 +256,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = 40.0
-offset_top = 80.0
+offset_top = 85.0
 offset_right = 100.0
-offset_bottom = 140.0
+offset_bottom = 145.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxTexture_node")
@@ -243,7 +266,7 @@ script = ExtResource("19_skill_node_gd")
 skill_id = "crit"
 requirement_skill = "str"
 requirement_level = 1
-icon_texture = ExtResource("16_icon_str")
+icon_texture = ExtResource("20_icon_crit")
 
 [node name="SkillGold" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
 layout_mode = 1
@@ -251,9 +274,9 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
-offset_top = 80.0
+offset_top = 85.0
 offset_right = -40.0
-offset_bottom = 140.0
+offset_bottom = 145.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxTexture_node")
@@ -263,34 +286,41 @@ requirement_skill = "str"
 requirement_level = 1
 icon_texture = ExtResource("17_icon_gold")
 
+[node name="SkillSpd" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 160.0
+offset_right = -40.0
+offset_bottom = 220.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxTexture_node")
+script = ExtResource("19_skill_node_gd")
+skill_id = "speed"
+requirement_skill = "greed"
+requirement_level = 1
+icon_texture = ExtResource("21_icon_spd")
+
 [node name="SkillDef" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -30.0
-offset_top = 150.0
-offset_right = 30.0
-offset_bottom = 210.0
+offset_left = 40.0
+offset_top = 160.0
+offset_right = 100.0
+offset_bottom = 220.0
 grow_horizontal = 2
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxTexture_node")
 script = ExtResource("19_skill_node_gd")
 skill_id = "def"
-requirement_skill = "str"
-requirement_level = 3
+requirement_skill = "crit"
+requirement_level = 1
 icon_texture = ExtResource("18_icon_def")
-
-[node name="HPLabel" type="Label" parent="CanvasLayer"]
-unique_name_in_owner = true
-offset_left = 10.0
-offset_top = 10.0
-offset_right = 140.0
-offset_bottom = 30.0
-theme_override_font_sizes/font_size = 12
-text = "Player HP: 100/100"
-label_settings = SubResource("LabelSettings_hp")
-pivot_offset = Vector2(65, 10)
 
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer"]
 unique_name_in_owner = true

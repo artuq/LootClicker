@@ -71,6 +71,8 @@ func _ready():
 	var update_xp = func():
 		xp_bar.max_value = player.xp_required
 		xp_bar.value = player.xp
+		if %XPLabel:
+			%XPLabel.text = "XP: %d / %d" % [player.xp, player.xp_required]
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 

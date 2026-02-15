@@ -32,6 +32,9 @@ func update_state():
 		var req_lvl = _get_player_skill_lvl(requirement_skill)
 		req_met = req_lvl >= requirement_level
 	
+	# REVEAL LOGIC: Pokaż tylko jeśli wymaganie spełnione lub brak wymagania
+	visible = req_met or (requirement_skill == "")
+	
 	disabled = not (req_met and has_res and current_lvl < max_level)
 	
 	# Wizualizacja stanu
