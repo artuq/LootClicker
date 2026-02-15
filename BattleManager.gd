@@ -210,6 +210,7 @@ func spawn_enemy(saved_hp: int = -1):
 	current_enemy = Enemy.new()
 	add_child(current_enemy)
 	
+	enemy_sprite.visible = true # Pokazujemy postać
 	var is_boss = (current_stage % 5 == 0)
 	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
 	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
@@ -288,6 +289,9 @@ func _on_enemy_attack():
 func _on_enemy_died(_xp, gold):
 	player.gain_gold(gold)
 	player.gain_xp(_xp if _xp > 0 else 20 * current_stage) # Fallback if XP not defined
+	
+	enemy_sprite.visible = false # Ukrywamy postać, by nie zasłaniała przycisków
+	if idle_tween: idle_tween.kill() # Zatrzymujemy animację
 	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()

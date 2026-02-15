@@ -25,7 +25,7 @@ flowchart TD
         direction TB
         M1(✅ Floating Text System):::done
         M2(✅ Boss System co 5 Stage):::done
-        M3(🕒 Roguelite: 3 Cards Choice):::in_progress
+        M3(✅ Roguelite: 3 Cards Choice):::done
         M4(🕒 Resources: Mummy Bandages etc.):::in_progress
         M5(✅ Skalowanie x1.2):::done
     end
