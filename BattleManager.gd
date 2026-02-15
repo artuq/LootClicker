@@ -20,7 +20,6 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var next_level_btn = %NextLevelButton
 
 # Okna
-@onready var skill_tree_window = %Upgrades
 @onready var inventory_window = %Inventory
 
 # Grafika
@@ -58,9 +57,6 @@ func _ready():
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
 		next_level_btn.pressed.connect(_on_next_level_button_pressed)
 	
-	if skill_tree_window:
-		skill_tree_window.setup(player)
-
 	# Timery
 	player_timer = Timer.new()
 	player_timer.timeout.connect(_on_player_attack)
@@ -326,13 +322,6 @@ func _on_skills_updated():
 	if player_timer:
 		player_timer.wait_time = player.get_attack_speed()
 		if not player_timer.is_stopped(): player_timer.start()
-
-# NOTE: The 'BtnDef' signal is connected to this script instead of SkillTree.gd.
-# While this works, for better organization, consider connecting signals 
-# to the node that directly handles the logic (in this case, SkillTree.gd).
-func _on_btn_def_pressed():
-	if skill_tree_window:
-		skill_tree_window._buy("def")
 
 func _handle_player_death():
 	player.current_hp = player.max_hp

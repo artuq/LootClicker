@@ -108,7 +108,6 @@ label_settings = SubResource("LabelSettings_hp")
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1119024854]
 unique_name_in_owner = true
 position = Vector2(180, 220)
-scale = Vector2(1, 1)
 texture = ExtResource("2_0e48y")
 
 [node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=47519466]
@@ -129,7 +128,7 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -220.0
+offset_top = -120.0
 grow_horizontal = 2
 grow_vertical = 0
 
@@ -144,83 +143,14 @@ theme_override_font_sizes/font_size = 12
 tab_alignment = 1
 current_tab = 0
 
-[node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1776591159]
-unique_name_in_owner = true
-layout_mode = 2
-script = ExtResource("4_epypp")
-metadata/_tab_index = 0
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades" unique_id=4462132]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 5
-
-[node name="PointsLabel" type="Label" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=1576005566]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 14
-text = "Skill Points: 0"
-horizontal_alignment = 1
-
-[node name="GridContainer" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox" unique_id=316238130]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 5
-columns = 2
-
-[node name="BtnStr" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=567058870]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Strength"
-
-[node name="BtnCrit" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=327052508]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Critical"
-
-[node name="BtnGold" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=1172107604]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Gold"
-
-[node name="BtnSpd" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=2082386076]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Speed"
-
-[node name="BtnDef" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=368606703]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Defense"
-
-[node name="BtnHeal" type="Button" parent="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer" unique_id=906759202]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
-theme_override_font_sizes/font_size = 11
-text = "Heal"
-
 [node name="Inventory" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=717494449]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 0
 
 [node name="ItemList" type="ItemList" parent="CanvasLayer/BottomPanel/TabContainer/Inventory" unique_id=948400375]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 250)
+custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
@@ -228,7 +158,7 @@ auto_height = true
 [node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1135677874]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 1
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Settings" unique_id=1985415407]
 layout_mode = 2
