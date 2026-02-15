@@ -252,10 +252,11 @@ func spawn_enemy(saved_hp: int = -1):
 		enemy_hp_bar.modulate = Color.WHITE
 
 	# --- AUTOMATYCZNE SKALOWANIE ---
+	print("DEBUG: SCALING ENEMY")
 	var target_size = 200.0
 	var tex_size = enemy_sprite.texture.get_size()
-	var f_scale = target_size / max(tex_size.x, tex_size.y)
-	enemy_sprite.scale = Vector2(f_scale, f_scale)
+	var new_enemy_scale = target_size / max(tex_size.x, tex_size.y)
+	enemy_sprite.scale = Vector2(new_enemy_scale, new_enemy_scale)
 		
 	enemy_sprite.position = Vector2(180, 240)
 	original_enemy_pos = enemy_sprite.position
