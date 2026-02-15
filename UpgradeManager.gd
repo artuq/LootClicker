@@ -23,13 +23,14 @@ func apply_upgrade(player: PlayerStats, upgrade_id: String):
 		"str": player.str_lvl += 2
 		"crit": player.crit_lvl += 5
 		"speed": player.speed_lvl += 2
-		"hp": 
+		"hp":
 			player.max_hp += 20
 			player.current_hp = player.max_hp # Leczymy przy okazji
-					"gold": player.greed_lvl += 3
-					"def": player.def_lvl += 1
-					"dodge": player.dodge_chance += 0.03
-					"block": player.block_chance += 0.05
-			player.health_changed.emit(player.current_hp, player.max_hp)
+		"gold": player.greed_lvl += 3
+		"def": player.def_lvl += 1
+		"dodge": player.dodge_chance += 0.03
+		"block": player.block_chance += 0.05
+
+	player.health_changed.emit(player.current_hp, player.max_hp)
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
