@@ -377,6 +377,13 @@ func _on_player_leveled_up(_new_level):
 	_spawn_floating_text("LEVEL UP!", Color.GOLD)
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
+	
+	# Wywołujemy ekran wyboru kart
+	var card_scene = load("res://CardChoiceScene.tscn")
+	if card_scene:
+		var instance = card_scene.instantiate()
+		%CanvasLayer.add_child(instance)
+		instance.setup(player)
 
 func _on_next_level_button_pressed():
 	save_game()
@@ -396,17 +403,18 @@ func _on_skills_updated():
 		if not player_timer.is_stopped(): player_timer.start()
 
 func _handle_player_death():
-	# Kara za śmierć: powrót do Stage 1 i utrata złota
+	print("PLAYER DIED - GAME OVER")
+	# Kara za śmierć
 	player.gold = int(player.gold * 0.8)
 	current_stage = 1
-	player.current_hp = player.max_hp
-	player.health_changed.emit(player.current_hp, player.max_hp)
-	player.gold_changed.emit(player.gold)
-	
-	_spawn_floating_text("DEFEAT - STAGE RESET", Color.RED)
 	save_game()
-	spawn_enemy()
-	_start_combat()
+	
+	# Powrót do menu głównego
+	var title_screen = load("res://TitleScreen.gd")
+	if title_screen:
+		title_screen.last_run_result = "DEFEAT"
+	
+	get_tree().change_scene_to_file("res://TitleScreen.tscn")
 
 func _spawn_floating_text(text: String, color: Color):
 	if !damage_label_scene: return
