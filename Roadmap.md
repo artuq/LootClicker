@@ -34,10 +34,10 @@ flowchart TD
     %% --- FILAR 2: GRAFIKA I OPTYMALIZACJA (TECH-ART) ---
     Root --> COL2[GRAFIKA I OPTYMALIZACJA]:::art
 
-    subgraph G_OPT [Wydajność Android]
+    subgraph G_OPT [Wydajność i Styl]
         direction TB
-        O1(⚙️ Object Pooling):::art
-        O2(⚙️ Texture Atlases):::art
+        O1(✅ Pixel Art Config):::done
+        O2(✅ Smart Scaling UI):::done
         O3(⚙️ Kompresja ETC2/ASTC):::art
         O4(⚙️ Batching Draw Calls):::art
     end
