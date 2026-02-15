@@ -125,6 +125,7 @@ theme_override_font_sizes/font_size = 20
 text = "Gold: 0"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
+pivot_offset = Vector2(180, 15)
 
 [node name="StageLabel" type="Label" parent="CanvasLayer/HUD" unique_id=2055441024]
 unique_name_in_owner = true
@@ -174,6 +175,7 @@ offset_bottom = 30.0
 theme_override_font_sizes/font_size = 12
 text = "Player HP: 100/100"
 label_settings = SubResource("LabelSettings_hp")
+pivot_offset = Vector2(65, 10)
 
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1119024854]
 unique_name_in_owner = true

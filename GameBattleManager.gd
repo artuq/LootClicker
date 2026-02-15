@@ -57,8 +57,14 @@ func _ready():
 	original_enemy_pos = enemy_sprite.position
 	
 	# Połączenia UI
-	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
-	player.health_changed.connect(func(c, m): hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)])
+	player.gold_changed.connect(func(g): 
+		gold_label.text = "Gold: " + format_number(g)
+		_animate_label(gold_label)
+	)
+	player.health_changed.connect(func(c, m): 
+		hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)]
+		_animate_label(hp_label)
+	)
 	player.item_added.connect(func(item): _spawn_floating_text("LOOT: " + item.name, Color.CYAN))
 	
 	# XP Bar
@@ -402,3 +408,8 @@ func _on_save_slot_pressed(slot: int):
 
 func _on_load_slot_pressed(slot: int):
 	load_game(slot)
+
+func _animate_label(lbl: Control):
+	var tween = create_tween()
+	tween.tween_property(lbl, "scale", Vector2(1.2, 1.2), 0.05)
+	tween.tween_property(lbl, "scale", Vector2(1.0, 1.0), 0.1)
