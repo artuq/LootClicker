@@ -14,6 +14,7 @@ func _ready():
 		music_player.stream = music_stream
 		music_player.volume_db = -10 # Lekko ciszej tło
 		music_player.bus = "Master"
+		music_player.finished.connect(func(): music_player.play())
 
 func play_music():
 	if music_player and not music_player.playing:
