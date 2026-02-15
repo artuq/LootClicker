@@ -15,6 +15,9 @@
 [ext_resource type="Texture2D" uid="uid://bsh6205q0x633" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
 [ext_resource type="Texture2D" uid="uid://dn77uol4cah8r" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
 [ext_resource type="Texture2D" uid="uid://cxof2a3wun7it" path="res://assets/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/cursorSword_gold.png" id="16_icon_str"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/iconCircle_brown.png" id="17_icon_gold"]
+[ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/cursorGauntlet_blue.png" id="18_icon_def"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
 outline_size = 4
@@ -397,13 +400,8 @@ custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 text = "Slot 3"
 
-[connection signal="pressed" from="CanvasLayer/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnStr" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_str_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnCrit" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_crit_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnGold" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_gold_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnSpd" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_spd_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Upgrades/VBox/GridContainer/BtnDef" to="CanvasLayer/BottomPanel/TabContainer/Upgrades" method="_on_btn_def_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="GameManager" method="_on_save_slot_pressed" binds= [3]]
