@@ -38,8 +38,8 @@ flowchart TD
     subgraph G_OPT [Wydajność i Styl]
         direction TB
         O1(✅ Pixel Art Config):::done
-        O2(✅ Smart Scaling UI):::done
-        O3(⚙️ Kompresja ETC2/ASTC):::art
+        O2(✅ Kenney UI Skinning):::done
+        O3(✅ Smart Scaling Fixes):::done
         O4(⚙️ Batching Draw Calls):::art
     end
 
