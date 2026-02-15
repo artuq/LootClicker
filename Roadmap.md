@@ -45,9 +45,9 @@ flowchart TD
     subgraph G_JUICE [Game Feel & FX]
         direction TB
         J1(🎨 Particle System):::art
-        J2(🎨 Screen Shake):::art
-        J3(🎨 UI Tweening):::art
-        J4(🎨 Shadery: Hit Flash):::art
+        J2(✅ Screen Shake):::done
+        J3(✅ Squash & Stretch):::done
+        J4(✅ Hit Flash):::done
     end
     COL2 --> G_OPT
     COL2 --> G_JUICE
