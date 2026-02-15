@@ -3,11 +3,23 @@ class_name PlayerStats
 
 signal gold_changed(amount)
 signal health_changed(current, max_hp)
-signal skills_updated # Sygnał odświeżający ceny w sklepie
+signal skills_updated 
 signal item_added(item)
-signal error_occurred(msg) # Nowy sygnał dla błędów (np. brak złota)
+signal error_occurred(msg)
+signal leveled_up(new_level) # Nowy sygnał awansu
 
 var gold: int = 25
+var xp: int = 0
+var level: int = 1
+var xp_required: int = 100
+
+# Surowce klimatyczne
+var resources = {
+	"bandages": 0,    # Z Mumii
+	"venom": 0,       # Z Węży
+	"relic_shards": 0 # Z Bossów
+}
+
 var max_hp: int = 100
 # ZMIANA: Startujemy z pełnym życiem
 var current_hp: int = 100 
@@ -82,3 +94,11 @@ func is_critical_hit() -> bool:
 func gain_gold(amount: int):
 	gold += int(amount * (1.0 + (greed_lvl * 0.05)))
 	gold_changed.emit(gold)
+
+func gain_xp(amount: int):
+	xp += amount
+	if xp >= xp_required:
+		xp -= xp_required
+		level += 1
+		xp_required = int(xp_required * 1.4) # Skalowanie trudności levelowania
+		leveled_up.emit(level)
