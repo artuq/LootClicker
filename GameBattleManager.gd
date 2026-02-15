@@ -1,4 +1,5 @@
 extends Node
+class_name GameBattleManager
 
 var current_stage: int = 1
 var player: PlayerStats
