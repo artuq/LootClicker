@@ -233,6 +233,10 @@ func format_number(n: int) -> String:
 		return "%.1fk" % (n / 1_000.0)
 	return str(n)
 
+func _update_inventory_ui():
+	# Placeholder for future resource inventory UI
+	pass
+
 func spawn_enemy(saved_hp: int = -1):
 	if current_enemy:
 		current_enemy.queue_free()
