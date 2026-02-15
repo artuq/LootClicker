@@ -3,12 +3,12 @@ class_name UpgradeManager
 
 # Definicje możliwych ulepszeń (Karty)
 var available_cards = [
-	{"id": "str", "name": "Brawn", "desc": "Strength +2", "icon": "sword"},
-	{"id": "crit", "name": "Precision", "desc": "Crit Chance +5%", "icon": "aim"},
-	{"id": "speed", "name": "Agility", "desc": "Attack Speed +10%", "icon": "wing"},
-	{"id": "hp", "name": "Vitality", "desc": "Max HP +20", "icon": "heart"},
-	{"id": "gold", "name": "Greed", "desc": "Gold Gain +15%", "icon": "coin"},
-	{"id": "def", "name": "Armor", "desc": "Defense +1", "icon": "shield"}
+	{"id": "str", "name": "Brawn", "desc": "Strength +2", "icon": "res://assets/cards/card_str.png"},
+	{"id": "crit", "name": "Precision", "desc": "Crit Chance +5%", "icon": "res://assets/cards/card_crit.png"},
+	{"id": "speed", "name": "Agility", "desc": "Attack Speed +10%", "icon": "res://assets/cards/card_speed.png"},
+	{"id": "hp", "name": "Vitality", "desc": "Max HP +20", "icon": "res://assets/cards/card_hp.png"},
+	{"id": "gold", "name": "Greed", "desc": "Gold Gain +15%", "icon": "res://assets/cards/card_gold.png"},
+	{"id": "def", "name": "Armor", "desc": "Defense +1", "icon": "res://assets/cards/card_def.png"}
 ]
 
 func get_random_options(count: int = 3) -> Array:
