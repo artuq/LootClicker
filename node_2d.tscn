@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://2nn5mnsdx7xi"]
 
-[ext_resource type="Script" uid="uid://b41dh67avnsrf" path="res://BattleManager.gd" id="1_wtcfe"]
+[ext_resource type="Script" uid="uid://b41dh67avnsrf" path="res://GameBattleManager.gd" id="1_wtcfe"]
 [ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://icon.svg" id="2_0e48y"]
 [ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="3_0hol4"]
 [ext_resource type="Script" uid="uid://l57vb5okvn5i" path="res://SkillTree.gd" id="4_epypp"]
