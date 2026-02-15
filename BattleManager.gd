@@ -236,17 +236,17 @@ func spawn_enemy(saved_hp: int = -1):
 	enemy_sprite.modulate = Color.WHITE
 	var tex_w = enemy_sprite.texture.get_width()
 	
-	if tex_w > 500: # Zwiększamy próg, by grafiki pixel-art (nawet te większe) były traktowane jako małe
+	if tex_w > 500:
 		# Bardzo duże grafiki High-Res
-		var target_scale = 0.12 if is_boss else 0.08
+		var target_scale = 0.08 if is_boss else 0.05
 		enemy_sprite.scale = Vector2(target_scale, target_scale)
 	else:
-		# Grafiki Pixel Art (jak ta ze screena)
-		var pixel_scale = 1.8 if is_boss else 1.2
+		# Grafiki Pixel Art - dajemy mniejszą skalę, by nie przytłaczały ekranu
+		var pixel_scale = 1.2 if is_boss else 0.8
 		enemy_sprite.scale = Vector2(pixel_scale, pixel_scale)
 		
-	# Podnosimy sprita wyżej (środek to 180, pionowo 220), by nie nachodził na menu
-	enemy_sprite.position = Vector2(180, 220)
+	# Pozycjonujemy przeciwnika tak, by był dokładnie na środku obszaru walki
+	enemy_sprite.position = Vector2(180, 240)
 	original_enemy_pos = enemy_sprite.position
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
