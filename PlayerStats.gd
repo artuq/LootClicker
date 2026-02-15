@@ -36,7 +36,7 @@ var inventory: Array[GameItem] = []
 var equipped_item: GameItem = null
 
 var base_costs = {
-	"str": 1, "speed": 1, "crit": 2, "greed": 1, "def": 1, "heal": 5
+	"str": 1, "speed": 1, "crit": 2, "greed": 1, "def": 1, "heal": 5, "hp": 2
 }
 
 func _ready():
@@ -52,8 +52,9 @@ func get_skill_cost(id: String) -> int:
 		"greed": lvl = greed_lvl
 		"def": lvl = def_lvl
 		"heal": lvl = heal_count
+		"hp": lvl = int((max_hp - 100) / 20)
 	
-	var multiplier = 1.5 if id == "heal" else 1.3
+	var multiplier = 1.5 if (id == "heal" or id == "hp") else 1.3
 	return int(base_costs[id] * pow(multiplier, lvl))
 
 # --- LECZENIE ---
