@@ -15,13 +15,6 @@
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/1.png" id="16_icon_str"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/25.png" id="17_icon_gold"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/18.png" id="18_icon_def"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/10.png" id="20_icon_crit"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/50.png" id="21_icon_spd"]
-[ext_resource type="Script" path="res://SkillNode.gd" id="19_skill_node_gd"]
-
 [ext_resource type="PackedScene" path="res://SkillTreeScene.tscn" id="22_skill_scene"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
@@ -80,13 +73,6 @@ texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
-
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_node"]
-texture = ExtResource("11_btn_beige")
-texture_margin_left = 4.0
-texture_margin_top = 4.0
-texture_margin_right = 4.0
-texture_margin_bottom = 4.0
 
 [node name="Node2D" type="Node2D"]
 
@@ -163,8 +149,8 @@ show_percentage = false
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 210.0
-offset_bottom = 70.0
-theme_override_constants/separation = 4
+offset_bottom = 80.0
+theme_override_constants/separation = 2
 
 [node name="HPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox"]
 unique_name_in_owner = true
@@ -175,7 +161,7 @@ label_settings = SubResource("LabelSettings_hp")
 
 [node name="XPBar" type="ProgressBar" parent="CanvasLayer/PlayerStatsBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 12)
+custom_minimum_size = Vector2(180, 14)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
@@ -186,7 +172,7 @@ show_percentage = false
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
-text = "XP: 0/50"
+text = "XP: 0 / 50"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 2
 
@@ -198,13 +184,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -175.0
-offset_top = -150.0
-offset_right = 175.0
-offset_bottom = 200.0
+offset_left = -100.0
+offset_top = -80.0
+offset_right = 100.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 15
 alignment = 1
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI"]
@@ -212,7 +198,6 @@ unique_name_in_owner = true
 process_mode = 3
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
@@ -220,121 +205,21 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "NEXT LEVEL"
 
-[node name="Upgrades" type="ScrollContainer" parent="CanvasLayer/VictoryUI"]
+[node name="OpenTreeButton" type="Button" parent="CanvasLayer/VictoryUI"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(350, 300)
+process_mode = 3
+custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
-script = ExtResource("4_epypp")
-
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/VictoryUI/Upgrades"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/separation = 5
-
-[node name="PointsLabel" type="Label" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "Resources: 0 B, 0 V, 0 S"
-horizontal_alignment = 1
-
-[node name="TreeLayout" type="Control" parent="CanvasLayer/VictoryUI/Upgrades/VBox"]
-custom_minimum_size = Vector2(0, 300)
-layout_mode = 2
-
-[node name="SkillStr" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -30.0
-offset_top = 10.0
-offset_right = 30.0
-offset_bottom = 70.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxTexture_node")
-script = ExtResource("19_skill_node_gd")
-skill_id = "str"
-icon_texture = ExtResource("16_icon_str")
-
-[node name="SkillCrit" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 40.0
-offset_top = 85.0
-offset_right = 100.0
-offset_bottom = 145.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxTexture_node")
-script = ExtResource("19_skill_node_gd")
-skill_id = "crit"
-requirement_skill = "str"
-requirement_level = 1
-icon_texture = ExtResource("20_icon_crit")
-
-[node name="SkillGold" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -100.0
-offset_top = 85.0
-offset_right = -40.0
-offset_bottom = 145.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxTexture_node")
-script = ExtResource("19_skill_node_gd")
-skill_id = "greed"
-requirement_skill = "str"
-requirement_level = 1
-icon_texture = ExtResource("17_icon_gold")
-
-[node name="SkillSpd" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -100.0
-offset_top = 160.0
-offset_right = -40.0
-offset_bottom = 220.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxTexture_node")
-script = ExtResource("19_skill_node_gd")
-skill_id = "speed"
-requirement_skill = "greed"
-requirement_level = 1
-icon_texture = ExtResource("21_icon_spd")
-
-[node name="SkillDef" type="Button" parent="CanvasLayer/VictoryUI/Upgrades/VBox/TreeLayout"]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 40.0
-offset_top = 160.0
-offset_right = 100.0
-offset_bottom = 220.0
-grow_horizontal = 2
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = SubResource("StyleBoxTexture_node")
-script = ExtResource("19_skill_node_gd")
-skill_id = "def"
-requirement_skill = "crit"
-requirement_level = 1
-icon_texture = ExtResource("18_icon_def")
+theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
+text = "UPGRADES"
 
 [node name="EnemySprite" type="Sprite2D" parent="CanvasLayer"]
 unique_name_in_owner = true
-position = Vector2(180, 220)
+position = Vector2(180, 240)
 texture = ExtResource("2_0e48y")
 
 [node name="ClickArea" type="Button" parent="CanvasLayer"]
@@ -452,6 +337,7 @@ text = "Slot 3"
 [connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/VictoryUI/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
+[connection signal="pressed" from="CanvasLayer/HUD/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
 [connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="GameManager" method="_on_save_slot_pressed" binds= [3]]
