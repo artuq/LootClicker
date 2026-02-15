@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dpxl1i30m2w8v" path="res://assets/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
 [ext_resource type="Texture2D" uid="uid://bsh6205q0x633" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
 [ext_resource type="Texture2D" uid="uid://dn77uol4cah8r" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
-[ext_resource type="Texture2D" uid="uid://cxof2a3wun7it" path="res://assets/kenney_ui/PNG/barBlue_horizontalMid.png" id="15_bar_blue"]
+[ext_resource type="Texture2D" uid="uid://cxof2a3wun7it" path="res://assets/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
 outline_size = 4
