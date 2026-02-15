@@ -10,6 +10,8 @@
 [ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/18.png" id="8_icon_def"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/buttonLong_beige.png" id="9_btn_bg"]
 
+[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/113.png" id="10_icon_hp"]
+
 [node name="SkillTreeScene" type="Control"]
 process_mode = 3
 layout_mode = 3
@@ -90,15 +92,33 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -35.0
+offset_left = -80.0
 offset_top = 20.0
-offset_right = 35.0
+offset_right = -10.0
 offset_bottom = 90.0
 grow_horizontal = 2
 tooltip_text = "Increase Base Strength"
 script = ExtResource("3_node_script")
 skill_id = "str"
+currency_type = "gold"
 icon_texture = ExtResource("4_icon_str")
+
+[node name="SkillHP" type="Button" parent="ScrollContainer/TreeLayout"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 10.0
+offset_top = 20.0
+offset_right = 80.0
+offset_bottom = 90.0
+grow_horizontal = 2
+tooltip_text = "Increase Max HP"
+script = ExtResource("3_node_script")
+skill_id = "hp"
+currency_type = "gold"
+icon_texture = ExtResource("10_icon_hp")
 
 [node name="SkillGold" type="Button" parent="ScrollContainer/TreeLayout"]
 custom_minimum_size = Vector2(70, 70)
@@ -132,7 +152,7 @@ grow_horizontal = 2
 tooltip_text = "Critical Hit Chance"
 script = ExtResource("3_node_script")
 skill_id = "crit"
-requirement_skill = "str"
+requirement_skill = "hp"
 requirement_level = 1
 icon_texture = ExtResource("5_icon_crit")
 

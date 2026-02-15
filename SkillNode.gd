@@ -2,6 +2,7 @@ extends Button
 class_name SkillNode
 
 @export var skill_id: String = "str"
+@export var currency_type: String = "resource" # "gold" lub "resource"
 @export var max_level: int = 10
 @export var requirement_skill: String = ""
 @export var requirement_level: int = 0
@@ -11,11 +12,9 @@ var player: PlayerStats
 
 func setup(p_ref: PlayerStats):
 	player = p_ref
-	# Dodajemy ikonę do przycisku
 	if icon_texture:
 		icon = icon_texture
 		expand_icon = true
-	
 	update_state()
 
 func update_state():
@@ -23,31 +22,32 @@ func update_state():
 	
 	var current_lvl = _get_player_skill_lvl()
 	var cost = player.get_skill_cost(skill_id)
-	var res_id = _get_res_id()
-	var has_res = player.resources[res_id] >= cost
 	
-	# Sprawdzamy wymagania
+	var can_afford = false
+	if currency_type == "gold":
+		can_afford = player.gold >= cost
+	else:
+		var res_id = _get_res_id()
+		can_afford = player.resources[res_id] >= cost
+	
 	var req_met = true
 	if requirement_skill != "":
 		var req_lvl = _get_player_skill_lvl(requirement_skill)
 		req_met = req_lvl >= requirement_level
 	
-	# REVEAL LOGIC: Pokaż tylko jeśli wymaganie spełnione lub brak wymagania
 	visible = req_met or (requirement_skill == "")
+	disabled = not (req_met and can_afford and current_lvl < max_level)
 	
-	disabled = not (req_met and has_res and current_lvl < max_level)
-	
-	# Wizualizacja stanu
 	if current_lvl >= max_level:
-		modulate = Color.GOLD # Maksymalny poziom
+		modulate = Color.GOLD
 		text = "MAX"
 	elif not req_met:
-		modulate = Color(0.3, 0.3, 0.3, 0.8) # Zablokowane
+		modulate = Color(0.3, 0.3, 0.3, 0.8)
 		text = "LOCKED"
 	else:
 		modulate = Color.WHITE
-		text = "L%d
-%d" % [current_lvl, cost]
+		var suffix = "G" if currency_type == "gold" else _get_res_id().substr(0,1).to_upper()
+		text = "L%d\n%d%s" % [current_lvl, cost, suffix]
 
 func _get_player_skill_lvl(id: String = ""):
 	var target_id = id if id != "" else skill_id
@@ -57,6 +57,7 @@ func _get_player_skill_lvl(id: String = ""):
 		"greed": return player.greed_lvl
 		"speed": return player.speed_lvl
 		"def": return player.def_lvl
+		"hp": return (player.max_hp - 100) / 20 # Przykładowe wyliczenie poziomu HP
 	return 0
 
 func _get_res_id():

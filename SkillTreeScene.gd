@@ -24,7 +24,8 @@ func setup(p_ref: PlayerStats):
 func update_ui():
 	if player == null: return
 	
-	points_label.text = "Resources: %d Bandages, %d Venom, %d Shards" % [
+	points_label.text = "Gold: %d | Bandages: %d, Venom: %d, Shards: %d" % [
+		player.gold,
 		player.resources["bandages"], 
 		player.resources["venom"], 
 		player.resources["relic_shards"]
@@ -36,22 +37,38 @@ func update_ui():
 
 func _on_node_pressed(node: SkillNode):
 	var cost = player.get_skill_cost(node.skill_id)
-	var res_id = node._get_res_id()
 	
-	if player.resources[res_id] >= cost:
-		player.resources[res_id] -= cost
-		match node.skill_id:
-			"str": player.str_lvl += 1
-			"crit": player.crit_lvl += 1
-			"greed": player.greed_lvl += 1
-			"speed": player.speed_lvl += 1
-			"def": player.def_lvl += 1
-		
-		player.resources_updated.emit()
-		player.skills_updated.emit()
+	if node.currency_type == "gold":
+		if player.gold >= cost:
+			player.gold -= cost
+			_apply_skill(node.skill_id)
+			player.gold_changed.emit(player.gold)
+		else:
+			_play_error()
 	else:
-		if get_node_or_null("/root/AudioManager"):
-			get_node("/root/AudioManager").play_error_sound()
+		var res_id = node._get_res_id()
+		if player.resources[res_id] >= cost:
+			player.resources[res_id] -= cost
+			_apply_skill(node.skill_id)
+			player.resources_updated.emit()
+		else:
+			_play_error()
+
+func _apply_skill(id: String):
+	match id:
+		"str": player.str_lvl += 1
+		"crit": player.crit_lvl += 1
+		"greed": player.greed_lvl += 1
+		"speed": player.speed_lvl += 1
+		"def": player.def_lvl += 1
+		"hp": 
+			player.max_hp += 20
+			player.current_hp = player.max_hp
+	player.skills_updated.emit()
+
+func _play_error():
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_error_sound()
 
 func _on_back_button_pressed():
 	# Powrót do gry
