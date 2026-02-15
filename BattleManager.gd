@@ -217,15 +217,12 @@ func spawn_enemy(saved_hp: int = -1):
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
 	var enemy_name = ""
+	
+	# Dobieramy teksturę
 	if is_boss:
-		hp *= BOSS_HP_MULT
-		dmg *= BOSS_DMG_MULT
-		gold *= BOSS_GOLD_MULT
 		enemy_sprite.texture = boss_texture
-		enemy_sprite.modulate = Color.WHITE # No red modulate needed if using boss texture
-		enemy_sprite.scale = Vector2(0.5, 0.5) # Adjusting scale for potentially large JPEG
 		enemy_name = "BOSS: Raft Saddam"
-		enemy_hp_bar.modulate = Color(1, 0.3, 0.3) # Reddish for boss
+		enemy_hp_bar.modulate = Color(1, 0.3, 0.3)
 	else:
 		if current_stage <= 10:
 			enemy_sprite.texture = mummy_texture
@@ -233,10 +230,23 @@ func spawn_enemy(saved_hp: int = -1):
 		else:
 			enemy_sprite.texture = snake_texture
 			enemy_name = "Confused Snake"
-		
-		enemy_sprite.modulate = Color.WHITE
-		enemy_sprite.scale = Vector2(0.3, 0.3) # Adjusting scale for JPEGs
 		enemy_hp_bar.modulate = Color.WHITE
+
+	# --- INTELIGENTNE SKALOWANIE (Dostosowane do 360x640) ---
+	enemy_sprite.modulate = Color.WHITE
+	var tex_w = enemy_sprite.texture.get_width()
+	
+	if tex_w > 128:
+		# Stare, duże grafiki (JPEGs) - muszą być znacznie mniejsze
+		var target_scale = 0.25 if is_boss else 0.15
+		enemy_sprite.scale = Vector2(target_scale, target_scale)
+	else:
+		# Nowe grafiki Pixel Art (16px/32px)
+		var pixel_scale = 3.0 if is_boss else 2.0
+		enemy_sprite.scale = Vector2(pixel_scale, pixel_scale)
+		
+	# Aktualizujemy pozycję bazową dla animacji
+	original_enemy_pos = enemy_sprite.position
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10)
 	if saved_hp != -1:
