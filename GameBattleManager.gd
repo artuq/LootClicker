@@ -18,6 +18,8 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 # UI References
 @onready var hp_label = %HPLabel
+@onready var player_hp_bar = %PlayerHPBar
+@onready var enemy_hp_label = %EnemyHPLabel
 @onready var gold_label = %GoldLabel
 @onready var stage_label = %StageLabel
 @onready var next_level_btn = %NextLevelButton
@@ -66,11 +68,13 @@ func _ready():
 		gold_label.text = "Gold: " + format_number(g)
 		_animate_label(gold_label)
 	)
-	player.health_changed.connect(func(c, m): 
+	player.health_changed.connect(func(c, m):	  
 		hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)]
+		player_hp_bar.max_value = m
+		player_hp_bar.value = c
 		_animate_label(hp_label)
 	)
-	
+		
 	# XP Bar
 	var update_xp = func():
 		xp_bar.max_value = player.xp_required
@@ -115,11 +119,6 @@ func _ready():
 	else:
 		if not load_game():
 			spawn_enemy()
-	
-	# Initialize skill tree (under Next Level button)
-	var skill_tree = %VictoryUI/Upgrades
-	if skill_tree:
-		skill_tree.setup(player)
 	
 	_update_consumables_ui()
 	_update_inventory_ui()
@@ -369,6 +368,10 @@ func spawn_enemy(saved_hp: int = -1):
 	stage_label.text = "Stage: %d\n%s" % [current_stage, enemy_name]
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
+	enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(hp)]
+
+func _on_click_area_pressed():
+	_on_player_attack()
 
 func _on_player_attack():
 	if current_enemy:
@@ -377,6 +380,7 @@ func _on_player_attack():
 		if is_crit: dmg *= 2
 		current_enemy.take_damage(dmg)
 		enemy_hp_bar.value = current_enemy.current_hp
+		enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
 		_spawn_floating_text(format_number(dmg), Color.YELLOW)
 		
 		# Visual effects

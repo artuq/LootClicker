@@ -143,6 +143,20 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
 show_percentage = false
 
+[node name="EnemyHPLabel" type="Label" parent="CanvasLayer/HUD/EnemyHPBar" unique_id=264580371]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
+text = "100/100"
+label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="PlayerStatsBox" type="VBoxContainer" parent="CanvasLayer" unique_id=1713548447]
 offset_left = 10.0
 offset_top = 10.0
@@ -150,12 +164,28 @@ offset_right = 210.0
 offset_bottom = 80.0
 theme_override_constants/separation = 2
 
-[node name="HPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox" unique_id=1607821269]
+[node name="PlayerHPBar" type="ProgressBar" parent="CanvasLayer/PlayerStatsBox" unique_id=1103201743]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(180, 16)
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
+value = 100.0
+show_percentage = false
+
+[node name="HPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox/PlayerHPBar" unique_id=1607821269]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 10
 text = "HP: 100/100"
 label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="XPBar" type="ProgressBar" parent="CanvasLayer/PlayerStatsBox" unique_id=1676402328]
 unique_name_in_owner = true
@@ -166,12 +196,19 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
 value = 50.0
 show_percentage = false
 
-[node name="XPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox" unique_id=1374216939]
+[node name="XPLabel" type="Label" parent="CanvasLayer/PlayerStatsBox/XPBar" unique_id=1374216939]
 unique_name_in_owner = true
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_font_sizes/font_size = 10
 text = "XP: 0 / 50"
 label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="PotionButton" type="Button" parent="CanvasLayer/PlayerStatsBox" unique_id=20260215]
 unique_name_in_owner = true
@@ -343,9 +380,3 @@ text = "Slot 3"
 [connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/VictoryUI/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save1" to="GameManager" method="_on_save_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save2" to="GameManager" method="_on_save_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/SaveButtons/Save3" to="GameManager" method="_on_save_slot_pressed" binds= [3]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load1" to="GameManager" method="_on_load_slot_pressed" binds= [1]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load2" to="GameManager" method="_on_load_slot_pressed" binds= [2]]
-[connection signal="pressed" from="CanvasLayer/BottomPanel/TabContainer/Settings/VBox/LoadButtons/Load3" to="GameManager" method="_on_load_slot_pressed" binds= [3]]
