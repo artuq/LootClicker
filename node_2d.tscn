@@ -51,10 +51,17 @@ boss_texture = ExtResource("7_sadam")
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 5.0
-offset_bottom = 65.0
+offset_bottom = 85.0
 grow_horizontal = 2
 theme_override_constants/separation = 2
 alignment = 1
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD" unique_id=1117574831]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 4)
+layout_mode = 2
+size_flags_horizontal = 4
+show_percentage = false
 
 [node name="GoldLabel" type="Label" parent="CanvasLayer/HUD" unique_id=624552451]
 unique_name_in_owner = true
@@ -83,6 +90,7 @@ value = 100.0
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer" unique_id=184808651]
 unique_name_in_owner = true
+process_mode = 3
 visible = false
 anchors_preset = 8
 anchor_left = 0.5

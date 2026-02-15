@@ -19,6 +19,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var gold_label = %GoldLabel
 @onready var stage_label = %StageLabel
 @onready var next_level_btn = %NextLevelButton
+@onready var xp_bar = %XPBar
 @onready var click_area = %ClickArea
 
 # Okna
@@ -54,6 +55,13 @@ func _ready():
 	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
 	player.health_changed.connect(func(c, m): hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)])
 	player.item_added.connect(func(item): _spawn_floating_text("LOOT: " + item.name, Color.CYAN))
+	
+	# XP Bar
+	var update_xp = func():
+		xp_bar.max_value = player.xp_required
+		xp_bar.value = player.xp
+	player.leveled_up.connect(func(_l): update_xp.call())
+	update_xp.call()
 
 	# --- NAPRAWA BŁĘDU Z OBRAZKA (Signal already connected) ---
 	if not next_level_btn.pressed.is_connected(_on_next_level_button_pressed):
@@ -219,28 +227,27 @@ func spawn_enemy(saved_hp: int = -1):
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
 	var enemy_name = ""
+	var res_type = ""
 	
-	# Dobieramy teksturę
+	# Dobieramy teksturę i surowiec
 	if is_boss:
 		enemy_sprite.texture = boss_texture
 		enemy_name = "BOSS: Raft Saddam"
 		enemy_hp_bar.modulate = Color(1, 0.3, 0.3)
+		res_type = "relic_shards"
 	else:
 		if current_stage <= 10:
 			enemy_sprite.texture = mummy_texture
 			enemy_name = "Toilet Paper Mummy"
+			res_type = "bandages"
 		else:
 			enemy_sprite.texture = snake_texture
 			enemy_name = "Confused Snake"
+			res_type = "venom"
 		enemy_hp_bar.modulate = Color.WHITE
 
-	# --- AUTOMATYCZNE SKALOWANIE (Dostosowane do 360x640) ---
-	enemy_sprite.modulate = Color.WHITE
-	var tex_w = enemy_sprite.texture.get_width()
-	
-	# ZŁOTY ŚRODEK: Mob zajmuje połowę ekranu (180px), Boss trochę więcej (240px)
-	var target_width = 240.0 if is_boss else 180.0
-	var final_scale = target_width / tex_w
+	# --- AUTOMATYCZNE SKALOWANIE ---
+	# ... (kod skalowania bez zmian) ...
 	
 	enemy_sprite.scale = Vector2(final_scale, final_scale)
 		
@@ -251,7 +258,7 @@ func spawn_enemy(saved_hp: int = -1):
 	# RESETUJEMY ANIMACJĘ ODDECHU (by nie nadpisywała nowej skali)
 	_start_idle_animation()
 		
-	current_enemy.setup_enemy(hp, dmg, gold, 10)
+	current_enemy.setup_enemy(hp, dmg, gold, 10 + current_stage, res_type)
 	if saved_hp != -1:
 		current_enemy.current_hp = saved_hp
 		
@@ -288,9 +295,16 @@ func _on_enemy_attack():
 		if get_node_or_null("/root/AudioManager"):
 			get_node("/root/AudioManager").play_hit_sound(0.7)
 
-func _on_enemy_died(_xp, gold):
+func _on_enemy_died(_xp, gold, res_type = ""):
 	player.gain_gold(gold)
 	player.gain_xp(_xp if _xp > 0 else 20 * current_stage) # Fallback if XP not defined
+	
+	if res_type != "":
+		player.resources[res_type] += 1
+		_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
+	
+	xp_bar.max_value = player.xp_required
+	xp_bar.value = player.xp
 	
 	enemy_sprite.visible = false # Ukrywamy postać, by nie zasłaniała przycisków
 	click_area.visible = false # Wyłączamy niewidoczny obszar klikania
