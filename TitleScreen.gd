@@ -3,20 +3,29 @@ extends Control
 @onready var continue_btn = %ContinueButton
 
 func _ready():
+	# Ustawiamy tło tak, aby nie blokowało kliknięć (dodatkowe zabezpieczenie w kodzie)
+	$Background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
 	# Sprawdzamy czy istnieje plik zapisu dla slotu 1
 	var save_path = "user://savegame_slot1.json"
 	if not FileAccess.file_exists(save_path):
-		continue_btn.disabled = true
-		continue_btn.modulate.a = 0.5 # Lekko przezroczysty żeby pokazać że nieaktywny
+		if continue_btn:
+			continue_btn.disabled = true
+			continue_btn.modulate.a = 0.5
 
 func _on_continue_button_pressed():
-	print("START MODE: CONTINUE")
-	GameBattleManager.startup_mode = "continue"
-	get_tree().change_scene_to_file("res://node_2d.tscn")
+	print("DEBUG: CLICKED CONTINUE")
+	_start_game("continue")
 
 func _on_new_game_button_pressed():
-	print("START MODE: NEW GAME")
-	GameBattleManager.startup_mode = "new_game"
+	print("DEBUG: CLICKED NEW GAME")
+	_start_game("new_game")
+
+func _start_game(mode: String):
+	# Używamy bezpiecznego ładowania klasy
+	var manager = load("res://GameBattleManager.gd")
+	if manager:
+		manager.startup_mode = mode
 	get_tree().change_scene_to_file("res://node_2d.tscn")
 
 func _on_exit_button_pressed():
