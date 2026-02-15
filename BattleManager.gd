@@ -32,7 +32,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 var shake_intensity: float = 0.0
 var idle_tween: Tween 
-@onready var original_enemy_pos: Vector2 = enemy_sprite.position
+var original_enemy_pos: Vector2
 
 # Constants for scaling and balance
 const HP_BASE = 20
@@ -50,6 +50,7 @@ func _ready():
 	add_child(player)
 	
 	next_level_btn.visible = false
+	original_enemy_pos = enemy_sprite.position
 	
 	# Połączenia UI
 	player.gold_changed.connect(func(g): gold_label.text = "Gold: " + format_number(g))
