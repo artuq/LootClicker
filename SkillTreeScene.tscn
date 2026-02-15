@@ -3,14 +3,14 @@
 [ext_resource type="Script" path="res://SkillTreeScene.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/icons/tree_background.jpg" id="2_bg"]
 [ext_resource type="Script" path="res://SkillNode.gd" id="3_node_script"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/1.png" id="4_icon_str"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/10.png" id="5_icon_crit"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/25.png" id="6_icon_gold"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/50.png" id="7_icon_spd"]
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/18.png" id="8_icon_def"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_str.png" id="4_icon_str"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_crit.png" id="5_icon_crit"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_gold.png" id="6_icon_gold"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_speed.png" id="7_icon_spd"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_def.png" id="8_icon_def"]
 [ext_resource type="Texture2D" path="res://assets/kenney_ui/PNG/buttonLong_beige.png" id="9_btn_bg"]
 
-[ext_resource type="Texture2D" path="res://assets/icons/new_icons/Icons 512x512/113.png" id="10_icon_hp"]
+[ext_resource type="Texture2D" path="res://assets/cards/card_hp.png" id="10_icon_hp"]
 
 [node name="SkillTreeScene" type="Control"]
 process_mode = 3
