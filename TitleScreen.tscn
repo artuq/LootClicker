@@ -37,6 +37,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 texture = ExtResource("2_image")
 expand_mode = 1
 stretch_mode = 6
@@ -57,34 +58,34 @@ grow_vertical = 2
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="ContinueButton" type="Button" parent="MenuButtons" unique_id=1195987447]
+[node name="ContinueButton" type="Button" parent="MenuButtons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 text = "CONTINUE"
 
-[node name="NewGameButton" type="Button" parent="MenuButtons" unique_id=6558282]
+[node name="NewGameButton" type="Button" parent="MenuButtons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 text = "NEW GAME"
 
-[node name="ExitButton" type="Button" parent="MenuButtons" unique_id=1694860855]
+[node name="ExitButton" type="Button" parent="MenuButtons"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.4, 0.2, 0, 1)
 theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
-theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
 text = "EXIT"
 
 [connection signal="pressed" from="MenuButtons/ContinueButton" to="." method="_on_continue_button_pressed"]
