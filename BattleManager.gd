@@ -9,6 +9,7 @@ var enemy_timer: Timer
 const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 @export var damage_label_scene: PackedScene
+@export var upgrade_screen_scene: PackedScene # New export for level up UI
 @export var mummy_texture: Texture2D
 @export var snake_texture: Texture2D
 @export var boss_texture: Texture2D
@@ -68,6 +69,7 @@ func _ready():
 	add_child(enemy_timer)
 	
 	player.skills_updated.connect(_on_skills_updated)
+	player.leveled_up.connect(_on_player_leveled_up)
 	player.error_occurred.connect(func(msg): 
 		_spawn_floating_text(msg, Color.ORANGE_RED)
 		if get_node_or_null("/root/AudioManager"):
@@ -285,12 +287,24 @@ func _on_enemy_attack():
 
 func _on_enemy_died(_xp, gold):
 	player.gain_gold(gold)
+	player.gain_xp(_xp if _xp > 0 else 20 * current_stage) # Fallback if XP not defined
+	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
 	_roll_for_loot()
 	player_timer.stop()
 	enemy_timer.stop()
 	next_level_btn.visible = true
+
+func _on_player_leveled_up(_new_level):
+	if !upgrade_screen_scene: return
+	
+	# Pauzujemy grę na czas wyboru
+	get_tree().paused = true
+	
+	var screen = upgrade_screen_scene.instantiate()
+	$CanvasLayer.add_child(screen)
+	screen.setup(player)
 
 func _roll_for_loot():
 	if randf() < 0.3: # 30% szansy na loot

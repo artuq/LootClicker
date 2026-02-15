@@ -21,6 +21,8 @@ outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
 
+[ext_resource type="PackedScene" uid="uid://c8k8l8x8x8x8" path="res://UpgradeScreen.tscn" id="9_upgrade"]
+
 [node name="Node2D" type="Node2D" unique_id=1037092088]
 
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=1687472269]
@@ -39,6 +41,7 @@ stretch_mode = 6
 [node name="BattleManager" type="Node" parent="." unique_id=168535360]
 script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("3_0hol4")
+upgrade_screen_scene = ExtResource("9_upgrade")
 mummy_texture = ExtResource("6_mummy")
 snake_texture = ExtResource("8_snake")
 boss_texture = ExtResource("7_sadam")
