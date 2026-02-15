@@ -105,8 +105,8 @@ func _play_hit_effect(is_crit: bool):
 	enemy_sprite.modulate = Color(10, 10, 10) # Overbright white
 	tween.tween_property(enemy_sprite, "modulate", Color.WHITE, 0.1)
 	
-	# Squash Effect
-	var base_scale = Vector2(0.5, 0.5) if (current_stage % 5 == 0) else Vector2(0.3, 0.3)
+	# Squash Effect - używamy aktualnej skali zamiast stałych
+	var base_scale = enemy_sprite.scale
 	var hit_tween = create_tween()
 	enemy_sprite.scale = base_scale * 0.8
 	hit_tween.tween_property(enemy_sprite, "scale", base_scale, 0.2).set_trans(Tween.TRANS_ELASTIC)
@@ -232,18 +232,15 @@ func spawn_enemy(saved_hp: int = -1):
 			enemy_name = "Confused Snake"
 		enemy_hp_bar.modulate = Color.WHITE
 
-	# --- INTELIGENTNE SKALOWANIE (Dostosowane do 360x640) ---
+	# --- AUTOMATYCZNE SKALOWANIE (Dostosowane do 360x640) ---
 	enemy_sprite.modulate = Color.WHITE
 	var tex_w = enemy_sprite.texture.get_width()
 	
-	if tex_w > 500:
-		# Bardzo duże grafiki High-Res
-		var target_scale = 0.08 if is_boss else 0.05
-		enemy_sprite.scale = Vector2(target_scale, target_scale)
-	else:
-		# Grafiki Pixel Art - dajemy mniejszą skalę, by nie przytłaczały ekranu
-		var pixel_scale = 1.2 if is_boss else 0.8
-		enemy_sprite.scale = Vector2(pixel_scale, pixel_scale)
+	# Chcemy, aby mob zajmował ok. 120px szerokości, a boss ok. 180px
+	var target_width = 180.0 if is_boss else 120.0
+	var final_scale = target_width / tex_w
+	
+	enemy_sprite.scale = Vector2(final_scale, final_scale)
 		
 	# Pozycjonujemy przeciwnika tak, by był dokładnie na środku obszaru walki
 	enemy_sprite.position = Vector2(180, 240)
