@@ -54,6 +54,7 @@ const NEAR_DEATH_THRESHOLD = 0.2 # 20% HP
 
 # Curse system
 var poison_timer: Timer
+var in_combat: bool = false
 
 # Cached styles for dynamic HP bar colors
 var style_green: StyleBoxTexture
@@ -475,8 +476,8 @@ func spawn_enemy(saved_hp: int = -1):
 
 func _on_click_area_pressed():
 	_on_player_attack()
-	# Blood Price curse: HP cost per click
-	if player.click_hp_cost > 0:
+	# Blood Price curse: HP cost per click (only during combat)
+	if in_combat and player.click_hp_cost > 0:
 		player.on_click_curse_cost()
 		if player.current_hp <= 0:
 			_handle_player_death()
@@ -561,6 +562,10 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		
 	player_timer.stop()
 	enemy_timer.stop()
+	in_combat = false
+	# Stop curse effects between stages
+	if poison_timer and not poison_timer.is_stopped():
+		poison_timer.stop()
 	
 	# SHOW VICTORY AND UPGRADE SCREEN
 	victory_ui.visible = true
@@ -590,6 +595,7 @@ func _on_next_level_button_pressed():
 	_start_combat()
 
 func _start_combat():
+	in_combat = true
 	player_timer.wait_time = player.get_attack_speed()
 	player_timer.start()
 	enemy_timer.start()
@@ -751,6 +757,8 @@ func _update_poison_timer():
 			poison_timer.stop()
 
 func _on_poison_tick():
+	if not in_combat:
+		return
 	if player.poison_dps > 0 and player.current_hp > 0:
 		player.apply_poison_tick()
 		_spawn_floating_text("POISON -%d" % player.poison_dps, Color.PURPLE)
