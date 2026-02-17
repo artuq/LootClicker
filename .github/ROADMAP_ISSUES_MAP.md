@@ -1,182 +1,123 @@
 # Roadmap ↔ Issues/Projects Synchronization Map
 
-**Purpose:** Link Roadmap.md sections to GitHub Issues and Projects  
-**Last Updated:** 2026-02-17  
-**Sync Status:** ✅ Current
+**Last Updated:** 2026-02-17 | **Sync Status:** ✅ Current
 
 ---
 
-## 🗺️ Roadmap Sections → GitHub Issues
+## 🗺️ Issue → Implementation Status
 
-### FILAR 1: KOD I MECHANIKA (CORE)
+### Core Systems (#1) — ✅ CLOSED
+All core mechanics implemented: combat, save/load, signals, scaling, boss every 5 stages.
 
-#### Subgraph: Fundamenty (G_CORE)
+### Audio/Visual Game Feel (#2) — ✅ CLOSED
+Audio manager, procedural SFX, hit flash, screen shake, squash & stretch. **Extended by #15 (Near Death VFX).**
 
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| ✅ Fix: setup_enemy crash | Historical | ✅ CLOSED | Fixed in earlier session |
-| ✅ Sygnały & Event Bus | Historical | ✅ CLOSED | Implemented in v0.1 |
-| ✅ Sync: HP/Gold/Timery | Historical | ✅ CLOSED | Core system working |
+### Lore & Items (#3) — 🕒 TODO
+Story, loot table design, prestige system. **Partially addressed by enemy roster flavor text.**
 
-#### Subgraph: Mechanika RPG (G_MECH)
+### Google Play Release (#4) — 🕒 TODO
+Privacy policy, IARC, screenshots, .aab build. Blocked by MVP completion.
 
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| ✅ Floating Text System | Historical | ✅ CLOSED | Implemented in v0.1 |
-| ✅ Boss System co 5 Stage | #10 | ✅ CLOSED | Working, needs visual/audio fixes |
-| ✅ Roguelite: 3 Cards Choice | #2 | ✅ CLOSED | Bug fixed 2026-02-17 |
-| ✅ Resources: Mummy Bandages | Historical | ✅ CLOSED | Drop system in v0.1 |
-| ✅ Skalowanie x1.2 | Historical | ✅ CLOSED | Implemented math scaling |
-| ✅ Dodge & Block Mechanic | #4 | ✅ CLOSED | Save/load fixed 2026-02-17 |
+### QA & Testing (#5) — 🟢 IN PROGRESS (Project Board)
+GitHub closed, but board shows In Progress. Ongoing regression testing with each feature.
 
----
+### Polish Backlog (#6) — ✅ CLOSED
+Floating text, HP bar colors, button juice, XP signals, card text wrapping.
 
-### FILAR 2: GRAFIKA I OPTYMALIZACJA (TECH-ART)
+### Monetization (#7) — 🕒 TODO
+AdMob, analytics, marketing materials. Post-MVP.
 
-#### Subgraph: Wydajność i Styl (G_OPT)
+### Assets List (#8) — ✅ CLOSED
+AI-generated icons (bandage, venom, crystal, coin), sprites organized.
 
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| ✅ Pixel Art Config | Historical | ✅ CLOSED | 2D pixel perfect enabled |
-| ✅ Kenney UI Skinning | Historical | ✅ CLOSED | All UI buttons styled |
-| ✅ Smart Scaling Fixes | Historical | ✅ CLOSED | Automatic sprite scaling |
-| ⚙️ Batching Draw Calls | #16 | 🕒 TODO | Performance optimization |
+### Admin/Localization (#9) — 🧊 ICE BOX
+Translations, credits, licensing. Deferred.
 
-#### Subgraph: Game Feel & FX (G_JUICE)
+### MVP v0.2 (#10) — 🟢 IN PROGRESS
+Core loop functional. Enemies + bosses done. Needs: English UI text, Stage 50 boss balance.
 
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| 🎨 Particle System | #8 | 🕒 TODO | Boss combat particles |
-| ✅ Screen Shake | Historical | ✅ CLOSED | Implemented in core |
-| ✅ Squash & Stretch | Historical | ✅ CLOSED | Enemy sprite animations |
-| ✅ Hit Flash | Historical | ✅ CLOSED | Visual feedback on hits |
+### Combat Arena UI (#11) — 🟢 IN PROGRESS
+HUD redesigned (TopHUD + MidHUD), enemy positioning done. Missing: shadow, white flash HP, action bar.
 
----
+### Pixel Art Style (#12) — 🟢 IN PROGRESS
+9 Stardew Valley-style sprites imported. Pixel perfect config set. Needs: 32x32 character sprites.
 
-### FILAR 3: ASSETY I SYSTEMY (PIPELINE)
+### Godot Startup Fix (#13) — ✅ CLOSED
+Removed C# addon, fixed tree_background.png mismatch.
 
-#### Subgraph: Systemy Danych (G_SYS)
+### Cursed Cards (#14) — ✅ IMPLEMENTED
+6 cursed cards (Berserker, Glass Cannon, Blood Price, Frenzy, Toxic, Thorns). Confirmation popup, debuff timer, between-stage safety. **Ready to close.**
 
-| Roadmap Item | Issue(s) | Status | Commit | Notes |
-|---|---|---|---|---|
-| ✅ JSON Save/Load | #4 | ✅ CLOSED | 9324e33 | Working system |
-| ✅ Szyfrowanie Danych | #4 | ✅ CLOSED | 9324e33 | Encrypted saves |
-| ✅ Audio Manager: Procedural + Bus Fix | #1 | ✅ CLOSED | **51fa613** | **Fixed today** |
-| ✅ Inventory Grid & Potions | Historical | ✅ CLOSED | 34e7c4d | UI grid system |
-| ✅ CardChoiceScene Null-checks | #2 | ✅ CLOSED | **51fa613** | **Fixed today** |
-| ✅ UpgradeManager Validation | #3 | ✅ CLOSED | **51fa613** | **Fixed today** |
+### Near Death VFX (#15) — ✅ IMPLEMENTED
+Red vignette shader (radial gradient, pulsing), low-pass audio filter (20500→800 Hz), procedural heartbeat SFX. **Ready to close.**
 
-#### Subgraph: Zasoby (G_ASSETS)
+### Flavorful Descriptions (#16) — 🕒 TODO
+Climate-themed card text with flavor + stat. Low priority copywriting task.
 
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| 🕒 Import: Sprite Sheets | #19 | 🕒 TODO | Organization needed |
-| 🕒 Fonty: Custom .ttf | #18 | 🕒 TODO | Low priority |
-| 🕒 SFX & Music Bus | #9 | 🕒 TODO | Boss audio effects |
-| 🕒 Ikony Ekwipunku | #20 | 🕒 TODO | Equipment icons |
+### Enemy Roster (#17) — ✅ IMPLEMENTED
+8 enemies: Squirrel, Monkey, Plant, Mummy, Snake (Jungle) + Skeleton, Golem, Ghost, Mummy, Snake (Temple). Biome spawning rules. 3 resource types (bandages, venom, relic_shards). **Ready to close.**
+
+### Boss System (#18) — ✅ IMPLEMENTED
+3 bosses: The Allergic Idol (S10, "Ah...CHOO!"), Brad the Influencer (S25, "Like and subscribe!"), Budget Sphinx (S40, "Meow. Give me gold."). Greeting text overlay with fade animation. **Ready to close.**
+
+### Drop/Resource System (#19) — 🕒 TODO
+Loot tables with scaling drops. Partially implemented (enemies drop bandages/venom/relic_shards with stage-scaled amounts). Needs: crafting system, resource usage.
 
 ---
 
-### FILAR 4: FABUŁA (NARRATIVE)
-
-#### Subgraph: Scenariusz (G_LORE)
-
-| Roadmap Item | Issue(s) | Status | Notes |
-|---|---|---|---|
-| 🎬 Intro: Skok w siano | #11 | 🕒 TODO | Complex animation needed |
-| 💀 Boss: Saddam | #8, #9, #13 | 🕒 TODO | Visual/audio/dialogue |
-| 🎒 Loot: Bicz z gumy | #5, #6, #7 | 🕒 TODO | Loot system foundation |
-| 🔄 Prestiż: Sequel | #14, #15 | 🕒 TODO | New Game+ mechanics |
-| 📜 Dziennik: 20 wpisów | #12 | 🕒 TODO | Lore log system |
-
----
-
-## 📊 Issue Distribution by Roadmap Section
+## 📊 Issue Distribution
 
 ```
-FILAR 1 (CORE):           5 issues ✅ (100% done)
-├─ G_CORE               3 closed
-└─ G_MECH               5 closed + 1 in-progress
+CLOSED (GitHub):           6  (#1, #2, #5, #6, #8, #13)
+IMPLEMENTED (ready close): 4  (#14, #15, #17, #18)
+IN PROGRESS:               4  (#5*, #10, #11, #12)
+TODO:                      5  (#3, #4, #7, #16, #19)
+ICE BOX:                   1  (#9)
+────────────────────────────
+TOTAL:                    19 issues
 
-FILAR 2 (TECH-ART):       9 issues (67% done)
-├─ G_OPT                4 items (3 done, 1 todo)
-└─ G_JUICE              4 items (3 done, 1 todo)
-
-FILAR 3 (ASSETS):        10 issues (60% done)
-├─ G_SYS                6 done, 0 todo
-└─ G_ASSETS             0 done, 4 todo
-
-FILAR 4 (NARRATIVE):      5 issues (0% done)
-└─ G_LORE               0 done, 5 todo
-
-TOTAL:                   29 issues & epics
-Completed:              18+ ✅
-In Progress:            0 🟢
-Todo:                   11+ 🕒
+* #5 is closed on GitHub but In Progress on project board
 ```
 
 ---
 
-## 🔄 Synchronization Workflow
+## 🔄 Implementation Map (What Code Changed)
 
-### When Creating New Issue:
-1. Determine which Roadmap section it belongs to
-2. Reference in ISSUES.md as `[Roadmap: SECTION → ITEM]`
-3. Update this file with issue mapping
-4. Add issue to PROJECT_TRACKING.md board
-
-### When Closing Issue:
-1. Create commit with `fix/feat: Close #XX`
-2. Reference roadmap item as resolved
-3. Mark item as ✅ in Roadmap.md
-4. Move from TODO to CLOSED in ISSUES.md
-5. Update PROJECT_TRACKING.md metrics
-
-### Weekly Sync Check:
-- [ ] All CLOSED issues reflect roadmap ✅ items
-- [ ] All TODO issues appear in ISSUES.md 🕒
-- [ ] Backlog prioritization matches roadmap importance
-- [ ] Velocity metrics are current
+| Issue | Files Modified | Key Changes |
+|-------|---------------|-------------|
+| #14 | PlayerStats.gd, UpgradeManager.gd, CardChoiceScene.gd, GameBattleManager.gd | Curse system, debuff timers, cursed card styling |
+| #15 | GameBattleManager.gd, AudioManager.gd | Vignette shader, low-pass filter, heartbeat synth |
+| #17 | GameBattleManager.gd, PlayerStats.gd, Enemy.gd | Enemy roster arrays, biome spawning, resource types |
+| #18 | GameBattleManager.gd | Boss roster dict, greeting UI, sprite scaling |
+| Balance | PlayerStats.gd, GameBattleManager.gd, UpgradeManager.gd | DMG%, DEF%, Crit DMG, Speed curve, Potion%, XP |
 
 ---
 
-## 🎯 Current Sprint Focus → Roadmap Alignment
+## Current Codebase Structure
 
-### Sprint: 2026-02-18 → 2026-02-28
+```
+src/scripts/
+├── AudioManager.gd     — Music, SFX, near-death audio, procedural heartbeat
+├── Enemy.gd            — Enemy class with name, HP, damage, resource drop
+├── GameItem.gd         — Equipment item class
+├── PlayerStats.gd      — All player stats, curses, combat, XP/leveling
+├── SettingsManager.gd  — Settings persistence
+├── SkillNode.gd        — Skill tree node
+├── UpgradeManager.gd   — Card definitions (8 normal + 6 cursed), upgrade application
 
-**Planned Issues**
-- #5, #6, #7 → G_LORE → L3 (Loot system)
-- #8, #9 → G_JUICE + G_LORE → L2 (Boss effects)
+src/scenes/
+├── GameBattleManager.gd — Main battle controller, enemy roster, boss system, vignette
+├── CardChoiceScene.gd   — Level-up card selection UI with cursed card styling
+├── SkillTree.gd         — Skill tree logic
+├── UpgradeScreen.gd     — Upgrade shop screen
+├── TitleScreen.gd       — Title/menu screen
+├── SettingsScene.gd     — Settings UI
+└── damage_label.gd      — Floating damage text
 
-**Roadmap Impact**
-- Will move "🎒 Loot" from 🕒 to ✅
-- Will move "💀 Boss FX" from 🕒 to 🟢 (in progress)
-
----
-
-## 🚦 Status Legend
-
-| Symbol | Meaning | Roadmap | Issues |
-|---|---|---|---|
-| ✅ | Complete | Green check | CLOSED |
-| 🟢 | In Progress | Yellow circle | IN PROGRESS |
-| 🕒 | Todo/Planned | Orange circle | TODO |
-| 🎨 | Partial/In Design | Purple circle | DESIGN |
-| ⚙️ | Technical Debt | Blue circle | TECH-DEBT |
-
----
-
-## 📚 Reference Documents
-
-1. **Roadmap.md** → Strategic planning (mermaid diagram)
-2. **ISSUES.md** → Issue tracking & details
-3. **PROJECT_TRACKING.md** → Sprint board & velocity
-4. **SESSION_SUMMARY.md** → Session notes
-5. **BUGFIX_CHANGELOG_2026-02-17.md** → Detailed fixes
+assets/sprites/enemies/  — 9 PNG sprites (6 enemies + 3 bosses)
+assets/ui/cards/         — Card icons (8 normal + 6 cursed)
+```
 
 ---
 
-**Maintained By:** GitHub Copilot + Developer Team  
-**Update Frequency:** After each commit  
-**Last Check:** 2026-02-17 @ 12:00 UTC  
-**Next Check:** 2026-02-18 @ 10:00 UTC
+**Maintained By:** GitHub Copilot | **Last Sync:** 2026-02-17

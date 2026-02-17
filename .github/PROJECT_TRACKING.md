@@ -1,273 +1,135 @@
 # LootClicker - Project Tracking Board
 
-**Status:** Active Development | **Last Updated:** 2026-02-17 | **Sprint:** Continuous
+**Status:** Active Development | **Last Updated:** 2026-02-17 | **Sprint:** Session 2026-02-17
 
 ---
 
-## 📋 Current Sprint (2026-02-17 → 2026-02-28)
+## 📋 Session Goals (2026-02-17)
 
-### 🏁 Sprint Goals
-
-1. ✅ **Resolve all critical bugs** (COMPLETED)
-2. 🕒 **Implement loot drop system** (CURRENT)
-3. 🕒 **Add boss-specific effects** (NEXT)
-4. 🕒 **Story/narrative foundations** (PLANNED)
-
----
-
-## 📊 Project Board: Columns & Cards
-
-### ✅ DONE (Completed Items)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ ✅ AudioManager: Master Bus Validation                      │
-│    Commit: 51fa613 | Issue: #1 | Roadmap: G_SYS → S3       │
-│    Fixed: bus existence checks + error logging               │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ CardChoiceScene: Null-check Guards                       │
-│    Commit: 51fa613 | Issue: #2 | Roadmap: G_SYS → S5       │
-│    Fixed: crash on level-up after defeating first enemy      │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ UpgradeManager: Card Icons & Validation                  │
-│    Commit: 51fa613 | Issue: #3 | Roadmap: G_SYS → S6       │
-│    Fixed: dodge/block cards + unknown upgrade handling      │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ GameBattleManager: Save/Load Sync                        │
-│    Commit: 51fa613 | Issue: #4 | Roadmap: G_SYS → S1       │
-│    Fixed: dodge_chance & block_chance persistence          │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ Documentation: Bugfix Changelog                          │
-│    Commit: d68d8f5 | Issue: N/A | Roadmap: DOCS            │
-│    Added: BUGFIX_CHANGELOG_2026-02-17.md                   │
-└─────────────────────────────────────────────────────────────┘
-```
-
-┌─────────────────────────────────────────────────────────────┐
-│ ✅ AI-Generated Icons: bandage, venom, coin, crystal        │
-│    Commit: 2be4035 | Issue: #8, #12 | Roadmap: ART          │
-│    Added: Bing Image Creator pixel art icons (4 resources)  │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ HUD Layout Redesign: Split TopHUD + MidHUD               │
-│    Commits: d75edb2..aba8053 | Issue: #11 | Roadmap: UI     │
-│    Changed: TopBar+Enemy (top), Gold+HP (mid), Bottom (same)│
-├─────────────────────────────────────────────────────────────┤
-│ ✅ XP Bar Real-time Updates + Signal System                 │
-│    Commit: f3eb983 | Issue: #6 | Roadmap: G_SYS             │
-│    Added: xp_changed signal, live XP bar updates            │
-├─────────────────────────────────────────────────────────────┤
-│ ✅ CardChoiceScene Text Wrapping Fix                        │
-│    Commit: f3eb983 | Issue: #6 | Roadmap: UI                │
-│    Fixed: custom_minimum_size + font_size for card text     │
-└─────────────────────────────────────────────────────────────┘
-
-**Items in DONE:** 9  
-**Estimated Hours:** 10h  
-**Actual Hours:** ~7h (efficient work)
+1. ✅ **Near Death VFX** (#15) — Red vignette, heartbeat, low-pass filter
+2. ✅ **Cursed Cards** (#14) — 6 risk/reward cards with debuff system
+3. ✅ **Enemy Roster** (#17) — 8 enemies across 2 biomes (Jungle + Temple)
+4. ✅ **Boss System** (#18) — 3 unique bosses with greeting text
+5. ✅ **Balance Pass** — 6 core balance changes (DMG, DEF, Crit, Speed, Potion, XP)
+6. ✅ **Bug Fixes** — Signal mismatch, indentation, curse timing, card UI
 
 ---
 
-### 🟢 IN PROGRESS (Currently Working)
+## 📊 Project Board (GitHub Projects)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ (None - Awaiting assignment)                                │
-│                                                              │
-│ Next up: #5 - Implement loot drop system                   │
-│ Estimated Start: 2026-02-18                                 │
-│ Assigned to: [Ready for implementation]                     │
-└─────────────────────────────────────────────────────────────┘
-```
+### ✅ DONE (6 items)
 
-**Items in PROGRESS:** 0
+| # | Title | Key Commits |
+|---|-------|-------------|
+| #1 | [CORE] Implementacja mechanik gry i systemów danych | `51fa613` |
+| #2 | [ART] Oprawa audiowizualna i Game Feel | `51fa613`, `2be4035` |
+| #6 | [POLISH] Ulepszanie istniejących mechanik | `f3eb983` |
+| #8 | [ASSETS] Lista Zasobów do wykonania/zdobycia | `2be4035` |
+| #13 | Fix: Godot startup errors and resource mismatches | bug fix |
+| — | Documentation & bugfix changelogs | `d68d8f5`, `2b33e38` |
 
----
+### 🟢 IN PROGRESS (3 items)
 
-### 🕒 TO DO (Backlog - Prioritized)
+| # | Title | Progress | Notes |
+|---|-------|----------|-------|
+| #5 | [QA] Testy Regresyjne i Weryfikacja Błędów | ~70% | GitHub closed, board In Progress. Ongoing testing. |
+| #10 | [MVP] Zakres wersji 0.2 (English Only Release) | ~40% | Core loop done, enemy roster done. Needs: English texts, Stage 50 boss tuning |
+| #11 | [UI] Combat Arena - Styl "Action Bar" | ~50% | HUD redesigned. Missing: shadow, white flash HP, action bar |
+| #12 | [ART] Styl Graficzny: Pixel Art (Stardew-like) | ~60% | 9 Stardew-style sprites, pixel perfect config. Needs: 32x32 character sprites |
 
-#### 🔴 CRITICAL (Do First)
+### 🕒 TODO (9 items)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ #5 - Implement Loot Drop System                             │
-│ Priority: 🔴 CRITICAL | Complexity: MEDIUM                 │
-│ Description: Enemies drop GameItem resources on death      │
-│ Roadmap: (NEW - Core Mechanic)                             │
-│ Subtasks:                                                   │
-│   ├─ Design loot table & drop rates (#6)                   │
-│   ├─ Create GameItem prefab system (#7)                    │
-│   └─ Integrate with inventory UI                           │
-│ Estimated: 8h | Start Date: 2026-02-18                    │
-├─────────────────────────────────────────────────────────────┤
-│ Notes:                                                       │
-│ - Will unlock prestige/progression mechanic                 │
-│ - Requires new data structure (LootTable)                   │
-│ - Should sync with UpgradeManager & InventoryManager       │
-└─────────────────────────────────────────────────────────────┘
-```
+| # | Title | Priority | Est. Hours |
+|---|-------|----------|------------|
+| #3 | [LORE] Implementacja fabuły i przedmiotów | 🟡 Medium | 8h |
+| #4 | [RELEASE] Przygotowanie do publikacji Google Play | 🔴 Low | 6h |
+| #7 | [BIZNES] Monetyzacja, Marketing i Analityka | 🔴 Low | 10h |
+| #14 | [DESIGN] High Stakes Cards | ✅ Implemented | — (ready to close) |
+| #15 | [VFX] Near Death Experience | ✅ Implemented | — (ready to close) |
+| #16 | [UX] Flavorful Descriptions | 🟢 Low | 4h |
+| #17 | Enemy Roster: 6 Enemies (2 Biomes) | ✅ Implemented | — (ready to close) |
+| #18 | Boss System: 3 Boss Fights | ✅ Implemented | — (ready to close) |
+| #19 | Drop/Resource System: Loot Tables | 🟡 Medium | 6h |
 
-#### 🟡 HIGH (Do Next)
+### 🧊 ICE BOX (1 item)
 
-```
-┌─────────────────────────────────────────────────────────────┐
-│ #8 - Boss-Specific Visual Effects                           │
-│ Priority: 🟡 HIGH | Complexity: MEDIUM                     │
-│ Roadmap: G_JUICE → J1 (Particle System)                    │
-│ Estimated: 6h                                               │
-├─────────────────────────────────────────────────────────────┤
-│ #9 - Boss-Specific Audio Effects                           │
-│ Priority: 🟡 HIGH | Complexity: LOW                        │
-│ Roadmap: G_SYS → S3 (Audio Manager)                        │
-│ Estimated: 3h                                               │
-├─────────────────────────────────────────────────────────────┤
-│ #11 - Intro Sequence (Skip/Watch)                          │
-│ Priority: 🟡 HIGH | Complexity: HIGH                       │
-│ Roadmap: G_LORE → L1 (Scenariusz)                          │
-│ Estimated: 8h                                               │
-└─────────────────────────────────────────────────────────────┘
-```
-
-#### 🟢 OPTIONAL (When Time Permits)
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│ #14 - Prestige/New Game+ System                             │
-│ Priority: 🟢 LOW | Complexity: HIGH                        │
-│ Roadmap: G_LORE → L4 (Prestiż)                             │
-│ Estimated: 12h                                              │
-├─────────────────────────────────────────────────────────────┤
-│ #16 - Performance: Draw Call Batching                       │
-│ Priority: 🟢 LOW | Complexity: MEDIUM                      │
-│ Roadmap: G_OPT → O4 (Batching)                             │
-│ Estimated: 6h (if needed)                                   │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**Total Backlog Items:** 16  
-**Total Estimated Hours:** ~60h  
-**Estimated Completion (at 2h/day):** ~4 weeks
+| # | Title | Notes |
+|---|-------|-------|
+| #9 | [ADMIN] Lokalizacja, Licencje i Organizacja | Post-MVP |
 
 ---
 
 ## 📈 Velocity & Metrics
 
-### Current Sprint (2026-02-17)
+### Session 2026-02-17
 
-| Metric | Value | Status |
-|---|---|---|
-| **Sprint Duration** | 1 day | ⏱️ |
-| **Items Completed** | 5 | ✅ |
-| **Items Started** | 5 | ✅ |
-| **Velocity (items/day)** | 5 | 🚀 |
-| **Hour Estimate Accuracy** | ~66% | 📊 |
-| **Blockers** | 0 | ✅ Clear |
+| Metric | Value |
+|--------|-------|
+| Features Implemented | 4 (#14, #15, #17, #18) |
+| Bug Fixes | 5 (card size, font, curse timing, signal, indentation) |
+| Balance Changes | 6 (DMG, DEF, Crit, Speed, Potion, XP) |
+| Commits | 9 |
+| Sprites Added | 9 (6 enemies + 3 bosses) + 6 cursed card PNGs |
+| Files Modified | ~10 |
+| New Issues Created | 6 (#14-#19) |
 
-### Historical Velocity
+### Historical
 
-| Sprint | Items | Hours | Velocity |
-|---|---|---|---|
-| 2026-02-17 | 9 | 7h | 9 items/day |
-| 2026-02-15 | 8 | 12h | 4 items/3 days |
-| 2026-02-13 | 6 | 10h | 3 items/2 days |
+| Date | Features | Fixes | Commits |
+|------|----------|-------|---------|
+| 2026-02-17 (session 2) | 4 features | 5 fixes + 6 balance | 9 commits |
+| 2026-02-17 (session 1) | HUD redesign, AI icons, XP signals | 6 critical bugs | 9 commits |
+| 2026-02-15 | Godot fix, resource repair | 1 bug fix | 2 commits |
+| 2026-02-13 | Initial setup, core systems | — | Multiple |
 
 ---
 
 ## 🎯 Milestone Tracking
 
-### Q1 2026 Milestones
-
 ```
-[================================================] 55% Complete
+[================================================================] 65% → v0.2
 
 ✅ v0.1 - Foundation (DONE)
-   └─ Basic combat, HP bars, inventory, save/load
-   └─ UI/UX overhaul, code reorganization
+   ├─ Basic combat, HP bars, inventory, save/load
+   ├─ UI/UX overhaul, code reorganization
+   └─ Kenney UI skinning, audio manager
 
-🟢 v0.2 - Loot & Progression (IN PROGRESS - Starting)
-   └─ Loot drop system
-   └─ Boss effects + narrative intro
-   └─ Estimated: 2 weeks
+✅ v0.1.5 - Game Feel (DONE - This Session)
+   ├─ Near Death VFX (vignette + heartbeat)
+   ├─ Cursed Cards (6 cards, debuff system)
+   ├─ Enemy Roster (8 enemies, 2 biomes)
+   ├─ Boss System (3 bosses with greeting UI)
+   └─ Complete balance rewrite
+
+🟢 v0.2 - MVP Release (IN PROGRESS)
+   ├─ English texts hardcoded
+   ├─ Stage 50 final boss tuned
+   ├─ Drop/resource system (#19)
+   ├─ Flavorful descriptions (#16)
+   └─ Estimated: 1-2 weeks
 
 🕒 v0.3 - Story & Prestige (PLANNED)
-   └─ Full narrative arc
-   └─ Prestige mechanics
-   └─ Estimated: 2 weeks later
+   ├─ Full narrative arc (#3)
+   ├─ Prestige/New Game+ mechanics
+   └─ Estimated: 2-3 weeks after v0.2
 
 🕒 v1.0 - Polish & Release (FUTURE)
-   └─ Performance optimization
-   └─ QA/Playtesting
-   └─ Estimated: 1 month
+   ├─ Google Play prep (#4)
+   ├─ Monetization (#7)
+   └─ Localization (#9)
 ```
 
 ---
 
-## 🔗 Dependencies & Blockers
+## 🔗 Current Tech Stack
 
-### Active Dependencies
-
-| From | To | Type | Status |
-|---|---|---|---|
-| #8 (Boss VFX) | #10 (Boss Scaling) | "must have" | ✅ No Blocker |
-| #5 (Loot) | G_SYS (Inventory) | "uses" | ✅ Ready |
-| #11 (Intro) | #13 (Dialogue) | "includes" | 🕒 Awaiting |
-
-### Current Blockers
-
-> None! All systems are ready for next sprint.
+| Component | Status | Details |
+|-----------|--------|---------|
+| Godot | 4.6 | GDScript, viewport 360x640, portrait |
+| GitHub CLI | v2.86.0 | Scopes: gist, project, read:org, repo, workflow |
+| Repo | artuq/LootClicker | Branch: main |
+| Project Board | PVT_kwHOAYMZ0M4BPEOq | 19 items tracked |
 
 ---
 
-## 📅 Sprint Planning Template
-
-```
-## Sprint: 2026-02-18 → 2026-02-24 (Proposed)
-
-### Goal
-- [x] Complete loot drop system (#5, #6, #7)
-- [ ] Begin boss-specific effects (#8, #9)
-
-### Backlog Selection
-- #5 (8h) - Loot system implementation
-- #6 (3h) - Loot table design
-- #7 (5h) - GameItem prefab creation
-- #8 (6h) - Boss visual effects (if time permits)
-
-### Capacity
-- Hours Available: ~16h (2h/day × 8 days)
-- Estimated Burn: 16h
-- Buffer: 0h (tight schedule)
-
-### Risks
-- [ ] Complex loot integration might overrun
-- [ ] Requires new data structures
-- [ ] May need inventory UI tweaks
-```
-
----
-
-## 🔄 Board Management Rules
-
-1. **Only 1 item may be IN PROGRESS at a time**
-2. **Move item to DONE only after:**
-   - Code is complete
-   - Changes are committed to git
-   - Related issue is linked
-   - Roadmap is updated
-3. **Review backlog weekly** (every Sunday)
-4. **Update velocity metrics daily**
-
----
-
-**Project Owner:** Developer  
-**Maintained By:** GitHub Copilot  
-**Last Reviewed:** 2026-02-17 @ 13:30 UTC  
-**Next Review:** 2026-02-18 @ 10:00 UTC
-
----
-
-## Related Files
-
-- [ISSUES.md](.github/ISSUES.md) - Issue list & tracking
-- [../docs/Roadmap.md](../docs/Roadmap.md) - Long-term vision
-- [../docs/SessionSummary.md](../docs/SessionSummary.md) - Session notes
-- [../docs/BUGFIX_CHANGELOG_2026-02-17.md](../docs/BUGFIX_CHANGELOG_2026-02-17.md) - Detailed bug info
+**Maintained By:** GitHub Copilot | **Last Reviewed:** 2026-02-17 @ 16:00 UTC
