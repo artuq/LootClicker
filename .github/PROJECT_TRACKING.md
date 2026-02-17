@@ -43,9 +43,27 @@
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Items in DONE:** 5  
-**Estimated Hours:** 6h  
-**Actual Hours:** ~4h (efficient debugging)
+┌─────────────────────────────────────────────────────────────┐
+│ ✅ AI-Generated Icons: bandage, venom, coin, crystal        │
+│    Commit: 2be4035 | Issue: #8, #12 | Roadmap: ART          │
+│    Added: Bing Image Creator pixel art icons (4 resources)  │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ HUD Layout Redesign: Split TopHUD + MidHUD               │
+│    Commits: d75edb2..aba8053 | Issue: #11 | Roadmap: UI     │
+│    Changed: TopBar+Enemy (top), Gold+HP (mid), Bottom (same)│
+├─────────────────────────────────────────────────────────────┤
+│ ✅ XP Bar Real-time Updates + Signal System                 │
+│    Commit: f3eb983 | Issue: #6 | Roadmap: G_SYS             │
+│    Added: xp_changed signal, live XP bar updates            │
+├─────────────────────────────────────────────────────────────┤
+│ ✅ CardChoiceScene Text Wrapping Fix                        │
+│    Commit: f3eb983 | Issue: #6 | Roadmap: UI                │
+│    Fixed: custom_minimum_size + font_size for card text     │
+└─────────────────────────────────────────────────────────────┘
+
+**Items in DONE:** 9  
+**Estimated Hours:** 10h  
+**Actual Hours:** ~7h (efficient work)
 
 ---
 
@@ -148,7 +166,7 @@
 
 | Sprint | Items | Hours | Velocity |
 |---|---|---|---|
-| 2026-02-17 | 5 | 4h | 5 items/day |
+| 2026-02-17 | 9 | 7h | 9 items/day |
 | 2026-02-15 | 8 | 12h | 4 items/3 days |
 | 2026-02-13 | 6 | 10h | 3 items/2 days |
 
@@ -159,7 +177,7 @@
 ### Q1 2026 Milestones
 
 ```
-[========================================] 45% Complete
+[================================================] 55% Complete
 
 ✅ v0.1 - Foundation (DONE)
    └─ Basic combat, HP bars, inventory, save/load
@@ -242,7 +260,7 @@
 
 **Project Owner:** Developer  
 **Maintained By:** GitHub Copilot  
-**Last Reviewed:** 2026-02-17 @ 11:50 UTC  
+**Last Reviewed:** 2026-02-17 @ 13:30 UTC  
 **Next Review:** 2026-02-18 @ 10:00 UTC
 
 ---
