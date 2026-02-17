@@ -33,6 +33,12 @@ func play_coin_sound():
 func play_error_sound():
 	_play_generated_sound("error")
 
+func play_ui_click_sound():
+	_play_generated_sound("ui_click")
+
+func play_ui_hover_sound():
+	_play_generated_sound("ui_hover")
+
 func _play_generated_sound(type: String, p_shift: float = 1.0):
 	var player = AudioStreamPlayer.new()
 	add_child(player)
@@ -83,6 +89,12 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 			"error":
 				var env = exp(-t * 20.0)
 				sample = (sin(t * 80.0 * PI) + sin(t * 120.0 * PI)) * env * 0.4
+			"ui_click":
+				var env = exp(-t * 60.0)
+				sample = (randf() - 0.5) * 0.2 * env + sin(t * 1000.0 * PI) * env * 0.3
+			"ui_hover":
+				var env = exp(-t * 40.0)
+				sample = sin(t * 1500.0 * PI) * env * 0.1
 		
 		# Convert float (-1.0 to 1.0) to Signed 16-bit Int (-32768 to 32767)
 		var int_sample = int(clamp(sample, -1.0, 1.0) * 32767)

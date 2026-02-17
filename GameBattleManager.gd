@@ -12,9 +12,14 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @export var damage_label_scene: PackedScene
 @export var upgrade_screen_scene: PackedScene # New export for level up UI
 @export var skill_tree_scene: PackedScene # New export for full screen tree
+@export var inventory_slot_scene: PackedScene 
+@export var hit_particles_scene: PackedScene
 @export var mummy_texture: Texture2D
 @export var snake_texture: Texture2D
 @export var boss_texture: Texture2D
+@export var bar_green: Texture2D
+@export var bar_yellow: Texture2D
+@export var bar_red: Texture2D
 
 # UI References
 @onready var hp_label = %HPLabel
@@ -29,6 +34,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
 # Windows
 @onready var inventory_window = %Inventory
+@onready var inventory_grid = %InventoryGrid
 
 # Graphics
 @onready var enemy_sprite = %EnemySprite
@@ -38,6 +44,11 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 var shake_intensity: float = 0.0
 var idle_tween: Tween 
 var original_enemy_pos: Vector2
+
+# Cached styles for dynamic HP bar colors
+var style_green: StyleBoxTexture
+var style_yellow: StyleBoxTexture
+var style_red: StyleBoxTexture
 
 # Constants for scaling and balance
 const HP_BASE = 20
@@ -54,6 +65,28 @@ const BOSS_GOLD_MULT = 4  # More gold for boss kill
 static var startup_mode: String = "continue" # "continue" or "new_game"
 
 func _ready():
+	# Initialize styles
+	style_green = StyleBoxTexture.new()
+	style_green.texture = bar_green
+	style_green.texture_margin_left = 6
+	style_green.texture_margin_right = 6
+	style_green.texture_margin_top = 6
+	style_green.texture_margin_bottom = 6
+	
+	style_yellow = StyleBoxTexture.new()
+	style_yellow.texture = bar_yellow
+	style_yellow.texture_margin_left = 6
+	style_yellow.texture_margin_right = 6
+	style_yellow.texture_margin_top = 6
+	style_yellow.texture_margin_bottom = 6
+	
+	style_red = StyleBoxTexture.new()
+	style_red.texture = bar_red
+	style_red.texture_margin_left = 6
+	style_red.texture_margin_right = 6
+	style_red.texture_margin_top = 6
+	style_red.texture_margin_bottom = 6
+
 	player = PlayerStats.new()
 	add_child(player)
 	
@@ -65,13 +98,14 @@ func _ready():
 	
 	# UI Connections
 	player.gold_changed.connect(func(g): 
-		gold_label.text = "Gold: " + format_number(g)
+		gold_label.text = format_number(g)
 		_animate_label(gold_label)
 	)
 	player.health_changed.connect(func(c, m):	  
 		hp_label.text = "HP: %s/%s" % [format_number(c), format_number(m)]
 		player_hp_bar.max_value = m
 		player_hp_bar.value = c
+		_update_hp_bar_style(player_hp_bar)
 		_animate_label(hp_label)
 	)
 		
@@ -141,6 +175,16 @@ func _start_idle_animation():
 
 func _play_hit_effect(is_crit: bool):
 	shake_intensity = 15.0 if is_crit else 5.0
+	
+	# Particles
+	if hit_particles_scene:
+		var p = hit_particles_scene.instantiate()
+		add_child(p)
+		p.global_position = enemy_sprite.global_position
+		if is_crit:
+			p.amount = 24
+			p.color = Color.ORANGE
+			p.scale_amount_max = 6.0
 	
 	# Hit Flash (Visual)
 	var tween = create_tween()
@@ -252,20 +296,44 @@ func format_number(n: int) -> String:
 	return str(n)
 
 func _update_inventory_ui():
-	var list = %ItemList
-	if not list: return
+	if not inventory_grid: return
 	
-	list.clear()
+	# Clear existing
+	for child in inventory_grid.get_children():
+		child.queue_free()
+	
 	# Display Resources
+	var res_icons = {
+		"bandages": "res://assets/icons/new_icons/Icons 512x512/106.png", # Looks like cloth/mummy
+		"venom": "res://assets/icons/new_icons/Icons 512x512/115.png",    # Looks like poison
+		"relic_shards": "res://assets/icons/new_icons/Icons 512x512/91.png" # Looks like gem/relic
+	}
+	
 	for res_id in player.resources.keys():
 		var count = player.resources[res_id]
 		if count > 0:
-			var display_name = res_id.capitalize()
-			list.add_item("%s: %d" % [display_name, count], null, false)
+			var slot = inventory_slot_scene.instantiate()
+			inventory_grid.add_child(slot)
+			var tex = load(res_icons.get(res_id, "res://icon.svg"))
+			slot.set_item(tex, count, Color.MEDIUM_PURPLE)
+			slot.tooltip_text = "%s: %d" % [res_id.capitalize(), count]
 	
 	# Display Equipment
-	if player.equipped_item:
-		list.add_item("EQUIPPED: %s (+%d DMG)" % [player.equipped_item.name, player.equipped_item.damage_bonus], null, false)
+	for item in player.inventory:
+		var slot = inventory_slot_scene.instantiate()
+		inventory_grid.add_child(slot)
+		
+		var icon_p = item.icon_path
+		if icon_p == "": icon_p = "res://assets/icons/new_icons/Icons 512x512/24.png" # Default sword icon
+		
+		var tex = load(icon_p)
+		var is_equipped = (item == player.equipped_item)
+		var rarity_col = item.get_color()
+		if is_equipped: rarity_col = Color.GOLD # Highlight equipped
+		
+		slot.set_item(tex, 1, rarity_col)
+		var equip_text = "\n(EQUIPPED)" if is_equipped else ""
+		slot.tooltip_text = "%s (+%d DMG)%s" % [item.name, item.damage_bonus, equip_text]
 
 func _update_consumables_ui():
 	var potion_btn = %PotionButton
@@ -282,9 +350,24 @@ func _update_consumables_ui():
 func _add_button_juice(btn: Button):
 	if not btn: return
 	btn.pivot_offset = btn.size / 2
+	
+	btn.mouse_entered.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.05, 1.05), 0.1)
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_ui_hover_sound()
+	)
+	
+	btn.mouse_exited.connect(func():
+		var tween = create_tween()
+		tween.tween_property(btn, "scale", Vector2(1.0, 1.0), 0.1)
+	)
+	
 	btn.button_down.connect(func():
 		var tween = create_tween()
 		tween.tween_property(btn, "scale", Vector2(0.9, 0.9), 0.05)
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").play_ui_click_sound()
 	)
 	btn.button_up.connect(func():
 		var tween = create_tween()
@@ -330,12 +413,10 @@ func spawn_enemy(saved_hp: int = -1):
 	if is_final_boss:
 		enemy_sprite.texture = boss_texture
 		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
-		enemy_hp_bar.modulate = Color(1, 0, 0)
 		res_type = "relic_shards"
 	elif is_boss:
 		enemy_sprite.texture = boss_texture
 		enemy_name = "BOSS: Raft Saddam"
-		enemy_hp_bar.modulate = Color(1, 0.3, 0.3)
 		res_type = "relic_shards"
 	else:
 		if current_stage <= 10:
@@ -346,7 +427,6 @@ func spawn_enemy(saved_hp: int = -1):
 			enemy_sprite.texture = snake_texture
 			enemy_name = "Confused Snake"
 			res_type = "venom"
-		enemy_hp_bar.modulate = Color.WHITE
 
 	# --- AUTOMATIC SCALING ---
 	print("DEBUG: SCALING ENEMY")
@@ -369,6 +449,7 @@ func spawn_enemy(saved_hp: int = -1):
 	stage_label.text = "Stage: %d\n%s" % [current_stage, enemy_name]
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
+	_update_hp_bar_style(enemy_hp_bar)
 	enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(hp)]
 
 func _on_click_area_pressed():
@@ -386,6 +467,7 @@ func _on_player_attack():
 			_spawn_floating_text("MISS", Color.GRAY)
 		else:
 			enemy_hp_bar.value = current_enemy.current_hp
+			_update_hp_bar_style(enemy_hp_bar)
 			enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
 			_spawn_floating_text(result + ("!!" if is_crit else ""), Color.YELLOW if not is_crit else Color.ORANGE)
 			_play_hit_effect(is_crit)
@@ -535,3 +617,13 @@ func _animate_label(lbl: Control):
 	var tween = create_tween()
 	tween.tween_property(lbl, "scale", Vector2(1.2, 1.2), 0.05)
 	tween.tween_property(lbl, "scale", Vector2(1.0, 1.0), 0.1)
+
+func _update_hp_bar_style(bar: ProgressBar):
+	var percent = (float(bar.value) / bar.max_value) * 100.0 if bar.max_value > 0 else 0.0
+	
+	if percent > 50:
+		bar.add_theme_stylebox_override("fill", style_green)
+	elif percent > 25:
+		bar.add_theme_stylebox_override("fill", style_yellow)
+	else:
+		bar.add_theme_stylebox_override("fill", style_red)

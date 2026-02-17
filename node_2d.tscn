@@ -1,6 +1,8 @@
 [gd_scene format=3 uid="uid://2nn5mnsdx7xi"]
 
 [ext_resource type="Script" uid="uid://cm0xty3mq0e5p" path="res://GameBattleManager.gd" id="1_wtcfe"]
+[ext_resource type="PackedScene" uid="uid://c8l7d7n8p4x1j" path="res://InventorySlot.tscn" id="23_slot_scene"]
+[ext_resource type="PackedScene" uid="uid://dn8v7r8e4j2p" path="res://HitParticles.tscn" id="24_hit_particles"]
 [ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://icon.svg" id="2_0e48y"]
 [ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://DamageLabel.tscn" id="3_0hol4"]
 [ext_resource type="Texture2D" uid="uid://bpffilr4rwjfd" path="res://Jungle.jpeg" id="5_jungle"]
@@ -13,7 +15,10 @@
 [ext_resource type="Texture2D" uid="uid://dlanduys4y0sa" path="res://assets/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
 [ext_resource type="Texture2D" uid="uid://bcm0xjvbtvq5j" path="res://assets/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
 [ext_resource type="Texture2D" uid="uid://duponlvyv584r" path="res://assets/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
+[ext_resource type="Texture2D" uid="uid://ckj8v0i24t8m1" path="res://assets/kenney_ui/PNG/barGreen_horizontalMid.png" id="16_bar_green"]
+[ext_resource type="Texture2D" uid="uid://dr6x2y07m7m4w" path="res://assets/kenney_ui/PNG/barYellow_horizontalMid.png" id="17_bar_yellow"]
 [ext_resource type="Texture2D" uid="uid://d1wu3cxs7cogy" path="res://assets/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
+[ext_resource type="Texture2D" uid="uid://c6j8v0i24t8m1" path="res://assets/cards/card_gold.png" id="25_gold_icon"]
 [ext_resource type="PackedScene" path="res://SkillTreeScene.tscn" id="22_skill_scene"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
@@ -93,9 +98,14 @@ script = ExtResource("1_wtcfe")
 damage_label_scene = ExtResource("3_0hol4")
 upgrade_screen_scene = ExtResource("9_upgrade")
 skill_tree_scene = ExtResource("22_skill_scene")
+inventory_slot_scene = ExtResource("23_slot_scene")
+hit_particles_scene = ExtResource("24_hit_particles")
 mummy_texture = ExtResource("6_mummy")
 snake_texture = ExtResource("8_snake")
 boss_texture = ExtResource("7_sadam")
+bar_green = ExtResource("16_bar_green")
+bar_yellow = ExtResource("17_bar_yellow")
+bar_red = ExtResource("14_bar_red")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=250716058]
 unique_name_in_owner = true
@@ -104,26 +114,43 @@ unique_name_in_owner = true
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 5.0
-offset_bottom = 115.0
+offset_bottom = 150.0
 grow_horizontal = 2
-theme_override_constants/separation = 2
+theme_override_constants/separation = 5
 alignment = 1
 
-[node name="SettingsHUD" type="Button" parent="CanvasLayer/HUD" unique_id=1359125702]
+[node name="TopBar" type="HBoxContainer" parent="CanvasLayer/HUD" unique_id=123456789]
+layout_mode = 2
+theme_override_constants/separation = 20
+alignment = 2
+
+[node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/HUD/TopBar"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/HUD/TopBar/GoldContainer"]
+custom_minimum_size = Vector2(24, 24)
+layout_mode = 2
+texture = ExtResource("25_gold_icon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD/TopBar/GoldContainer" unique_id=805852268]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "0"
+label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
+
+[node name="SettingsHUD" type="Button" parent="CanvasLayer/HUD/TopBar" unique_id=1359125702]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(40, 40)
 layout_mode = 2
 size_flags_horizontal = 8
 text = "S"
-
-[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD" unique_id=805852268]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
-theme_override_font_sizes/font_size = 20
-text = "Gold: 0"
-label_settings = SubResource("LabelSettings_hp")
-horizontal_alignment = 1
 
 [node name="StageLabel" type="Label" parent="CanvasLayer/HUD" unique_id=844014738]
 unique_name_in_owner = true
@@ -302,12 +329,14 @@ unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="ItemList" type="ItemList" parent="CanvasLayer/BottomPanel/TabContainer/Inventory" unique_id=361829792]
+[node name="InventoryGrid" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Inventory" unique_id=361829792]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 size_flags_horizontal = 3
-auto_height = true
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 6
 
 [node name="Settings" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=1866495465]
 visible = false

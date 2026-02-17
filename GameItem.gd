@@ -4,6 +4,7 @@ class_name GameItem
 @export var name: String = "Item"
 @export var damage_bonus: int = 1
 @export var rarity: String = "Common"
+@export var icon_path: String = ""
 
 const RARITY_COLORS = {
 	"Common": Color.WHITE,
