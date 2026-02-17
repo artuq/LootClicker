@@ -1,6 +1,12 @@
-# LootClicker - Issue Tracking
+# LootClicker - Issue Tracking (GitHub Synced)
 
-**Last Updated:** 2026-02-17 | **Synced with:** `Roadmap.md` | **GitHub Link:** [artuq/LootClicker/issues](https://github.com/artuq/LootClicker/issues)
+**Last Updated:** 2026-02-17 | **Synced with:** GitHub Issues | **GitHub Link:** [artuq/LootClicker/issues](https://github.com/artuq/LootClicker/issues)
+
+---
+
+## ⚠️ Important Note
+
+This file tracks **actual GitHub Issues** (#2-#12) which map to project categories. The separate `.github/ISSUES.md` was created as a local issue tracking system but is now aligned with existing real GitHub Issues.
 
 ---
 
@@ -12,66 +18,40 @@
 
 ## ✅ Closed Issues (Resolved)
 
-### Critical Bugs (Fixed 2026-02-17)
+### Session 2026-02-17 Critical Bugfixes
+These were **internal fixes** applied to the codebase. GitHub issues #2-#12 represent broader categories:
 
-| ID | Title | Status | Commit | Roadmap Link |
-|---|---|---|---|---|
-| #1 | **Audio: Master Bus Validation** | ✅ CLOSED | `51fa613` | `G_SYS → S3` |
-| #2 | **Crash: Game exits after defeating first enemy** | ✅ CLOSED | `51fa613` | `G_SYS → S5` |
-| #3 | **UI: Upgrade cards show wrong icons (dodge/block)** | ✅ CLOSED | `51fa613` | `G_SYS → S6` |
-| #4 | **Save/Load: Missing dodge_chance and block_chance** | ✅ CLOSED | `51fa613` | `G_SYS → S1` |
+| Description | Status | Commit | Notes |
+|---|---|---|---|
+| **Audio: Master Bus Validation** | ✅ CLOSED | `51fa613` | AudioManager fix - affects #2 (Game Feel) |
+| **Crash: Game exits after first enemy** | ✅ CLOSED | `51fa613` | CardChoiceScene fix - affects #3, #6 |
+| **UI: Wrong upgrade card icons** | ✅ CLOSED | `51fa613` | UpgradeManager fix - affects #6 (Polish) |
+| **Save/Load: Missing new stats** | ✅ CLOSED | `51fa613` | GameBattleManager fix - affects #3, #6 |
 
 **Documentation:** See [BUGFIX_CHANGELOG_2026-02-17.md](../docs/BUGFIX_CHANGELOG_2026-02-17.md)
 
 ---
 
-## 🕒 Open Issues (Backlog)
+## 🕒 Open Issues (Real GitHub Issues)
 
-### Loot System (HIGH PRIORITY)
+### Strategic/Meta Issues
 
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #5 | **Implement loot drop system** | 🕒 TODO | 🔴 HIGH | `(NEW)` | Medium |
-| #6 | **Design loot table & drop rates** | 🕒 TODO | 🔴 HIGH | `(NEW)` | Low |
-| #7 | **Create GameItem prefab system** | 🕒 TODO | 🔴 HIGH | `(NEW)` | Medium |
+| ID | Title | Status | Opened | Comments |
+|---|---|---|---|---|
+| #12 | **[ART] Styl Graficzny: Pixel Art (Stardew-like)** | 🕒 OPEN | 4d ago | 7 |
+| #11 | **[UI] Combat Arena - Styl "Action Bar"** | 🕒 OPEN | 4d ago | 9 |
+| #10 | **[MVP] Zakres wersji 0.2 (English Only Release)** | 🕒 OPEN | 4d ago | 19 |
+| #9 | **[ADMIN] Lokalizacja, Licencje i Organizacja** | 🕒 OPEN | 4d ago | 1 |
+| #8 | **[ASSETS] Lista Zasobów do wykonania/zdobycia** | 🕒 OPEN | 4d ago | 4 |
+| #7 | **[BIZNES] Monetyzacja, Marketing i Analityka** | 🕒 OPEN | 4d ago | 0 |
+| #6 | **[POLISH] Ulepszanie istniejących mechanik (Backlog)** | 🕒 OPEN | 4d ago | 20 |
+| #5 | *(appears to be missing)* | ❓ | - | - |
+| #4 | **[RELEASE] Przygotowanie do publikacji Google Play** | 🕒 OPEN | 4d ago | 0 |
+| #3 | **[LORE] Implementacja fabuły i przedmiotów** | 🕒 OPEN | 4d ago | 2 |
+| #2 | **[ART] Oprawa audiowizualna i Game Feel** | 🕒 OPEN | 4d ago | 0 |
 
-### Boss System (MEDIUM PRIORITY)
-
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #8 | **Boss-specific visual effects** | 🕒 TODO | 🟡 MEDIUM | `G_JUICE → J1` | Medium |
-| #9 | **Boss-specific audio effects** | 🕒 TODO | 🟡 MEDIUM | `G_SYS → S3` | Low |
-| #10 | **Boss health/damage scaling balance** | 🕒 TODO | 🟡 MEDIUM | `G_MECH → M2` | Low |
-
-### Story & Narrative (MEDIUM PRIORITY)
-
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #11 | **Intro sequence: Skip/Watch option** | 🕒 TODO | 🟡 MEDIUM | `G_LORE → L1` | High |
-| #12 | **Lore logs system & UI** | 🕒 TODO | 🟡 MEDIUM | `G_LORE → L5` | High |
-| #13 | **Boss dialogue text** | 🕒 TODO | 🟡 MEDIUM | `G_LORE → L2` | Low |
-
-### Prestige System (LOW PRIORITY)
-
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #14 | **Prestige/New Game+ mechanics** | 🕒 TODO | 🟢 LOW | `G_LORE → L4` | High |
-| #15 | **Prestige reward balancing** | 🕒 TODO | 🟢 LOW | `(NEW)` | Medium |
-
-### Performance & Optimization (LOW PRIORITY)
-
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #16 | **Draw call batching analysis** | 🕒 TODO | 🟢 LOW | `G_OPT → O4` | Medium |
-| #17 | **Memory profiling & optimization** | 🕒 TODO | 🟢 LOW | `(NEW)` | High |
-
-### Assets & Polish (LOW PRIORITY)
-
-| ID | Title | Status | Priority | Roadmap Link | Est. Complexity |
-|---|---|---|---|---|---|
-| #18 | **Custom TTF fonts import** | 🕒 TODO | 🟢 LOW | `G_ASSETS → A2` | Low |
-| #19 | **Sprite sheet organization** | 🕒 TODO | 🟢 LOW | `G_ASSETS → A1` | Low |
-| #20 | **Equipment icons pack** | 🕒 TODO | 🟢 LOW | `G_ASSETS → A4` | Low |
+### Closed Issues (Hidden)
+GitHub shows **3 Closed** issues, but they're not visible in the main list view.
 
 ---
 
@@ -79,13 +59,11 @@
 
 | Category | Count | Status |
 |---|---|---|
-| **Total Issues** | 20 | 🎯 |
-| **Closed** | 4 | ✅ |
-| **In Progress** | 0 | 🟢 |
-| **Open (Backlog)** | 16 | 🕒 |
-| **High Priority** | 3 | 🔴 |
-| **Medium Priority** | 7 | 🟡 |
-| **Low Priority** | 6 | 🟢 |
+| **Total Open Issues** | 10 visible | 🕒 |
+| **Total Closed Issues** | 3 | ✅ |
+| **Total Issues** | 13+ | 🎯 |
+| **Last Activity** | 4 days ago | 📅 |
+| **Most Discussed** | #6 (20 comments), #10 (19 comments) | 💬 |
 
 ---
 
