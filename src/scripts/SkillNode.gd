@@ -72,7 +72,7 @@ func _get_player_skill_lvl(id: String = ""):
 		"greed": return player.greed_lvl
 		"speed": return player.speed_lvl
 		"def": return player.def_lvl
-		"hp": return (player.max_hp - 100) / 20 # Przykładowe wyliczenie poziomu HP
+		"hp": return int((player.max_hp - 100) / 20.0) # Przykładowe wyliczenie poziomu HP
 	return 0
 
 func _get_res_id():

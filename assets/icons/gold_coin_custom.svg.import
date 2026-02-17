@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://b2k6essf5k1hq"
-valid=false
+path="res://.godot/imported/gold_coin_custom.svg-297cfad55fa5c1a2dd8d59a8248d6e46.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/icons/gold_coin_custom.svg"
+dest_files=["res://.godot/imported/gold_coin_custom.svg-297cfad55fa5c1a2dd8d59a8248d6e46.ctex"]
 
 [params]
 

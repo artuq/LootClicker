@@ -1143,13 +1143,16 @@ func _show_tutorial():
 	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	panel.add_child(btn)
 	
-	# Fade in
-	tut_layer.modulate = Color(1, 1, 1, 0)
+	# Fade in via backdrop (CanvasLayer has no modulate)
+	backdrop.modulate = Color(1, 1, 1, 0)
+	panel.modulate = Color(1, 1, 1, 0)
 	var tween = create_tween()
-	tween.tween_property(tut_layer, "modulate:a", 1.0, 0.4)
+	tween.tween_property(backdrop, "modulate:a", 1.0, 0.4)
+	tween.parallel().tween_property(panel, "modulate:a", 1.0, 0.4)
 	
 	btn.pressed.connect(func():
 		var out_tween = create_tween()
-		out_tween.tween_property(tut_layer, "modulate:a", 0.0, 0.3)
+		out_tween.tween_property(backdrop, "modulate:a", 0.0, 0.3)
+		out_tween.parallel().tween_property(panel, "modulate:a", 0.0, 0.3)
 		out_tween.tween_callback(tut_layer.queue_free)
 	)
