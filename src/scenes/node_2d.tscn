@@ -221,6 +221,15 @@ text = ""
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
+[node name="XPLabel" type="Label" parent="CanvasLayer/MidHUD/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "XP 0/50"
+label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 0
+
 [node name="PlayerHPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 6

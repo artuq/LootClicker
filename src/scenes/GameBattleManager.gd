@@ -38,6 +38,7 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 
 # Boss Progress UI
 @onready var info_label = %InfoLabel
+@onready var xp_label = %XPLabel
 @onready var loot_summary_label = %LootSummaryLabel
 @onready var dps_label = %DPSLabel
 
@@ -151,9 +152,9 @@ func _ready():
 		_set_near_death(hp_ratio < NEAR_DEATH_THRESHOLD and c > 0)
 	)
 		
-	# XP — update info label on change
+	# XP — update xp label on change
 	var update_xp = func(_cur = 0, _req = 0):
-		_update_info_label()
+		_update_xp_label()
 		
 	player.xp_changed.connect(update_xp)
 	player.leveled_up.connect(func(_l): update_xp.call())
@@ -1037,8 +1038,12 @@ func _update_info_label():
 			elif next_boss == 50:
 				bname = "Final Boss"
 			boss_text = "%d/%d %s" % [done, total, bname]
-	var xp_text = "XP %d/%d" % [player.xp, player.xp_required]
-	info_label.text = "%s  %s  %s" % [biome, boss_text, xp_text]
+	info_label.text = "%s  %s" % [biome, boss_text]
+
+func _update_xp_label():
+	if not xp_label:
+		return
+	xp_label.text = "XP %d / %d" % [player.xp, player.xp_required]
 
 # === MVP POLISH: Loot Summary ===
 func _update_loot_summary():
