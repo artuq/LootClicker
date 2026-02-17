@@ -3,6 +3,10 @@ extends Node
 # Procedural Sound Manager for LootClicker (16-bit version)
 
 var music_player: AudioStreamPlayer
+var low_pass_filter: AudioEffectLowPassFilter
+var low_pass_enabled: bool = false
+var heartbeat_player: AudioStreamPlayer
+var heartbeat_playing: bool = false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -28,6 +32,107 @@ func play_music():
 func stop_music():
 	if music_player:
 		music_player.stop()
+
+# === Near Death Audio Effects ===
+func set_near_death_audio(enabled: bool):
+	if enabled == low_pass_enabled:
+		return
+	low_pass_enabled = enabled
+	
+	var bus_idx = AudioServer.get_bus_index("Master")
+	if bus_idx < 0:
+		return
+	
+	if enabled:
+		# Add low-pass filter to Master bus
+		if not low_pass_filter:
+			low_pass_filter = AudioEffectLowPassFilter.new()
+		low_pass_filter.cutoff_hz = 20500.0
+		AudioServer.add_bus_effect(bus_idx, low_pass_filter)
+		# Tween cutoff down to muffled
+		var tween = create_tween()
+		tween.tween_method(_set_lowpass_cutoff, 20500.0, 800.0, 0.6).set_trans(Tween.TRANS_SINE)
+		# Start heartbeat
+		_start_heartbeat()
+	else:
+		# Tween cutoff back up then remove
+		var tween = create_tween()
+		tween.tween_method(_set_lowpass_cutoff, 800.0, 20500.0, 0.4).set_trans(Tween.TRANS_SINE)
+		tween.tween_callback(_remove_lowpass_effect)
+		# Stop heartbeat
+		_stop_heartbeat()
+
+func _set_lowpass_cutoff(value: float):
+	if low_pass_filter:
+		low_pass_filter.cutoff_hz = value
+
+func _remove_lowpass_effect():
+	var bus_idx = AudioServer.get_bus_index("Master")
+	if bus_idx < 0:
+		return
+	for i in range(AudioServer.get_bus_effect_count(bus_idx) - 1, -1, -1):
+		if AudioServer.get_bus_effect(bus_idx, i) == low_pass_filter:
+			AudioServer.remove_bus_effect(bus_idx, i)
+			break
+
+func _start_heartbeat():
+	if heartbeat_playing:
+		return
+	heartbeat_playing = true
+	if not heartbeat_player:
+		heartbeat_player = AudioStreamPlayer.new()
+		add_child(heartbeat_player)
+	_play_heartbeat_loop()
+
+func _stop_heartbeat():
+	heartbeat_playing = false
+	if heartbeat_player:
+		heartbeat_player.stop()
+
+func _play_heartbeat_loop():
+	if not heartbeat_playing:
+		return
+	var stream = AudioStreamWAV.new()
+	stream.format = AudioStreamWAV.FORMAT_16_BITS
+	stream.mix_rate = 44100
+	stream.stereo = false
+	
+	# Double-beat heartbeat: "lub-dub" pattern ~0.6s total
+	var duration = 0.6
+	var num_samples = int(duration * stream.mix_rate)
+	var data = PackedByteArray()
+	data.resize(num_samples * 2)
+	
+	for i in range(num_samples):
+		var t = float(i) / stream.mix_rate
+		var sample = 0.0
+		
+		# First beat ("lub") at t=0
+		var env1 = exp(-t * 25.0) * 0.6
+		sample += sin(t * 60.0 * PI) * env1
+		
+		# Second beat ("dub") at t=0.15
+		var t2 = t - 0.15
+		if t2 > 0:
+			var env2 = exp(-t2 * 30.0) * 0.4
+			sample += sin(t2 * 50.0 * PI) * env2
+		
+		var int_sample = int(clamp(sample, -1.0, 1.0) * 32767)
+		data[i * 2] = int_sample & 0xFF
+		data[i * 2 + 1] = (int_sample >> 8) & 0xFF
+	
+	stream.data = data
+	heartbeat_player.stream = stream
+	heartbeat_player.volume_db = -6
+	if AudioServer.get_bus_index("Master") >= 0:
+		heartbeat_player.bus = "Master"
+	heartbeat_player.play()
+	# Loop after pause (heartbeat rhythm ~0.9s cycle)
+	heartbeat_player.finished.connect(func():
+		if heartbeat_playing:
+			await get_tree().create_timer(0.3).timeout
+			_play_heartbeat_loop()
+	, CONNECT_ONE_SHOT)
 
 func play_hit_sound(pitch_shift: float = 1.0):
 	_play_generated_sound("hit", pitch_shift)

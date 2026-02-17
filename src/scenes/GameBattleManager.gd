@@ -46,6 +46,12 @@ var shake_intensity: float = 0.0
 var idle_tween: Tween 
 var original_enemy_pos: Vector2
 
+# Near Death Experience (Vignette)
+var vignette_overlay: ColorRect
+var vignette_tween: Tween
+var is_near_death: bool = false
+const NEAR_DEATH_THRESHOLD = 0.2 # 20% HP
+
 # Cached styles for dynamic HP bar colors
 var style_green: StyleBoxTexture
 var style_yellow: StyleBoxTexture
@@ -91,6 +97,8 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
+	_create_vignette_overlay()
+	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_music()
 	
@@ -108,6 +116,9 @@ func _ready():
 		player_hp_bar.value = c
 		_update_hp_bar_style(player_hp_bar)
 		_animate_label(hp_label)
+		# Near Death Experience trigger
+		var hp_ratio = float(c) / float(m) if m > 0 else 1.0
+		_set_near_death(hp_ratio < NEAR_DEATH_THRESHOLD and c > 0)
 	)
 		
 	# XP Bar - Reordered to set max_value first
@@ -570,6 +581,8 @@ func _on_skills_updated():
 
 func _handle_player_death():
 	print("PLAYER DIED - GAME OVER")
+	# Reset near-death effects before scene change
+	_set_near_death(false)
 	# Death penalty
 	player.gold = int(player.gold * 0.8)
 	current_stage = 1
@@ -624,6 +637,72 @@ func _animate_label(lbl: Control):
 	var tween = create_tween()
 	tween.tween_property(lbl, "scale", Vector2(1.2, 1.2), 0.05)
 	tween.tween_property(lbl, "scale", Vector2(1.0, 1.0), 0.1)
+
+# === Near Death Experience (Vignette + Audio) ===
+func _create_vignette_overlay():
+	vignette_overlay = ColorRect.new()
+	vignette_overlay.name = "VignetteOverlay"
+	# Full-screen overlay
+	vignette_overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	vignette_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	vignette_overlay.modulate = Color(1, 1, 1, 0) # Start invisible
+	
+	# Vignette shader: red edges, transparent center
+	var shader = Shader.new()
+	shader.code = """
+		shader_type canvas_item;
+		uniform float intensity : hint_range(0.0, 1.0) = 0.7;
+		uniform vec4 vignette_color : source_color = vec4(0.8, 0.0, 0.0, 1.0);
+		void fragment() {
+			vec2 uv = UV - vec2(0.5);
+			float dist = length(uv) * 2.0;
+			float vignette = smoothstep(0.3, 1.2, dist) * intensity;
+			COLOR = vec4(vignette_color.rgb, vignette);
+		}
+	"""
+	var mat = ShaderMaterial.new()
+	mat.shader = shader
+	vignette_overlay.material = mat
+	
+	# Add to a high CanvasLayer so it's on top of everything
+	var vignette_layer = CanvasLayer.new()
+	vignette_layer.name = "VignetteLayer"
+	vignette_layer.layer = 100
+	add_child(vignette_layer)
+	vignette_layer.add_child(vignette_overlay)
+
+func _set_near_death(enabled: bool):
+	if enabled == is_near_death:
+		return
+	is_near_death = enabled
+	
+	if vignette_tween:
+		vignette_tween.kill()
+	
+	if enabled:
+		# Fade in vignette
+		vignette_tween = create_tween()
+		vignette_tween.tween_property(vignette_overlay, "modulate:a", 1.0, 0.5).set_trans(Tween.TRANS_SINE)
+		vignette_tween.tween_callback(_start_vignette_pulse)
+		# Audio: low-pass + heartbeat
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").set_near_death_audio(true)
+	else:
+		# Fade out vignette
+		vignette_tween = create_tween()
+		vignette_tween.tween_property(vignette_overlay, "modulate:a", 0.0, 0.4).set_trans(Tween.TRANS_SINE)
+		# Audio: restore
+		if get_node_or_null("/root/AudioManager"):
+			get_node("/root/AudioManager").set_near_death_audio(false)
+
+func _start_vignette_pulse():
+	if not is_near_death:
+		return
+	if vignette_tween:
+		vignette_tween.kill()
+	vignette_tween = create_tween().set_loops()
+	vignette_tween.tween_property(vignette_overlay, "modulate:a", 0.4, 0.6).set_trans(Tween.TRANS_SINE)
+	vignette_tween.tween_property(vignette_overlay, "modulate:a", 1.0, 0.6).set_trans(Tween.TRANS_SINE)
 
 func _update_hp_bar_style(bar: ProgressBar):
 	var percent = (float(bar.value) / bar.max_value) * 100.0 if bar.max_value > 0 else 0.0
