@@ -110,27 +110,34 @@ bar_red = ExtResource("14_bar_red")
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=250716058]
 unique_name_in_owner = true
 
-[node name="HUD" type="VBoxContainer" parent="CanvasLayer" unique_id=990949166]
+[node name="HUD" type="MarginContainer" parent="CanvasLayer" unique_id=990949166]
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 5.0
 offset_bottom = 200.0
 grow_horizontal = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_bottom = 0
+
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/HUD"]
+layout_mode = 2
 theme_override_constants/separation = 6
 alignment = 0
 
-[node name="TopBar" type="HBoxContainer" parent="CanvasLayer/HUD" unique_id=123456789]
+[node name="TopBar" type="HBoxContainer" parent="CanvasLayer/HUD/VBox" unique_id=123456789]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 0
 
-[node name="SettingsHUD" type="Button" parent="CanvasLayer/HUD/TopBar" unique_id=1359125702]
+[node name="SettingsHUD" type="Button" parent="CanvasLayer/HUD/VBox/TopBar" unique_id=1359125702]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 text = "S"
 
-[node name="StageLabel" type="Label" parent="CanvasLayer/HUD/TopBar" unique_id=844014738]
+[node name="StageLabel" type="Label" parent="CanvasLayer/HUD/VBox/TopBar" unique_id=844014738]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 13
@@ -139,12 +146,12 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="XPBarContainer" type="HBoxContainer" parent="CanvasLayer/HUD/TopBar" unique_id=986632148]
+[node name="XPBarContainer" type="HBoxContainer" parent="CanvasLayer/HUD/VBox/TopBar" unique_id=986632148]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="XPBarLabel" type="Label" parent="CanvasLayer/HUD/TopBar/XPBarContainer" unique_id=1374216939]
+[node name="XPBarLabel" type="Label" parent="CanvasLayer/HUD/VBox/TopBar/XPBarContainer" unique_id=1374216939]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
@@ -152,9 +159,9 @@ text = "XP:"
 label_settings = SubResource("LabelSettings_hp")
 vertical_alignment = 1
 
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD/TopBar/XPBarContainer" unique_id=1676402328]
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/HUD/VBox/TopBar/XPBarContainer" unique_id=1676402328]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(100, 14)
+custom_minimum_size = Vector2(80, 14)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -163,7 +170,7 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
 value = 50.0
 show_percentage = false
 
-[node name="XPLabel" type="Label" parent="CanvasLayer/HUD/TopBar/XPBarContainer" unique_id=1876543210]
+[node name="XPLabel" type="Label" parent="CanvasLayer/HUD/VBox/TopBar/XPBarContainer" unique_id=1876543210]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 9
@@ -171,62 +178,56 @@ text = "0/50"
 label_settings = SubResource("LabelSettings_hp")
 vertical_alignment = 1
 
-[node name="EnemySection" type="VBoxContainer" parent="CanvasLayer/HUD" unique_id=412837461]
+[node name="EnemySection" type="VBoxContainer" parent="CanvasLayer/HUD/VBox" unique_id=412837461]
 layout_mode = 2
-theme_override_constants/separation = 3
+theme_override_constants/separation = 2
 alignment = 1
 
-[node name="EnemyNameContainer" type="HBoxContainer" parent="CanvasLayer/HUD/EnemySection" unique_id=534982564]
-layout_mode = 2
-size_flags_horizontal = 4
-alignment = 1
-
-[node name="EnemyHPLabel" type="Label" parent="CanvasLayer/HUD/EnemySection/EnemyNameContainer" unique_id=264580371]
+[node name="EnemyHPLabel" type="Label" parent="CanvasLayer/HUD/VBox/EnemySection" unique_id=264580371]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 13
 text = "Enemy: 100/100"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
-[node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD/EnemySection" unique_id=7749261]
+[node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/HUD/VBox/EnemySection" unique_id=7749261]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(280, 18)
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
-size_flags_horizontal = 4
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
 show_percentage = false
 
-[node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/HUD" unique_id=912345678]
+[node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/HUD/VBox" unique_id=912345678]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 4
+theme_override_constants/separation = 6
 
-[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/HUD/GoldContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/HUD/VBox/GoldContainer"]
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 texture = ExtResource("25_gold_icon")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD/GoldContainer" unique_id=805852268]
+[node name="GoldLabel" type="Label" parent="CanvasLayer/HUD/VBox/GoldContainer" unique_id=805852268]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 22
 text = "0"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
-[node name="PlayerHPSection" type="HBoxContainer" parent="CanvasLayer/HUD" unique_id=789456123]
+[node name="PlayerHPSection" type="HBoxContainer" parent="CanvasLayer/HUD/VBox" unique_id=789456123]
 layout_mode = 2
 theme_override_constants/separation = 8
-alignment = 1
 
-[node name="PlayerHPBar" type="ProgressBar" parent="CanvasLayer/HUD/PlayerHPSection" unique_id=1103201743]
+[node name="PlayerHPBar" type="ProgressBar" parent="CanvasLayer/HUD/VBox/PlayerHPSection" unique_id=1103201743]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 16)
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
@@ -234,7 +235,7 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
 value = 100.0
 show_percentage = false
 
-[node name="HPLabel" type="Label" parent="CanvasLayer/HUD/PlayerHPSection/PlayerHPBar" unique_id=1607821269]
+[node name="HPLabel" type="Label" parent="CanvasLayer/HUD/VBox/PlayerHPSection/PlayerHPBar" unique_id=1607821269]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -248,7 +249,7 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PotionButton" type="Button" parent="CanvasLayer/HUD/PlayerHPSection" unique_id=20260215]
+[node name="PotionButton" type="Button" parent="CanvasLayer/HUD/VBox/PlayerHPSection" unique_id=20260215]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(70, 24)
 layout_mode = 2
@@ -423,7 +424,7 @@ custom_minimum_size = Vector2(100, 60)
 layout_mode = 2
 text = "Slot 3"
 
-[connection signal="pressed" from="CanvasLayer/HUD/TopBar/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]
+[connection signal="pressed" from="CanvasLayer/HUD/VBox/TopBar/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]
 [connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/VictoryUI/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
