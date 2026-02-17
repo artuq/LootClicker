@@ -18,9 +18,15 @@ var xp_required: int = 20
 
 # Atmospheric resources
 var resources = {
-	"bandages": 0,    # From Mummies
-	"venom": 0,       # From Snakes
-	"relic_shards": 0 # From Bosses
+	"bandages": 0,    # From Mummies (legacy)
+	"venom": 0,       # From Snakes / Dieting Plant
+	"relic_shards": 0, # From Bosses
+	"gunpowder": 0,   # From Angry Kaboom Squirrel
+	"nuts": 0,        # From Angry Kaboom Squirrel
+	"paperclips": 0,  # From Intern Monkey
+	"bones": 0,       # From Tourist Skeleton
+	"cardboard": 0,   # From Budget Golem
+	"ectoplasm": 0    # From Sheet Ghost
 }
 
 var consumables = {

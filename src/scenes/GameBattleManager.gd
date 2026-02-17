@@ -18,6 +18,11 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @export var snake_texture: Texture2D
 @export var boss_texture: Texture2D
 @export var bar_green: Texture2D
+
+# Enemy roster — loaded dynamically
+var enemy_roster_jungle: Array[Dictionary] = []
+var enemy_roster_temple: Array[Dictionary] = []
+var boss_roster: Dictionary = {}   # stage -> boss data
 @export var bar_yellow: Texture2D
 @export var bar_red: Texture2D
 
@@ -98,6 +103,9 @@ func _ready():
 	style_red.texture_margin_top = 6
 	style_red.texture_margin_bottom = 6
 
+	# Initialize enemy rosters
+	_init_enemy_rosters()
+
 	player = PlayerStats.new()
 	add_child(player)
 	
@@ -175,6 +183,94 @@ func _ready():
 	_update_consumables_ui()
 	_update_inventory_ui()
 	_start_combat()
+
+# === Enemy Roster Data ===
+func _init_enemy_rosters():
+	enemy_roster_jungle = [
+		{
+			"name": "Angry Kaboom Squirrel",
+			"texture": "res://assets/sprites/enemies/squirrel.png",
+			"resource": "gunpowder",
+		},
+		{
+			"name": "Intern Monkey",
+			"texture": "res://assets/sprites/enemies/monkey.png",
+			"resource": "paperclips",
+		},
+		{
+			"name": "Dieting Plant",
+			"texture": "res://assets/sprites/enemies/plant.png",
+			"resource": "venom",
+		},
+	]
+	enemy_roster_temple = [
+		{
+			"name": "Tourist Skeleton",
+			"texture": "res://assets/sprites/enemies/skeleton.png",
+			"resource": "bones",
+		},
+		{
+			"name": "Budget Golem",
+			"texture": "res://assets/sprites/enemies/golem.png",
+			"resource": "cardboard",
+		},
+		{
+			"name": "Sheet Ghost",
+			"texture": "res://assets/sprites/enemies/ghost.png",
+			"resource": "ectoplasm",
+		},
+	]
+	boss_roster = {
+		10: {
+			"name": "The Allergic Idol",
+			"texture": "res://assets/sprites/enemies/boss_idol.png",
+			"resource": "relic_shards",
+			"greeting": "Ah... Ah... CHOO!",
+			"scale": 280.0,
+		},
+		25: {
+			"name": "Brad the Influencer",
+			"texture": "res://assets/sprites/enemies/boss_brad.png",
+			"resource": "relic_shards",
+			"greeting": "Don't forget to like and subscribe!",
+			"scale": 260.0,
+		},
+		40: {
+			"name": "The Budget Sphinx",
+			"texture": "res://assets/sprites/enemies/boss_sphinx.png",
+			"resource": "relic_shards",
+			"greeting": "Meow. Give me gold.",
+			"scale": 280.0,
+		},
+	}
+
+func _get_enemy_for_stage(stage: int) -> Dictionary:
+	"""Returns a random enemy dict based on biome rules."""
+	var roll = randf()
+	if stage <= 14:
+		# Pure jungle
+		return enemy_roster_jungle.pick_random()
+	elif stage <= 20:
+		# 80% jungle / 20% temple
+		if roll < 0.8:
+			return enemy_roster_jungle.pick_random()
+		else:
+			return enemy_roster_temple.pick_random()
+	elif stage <= 35:
+		# Pure temple
+		return enemy_roster_temple.pick_random()
+	elif stage <= 40:
+		# 80% temple / 20% jungle
+		if roll < 0.8:
+			return enemy_roster_temple.pick_random()
+		else:
+			return enemy_roster_jungle.pick_random()
+	else:
+		# Stage 41+: mixed
+		if roll < 0.5:
+			return enemy_roster_jungle.pick_random()
+		else:
+			return enemy_roster_temple.pick_random()
 
 func _process(delta):
 	if shake_intensity > 0:
@@ -325,9 +421,15 @@ func _update_inventory_ui():
 	
 	# Display Resources
 	var res_icons = {
-		"bandages": "res://assets/icons/bandage.png",       # Bandaż icon
-		"venom": "res://assets/icons/venom.png",            # Venom icon
-		"relic_shards": "res://assets/icons/crystal.png"    # Crystal icon
+		"bandages": "res://assets/icons/bandage.png",
+		"venom": "res://assets/icons/venom.png",
+		"relic_shards": "res://assets/icons/crystal.png",
+		"gunpowder": "res://assets/sprites/enemies/squirrel.png",
+		"nuts": "res://assets/sprites/enemies/squirrel.png",
+		"paperclips": "res://assets/sprites/enemies/monkey.png",
+		"bones": "res://assets/sprites/enemies/skeleton.png",
+		"cardboard": "res://assets/sprites/enemies/golem.png",
+		"ectoplasm": "res://assets/sprites/enemies/ghost.png",
 	}
 	
 	for res_id in player.resources.keys():
@@ -413,45 +515,54 @@ func spawn_enemy(saved_hp: int = -1):
 	
 	enemy_sprite.visible = true
 	click_area.visible = true
-	var is_boss = (current_stage % 5 == 0)
+	
+	var is_named_boss = boss_roster.has(current_stage)
+	var is_mini_boss = (current_stage % 5 == 0) and not is_named_boss
 	var is_final_boss = (current_stage == 50)
+	
 	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
 	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
-	if is_final_boss:
-		hp *= 10 # Massive scaling for final boss
-		dmg *= 3
-		gold *= 10
-	elif is_boss:
-		hp *= BOSS_HP_MULT
-		dmg *= BOSS_DMG_MULT
-		gold *= BOSS_GOLD_MULT
-	
 	var enemy_name = ""
 	var res_type = ""
+	var target_size = 200.0
 	
 	if is_final_boss:
+		hp *= 10
+		dmg *= 3
+		gold *= 10
 		enemy_sprite.texture = boss_texture
 		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
 		res_type = "relic_shards"
-	elif is_boss:
-		enemy_sprite.texture = boss_texture
-		enemy_name = "BOSS: Raft Saddam"
-		res_type = "relic_shards"
+		target_size = 300.0
+	elif is_named_boss:
+		hp *= BOSS_HP_MULT
+		dmg *= BOSS_DMG_MULT
+		gold *= BOSS_GOLD_MULT
+		var boss_data = boss_roster[current_stage]
+		enemy_sprite.texture = load(boss_data.texture)
+		enemy_name = "BOSS: %s" % boss_data.name
+		res_type = boss_data.resource
+		target_size = boss_data.get("scale", 280.0)
+		# Show boss greeting
+		_show_boss_greeting(boss_data.greeting)
+	elif is_mini_boss:
+		hp *= BOSS_HP_MULT
+		dmg *= BOSS_DMG_MULT
+		gold *= BOSS_GOLD_MULT
+		var enemy_data = _get_enemy_for_stage(current_stage)
+		enemy_sprite.texture = load(enemy_data.texture)
+		enemy_name = "ELITE: %s" % enemy_data.name
+		res_type = enemy_data.resource
+		target_size = 230.0
 	else:
-		if current_stage <= 10:
-			enemy_sprite.texture = mummy_texture
-			enemy_name = "Toilet Paper Mummy"
-			res_type = "bandages"
-		else:
-			enemy_sprite.texture = snake_texture
-			enemy_name = "Confused Snake"
-			res_type = "venom"
+		var enemy_data = _get_enemy_for_stage(current_stage)
+		enemy_sprite.texture = load(enemy_data.texture)
+		enemy_name = enemy_data.name
+		res_type = enemy_data.resource
 
 	# --- AUTOMATIC SCALING ---
-	print("DEBUG: SCALING ENEMY")
-	var target_size = 200.0
 	var tex_size = enemy_sprite.texture.get_size()
 	var new_enemy_scale = target_size / max(tex_size.x, tex_size.y)
 	enemy_sprite.scale = Vector2(new_enemy_scale, new_enemy_scale)
@@ -463,6 +574,7 @@ func spawn_enemy(saved_hp: int = -1):
 	_start_idle_animation()
 		
 	current_enemy.setup_enemy(hp, dmg, gold, 10 + current_stage, res_type)
+	current_enemy.enemy_name = enemy_name
 	if saved_hp != -1:
 		current_enemy.current_hp = saved_hp
 		
@@ -667,6 +779,46 @@ func _animate_label(lbl: Control):
 	tween.tween_property(lbl, "scale", Vector2(1.0, 1.0), 0.1)
 
 # === Near Death Experience (Vignette + Audio) ===
+
+# === Boss Greeting ===
+func _show_boss_greeting(text: String):
+	var greeting_layer = CanvasLayer.new()
+	greeting_layer.layer = 90
+	add_child(greeting_layer)
+	
+	# Dark overlay
+	var overlay = ColorRect.new()
+	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.color = Color(0, 0, 0, 0.7)
+	overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	overlay.modulate = Color(1, 1, 1, 0)
+	greeting_layer.add_child(overlay)
+	
+	# Greeting label
+	var lbl = Label.new()
+	lbl.text = text
+	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	lbl.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	lbl.set_anchors_preset(Control.PRESET_CENTER)
+	lbl.add_theme_font_size_override("font_size", 18)
+	lbl.add_theme_color_override("font_color", Color.GOLD)
+	lbl.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	lbl.add_theme_constant_override("shadow_offset_x", 2)
+	lbl.add_theme_constant_override("shadow_offset_y", 2)
+	lbl.position = Vector2(-150, -20)
+	lbl.size = Vector2(300, 40)
+	lbl.modulate = Color(1, 1, 1, 0)
+	greeting_layer.add_child(lbl)
+	
+	# Animate in → hold → out
+	var tween = create_tween()
+	tween.tween_property(overlay, "modulate:a", 1.0, 0.3)
+	tween.parallel().tween_property(lbl, "modulate:a", 1.0, 0.3)
+	tween.tween_interval(1.5)
+	tween.tween_property(overlay, "modulate:a", 0.0, 0.5)
+	tween.parallel().tween_property(lbl, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(greeting_layer.queue_free)
+
 func _create_vignette_overlay():
 	vignette_overlay = ColorRect.new()
 	vignette_overlay.name = "VignetteOverlay"

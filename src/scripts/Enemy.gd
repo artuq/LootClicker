@@ -9,6 +9,7 @@ var damage: int
 var gold_reward: int
 var xp_reward: int
 var enemy_resource: String = ""
+var enemy_name: String = ""
 var dodge_chance: float = 0.0
 
 # FIX: Function now takes 5 arguments for resources
