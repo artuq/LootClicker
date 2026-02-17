@@ -72,13 +72,22 @@ func create_card(opt: Dictionary) -> Button:
 	tex_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	vbox.add_child(tex_rect)
 	
-	# Tekst
+	# Tekst - nazwa
+	var name_lbl = Label.new()
+	name_lbl.text = opt.name.to_upper()
+	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	name_lbl.add_theme_font_size_override("font_size", 11)
+	if is_cursed:
+		name_lbl.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
+	vbox.add_child(name_lbl)
+	
+	# Tekst - opis
 	var lbl = Label.new()
-	lbl.text = "%s\n%s" % [opt.name.to_upper(), opt.desc]
+	lbl.text = opt.desc
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	lbl.custom_minimum_size = Vector2(90, 50)
-	lbl.add_theme_font_size_override("font_size", 7)
+	lbl.custom_minimum_size = Vector2(90, 0)
+	lbl.add_theme_font_size_override("font_size", 10)
 	if is_cursed:
 		lbl.add_theme_color_override("font_color", Color(1.0, 0.7, 0.7))
 	vbox.add_child(lbl)
