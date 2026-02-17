@@ -46,12 +46,30 @@
 - **XP curve**: Exponent 1.3 (was 1.4)
 - Commit: `a3d0f93`
 
+#### 7. MVP Polish (#20) ✅
+- Boss progress bar in HUD
+- Biome indicator label
+- Loot summary on victory screen
+- DPS display
+- Tutorial overlay on first play
+- Commit: `3a67b51`
+
+#### 8. HUD Layout Overhaul ✅
+- **v1** (`055ea31`): Split TopBar into 2 rows to prevent 360px overflow
+- **v2** (`5babb1d`): Replaced Row2 containers (BiomeLabel, BossProgressBar, XPBar) with single `InfoLabel` — formatted from `_update_info_label()` as `"Jungle  1/10 The Allergic Idol  XP 3/50"` — eliminates layout overflow entirely
+- Gold icon: `gold_coin_custom.svg` → `coin.png` (user-provided asset)
+- DPS label moved to its own row below gold
+- `clip_text = true` as safety net
+
 ### Bug Fixes
 - `xp_changed` signal arg mismatch — lambda with default params
 - `enemy_attack` indentation — mixed tab/space caused AudioManager scene tree error
 - Card viewport overflow — cards 105×200px, container 350px
 - Curse effects between stages — `in_combat` flag + poison timer cleanup
-- Commits: `12dcc92`, `36a0f00`
+- `gold_coin_custom.svg` import `valid=false` — set to `true`
+- `CanvasLayer` has no `modulate` — animate backdrop/panel instead
+- `SkillNode.gd:75` integer division — `int(... / 20.0)`
+- Commits: `12dcc92`, `36a0f00`, `4cb7c8d`
 
 ### Git Commits (Session 2)
 | Hash | Description |
@@ -65,6 +83,10 @@
 | `b6ccd2c` | fix: Keep 3 resource types, add Mummy+Snake |
 | `12dcc92` | fix: xp_changed signal + enemy_attack indentation |
 | `a3d0f93` | balance: Complete rebalance pass (6 changes) |
+| `3a67b51` | feat: MVP polish — boss bar, biome, DPS, tutorial |
+| `4cb7c8d` | fix: SVG import, CanvasLayer modulate, int division |
+| `055ea31` | fix: HUD layout overhaul v1 — 2-row TopBar |
+| `5babb1d` | fix: Replace Row2 with single InfoLabel + coin.png |
 
 ---
 
