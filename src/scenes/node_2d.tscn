@@ -198,13 +198,14 @@ anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -180.0
+offset_top = -190.0
+offset_bottom = -125.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_top = 0
-theme_override_constants/margin_bottom = 5
+theme_override_constants/margin_bottom = 0
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/MidHUD"]
 layout_mode = 2
