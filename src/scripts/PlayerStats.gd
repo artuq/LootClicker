@@ -45,6 +45,13 @@ var block_chance: float = 0.0  # 0% base
 var inventory: Array[GameItem] = []
 var equipped_item: GameItem = null
 
+# Cursed card debuffs
+var active_curses: Array[Dictionary] = []  # [{id, stages_left, per_click_hp, per_sec_hp, ...}]
+var heal_blocked: bool = false
+var click_hp_cost: int = 0       # HP lost per click (Blood Price)
+var poison_dps: int = 0          # HP lost per second (Toxic)
+var thorns_percent: float = 0.0  # Damage reflected to enemy (Thorns)
+
 var base_costs = {
 	"str": 10, "speed": 15, "crit": 25, "greed": 10, "def": 15, "heal": 50, "hp": 30
 }
@@ -69,6 +76,9 @@ func get_skill_cost(id: String) -> int:
 
 # --- HEALING ---
 func heal_player():
+	if heal_blocked:
+		error_occurred.emit("CURSED! No healing!")
+		return
 	# Heal only if there's something to heal
 	if current_hp < max_hp:
 		current_hp = max_hp
@@ -77,6 +87,9 @@ func heal_player():
 		skills_updated.emit() # Refresh UI (price increases)
 
 func use_consumable(type: String):
+	if heal_blocked:
+		error_occurred.emit("CURSED! No healing!")
+		return false
 	if consumables.get(type, 0) > 0:
 		match type:
 			"hp_potion":
@@ -87,6 +100,18 @@ func use_consumable(type: String):
 					consumables_updated.emit()
 					return true
 	return false
+
+# Called by BattleManager on each player click
+func on_click_curse_cost():
+	if click_hp_cost > 0 and current_hp > 0:
+		current_hp = max(1, current_hp - click_hp_cost)
+		health_changed.emit(current_hp, max_hp)
+
+# Called by BattleManager timer for poison tick
+func apply_poison_tick():
+	if poison_dps > 0 and current_hp > 0:
+		current_hp = max(1, current_hp - poison_dps)
+		health_changed.emit(current_hp, max_hp)
 
 func take_damage(amount: int) -> String:
 	# Check for Dodge
@@ -146,3 +171,53 @@ func gain_xp(amount: int):
 		level += 1
 		xp_required = int(xp_required * 1.4) # Leveling difficulty scaling
 		leveled_up.emit(level)
+
+# === Cursed Card System ===
+func apply_curse(curse: Dictionary):
+	var c = curse.duplicate()
+	active_curses.append(c)
+	_recalculate_curse_effects()
+	print("CURSE APPLIED: %s (stages: %d)" % [c.get("id", "?"), c.get("stages", -1)])
+
+func on_stage_advance():
+	# Tick down stage-based curses
+	var to_remove = []
+	for i in range(active_curses.size()):
+		if active_curses[i].has("stages") and active_curses[i].stages > 0:
+			active_curses[i].stages -= 1
+			if active_curses[i].stages <= 0:
+				to_remove.append(i)
+	# Remove expired (reverse order)
+	for i in range(to_remove.size() - 1, -1, -1):
+		print("CURSE EXPIRED: %s" % active_curses[to_remove[i]].get("id", "?"))
+		active_curses.remove_at(to_remove[i])
+	_recalculate_curse_effects()
+
+func _recalculate_curse_effects():
+	# Reset all curse effects
+	heal_blocked = false
+	click_hp_cost = 0
+	poison_dps = 0
+	thorns_percent = 0.0
+	
+	for c in active_curses:
+		match c.get("id", ""):
+			"curse_berserker":
+				heal_blocked = true
+			"curse_blood":
+				click_hp_cost += 3
+			"curse_toxic":
+				poison_dps += 2
+			"curse_thorns":
+				poison_dps += 1  # Slow bleed
+				thorns_percent += 0.3  # 30% reflect
+			"curse_glass":
+				pass  # One-time effect applied at selection
+			"curse_frenzy":
+				pass  # One-time effect applied at selection
+
+func get_active_curse_names() -> Array:
+	var names = []
+	for c in active_curses:
+		names.append(c.get("id", "unknown"))
+	return names

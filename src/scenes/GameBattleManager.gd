@@ -52,6 +52,9 @@ var vignette_tween: Tween
 var is_near_death: bool = false
 const NEAR_DEATH_THRESHOLD = 0.2 # 20% HP
 
+# Curse system
+var poison_timer: Timer
+
 # Cached styles for dynamic HP bar colors
 var style_green: StyleBoxTexture
 var style_yellow: StyleBoxTexture
@@ -472,6 +475,11 @@ func spawn_enemy(saved_hp: int = -1):
 
 func _on_click_area_pressed():
 	_on_player_attack()
+	# Blood Price curse: HP cost per click
+	if player.click_hp_cost > 0:
+		player.on_click_curse_cost()
+		if player.current_hp <= 0:
+			_handle_player_death()
 
 func _on_player_attack():
 	if current_enemy:
@@ -489,6 +497,13 @@ func _on_player_attack():
 			enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
 			_spawn_floating_text(result + ("!!" if is_crit else ""), Color.YELLOW if not is_crit else Color.ORANGE)
 			_play_hit_effect(is_crit)
+			# Thorns: reflect damage to player
+			if player.thorns_percent > 0 and current_enemy:
+				var reflect_dmg = int(dmg * player.thorns_percent)
+				if reflect_dmg > 0:
+					player.current_hp = max(1, player.current_hp - reflect_dmg)
+					player.health_changed.emit(player.current_hp, player.max_hp)
+					_spawn_floating_text("THORNS -%d" % reflect_dmg, Color.DARK_RED)
 			if get_node_or_null("/root/AudioManager"):
 				get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
 
@@ -566,6 +581,11 @@ func _on_next_level_button_pressed():
 	save_game()
 	victory_ui.visible = false
 	current_stage += 1
+	# Tick down stage-based curses
+	player.on_stage_advance()
+	if player.active_curses.size() > 0:
+		var names = player.get_active_curse_names()
+		_spawn_floating_text("Curses: %s" % ", ".join(names), Color.DARK_RED)
 	spawn_enemy()
 	_start_combat()
 
@@ -573,6 +593,8 @@ func _start_combat():
 	player_timer.wait_time = player.get_attack_speed()
 	player_timer.start()
 	enemy_timer.start()
+	# Start poison timer if player has poison curse
+	_update_poison_timer()
 
 func _on_skills_updated():
 	if player_timer:
@@ -713,3 +735,24 @@ func _update_hp_bar_style(bar: ProgressBar):
 		bar.add_theme_stylebox_override("fill", style_yellow)
 	else:
 		bar.add_theme_stylebox_override("fill", style_red)
+
+# === Curse System: Poison Timer ===
+func _update_poison_timer():
+	if player.poison_dps > 0:
+		if not poison_timer:
+			poison_timer = Timer.new()
+			poison_timer.wait_time = 1.0
+			poison_timer.timeout.connect(_on_poison_tick)
+			add_child(poison_timer)
+		if poison_timer.is_stopped():
+			poison_timer.start()
+	else:
+		if poison_timer and not poison_timer.is_stopped():
+			poison_timer.stop()
+
+func _on_poison_tick():
+	if player.poison_dps > 0 and player.current_hp > 0:
+		player.apply_poison_tick()
+		_spawn_floating_text("POISON -%d" % player.poison_dps, Color.PURPLE)
+		if player.current_hp <= 1:
+			_spawn_floating_text("DANGER!", Color.RED)
