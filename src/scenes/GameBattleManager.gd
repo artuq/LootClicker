@@ -569,7 +569,8 @@ func spawn_enemy(saved_hp: int = -1):
 	
 	var enemy_name = ""
 	var res_type = ""
-	var target_size = 200.0
+	# Uniform enemy sizes: normal 160, elite 180, boss 200, final 220
+	var target_size = 160.0
 	
 	if is_final_boss:
 		hp *= 10
@@ -578,7 +579,7 @@ func spawn_enemy(saved_hp: int = -1):
 		enemy_sprite.texture = boss_texture
 		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
 		res_type = "relic_shards"
-		target_size = 300.0
+		target_size = 220.0
 	elif is_named_boss:
 		hp *= BOSS_HP_MULT
 		dmg *= BOSS_DMG_MULT
@@ -587,7 +588,7 @@ func spawn_enemy(saved_hp: int = -1):
 		enemy_sprite.texture = load(boss_data.texture)
 		enemy_name = "BOSS: %s" % boss_data.name
 		res_type = boss_data.resource
-		target_size = boss_data.get("scale", 280.0)
+		target_size = 200.0
 		# Show boss greeting
 		_show_boss_greeting(boss_data.greeting)
 	elif is_mini_boss:
@@ -598,7 +599,7 @@ func spawn_enemy(saved_hp: int = -1):
 		enemy_sprite.texture = load(enemy_data.texture)
 		enemy_name = "ELITE: %s" % enemy_data.name
 		res_type = enemy_data.resource
-		target_size = 230.0
+		target_size = 180.0
 	else:
 		var enemy_data = _get_enemy_for_stage(current_stage)
 		enemy_sprite.texture = load(enemy_data.texture)
