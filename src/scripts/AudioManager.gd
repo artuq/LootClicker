@@ -13,8 +13,13 @@ func _ready():
 	if music_stream:
 		music_player.stream = music_stream
 		music_player.volume_db = -10 # Slightly quieter background
-		music_player.bus = "Master"
+		# Ensure Master bus exists before assignment
+		if AudioServer.get_bus_index("Master") >= 0:
+			music_player.bus = "Master"
 		music_player.finished.connect(func(): music_player.play())
+		print("AudioManager: Music loaded successfully")
+	else:
+		print("ERROR: AudioManager - Failed to load music from res://assets/audio/bg_music.mp3")
 
 func play_music():
 	if music_player and not music_player.playing:
@@ -106,7 +111,8 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 	stream.data = data
 	player.stream = stream
 	player.pitch_scale = p_shift
-	player.bus = "Master" # Ensure it plays on Master bus
+	if AudioServer.get_bus_index("Master") >= 0:
+		player.bus = "Master" # Ensure it plays on Master bus
 	player.play()
 	
 	player.finished.connect(func(): player.queue_free())

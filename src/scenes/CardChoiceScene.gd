@@ -6,6 +6,11 @@ var player: PlayerStats
 
 func setup(p_ref: PlayerStats):
 	player = p_ref
+	if not player:
+		print("ERROR: CardChoiceScene.setup() - player is null!")
+		queue_free()
+		return
+		
 	get_tree().paused = true # Stop combat
 	
 	# Clear old cards
@@ -14,6 +19,7 @@ func setup(p_ref: PlayerStats):
 	
 	# Roll 3 options
 	var options = upgrade_manager.get_random_options(3)
+	print("DEBUG: CardChoiceScene setup with %d options" % options.size())
 	
 	for opt in options:
 		var card = create_card(opt)
@@ -68,6 +74,13 @@ func create_card(opt: Dictionary) -> Button:
 	return btn
 
 func _on_card_selected(id: String):
+	if not player:
+		print("ERROR: CardChoiceScene._on_card_selected() - player is null!")
+		get_tree().paused = false
+		queue_free()
+		return
+		
+	print("DEBUG: Card selected - %s" % id)
 	upgrade_manager.apply_upgrade(player, id)
 	get_tree().paused = false
 	queue_free()

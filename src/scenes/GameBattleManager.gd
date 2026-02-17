@@ -215,6 +215,8 @@ func save_game(slot: int = 1):
 			"speed_lvl": player.speed_lvl,
 			"def_lvl": player.def_lvl,
 			"heal_count": player.heal_count,
+			"dodge_chance": player.dodge_chance,
+			"block_chance": player.block_chance,
 			"resources": player.resources,
 			"consumables": player.consumables,
 			"inventory": []
@@ -264,6 +266,8 @@ func load_game(slot: int = 1):
 	player.speed_lvl = player_data["speed_lvl"]
 	player.def_lvl = player_data["def_lvl"]
 	player.heal_count = player_data.get("heal_count", 0)
+	player.dodge_chance = player_data.get("dodge_chance", 0.05)
+	player.block_chance = player_data.get("block_chance", 0.0)
 	player.resources = player_data.get("resources", player.resources)
 	player.consumables = player_data.get("consumables", player.consumables)
 	
@@ -434,6 +438,7 @@ func spawn_enemy(saved_hp: int = -1):
 	var tex_size = enemy_sprite.texture.get_size()
 	var new_enemy_scale = target_size / max(tex_size.x, tex_size.y)
 	enemy_sprite.scale = Vector2(new_enemy_scale, new_enemy_scale)
+	print("DEBUG: Enemy texture set to %s, scale: %.2f" % [enemy_name, new_enemy_scale])
 		
 	enemy_sprite.position = Vector2(180, 240)
 	original_enemy_pos = enemy_sprite.position
