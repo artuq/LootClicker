@@ -49,7 +49,12 @@ func _on_new_game_button_pressed():
 	_start_game("new_game")
 
 func _on_settings_button_pressed():
-	get_tree().change_scene_to_file("res://src/scenes/SettingsScene.tscn")
+	var overlay = CanvasLayer.new()
+	overlay.layer = 100
+	add_child(overlay)
+	var settings = load("res://src/scenes/SettingsScene.tscn").instantiate()
+	overlay.add_child(settings)
+	# No save/load on title screen — just volume
 
 func _start_game(mode: String):
 	# Set static mode on the manager class

@@ -512,7 +512,7 @@ func _update_consumables_ui():
 			potion_btn.pressed.connect(_on_potion_button_pressed)
 			_add_button_juice(potion_btn)
 
-func _add_button_juice(btn: Button):
+func _add_button_juice(btn: BaseButton):
 	if not btn: return
 	btn.pivot_offset = btn.size / 2
 	
@@ -826,12 +826,6 @@ func _spawn_floating_text(text: String, color: Color):
 	else:
 		lbl.global_position = hp_label.global_position + Vector2(40, 40)
 
-func _on_save_slot_pressed(slot: int):
-	save_game(slot)
-
-func _on_load_slot_pressed(slot: int):
-	load_game(slot)
-
 func _on_open_skill_tree():
 	if !skill_tree_scene: return
 	# Pause game while browsing skill tree
@@ -844,6 +838,7 @@ func _on_settings_hud_pressed():
 	get_tree().paused = true
 	var settings = load("res://src/scenes/SettingsScene.tscn").instantiate()
 	%CanvasLayer.add_child(settings)
+	settings.setup(save_game, load_game)
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()
