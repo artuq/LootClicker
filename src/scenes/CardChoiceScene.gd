@@ -51,7 +51,8 @@ func create_card(opt: Dictionary) -> Button:
 	lbl.text = "%s\n%s" % [opt.name.to_upper(), opt.desc]
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	lbl.add_theme_font_size_override("font_size", 10)
+	lbl.custom_minimum_size = Vector2(120, 60)  # Force wrapping to card width
+	lbl.add_theme_font_size_override("font_size", 9)  # Slightly smaller for fit
 	vbox.add_child(lbl)
 	
 	btn.pressed.connect(_on_card_selected.bind(opt.id))

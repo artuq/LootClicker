@@ -116,6 +116,7 @@ func _ready():
 		xp_bar.max_value = player.xp_required
 		xp_bar.value = player.xp
 		
+	player.xp_changed.connect(update_xp)  # Update on every XP gain
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 

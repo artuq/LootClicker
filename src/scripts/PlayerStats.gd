@@ -7,6 +7,7 @@ signal skills_updated
 signal item_added(item)
 signal error_occurred(msg)
 signal leveled_up(new_level) # New level up signal
+signal xp_changed(current, required) # New XP change signal
 signal resources_updated # Signal for skill tree
 signal consumables_updated # New signal for potions
 
@@ -139,6 +140,7 @@ func trigger_error(msg: String):
 
 func gain_xp(amount: int):
 	xp += amount
+	xp_changed.emit(xp, xp_required)  # Emit signal for every XP gain
 	if xp >= xp_required:
 		xp -= xp_required
 		level += 1
