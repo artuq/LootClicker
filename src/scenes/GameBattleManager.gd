@@ -134,7 +134,7 @@ func _ready():
 	)
 		
 	# XP Bar - Reordered to set max_value first
-	var update_xp = func():
+	var update_xp = func(_cur = 0, _req = 0):
 		if xp_label:
 			xp_label.text = "%d/%d" % [player.xp, player.xp_required]
 		xp_bar.max_value = player.xp_required
