@@ -29,6 +29,7 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 @onready var stage_label = %StageLabel
 @onready var next_level_btn = %NextLevelButton
 @onready var xp_bar = %XPBar
+@onready var xp_label = %XPLabel
 @onready var click_area = %ClickArea
 @onready var victory_ui = %VictoryUI
 
@@ -111,8 +112,8 @@ func _ready():
 		
 	# XP Bar - Reordered to set max_value first
 	var update_xp = func():
-		if %XPLabel:
-			%XPLabel.text = "XP: %d / %d" % [player.xp, player.xp_required]
+		if xp_label:
+			xp_label.text = "%d/%d" % [player.xp, player.xp_required]
 		xp_bar.max_value = player.xp_required
 		xp_bar.value = player.xp
 		
