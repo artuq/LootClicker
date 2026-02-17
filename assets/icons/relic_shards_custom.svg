@@ -1,0 +1,23 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Relic Shards - krużganki/klejnoty -->
+  <rect width="512" height="512" fill="#2a2a2a"/>
+  
+  <!-- Duży krużgan (środek) -->
+  <polygon points="256,80 350,180 350,340 256,420 162,340 162,180" fill="#ff00ff" opacity="0.7"/>
+  <polygon points="256,85 345,175 345,335 256,410 167,335 167,175" fill="#ff69b4" opacity="0.9"/>
+  
+  <!-- Blask -->
+  <polygon points="220,200 280,200 270,250 230,250" fill="#ffffff" opacity="0.6"/>
+  
+  <!-- Lewy mały krużgan -->
+  <polygon points="140,300 190,260 200,330 160,360" fill="#ff00ff" opacity="0.6"/>
+  <polygon points="145,305 185,265 195,325 160,355" fill="#ff69b4" opacity="0.8"/>
+  
+  <!-- Prawy mały krużgan -->
+  <polygon points="372,300 422,260 412,330 352,360" fill="#ff00ff" opacity="0.6"/>
+  <polygon points="367,305 417,265 407,325 352,355" fill="#ff69b4" opacity="0.8"/>
+  
+  <!-- Blask na małych -->
+  <polygon points="160,310 170,300 165,330" fill="#ffffff" opacity="0.5"/>
+  <polygon points="390,310 400,300 395,330" fill="#ffffff" opacity="0.5"/>
+</svg>

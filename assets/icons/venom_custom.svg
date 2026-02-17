@@ -1,0 +1,20 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Venom - zielona trucizna w butelce -->
+  <rect width="512" height="512" fill="#2a2a2a"/>
+  
+  <!-- Butelka (szkło) -->
+  <rect x="150" y="80" width="212" height="300" fill="#1a4d1a" opacity="0.3" rx="10"/>
+  <rect x="155" y="85" width="202" height="290" fill="#22aa22" opacity="0.6" rx="10"/>
+  
+  <!-- Zielona trucizna wewnątrz -->
+  <ellipse cx="256" cy="300" rx="95" ry="30" fill="#00ff00"/>
+  <path d="M 161 300 Q 161 330 256 340 Q 351 330 351 300" fill="#00ff00" opacity="0.8"/>
+  
+  <!-- Korka/czop -->
+  <rect x="230" y="50" width="52" height="35" fill="#8b4513" rx="5"/>
+  <ellipse cx="256" cy="50" rx="30" ry="12" fill="#a0522d"/>
+  
+  <!-- Blask trucizny -->
+  <ellipse cx="220" cy="200" rx="30" ry="60" fill="#00ff00" opacity="0.3"/>
+  <ellipse cx="280" cy="280" rx="20" ry="15" fill="#ffffff" opacity="0.4"/>
+</svg>

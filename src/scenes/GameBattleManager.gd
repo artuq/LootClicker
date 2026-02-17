@@ -309,9 +309,9 @@ func _update_inventory_ui():
 	
 	# Display Resources
 	var res_icons = {
-		"bandages": "res://assets/icons/new_icons/Icons 512x512/106.png", # Looks like cloth/mummy
-		"venom": "res://assets/icons/new_icons/Icons 512x512/115.png",    # Looks like poison
-		"relic_shards": "res://assets/icons/new_icons/Icons 512x512/91.png" # Looks like gem/relic
+		"bandages": "res://assets/icons/bandages_custom.svg",       # Custom gray bandages icon
+		"venom": "res://assets/icons/venom_custom.svg",             # Custom green venom icon
+		"relic_shards": "res://assets/icons/relic_shards_custom.svg" # Custom purple relic shards icon
 	}
 	
 	for res_id in player.resources.keys():
