@@ -3,12 +3,12 @@ class_name UpgradeManager
 
 # Definitions for possible upgrades (Cards)
 var available_cards = [
-	{"id": "str", "name": "Brawn", "desc": "Strength +2", "icon": "res://assets/ui/cards/card_str.png"},
-	{"id": "crit", "name": "Precision", "desc": "Crit Chance +5%", "icon": "res://assets/ui/cards/card_crit.png"},
-	{"id": "speed", "name": "Agility", "desc": "Attack Speed +10%", "icon": "res://assets/ui/cards/card_speed.png"},
-	{"id": "hp", "name": "Vitality", "desc": "Max HP +20", "icon": "res://assets/ui/cards/card_hp.png"},
+	{"id": "str", "name": "Brawn", "desc": "STR +2, DMG +5%", "icon": "res://assets/ui/cards/card_str.png"},
+	{"id": "crit", "name": "Precision", "desc": "Crit +5%, Crit DMG up", "icon": "res://assets/ui/cards/card_crit.png"},
+	{"id": "speed", "name": "Agility", "desc": "Attack Speed up", "icon": "res://assets/ui/cards/card_speed.png"},
+	{"id": "hp", "name": "Vitality", "desc": "Max HP +20, Full Heal", "icon": "res://assets/ui/cards/card_hp.png"},
 	{"id": "gold", "name": "Greed", "desc": "Gold Gain +15%", "icon": "res://assets/ui/cards/card_gold.png"},
-	{"id": "def", "name": "Armor", "desc": "Defense +1", "icon": "res://assets/ui/cards/card_def.png"},
+	{"id": "def", "name": "Armor", "desc": "Defense +2% DMG reduction", "icon": "res://assets/ui/cards/card_def.png"},
 	{"id": "dodge", "name": "Evasion", "desc": "Dodge Chance +3%", "icon": "res://assets/ui/cards/card_crit.png"},
 	{"id": "block", "name": "Bulwark", "desc": "Block Chance +5%", "icon": "res://assets/ui/cards/card_hp.png"}
 ]

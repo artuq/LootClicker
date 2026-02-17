@@ -94,7 +94,9 @@ func use_consumable(type: String):
 		match type:
 			"hp_potion":
 				if current_hp < max_hp:
-					current_hp = min(max_hp, current_hp + 30)
+					# B: Potion heals 20% max HP or 30, whichever is bigger
+					var heal_amount = max(30, int(max_hp * 0.2))
+					current_hp = min(max_hp, current_hp + heal_amount)
 					consumables[type] -= 1
 					health_changed.emit(current_hp, max_hp)
 					consumables_updated.emit()
@@ -125,7 +127,9 @@ func take_damage(amount: int) -> String:
 		final_dmg = int(amount * 0.5)
 		block_msg = "BLOCKED "
 		
-	var dmg = max(1, final_dmg - def_lvl)
+	# C: Defense as % reduction (2% per level, cap 50%) instead of flat subtraction
+	var def_reduction = min(0.50, def_lvl * 0.02)
+	var dmg = max(1, int(final_dmg * (1.0 - def_reduction)))
 	current_hp -= dmg
 	if current_hp < 0: current_hp = 0
 	health_changed.emit(current_hp, max_hp)        
@@ -141,15 +145,26 @@ func add_item(item: GameItem):
 		equipped_item = item
 
 func get_total_damage() -> int:
+	# A: Base damage + STR, then multiply by % bonus from STR stacking
 	var base = 1 + str_lvl
 	if equipped_item: base += equipped_item.damage_bonus
-	return base
+	# Every 2 STR levels = +5% total damage (multiplicative scaling)
+	var str_bonus = 1.0 + (str_lvl * 0.025)
+	return int(base * str_bonus)
+
+func get_crit_multiplier() -> float:
+	# D: Crit damage scales with crit investment
+	return 2.0 + (crit_lvl * 0.02)
 
 func get_attack_speed() -> float:
-	return max(0.2, 1.0 - (speed_lvl * 0.05))
+	# E: Soft cap with diminishing returns instead of hard wall
+	# Formula: 1.0 / (1.0 + speed_lvl * 0.08) — never reaches 0, smooth curve
+	# speed_lvl 0 = 1.0s, 5 = 0.71s, 10 = 0.56s, 16 = 0.44s, 25 = 0.33s, 50 = 0.2s
+	return max(0.15, 1.0 / (1.0 + speed_lvl * 0.08))
 
 func is_critical_hit() -> bool:
-	return randf() < (crit_lvl * 0.01)
+	# Cap crit chance at 80%
+	return randf() < min(0.8, crit_lvl * 0.01)
 
 func gain_gold(amount: int):
 	gold += int(amount * (1.0 + (greed_lvl * 0.05)))
@@ -169,7 +184,7 @@ func gain_xp(amount: int):
 	if xp >= xp_required:
 		xp -= xp_required
 		level += 1
-		xp_required = int(xp_required * 1.4) # Leveling difficulty scaling
+		xp_required = int(xp_required * 1.3) # F: Smoother XP curve (was 1.4)
 		leveled_up.emit(level)
 
 # === Cursed Card System ===

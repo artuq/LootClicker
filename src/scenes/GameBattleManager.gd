@@ -513,7 +513,8 @@ func _add_button_juice(btn: Button):
 
 func _on_potion_button_pressed():
 	if player.use_consumable("hp_potion"):
-		_spawn_floating_text("USED POTION +30", Color.SPRING_GREEN)
+		var heal_amount = max(30, int(player.max_hp * 0.2))
+		_spawn_floating_text("POTION +%d" % heal_amount, Color.SPRING_GREEN)
 		if get_node_or_null("/root/AudioManager"):
 			get_node("/root/AudioManager").play_coin_sound() # Temporary sound
 		_update_consumables_ui()
@@ -612,7 +613,7 @@ func _on_player_attack():
 	if current_enemy:
 		var dmg = player.get_total_damage()
 		var is_crit = player.is_critical_hit()
-		if is_crit: dmg *= 2
+		if is_crit: dmg = int(dmg * player.get_crit_multiplier())
 		
 		var result = current_enemy.take_damage(dmg)
 		
