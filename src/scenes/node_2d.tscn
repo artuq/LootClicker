@@ -114,39 +114,43 @@ unique_name_in_owner = true
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 0.0
-offset_bottom = 100.0
+offset_bottom = 130.0
 grow_horizontal = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_top = 5
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 0
 
 [node name="VBox" type="VBoxContainer" parent="CanvasLayer/TopHUD"]
 layout_mode = 2
-theme_override_constants/separation = 4
+theme_override_constants/separation = 2
 
 [node name="TopBar" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox" unique_id=123456789]
 layout_mode = 2
-theme_override_constants/separation = 8
+theme_override_constants/separation = 6
 
 [node name="SettingsHUD" type="Button" parent="CanvasLayer/TopHUD/VBox/TopBar" unique_id=1359125702]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(32, 32)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 11
 text = "S"
 
 [node name="StageLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/TopBar" unique_id=844014738]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 11
 text = "Stage: 1"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BiomeLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/TopBar"]
+[node name="SecondRow" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BiomeLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 9
@@ -154,52 +158,23 @@ text = "Jungle"
 label_settings = SubResource("LabelSettings_hp")
 vertical_alignment = 1
 
-[node name="XPContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/TopBar"]
+[node name="BossProgressContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
+unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 
-[node name="XPBarLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/TopBar/XPContainer" unique_id=1374216939]
+[node name="BossProgressLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/BossProgressContainer"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 10
-text = "XP:"
-label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
-
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/TopBar/XPContainer" unique_id=1676402328]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(60, 12)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
-value = 50.0
-show_percentage = false
-
-[node name="XPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/TopBar/XPContainer" unique_id=1876543210]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 9
-text = "0/50"
-label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
-
-[node name="BossProgressContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="BossProgressLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/BossProgressContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 9
+theme_override_font_sizes/font_size = 8
 text = "Boss in 10"
 label_settings = SubResource("LabelSettings_hp")
 vertical_alignment = 1
 
-[node name="BossProgressBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/BossProgressContainer"]
+[node name="BossProgressBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/SecondRow/BossProgressContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(120, 10)
+custom_minimum_size = Vector2(80, 8)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 4
@@ -208,17 +183,47 @@ theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
 value = 0.0
 show_percentage = false
 
+[node name="XPContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="XPBarLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1374216939]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+text = "XP:"
+label_settings = SubResource("LabelSettings_hp")
+vertical_alignment = 1
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1676402328]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 10)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
+value = 50.0
+show_percentage = false
+
+[node name="XPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1876543210]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 8
+text = "0/50"
+label_settings = SubResource("LabelSettings_hp")
+vertical_alignment = 1
+
 [node name="EnemyHPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox" unique_id=264580371]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 12
+theme_override_font_sizes/font_size = 11
 text = "Toilet Paper Mummy  20/23"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
 [node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox" unique_id=7749261]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 14)
+custom_minimum_size = Vector2(0, 12)
 layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
 theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
@@ -247,10 +252,10 @@ alignment = 2
 [node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 6
+theme_override_constants/separation = 4
 
 [node name="GoldIcon" type="TextureRect" parent="CanvasLayer/MidHUD/VBox/GoldContainer"]
-custom_minimum_size = Vector2(28, 28)
+custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 texture = ExtResource("25_gold_icon")
 expand_mode = 1
@@ -260,18 +265,19 @@ stretch_mode = 5
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.843137, 0, 1)
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 20
 text = "0"
 label_settings = SubResource("LabelSettings_hp")
 
-[node name="DPSLabel" type="Label" parent="CanvasLayer/MidHUD/VBox/GoldContainer"]
+[node name="DPSLabel" type="Label" parent="CanvasLayer/MidHUD/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 9
 text = ""
 label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
+horizontal_alignment = 1
 
 [node name="PlayerHPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
 layout_mode = 2
@@ -319,22 +325,23 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -80.0
-offset_right = 100.0
-offset_bottom = 80.0
+offset_left = -120.0
+offset_top = -100.0
+offset_right = 120.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="LootSummaryLabel" type="Label" parent="CanvasLayer/VictoryUI"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 11
+theme_override_font_sizes/font_size = 9
 text = ""
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
+autowrap_mode = 2
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=1203486473]
 unique_name_in_owner = true

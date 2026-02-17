@@ -1068,13 +1068,13 @@ func _update_loot_summary():
 	if not loot_summary_label:
 		return
 	var parts: Array[String] = []
-	parts.append("💰 %s gold" % format_number(kill_gold))
-	parts.append("⭐ %d XP" % kill_xp)
+	parts.append("%s gold" % format_number(kill_gold))
+	parts.append("%d XP" % kill_xp)
 	if kill_resource != "" and kill_resource_amount > 0:
 		parts.append("+%d %s" % [kill_resource_amount, kill_resource.capitalize()])
 	if kill_potion:
-		parts.append("🧪 Potion!")
-	loot_summary_label.text = " | ".join(parts)
+		parts.append("+Potion")
+	loot_summary_label.text = " · ".join(parts)
 	# Animate
 	loot_summary_label.modulate = Color(1, 1, 1, 0)
 	var tween = create_tween()
