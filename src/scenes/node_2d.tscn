@@ -379,14 +379,13 @@ layout_mode = 2
 horizontal_scroll_mode = 0
 metadata/_tab_index = 1
 
-[node name="StatsContent" type="VBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Stats"]
-unique_name_in_owner = true
+[node name="StatsColumns" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Stats"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_constants/separation = 2
+theme_override_constants/separation = 8
 
-[node name="StatsLabel" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsContent"]
+[node name="CombatStats" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsColumns"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -395,7 +394,19 @@ custom_minimum_size = Vector2(0, 200)
 bbcode_enabled = true
 theme_override_font_sizes/normal_font_size = 10
 theme_override_font_sizes/bold_font_size = 10
-text = "Loading stats..."
+text = ""
+scroll_active = false
+
+[node name="SkillStats" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsColumns"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 200)
+bbcode_enabled = true
+theme_override_font_sizes/normal_font_size = 10
+theme_override_font_sizes/bold_font_size = 10
+text = ""
 scroll_active = false
 
 [connection signal="pressed" from="CanvasLayer/TopHUD/VBox/TopBar/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]

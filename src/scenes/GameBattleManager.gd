@@ -45,7 +45,8 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 # Windows
 @onready var inventory_window = %Inventory
 @onready var inventory_grid = %InventoryGrid
-@onready var stats_label = %StatsLabel
+@onready var combat_stats_label = %CombatStats
+@onready var skill_stats_label = %SkillStats
 
 # Graphics
 @onready var enemy_sprite = %EnemySprite
@@ -506,7 +507,7 @@ func _update_inventory_ui():
 		slot.tooltip_text = "%s (+%d DMG)%s" % [item.name, item.damage_bonus, equip_text]
 
 func _update_stats_ui():
-	if not stats_label or not player: return
+	if not combat_stats_label or not skill_stats_label or not player: return
 	var dmg = player.get_total_damage()
 	var spd = player.get_attack_speed()
 	var crit_ch = min(80.0, player.crit_lvl * 1.0)
@@ -516,27 +517,34 @@ func _update_stats_ui():
 	var dodge = player.dodge_chance * 100.0
 	var block = player.block_chance * 100.0
 
-	var t := ""
-	t += "[b]--- Combat ---[/b]\n"
-	t += "DMG: %d  |  SPD: %.2fs\n" % [dmg, spd]
-	t += "Crit: %.0f%% (x%.2f)\n" % [crit_ch, crit_m]
-	t += "DEF: -%.0f%%  |  Gold: +%d%%\n" % [def_red, gold_b]
-	t += "Dodge: %.0f%%  |  Block: %.0f%%\n" % [dodge, block]
-	t += "[b]--- Skills ---[/b]\n"
-	t += "STR %d | HP %d | Greed %d\n" % [player.str_lvl, int((player.max_hp - 100) / 20.0), player.greed_lvl]
-	t += "Crit %d | Spd %d | Def %d\n" % [player.crit_lvl, player.speed_lvl, player.def_lvl]
+	# Left column — Combat
+	var cl := ""
+	cl += "[b]Combat[/b]\n"
+	cl += "DMG: %d\n" % dmg
+	cl += "SPD: %.2fs\n" % spd
+	cl += "Crit: %.0f%%\n" % crit_ch
+	cl += "Crit DMG: x%.2f\n" % crit_m
+	cl += "DEF: -%.0f%%\n" % def_red
+	cl += "Gold: +%d%%\n" % gold_b
+	cl += "Dodge: %.0f%%\n" % dodge
+	cl += "Block: %.0f%%" % block
+	combat_stats_label.text = cl
+
+	# Right column — Skills + Curses
+	var sr := ""
+	sr += "[b]Skills[/b]\n"
+	sr += "STR: %d\n" % player.str_lvl
+	sr += "HP: %d\n" % int((player.max_hp - 100) / 20.0)
+	sr += "Greed: %d\n" % player.greed_lvl
+	sr += "Crit: %d\n" % player.crit_lvl
+	sr += "Speed: %d\n" % player.speed_lvl
+	sr += "Def: %d\n" % player.def_lvl
 	if player.active_curses.size() > 0:
-		t += "[b]--- Curses ---[/b]\n"
+		sr += "[b]Curses[/b]\n"
 		for c in player.active_curses:
-			var name = c.get("id", "?").replace("curse_", "").capitalize()
-			var stages = c.get("stages", 0)
-			t += "[color=red]%s[/color] (%d stages)\n" % [name, stages]
-	t += "[b]--- Gear ---[/b]\n"
-	if player.equipped_item:
-		t += "%s (+%d DMG)" % [player.equipped_item.name, player.equipped_item.damage_bonus]
-	else:
-		t += "None equipped"
-	stats_label.text = t
+			var cname = c.get("id", "?").replace("curse_", "").capitalize()
+			sr += "[color=red]%s[/color] (%d)\n" % [cname, c.get("stages", 0)]
+	skill_stats_label.text = sr
 
 func _update_consumables_ui():
 	var potion_btn = %PotionButton
