@@ -1,10 +1,10 @@
 # LootClicker - Issue Tracking (GitHub Synced)
 
-**Last Updated:** 2026-02-17 | **Total Issues:** 19 | **GitHub:** [artuq/LootClicker/issues](https://github.com/artuq/LootClicker/issues)
+**Last Updated:** 2026-02-17 (evening) | **Total Issues:** 20 | **GitHub:** [artuq/LootClicker/issues](https://github.com/artuq/LootClicker/issues)
 
 ---
 
-## ✅ Closed Issues (6)
+## ✅ Closed Issues (7)
 
 | # | Title | Closed | Key Commits |
 |---|-------|--------|-------------|
@@ -14,6 +14,7 @@
 | #6 | [POLISH] Ulepszanie istniejących mechanik | 2026-02-15 | `f3eb983` |
 | #8 | [ASSETS] Lista Zasobów do wykonania/zdobycia | 2026-02-15 | `2be4035` |
 | #13 | Fix: Godot startup errors and resource mismatches | 2026-02-15 | bug fix |
+| #20 | MVP Polish: Progress bar, biome, loot summary, DPS, tutorial | 2026-02-17 | `3a67b51` |
 
 ---
 
@@ -68,8 +69,8 @@ Features **fully implemented** on 2026-02-17 but issues remain open on GitHub:
 
 | Category | Count |
 |----------|-------|
-| Total Issues | 19 |
-| Closed (GitHub) | 6 |
+| Total Issues | 20 |
+| Closed (GitHub) | 7 |
 | Implemented (awaiting close) | 4 |
 | In Progress | 3 |
 | Todo | 5 |
@@ -90,3 +91,4 @@ Features **fully implemented** on 2026-02-17 but issues remain open on GitHub:
 | `b6ccd2c` | fix | Keep 3 resource types, add Mummy+Snake, balance drops |
 | `12dcc92` | fix | xp_changed signal + indentation bug |
 | `a3d0f93` | balance | Complete rebalance pass (6 changes) |
+| `3a67b51` | feat | MVP polish — boss progress, biome, loot summary, DPS, tutorial (#20) |
