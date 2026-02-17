@@ -61,8 +61,10 @@ flowchart TD
         direction TB
         S1(✅ JSON Save/Load):::done
         S2(✅ Szyfrowanie Danych):::done
-        S3(✅ Audio Manager: Procedural):::done
+        S3(✅ Audio Manager: Procedural + Bus Fix):::done
         S4(✅ Inventory Grid & Potions):::done
+        S5(✅ CardChoiceScene Null-checks):::done
+        S6(✅ UpgradeManager Validation):::done
     end
 
     subgraph G_ASSETS [Zasoby]
