@@ -1,7 +1,9 @@
 extends Control
 
 @onready var points_label = %PointsLabel
+@onready var lines_node   = %Lines
 var player: PlayerStats
+var _skill_map: Dictionary = {}   # skill_id → SkillNode
 
 func setup(p_ref: PlayerStats):
 	player = p_ref
@@ -12,12 +14,17 @@ func setup(p_ref: PlayerStats):
 	if not player.resources_updated.is_connected(update_ui):
 		player.resources_updated.connect(update_ui)
 
-	# Initialize all nodes
+	# Initialize all nodes + build map
+	_skill_map.clear()
 	for node in %TreeLayout.get_children():
 		if node is SkillNode:
 			node.setup(player)
+			_skill_map[node.skill_id] = node
 			if not node.pressed.is_connected(_on_node_pressed.bind(node)):
 				node.pressed.connect(_on_node_pressed.bind(node))
+
+	# Wire connection lines
+	lines_node.setup(_skill_map)
 
 	if has_node("BackButton"):
 		_add_button_juice($BackButton)
@@ -59,6 +66,8 @@ func update_ui():
 	for node in %TreeLayout.get_children():
 		if node is SkillNode:
 			node.update_state()
+
+	lines_node.refresh()
 
 func _on_node_pressed(node: SkillNode):
 	var cost = player.get_skill_cost(node.skill_id)

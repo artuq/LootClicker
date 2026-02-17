@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://src/scenes/SkillTreeScene.gd" id="1_script"]
 [ext_resource type="Texture2D" path="res://assets/icons/tree_background.png" id="2_bg"]
@@ -9,8 +9,8 @@
 [ext_resource type="Texture2D" path="res://assets/ui/cards/card_speed.png" id="7_icon_spd"]
 [ext_resource type="Texture2D" path="res://assets/ui/cards/card_def.png" id="8_icon_def"]
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige.png" id="9_btn_bg"]
-
 [ext_resource type="Texture2D" path="res://assets/ui/cards/card_hp.png" id="10_icon_hp"]
+[ext_resource type="Script" path="res://src/scenes/SkillTreeLines.gd" id="11_lines"]
 
 [node name="SkillTreeScene" type="Control"]
 process_mode = 3
@@ -40,7 +40,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.75)
+color = Color(0, 0, 0, 0.8)
 
 [node name="Title" type="Label" parent="."]
 layout_mode = 1
@@ -48,11 +48,11 @@ anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
 offset_left = -100.0
-offset_top = 20.0
+offset_top = 15.0
 offset_right = 100.0
-offset_bottom = 60.0
+offset_bottom = 50.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 28
+theme_override_font_sizes/font_size = 24
 text = "SKILL TREE"
 horizontal_alignment = 1
 
@@ -62,130 +62,122 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -150.0
-offset_top = 60.0
-offset_right = 150.0
-offset_bottom = 80.0
+offset_left = -170.0
+offset_top = 50.0
+offset_right = 170.0
+offset_bottom = 68.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 12
-text = "Resources: 0 B, 0 V, 0 S"
+theme_override_font_sizes/font_size = 10
+text = "Gold: 0 | B: 0, V: 0, S: 0"
 horizontal_alignment = 1
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="TreePanel" type="Control" parent="."]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 100.0
-offset_bottom = -80.0
+offset_top = 75.0
+offset_bottom = -70.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="TreeLayout" type="Control" parent="ScrollContainer"]
+[node name="Lines" type="Control" parent="TreePanel"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(360, 600)
-layout_mode = 2
-
-[node name="SkillStr" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
 layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -80.0
-offset_top = 20.0
-offset_right = -10.0
-offset_bottom = 90.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
-tooltip_text = "Increase Base Strength"
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("11_lines")
+
+[node name="TreeLayout" type="Control" parent="TreePanel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SkillStr" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 78.0
+offset_top = 28.0
+offset_right = 142.0
+offset_bottom = 92.0
+tooltip_text = "Strength: Increase Base Damage"
 script = ExtResource("3_node_script")
 skill_id = "str"
 currency_type = "gold"
 icon_texture = ExtResource("4_icon_str")
 
-[node name="SkillHP" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 10.0
-offset_top = 20.0
-offset_right = 80.0
-offset_bottom = 90.0
-grow_horizontal = 2
-tooltip_text = "Increase Max HP"
+[node name="SkillHP" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 218.0
+offset_top = 28.0
+offset_right = 282.0
+offset_bottom = 92.0
+tooltip_text = "HP: Increase Max Health"
 script = ExtResource("3_node_script")
 skill_id = "hp"
 currency_type = "gold"
 icon_texture = ExtResource("10_icon_hp")
 
-[node name="SkillGold" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -120.0
-offset_top = 120.0
-offset_right = -50.0
-offset_bottom = 190.0
-grow_horizontal = 2
-tooltip_text = "Increase Gold Gain"
+[node name="SkillGold" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 53.0
+offset_top = 158.0
+offset_right = 117.0
+offset_bottom = 222.0
+tooltip_text = "Greed: Increase Gold Gain"
 script = ExtResource("3_node_script")
 skill_id = "greed"
 requirement_skill = "str"
 requirement_level = 1
 icon_texture = ExtResource("6_icon_gold")
 
-[node name="SkillCrit" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 50.0
-offset_top = 120.0
-offset_right = 120.0
-offset_bottom = 190.0
-grow_horizontal = 2
-tooltip_text = "Critical Hit Chance"
+[node name="SkillCrit" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 243.0
+offset_top = 158.0
+offset_right = 307.0
+offset_bottom = 222.0
+tooltip_text = "Crit: Critical Hit Chance"
 script = ExtResource("3_node_script")
 skill_id = "crit"
 requirement_skill = "hp"
 requirement_level = 1
 icon_texture = ExtResource("5_icon_crit")
 
-[node name="SkillSpd" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -120.0
-offset_top = 240.0
-offset_right = -50.0
-offset_bottom = 310.0
-grow_horizontal = 2
-tooltip_text = "Increase Attack Speed"
+[node name="SkillSpd" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 38.0
+offset_top = 288.0
+offset_right = 102.0
+offset_bottom = 352.0
+tooltip_text = "Speed: Increase Attack Speed"
 script = ExtResource("3_node_script")
 skill_id = "speed"
 requirement_skill = "greed"
 requirement_level = 1
 icon_texture = ExtResource("7_icon_spd")
 
-[node name="SkillDef" type="Button" parent="ScrollContainer/TreeLayout"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = 50.0
-offset_top = 240.0
-offset_right = 120.0
-offset_bottom = 310.0
-grow_horizontal = 2
-tooltip_text = "Reduce Damage Taken"
+[node name="SkillDef" type="Button" parent="TreePanel/TreeLayout"]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 0
+offset_left = 258.0
+offset_top = 288.0
+offset_right = 322.0
+offset_bottom = 352.0
+tooltip_text = "Defense: Reduce Damage Taken"
 script = ExtResource("3_node_script")
 skill_id = "def"
 requirement_skill = "crit"
@@ -199,12 +191,13 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -100.0
-offset_top = -60.0
-offset_right = 100.0
-offset_bottom = -10.0
+offset_left = -80.0
+offset_top = -55.0
+offset_right = 80.0
+offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_font_sizes/font_size = 13
 text = "BACK TO FIGHT"
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]
