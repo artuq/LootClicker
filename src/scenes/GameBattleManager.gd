@@ -45,6 +45,7 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 # Windows
 @onready var inventory_window = %Inventory
 @onready var inventory_grid = %InventoryGrid
+@onready var stats_label = %StatsLabel
 
 # Graphics
 @onready var enemy_sprite = %EnemySprite
@@ -201,6 +202,10 @@ func _ready():
 	
 	_update_consumables_ui()
 	_update_inventory_ui()
+	_update_stats_ui()
+	player.skills_updated.connect(_update_stats_ui)
+	player.health_changed.connect(func(_c, _m): _update_stats_ui())
+	player.gold_changed.connect(func(_g): _update_stats_ui())
 	_start_combat()
 
 # === Enemy Roster Data ===
@@ -499,6 +504,39 @@ func _update_inventory_ui():
 		slot.set_item(tex, 1, rarity_col)
 		var equip_text = "\n(EQUIPPED)" if is_equipped else ""
 		slot.tooltip_text = "%s (+%d DMG)%s" % [item.name, item.damage_bonus, equip_text]
+
+func _update_stats_ui():
+	if not stats_label or not player: return
+	var dmg = player.get_total_damage()
+	var spd = player.get_attack_speed()
+	var crit_ch = min(80.0, player.crit_lvl * 1.0)
+	var crit_m = player.get_crit_multiplier()
+	var def_red = min(50.0, player.def_lvl * 2.0)
+	var gold_b = player.greed_lvl * 5
+	var dodge = player.dodge_chance * 100.0
+	var block = player.block_chance * 100.0
+
+	var t := ""
+	t += "[b]--- Combat ---[/b]\n"
+	t += "DMG: %d  |  SPD: %.2fs\n" % [dmg, spd]
+	t += "Crit: %.0f%% (x%.2f)\n" % [crit_ch, crit_m]
+	t += "DEF: -%.0f%%  |  Gold: +%d%%\n" % [def_red, gold_b]
+	t += "Dodge: %.0f%%  |  Block: %.0f%%\n" % [dodge, block]
+	t += "[b]--- Skills ---[/b]\n"
+	t += "STR %d | HP %d | Greed %d\n" % [player.str_lvl, int((player.max_hp - 100) / 20.0), player.greed_lvl]
+	t += "Crit %d | Spd %d | Def %d\n" % [player.crit_lvl, player.speed_lvl, player.def_lvl]
+	if player.active_curses.size() > 0:
+		t += "[b]--- Curses ---[/b]\n"
+		for c in player.active_curses:
+			var name = c.get("id", "?").replace("curse_", "").capitalize()
+			var stages = c.get("stages", 0)
+			t += "[color=red]%s[/color] (%d stages)\n" % [name, stages]
+	t += "[b]--- Gear ---[/b]\n"
+	if player.equipped_item:
+		t += "%s (+%d DMG)" % [player.equipped_item.name, player.equipped_item.damage_bonus]
+	else:
+		t += "None equipped"
+	stats_label.text = t
 
 func _update_consumables_ui():
 	var potion_btn = %PotionButton
