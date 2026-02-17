@@ -190,16 +190,26 @@ func _init_enemy_rosters():
 		{
 			"name": "Angry Kaboom Squirrel",
 			"texture": "res://assets/sprites/enemies/squirrel.png",
-			"resource": "gunpowder",
+			"resource": "bandages",
 		},
 		{
 			"name": "Intern Monkey",
 			"texture": "res://assets/sprites/enemies/monkey.png",
-			"resource": "paperclips",
+			"resource": "bandages",
 		},
 		{
 			"name": "Dieting Plant",
 			"texture": "res://assets/sprites/enemies/plant.png",
+			"resource": "venom",
+		},
+		{
+			"name": "Toilet Paper Mummy",
+			"texture": "res://assets/sprites/Mumia-removebg-preview.png",
+			"resource": "bandages",
+		},
+		{
+			"name": "Confused Snake",
+			"texture": "res://assets/sprites/Snake-removebg-preview.png",
 			"resource": "venom",
 		},
 	]
@@ -207,17 +217,27 @@ func _init_enemy_rosters():
 		{
 			"name": "Tourist Skeleton",
 			"texture": "res://assets/sprites/enemies/skeleton.png",
-			"resource": "bones",
+			"resource": "venom",
 		},
 		{
 			"name": "Budget Golem",
 			"texture": "res://assets/sprites/enemies/golem.png",
-			"resource": "cardboard",
+			"resource": "relic_shards",
 		},
 		{
 			"name": "Sheet Ghost",
 			"texture": "res://assets/sprites/enemies/ghost.png",
-			"resource": "ectoplasm",
+			"resource": "venom",
+		},
+		{
+			"name": "Toilet Paper Mummy",
+			"texture": "res://assets/sprites/Mumia-removebg-preview.png",
+			"resource": "bandages",
+		},
+		{
+			"name": "Confused Snake",
+			"texture": "res://assets/sprites/Snake-removebg-preview.png",
+			"resource": "venom",
 		},
 	]
 	boss_roster = {
@@ -424,12 +444,6 @@ func _update_inventory_ui():
 		"bandages": "res://assets/icons/bandage.png",
 		"venom": "res://assets/icons/venom.png",
 		"relic_shards": "res://assets/icons/crystal.png",
-		"gunpowder": "res://assets/sprites/enemies/squirrel.png",
-		"nuts": "res://assets/sprites/enemies/squirrel.png",
-		"paperclips": "res://assets/sprites/enemies/monkey.png",
-		"bones": "res://assets/sprites/enemies/skeleton.png",
-		"cardboard": "res://assets/sprites/enemies/golem.png",
-		"ectoplasm": "res://assets/sprites/enemies/ghost.png",
 	}
 	
 	for res_id in player.resources.keys():
@@ -640,15 +654,24 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	var xp_reward = 20 if current_stage == 1 else 15 + (current_stage * 5)
 	player.gain_xp(xp_reward) 
 	
-	# RESOURCE DROP
+	# RESOURCE DROP (scaled amount, lower chance at higher stages)
 	if res_type != "":
-		var res_chance = 0.6 # 60% chance
-		if current_stage <= 3: res_chance = 1.0 # Higher drop at start
+		var res_chance = 0.6
+		if current_stage <= 3: res_chance = 1.0
 		if current_stage % 5 == 0: res_chance = 1.0
+		# Reduce chance slightly at higher stages to keep balance
+		if current_stage > 20: res_chance *= 0.8
+		if current_stage > 35: res_chance *= 0.7
 		
 		if randf() < res_chance:
-			player.add_resource(res_type, 1)
-			_spawn_floating_text("+1 " + res_type.capitalize(), Color.MEDIUM_PURPLE)
+			# Drop more at higher stages, but rarer
+			var drop_amount = 1
+			if current_stage >= 15:
+				drop_amount = randi_range(1, 2)
+			if current_stage >= 30:
+				drop_amount = randi_range(1, 3)
+			player.add_resource(res_type, drop_amount)
+			_spawn_floating_text("+%d %s" % [drop_amount, res_type.capitalize()], Color.MEDIUM_PURPLE)
 			
 	# POTION DROP (30% chance)
 	if randf() < 0.3:
