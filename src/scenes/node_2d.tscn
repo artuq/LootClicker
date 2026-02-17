@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barGreen_horizontalMid.png" id="16_bar_green"]
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barYellow_horizontalMid.png" id="17_bar_yellow"]
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
-[ext_resource type="Texture2D" path="res://assets/icons/gold_coin_custom.svg" id="25_gold_icon"]
+[ext_resource type="Texture2D" path="res://assets/icons/coin.png" id="25_gold_icon"]
 [ext_resource type="PackedScene" path="res://src/scenes/SkillTreeScene.tscn" id="22_skill_scene"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
@@ -146,72 +146,14 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="SecondRow" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox"]
-layout_mode = 2
-theme_override_constants/separation = 6
-
-[node name="BiomeLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
+[node name="InfoLabel" type="Label" parent="CanvasLayer/TopHUD/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_font_sizes/font_size = 9
-text = "Jungle"
+theme_override_font_sizes/font_size = 10
+text = ""
 label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
-
-[node name="BossProgressContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 4
-
-[node name="BossProgressLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/BossProgressContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "Boss in 10"
-label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
-
-[node name="BossProgressBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/SecondRow/BossProgressContainer"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(80, 8)
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 4
-theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
-value = 0.0
-show_percentage = false
-
-[node name="XPContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/SecondRow"]
-layout_mode = 2
-theme_override_constants/separation = 3
-
-[node name="XPBarLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1374216939]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 9
-text = "XP:"
-label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
-
-[node name="XPBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1676402328]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(50, 10)
-layout_mode = 2
-size_flags_vertical = 4
-theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
-value = 50.0
-show_percentage = false
-
-[node name="XPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/SecondRow/XPContainer" unique_id=1876543210]
-unique_name_in_owner = true
-layout_mode = 2
-theme_override_font_sizes/font_size = 8
-text = "0/50"
-label_settings = SubResource("LabelSettings_hp")
-vertical_alignment = 1
+horizontal_alignment = 1
+clip_text = true
 
 [node name="EnemyHPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox" unique_id=264580371]
 unique_name_in_owner = true

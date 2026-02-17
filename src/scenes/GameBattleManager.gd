@@ -33,15 +33,11 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 @onready var gold_label = %GoldLabel
 @onready var stage_label = %StageLabel
 @onready var next_level_btn = %NextLevelButton
-@onready var xp_bar = %XPBar
-@onready var xp_label = %XPLabel
 @onready var click_area = %ClickArea
 @onready var victory_ui = %VictoryUI
 
 # Boss Progress UI
-@onready var boss_progress_bar = %BossProgressBar
-@onready var boss_progress_label = %BossProgressLabel
-@onready var biome_label = %BiomeLabel
+@onready var info_label = %InfoLabel
 @onready var loot_summary_label = %LootSummaryLabel
 @onready var dps_label = %DPSLabel
 
@@ -155,14 +151,11 @@ func _ready():
 		_set_near_death(hp_ratio < NEAR_DEATH_THRESHOLD and c > 0)
 	)
 		
-	# XP Bar - Reordered to set max_value first
+	# XP — update info label on change
 	var update_xp = func(_cur = 0, _req = 0):
-		if xp_label:
-			xp_label.text = "%d/%d" % [player.xp, player.xp_required]
-		xp_bar.max_value = player.xp_required
-		xp_bar.value = player.xp
+		_update_info_label()
 		
-	player.xp_changed.connect(update_xp)  # Update on every XP gain
+	player.xp_changed.connect(update_xp)
 	player.leveled_up.connect(func(_l): update_xp.call())
 	update_xp.call()
 
@@ -630,8 +623,7 @@ func spawn_enemy(saved_hp: int = -1):
 	current_enemy.died.connect(_on_enemy_died)
 	
 	stage_label.text = "Stage %d — %s" % [current_stage, enemy_name]
-	_update_boss_progress()
-	_update_biome_label()
+	_update_info_label()
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
 	_update_hp_bar_style(enemy_hp_bar)
@@ -736,8 +728,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		player.health_changed.emit(player.current_hp, player.max_hp)
 		_spawn_floating_text("HEAL +20", Color.GREEN)
 	
-	xp_bar.max_value = player.xp_required
-	xp_bar.value = player.xp
+	_update_info_label()
 	
 	enemy_sprite.visible = false
 	click_area.visible = false
@@ -997,71 +988,57 @@ func _on_poison_tick():
 		if player.current_hp <= 1:
 			_spawn_floating_text("DANGER!", Color.RED)
 
-# === MVP POLISH: Boss Progress Bar ===
+# === MVP POLISH: Unified Info Label ===
 func _get_next_boss_stage(from_stage: int) -> int:
-	"""Returns the next boss stage from current position."""
 	var boss_stages = boss_roster.keys()
 	boss_stages.sort()
 	for bs in boss_stages:
 		if bs > from_stage:
 			return bs
-	# After all bosses, final boss at 50
 	if from_stage < 50:
 		return 50
-	return -1 # Past final boss
-
-func _update_boss_progress():
-	var next_boss = _get_next_boss_stage(current_stage - 1)
-	if next_boss == -1:
-		# Past final boss — infinite mode
-		if boss_progress_label:
-			boss_progress_label.text = "Free roam"
-		if boss_progress_bar:
-			boss_progress_bar.value = boss_progress_bar.max_value
-		return
-	
-	# Find the PREVIOUS boss stage (or 0 if none)
-	var prev_boss = 0
-	var boss_stages = boss_roster.keys()
-	boss_stages.sort()
-	for bs in boss_stages:
-		if bs < current_stage:
-			prev_boss = bs
-	
-	var total_in_segment = next_boss - prev_boss
-	var done_in_segment = current_stage - prev_boss
-	
-	if boss_progress_bar:
-		boss_progress_bar.max_value = total_in_segment
-		boss_progress_bar.value = done_in_segment
-	
-	var boss_name = ""
-	if boss_roster.has(next_boss):
-		boss_name = boss_roster[next_boss].name
-	elif next_boss == 50:
-		boss_name = "Final Boss"
-	
-	if boss_progress_label:
-		if current_stage == next_boss:
-			boss_progress_label.text = "BOSS!"
-		else:
-			boss_progress_label.text = "%d/%d → %s" % [done_in_segment, total_in_segment, boss_name]
+	return -1
 
 func _get_biome_name(stage: int) -> String:
 	if stage <= 14:
-		return "🌴 Jungle"
+		return "Jungle"
 	elif stage <= 20:
-		return "🌴🏛 Jungle/Temple"
+		return "Jungle/Temple"
 	elif stage <= 35:
-		return "🏛 Temple"
+		return "Temple"
 	elif stage <= 40:
-		return "🏛🌴 Temple/Jungle"
+		return "Temple/Jungle"
 	else:
-		return "⚔ Endless"
+		return "Endless"
 
-func _update_biome_label():
-	if biome_label:
-		biome_label.text = _get_biome_name(current_stage)
+func _update_info_label():
+	if not info_label:
+		return
+	var biome = _get_biome_name(current_stage)
+	var boss_text = ""
+	var next_boss = _get_next_boss_stage(current_stage - 1)
+	if next_boss == -1:
+		boss_text = "Free roam"
+	else:
+		var prev_boss = 0
+		var boss_stages = boss_roster.keys()
+		boss_stages.sort()
+		for bs in boss_stages:
+			if bs < current_stage:
+				prev_boss = bs
+		var total = next_boss - prev_boss
+		var done = current_stage - prev_boss
+		if current_stage == next_boss:
+			boss_text = "BOSS!"
+		else:
+			var bname = ""
+			if boss_roster.has(next_boss):
+				bname = boss_roster[next_boss].name
+			elif next_boss == 50:
+				bname = "Final Boss"
+			boss_text = "%d/%d %s" % [done, total, bname]
+	var xp_text = "XP %d/%d" % [player.xp, player.xp_required]
+	info_label.text = "%s  %s  %s" % [biome, boss_text, xp_text]
 
 # === MVP POLISH: Loot Summary ===
 func _update_loot_summary():
