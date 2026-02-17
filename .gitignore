@@ -1,2 +1,8 @@
 .vscode/
 .godot/
+node_modules/
+package.json
+package-lock.json
+icons_grid.jpg
+icons_grid.jpg.import
+icon_preview.html
