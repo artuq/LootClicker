@@ -2,14 +2,43 @@
 
 ## 🔄 Automatic Push Configuration
 
-After a commit is made, the `.git/hooks/post-commit` hook automatically pushes changes to GitHub.
-
-**Status:** ✅ Configured
+**Status:** ✅ Configured via PowerShell Script
 
 **How it works:**
-1. You make a commit: `git commit -m "..."`
-2. Hook automatically runs: `git push origin main`
+1. Run: `.\commit.ps1 -message "Your message" -issues "3, 6"`
+2. Script automatically stages, commits, and pushes
 3. Changes appear on GitHub within seconds
+
+---
+
+## 📝 Using the Commit Script
+
+### Basic Usage
+
+```powershell
+# Simple commit without issue reference
+.\commit.ps1 -message "feat: Add new feature"
+
+# Commit with single issue
+.\commit.ps1 -message "fix: Repair bug" -issues "6"
+
+# Commit with multiple issues (closes all listed)
+.\commit.ps1 -message "feat: Implement loot system" -issues "3, 6, 8"
+
+# Just commit message (full example)
+.\commit.ps1 -message "docs: Update README and docs" -issues "2, 11"
+```
+
+### What the Script Does
+
+```
+1. Stages all changes:     git add .
+2. Creates commit:         git commit -m "message (fixes #3, #6)"
+3. Pushes to GitHub:       git push origin main
+4. Shows success message:  ✅ Pushed to GitHub successfully!
+```
+
+---
 
 ## 📝 Commit Message Format
 
@@ -22,12 +51,14 @@ Always reference the GitHub Issue in your commit message:
 ### Examples:
 
 ```bash
-# Link to issues
-git commit -m "feat: Implement loot drop system (fixes #6, #7)"
-git commit -m "fix: Repair AudioManager bus validation (fixes #2)"
-git commit -m "docs: Update Roadmap with completed tasks (fixes #3)"
+# Single issue
+.\commit.ps1 -message "feat: Implement loot drop system" -issues "3"
 
-# Types: feat, fix, docs, refactor, style, test, chore, ci, perf
+# Multiple issues (use commas and spaces)
+.\commit.ps1 -message "fix: Repair AudioManager and card selection" -issues "2, 6"
+
+# Without issue (not recommended)
+.\commit.ps1 -message "chore: Update dependencies"
 ```
 
 ## 🎯 Issue Reference Guide
@@ -47,45 +78,55 @@ Link your commits to GitHub Issues:
 | #11 | [UI] Combat Arena - Styl "Action Bar" | UI, UX, layout |
 | #12 | [ART] Styl Graficzny: Pixel Art (Stardew-like) | Graphics, pixel art style |
 
-## 🚀 Quick Workflow
+---
+
+## 🚀 Quick Workflow (New Recommended)
 
 ```bash
 # 1. Make changes in VS Code
-# 2. Stage your changes
-git add .
+# 2. When ready to commit, use script
+.\commit.ps1 -message "feat: Feature name" -issues "3, 6"
 
-# 3. Commit with issue reference
-git commit -m "feat: Add feature name (fixes #3, #6)"
-
-# 4. Hook automatically pushes to GitHub! ✅
-# No need to run `git push` manually
+# That's it! Script automatically:
+# ✅ Stages changes
+# ✅ Creates commit with issue reference
+# ✅ Pushes to GitHub
+# ✅ Shows results
 ```
 
-## ⚠️ If Auto-Push Fails
+---
 
-If auto-push fails (network issues, credentials expired):
+## ⚠️ Troubleshooting
 
-```bash
-# Manual push
+### Issue: "commit.ps1 cannot be loaded because running scripts is disabled"
+
+**Solution:** Enable script execution for current user
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+Then try again:
+```powershell
+.\commit.ps1 -message "Your message" -issues "3"
+```
+
+### Issue: "cannot spawn .git/hooks/post-commit"
+
+This warning can be ignored - we're using PowerShell script instead.
+
+### Issue: Push failed (credentials/network)
+
+```powershell
+# Check status
+git status
+
+# Try manual push
 git push origin main
 
-# Or check status
-git status
-git log --oneline -5
+# Or check authentication
+git config --list | Select-String "credential"
 ```
 
-## 📊 Documentation in GitHub
-
-Every commit that closes an issue will:
-1. **Automatically link** to the GitHub Issue
-2. **Update the Issue** when merged/pushed
-3. **Show in Project board** if configured
-4. **Create commit history** for documentation
-
-Use formats like:
-- `fixes #3` - closes issue #3 when merged
-- `resolves #6` - same as fixes
-- `closes #8, #9` - closes multiple issues
+---
 
 ## 🔐 Private Repo Setup
 
@@ -93,9 +134,21 @@ Since project is now private:
 
 1. ✅ Git credentials cached locally
 2. ✅ No need for GitHub token setup
-3. ✅ Push works automatically with account auth
-4. ✅ Auto-push hook configured
+3. ✅ Auto-push script works seamlessly
+4. ✅ All commits automatically reference issues
 
 ---
 
-**Last Updated:** 2026-02-17
+## 📊 How GitHub Uses Issue References
+
+When you push with `fixes #3, #6`:
+- ✅ Commit links to issues #3 and #6
+- ✅ Issues show this commit in their timeline
+- ✅ Close issue automatically when PR merged (if using PRs)
+- ✅ GitHub projects auto-update status
+- ✅ Creates complete audit trail
+
+---
+
+**Last Updated:** 2026-02-17 | **Script:** `commit.ps1`
+
