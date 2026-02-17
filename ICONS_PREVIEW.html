@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Custom Icons Preview - LootClicker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a472a 0%, #2d5a3d 100%);
+            color: #fff;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 40px;
+        }
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        .icon-card {
+            background: rgba(0,0,0,0.3);
+            border: 3px solid #8b7355;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        .icon-card h3 {
+            color: #ffd700;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+            text-transform: uppercase;
+        }
+        .icon-preview {
+            background: white;
+            border: 3px dashed #8b7355;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .icon-preview svg {
+            max-width: 100%;
+            max-height: 220px;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.3));
+        }
+        .icon-card p {
+            font-size: 14px;
+            color: #ddd;
+            margin: 0;
+        }
+        .status {
+            display: inline-block;
+            background: #22aa22;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 LootClicker - Custom Icons</h1>
+        
+        <div class="icons-grid">
+            <!-- Bandages -->
+            <div class="icon-card">
+                <h3>Bandages</h3>
+                <div class="icon-preview">
+                    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <rect width="512" height="512" fill="#2a2a2a"/>
+                        <rect x="100" y="150" width="312" height="212" fill="#888888" rx="20"/>
+                        <line x1="120" y1="180" x2="392" y2="185" stroke="#666666" stroke-width="8"/>
+                        <line x1="130" y1="220" x2="382" y2="215" stroke="#666666" stroke-width="8"/>
+                        <line x1="125" y1="260" x2="387" y2="265" stroke="#666666" stroke-width="8"/>
+                        <line x1="135" y1="300" x2="377" y2="295" stroke="#666666" stroke-width="8"/>
+                        <line x1="128" y1="340" x2="384" y2="345" stroke="#666666" stroke-width="8"/>
+                        <rect x="180" y="220" width="40" height="80" fill="#ffffff" opacity="0.8"/>
+                        <rect x="160" y="240" width="80" height="40" fill="#ffffff" opacity="0.8"/>
+                        <rect x="292" y="220" width="40" height="80" fill="#ffffff" opacity="0.8"/>
+                        <rect x="272" y="240" width="80" height="40" fill="#ffffff" opacity="0.8"/>
+                    </svg>
+                </div>
+                <p>Szary bandaż z białymi krzyżami medycznymi</p>
+                <div class="status">✓ Active</div>
+            </div>
+
+            <!-- Venom -->
+            <div class="icon-card">
+                <h3>Venom</h3>
+                <div class="icon-preview">
+                    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <rect width="512" height="512" fill="#2a2a2a"/>
+                        <rect x="150" y="80" width="212" height="300" fill="#1a4d1a" opacity="0.3" rx="10"/>
+                        <rect x="155" y="85" width="202" height="290" fill="#22aa22" opacity="0.6" rx="10"/>
+                        <ellipse cx="256" cy="300" rx="95" ry="30" fill="#00ff00"/>
+                        <path d="M 161 300 Q 161 330 256 340 Q 351 330 351 300" fill="#00ff00" opacity="0.8"/>
+                        <rect x="230" y="50" width="52" height="35" fill="#8b4513" rx="5"/>
+                        <ellipse cx="256" cy="50" rx="30" ry="12" fill="#a0522d"/>
+                        <ellipse cx="220" cy="200" rx="30" ry="60" fill="#00ff00" opacity="0.3"/>
+                        <ellipse cx="280" cy="280" rx="20" ry="15" fill="#ffffff" opacity="0.4"/>
+                    </svg>
+                </div>
+                <p>Zielona trucizna w butelce</p>
+                <div class="status">✓ Active</div>
+            </div>
+
+            <!-- Relic Shards -->
+            <div class="icon-card">
+                <h3>Relic Shards</h3>
+                <div class="icon-preview">
+                    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <rect width="512" height="512" fill="#2a2a2a"/>
+                        <polygon points="256,80 350,180 350,340 256,420 162,340 162,180" fill="#ff00ff" opacity="0.7"/>
+                        <polygon points="256,85 345,175 345,335 256,410 167,335 167,175" fill="#ff69b4" opacity="0.9"/>
+                        <polygon points="220,200 280,200 270,250 230,250" fill="#ffffff" opacity="0.6"/>
+                        <polygon points="140,300 190,260 200,330 160,360" fill="#ff00ff" opacity="0.6"/>
+                        <polygon points="145,305 185,265 195,325 160,355" fill="#ff69b4" opacity="0.8"/>
+                        <polygon points="372,300 422,260 412,330 352,360" fill="#ff00ff" opacity="0.6"/>
+                        <polygon points="367,305 417,265 407,325 352,355" fill="#ff69b4" opacity="0.8"/>
+                        <polygon points="160,310 170,300 165,330" fill="#ffffff" opacity="0.5"/>
+                        <polygon points="390,310 400,300 395,330" fill="#ffffff" opacity="0.5"/>
+                    </svg>
+                </div>
+                <p>Trzy purpurowe klejnoty</p>
+                <div class="status">✓ Active</div>
+            </div>
+
+            <!-- Gold Coin (NEW) -->
+            <div class="icon-card">
+                <h3>Gold Coin</h3>
+                <div class="icon-preview">
+                    <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                        <!-- Pixel art gold coin -->
+                        <rect width="512" height="512" fill="#f5deb3"/>
+                        
+                        <!-- Ornate border (thick) -->
+                        <rect x="60" y="60" width="392" height="392" fill="none" stroke="#8b7355" stroke-width="12"/>
+                        <rect x="75" y="75" width="362" height="362" fill="none" stroke="#d4af37" stroke-width="4"/>
+                        
+                        <!-- Coin background -->
+                        <circle cx="256" cy="256" r="170" fill="#ffd700"/>
+                        <circle cx="256" cy="256" r="165" fill="#ffed4e" opacity="0.7"/>
+                        
+                        <!-- Pixel grid pattern (16-bit) -->
+                        <g opacity="0.3">
+                            <rect x="200" y="200" width="12" height="12" fill="#daa520"/>
+                            <rect x="300" y="200" width="12" height="12" fill="#daa520"/>
+                            <rect x="200" y="300" width="12" height="12" fill="#daa520"/>
+                            <rect x="300" y="300" width="12" height="12" fill="#daa520"/>
+                            <rect x="250" y="150" width="12" height="12" fill="#daa520"/>
+                            <rect x="250" y="350" width="12" height="12" fill="#daa520"/>
+                        </g>
+                        
+                        <!-- Gold shine/highlight (16-bit style) -->
+                        <polygon points="220,200 240,170 260,200" fill="#ffff99" opacity="0.8"/>
+                        <polygon points="300,240 320,220 320,260" fill="#ffff99" opacity="0.6"/>
+                        
+                        <!-- Center symbol ($) -->
+                        <text x="256" y="275" font-size="80" font-weight="bold" fill="#daa520" text-anchor="middle" font-family="Arial">$</text>
+                        
+                        <!-- Inner circle border -->
+                        <circle cx="256" cy="256" r="140" fill="none" stroke="#daa520" stroke-width="3" opacity="0.6"/>
+                    </svg>
+                </div>
+                <p>Złota moneta pixel art jungle theme</p>
+                <div class="status">✓ NEW</div>
+            </div>
+        </div>
+
+        <footer style="text-align: center; margin-top: 50px; padding-top: 20px; border-top: 2px solid #8b7355; color: #aaa;">
+            <p>LootClicker - Custom Icon Set | Pixel Art 16-bit Jungle Theme</p>
+            <p>Parchment Background • Ornate Borders • Vibrant Colors</p>
+        </footer>
+    </div>
+</body>
+</html>

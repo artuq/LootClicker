@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barGreen_horizontalMid.png" id="16_bar_green"]
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barYellow_horizontalMid.png" id="17_bar_yellow"]
 [ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_gold.png" id="25_gold_icon"]
+[ext_resource type="Texture2D" path="res://assets/icons/gold_coin_custom.svg" id="25_gold_icon"]
 [ext_resource type="PackedScene" path="res://src/scenes/SkillTreeScene.tscn" id="22_skill_scene"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]

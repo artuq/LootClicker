@@ -1,0 +1,54 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Parchment background -->
+  <rect width="512" height="512" fill="#f5deb3"/>
+  
+  <!-- Ornate thick border (jungle style) -->
+  <rect x="40" y="40" width="432" height="432" fill="none" stroke="#8b7355" stroke-width="16"/>
+  <rect x="60" y="60" width="392" height="392" fill="none" stroke="#d4af37" stroke-width="6"/>
+  
+  <!-- Decorative corner elements (jungle vine style) -->
+  <g opacity="0.4">
+    <!-- Top-left -->
+    <path d="M 80 80 Q 100 70 110 90" fill="none" stroke="#8b7355" stroke-width="4"/>
+    <!-- Top-right -->
+    <path d="M 432 80 Q 412 70 402 90" fill="none" stroke="#8b7355" stroke-width="4"/>
+    <!-- Bottom-left -->
+    <path d="M 80 432 Q 100 442 110 422" fill="none" stroke="#8b7355" stroke-width="4"/>
+    <!-- Bottom-right -->
+    <path d="M 432 432 Q 412 442 402 422" fill="none" stroke="#8b7355" stroke-width="4"/>
+  </g>
+  
+  <!-- Main coin circle -->
+  <circle cx="256" cy="256" r="180" fill="#ffd700"/>
+  <circle cx="256" cy="256" r="175" fill="#ffed4e"/>
+  
+  <!-- Inner gradient effect (multiple circles for depth) -->
+  <circle cx="256" cy="256" r="160" fill="#ffd700" opacity="0.3"/>
+  
+  <!-- 16-bit aesthetic: pixel grid pattern -->
+  <g opacity="0.25" stroke="#daa520" stroke-width="2">
+    <!-- Grid lines -->
+    <line x1="180" y1="200" x2="200" y2="200"/>
+    <line x1="312" y1="200" x2="332" y2="200"/>
+    <line x1="180" y1="312" x2="200" y2="312"/>
+    <line x1="312" y1="312" x2="332" y2="312"/>
+  </g>
+  
+  <!-- Pixel shine blocks (top-left) -->
+  <rect x="190" y="180" width="24" height="12" fill="#ffff99" opacity="0.9"/>
+  <rect x="195" y="165" width="18" height="12" fill="#fffacd" opacity="0.7"/>
+  
+  <!-- Pixel shine blocks (right side) -->
+  <rect x="310" y="240" width="12" height="30" fill="#ffff99" opacity="0.6"/>
+  <rect x="320" y="250" width="12" height="20" fill="#fffacd" opacity="0.5"/>
+  
+  <!-- Center symbol: Dollar sign ($) in jungle gold style -->
+  <text x="256" y="285" font-size="140" font-weight="bold" fill="#daa520" text-anchor="middle" font-family="Arial, sans-serif">$</text>
+  
+  <!-- Inner circle outline (adds depth) -->
+  <circle cx="256" cy="256" r="145" fill="none" stroke="#daa520" stroke-width="4" opacity="0.7"/>
+  <circle cx="256" cy="256" r="135" fill="none" stroke="#b8860b" stroke-width="2" opacity="0.5"/>
+  
+  <!-- Shadow at bottom (3D effect) -->
+  <ellipse cx="256" cy="410" rx="120" ry="20" fill="#8b7355" opacity="0.15"/>
+</svg>
