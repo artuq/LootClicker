@@ -38,6 +38,13 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 @onready var click_area = %ClickArea
 @onready var victory_ui = %VictoryUI
 
+# Boss Progress UI
+@onready var boss_progress_bar = %BossProgressBar
+@onready var boss_progress_label = %BossProgressLabel
+@onready var biome_label = %BiomeLabel
+@onready var loot_summary_label = %LootSummaryLabel
+@onready var dps_label = %DPSLabel
+
 # Windows
 @onready var inventory_window = %Inventory
 @onready var inventory_grid = %InventoryGrid
@@ -65,6 +72,21 @@ var in_combat: bool = false
 var style_green: StyleBoxTexture
 var style_yellow: StyleBoxTexture
 var style_red: StyleBoxTexture
+
+# DPS tracking
+var dps_damage_total: float = 0.0
+var dps_timer: float = 0.0
+var current_dps: float = 0.0
+
+# Loot summary (per kill)
+var kill_gold: int = 0
+var kill_xp: int = 0
+var kill_resource: String = ""
+var kill_resource_amount: int = 0
+var kill_potion: bool = false
+
+# Tutorial
+var tutorial_shown: bool = false
 
 # Constants for scaling and balance
 const HP_BASE = 20
@@ -176,9 +198,12 @@ func _ready():
 	# START MODE SELECTION
 	if startup_mode == "new_game":
 		spawn_enemy()
+		# Show tutorial on first run
+		call_deferred("_show_tutorial")
 	else:
 		if not load_game():
 			spawn_enemy()
+			call_deferred("_show_tutorial")
 	
 	_update_consumables_ui()
 	_update_inventory_ui()
@@ -298,6 +323,15 @@ func _process(delta):
 		shake_intensity = move_toward(shake_intensity, 0, delta * 50.0)
 	else:
 		enemy_sprite.position = original_enemy_pos
+	# DPS tracking
+	if in_combat:
+		dps_timer += delta
+		if dps_timer >= 1.0:
+			current_dps = dps_damage_total / dps_timer
+			if dps_label:
+				dps_label.text = "DPS: %s" % format_number(int(current_dps))
+			dps_damage_total = 0.0
+			dps_timer = 0.0
 
 func _start_idle_animation():
 	if idle_tween: idle_tween.kill()
@@ -595,7 +629,9 @@ func spawn_enemy(saved_hp: int = -1):
 		
 	current_enemy.died.connect(_on_enemy_died)
 	
-	stage_label.text = "Stage: %d\n%s" % [current_stage, enemy_name]
+	stage_label.text = "Stage %d — %s" % [current_stage, enemy_name]
+	_update_boss_progress()
+	_update_biome_label()
 	enemy_hp_bar.max_value = hp
 	enemy_hp_bar.value = current_enemy.current_hp
 	_update_hp_bar_style(enemy_hp_bar)
@@ -614,6 +650,9 @@ func _on_player_attack():
 		var dmg = player.get_total_damage()
 		var is_crit = player.is_critical_hit()
 		if is_crit: dmg = int(dmg * player.get_crit_multiplier())
+		
+		# Track DPS
+		dps_damage_total += dmg
 		
 		var result = current_enemy.take_damage(dmg)
 		
@@ -649,10 +688,18 @@ func _on_enemy_attack():
 				get_node("/root/AudioManager").play_hit_sound(0.7)
 
 func _on_enemy_died(_xp, gold, res_type = ""):
+	# Reset loot summary for this kill
+	kill_gold = gold
+	kill_xp = 0
+	kill_resource = ""
+	kill_resource_amount = 0
+	kill_potion = false
+	
 	player.gain_gold(gold)
 	
 	# XP Balance: Stage 1 guarantees level up (20 XP vs 20 req)
 	var xp_reward = 20 if current_stage == 1 else 15 + (current_stage * 5)
+	kill_xp = xp_reward
 	player.gain_xp(xp_reward) 
 	
 	# RESOURCE DROP (scaled amount, lower chance at higher stages)
@@ -672,11 +719,14 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 			if current_stage >= 30:
 				drop_amount = randi_range(1, 3)
 			player.add_resource(res_type, drop_amount)
+			kill_resource = res_type
+			kill_resource_amount = drop_amount
 			_spawn_floating_text("+%d %s" % [drop_amount, res_type.capitalize()], Color.MEDIUM_PURPLE)
 			
 	# POTION DROP (30% chance)
 	if randf() < 0.3:
 		player.consumables["hp_potion"] += 1
+		kill_potion = true
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
@@ -704,6 +754,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		poison_timer.stop()
 	
 	# SHOW VICTORY AND UPGRADE SCREEN
+	_update_loot_summary()
 	victory_ui.visible = true
 
 func _on_player_leveled_up(_new_level):
@@ -732,6 +783,11 @@ func _on_next_level_button_pressed():
 
 func _start_combat():
 	in_combat = true
+	dps_damage_total = 0.0
+	dps_timer = 0.0
+	current_dps = 0.0
+	if dps_label:
+		dps_label.text = ""
 	player_timer.wait_time = player.get_attack_speed()
 	player_timer.start()
 	enemy_timer.start()
@@ -940,3 +996,160 @@ func _on_poison_tick():
 		_spawn_floating_text("POISON -%d" % player.poison_dps, Color.PURPLE)
 		if player.current_hp <= 1:
 			_spawn_floating_text("DANGER!", Color.RED)
+
+# === MVP POLISH: Boss Progress Bar ===
+func _get_next_boss_stage(from_stage: int) -> int:
+	"""Returns the next boss stage from current position."""
+	var boss_stages = boss_roster.keys()
+	boss_stages.sort()
+	for bs in boss_stages:
+		if bs > from_stage:
+			return bs
+	# After all bosses, final boss at 50
+	if from_stage < 50:
+		return 50
+	return -1 # Past final boss
+
+func _update_boss_progress():
+	var next_boss = _get_next_boss_stage(current_stage - 1)
+	if next_boss == -1:
+		# Past final boss — infinite mode
+		if boss_progress_label:
+			boss_progress_label.text = "Free roam"
+		if boss_progress_bar:
+			boss_progress_bar.value = boss_progress_bar.max_value
+		return
+	
+	# Find the PREVIOUS boss stage (or 0 if none)
+	var prev_boss = 0
+	var boss_stages = boss_roster.keys()
+	boss_stages.sort()
+	for bs in boss_stages:
+		if bs < current_stage:
+			prev_boss = bs
+	
+	var total_in_segment = next_boss - prev_boss
+	var done_in_segment = current_stage - prev_boss
+	
+	if boss_progress_bar:
+		boss_progress_bar.max_value = total_in_segment
+		boss_progress_bar.value = done_in_segment
+	
+	var boss_name = ""
+	if boss_roster.has(next_boss):
+		boss_name = boss_roster[next_boss].name
+	elif next_boss == 50:
+		boss_name = "Final Boss"
+	
+	if boss_progress_label:
+		if current_stage == next_boss:
+			boss_progress_label.text = "BOSS!"
+		else:
+			boss_progress_label.text = "%d/%d → %s" % [done_in_segment, total_in_segment, boss_name]
+
+func _get_biome_name(stage: int) -> String:
+	if stage <= 14:
+		return "🌴 Jungle"
+	elif stage <= 20:
+		return "🌴🏛 Jungle/Temple"
+	elif stage <= 35:
+		return "🏛 Temple"
+	elif stage <= 40:
+		return "🏛🌴 Temple/Jungle"
+	else:
+		return "⚔ Endless"
+
+func _update_biome_label():
+	if biome_label:
+		biome_label.text = _get_biome_name(current_stage)
+
+# === MVP POLISH: Loot Summary ===
+func _update_loot_summary():
+	if not loot_summary_label:
+		return
+	var parts: Array[String] = []
+	parts.append("💰 %s gold" % format_number(kill_gold))
+	parts.append("⭐ %d XP" % kill_xp)
+	if kill_resource != "" and kill_resource_amount > 0:
+		parts.append("+%d %s" % [kill_resource_amount, kill_resource.capitalize()])
+	if kill_potion:
+		parts.append("🧪 Potion!")
+	loot_summary_label.text = " | ".join(parts)
+	# Animate
+	loot_summary_label.modulate = Color(1, 1, 1, 0)
+	var tween = create_tween()
+	tween.tween_property(loot_summary_label, "modulate:a", 1.0, 0.3)
+
+# === MVP POLISH: First-Run Tutorial ===
+func _show_tutorial():
+	if tutorial_shown:
+		return
+	tutorial_shown = true
+	
+	var tut_layer = CanvasLayer.new()
+	tut_layer.layer = 95
+	add_child(tut_layer)
+	
+	# Semi-transparent backdrop
+	var backdrop = ColorRect.new()
+	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0, 0, 0, 0.75)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	tut_layer.add_child(backdrop)
+	
+	# Tutorial panel
+	var panel = VBoxContainer.new()
+	panel.set_anchors_preset(Control.PRESET_CENTER)
+	panel.position = Vector2(-140, -120)
+	panel.size = Vector2(280, 240)
+	tut_layer.add_child(panel)
+	
+	var title_lbl = Label.new()
+	title_lbl.text = "⚔ Welcome, adventurer!"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_size_override("font_size", 16)
+	title_lbl.add_theme_color_override("font_color", Color.GOLD)
+	panel.add_child(title_lbl)
+	
+	var spacer = Control.new()
+	spacer.custom_minimum_size = Vector2(0, 10)
+	panel.add_child(spacer)
+	
+	var tips = [
+		"👆 TAP the enemy to attack",
+		"⏱ You also attack automatically",
+		"💀 Defeat enemies → earn gold & XP",
+		"⬆ Level up → choose upgrade cards",
+		"🏛 Every 5 stages → elite enemy",
+		"👑 Every 10 stages → BOSS fight!",
+	]
+	
+	for tip in tips:
+		var lbl = Label.new()
+		lbl.text = tip
+		lbl.add_theme_font_size_override("font_size", 12)
+		lbl.add_theme_color_override("font_color", Color.WHITE)
+		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		panel.add_child(lbl)
+	
+	var spacer2 = Control.new()
+	spacer2.custom_minimum_size = Vector2(0, 15)
+	panel.add_child(spacer2)
+	
+	var btn = Button.new()
+	btn.text = "Let's GO!"
+	btn.add_theme_font_size_override("font_size", 14)
+	btn.custom_minimum_size = Vector2(200, 40)
+	btn.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+	panel.add_child(btn)
+	
+	# Fade in
+	tut_layer.modulate = Color(1, 1, 1, 0)
+	var tween = create_tween()
+	tween.tween_property(tut_layer, "modulate:a", 1.0, 0.4)
+	
+	btn.pressed.connect(func():
+		var out_tween = create_tween()
+		out_tween.tween_property(tut_layer, "modulate:a", 0.0, 0.3)
+		out_tween.tween_callback(tut_layer.queue_free)
+	)

@@ -146,6 +146,14 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="BiomeLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/TopBar"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+text = "Jungle"
+label_settings = SubResource("LabelSettings_hp")
+vertical_alignment = 1
+
 [node name="XPContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox/TopBar"]
 layout_mode = 2
 theme_override_constants/separation = 4
@@ -175,6 +183,30 @@ theme_override_font_sizes/font_size = 9
 text = "0/50"
 label_settings = SubResource("LabelSettings_hp")
 vertical_alignment = 1
+
+[node name="BossProgressContainer" type="HBoxContainer" parent="CanvasLayer/TopHUD/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="BossProgressLabel" type="Label" parent="CanvasLayer/TopHUD/VBox/BossProgressContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+text = "Boss in 10"
+label_settings = SubResource("LabelSettings_hp")
+vertical_alignment = 1
+
+[node name="BossProgressBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox/BossProgressContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(120, 10)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
+value = 0.0
+show_percentage = false
 
 [node name="EnemyHPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox" unique_id=264580371]
 unique_name_in_owner = true
@@ -232,6 +264,15 @@ theme_override_font_sizes/font_size = 24
 text = "0"
 label_settings = SubResource("LabelSettings_hp")
 
+[node name="DPSLabel" type="Label" parent="CanvasLayer/MidHUD/VBox/GoldContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
+theme_override_font_sizes/font_size = 10
+text = ""
+label_settings = SubResource("LabelSettings_hp")
+vertical_alignment = 1
+
 [node name="PlayerHPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 6
@@ -286,6 +327,14 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 15
 alignment = 1
+
+[node name="LootSummaryLabel" type="Label" parent="CanvasLayer/VictoryUI"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+text = ""
+label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
 
 [node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=1203486473]
 unique_name_in_owner = true
