@@ -27,7 +27,7 @@ func setup(p_ref: PlayerStats):
 
 func create_card(opt: Dictionary) -> Button:
 	var btn = Button.new()
-	btn.custom_minimum_size = Vector2(140, 220)
+	btn.custom_minimum_size = Vector2(105, 200)
 	var is_cursed = opt.get("cursed", false)
 	
 	# Cursed card styling — dark red background
@@ -35,8 +35,8 @@ func create_card(opt: Dictionary) -> Button:
 		var style = StyleBoxFlat.new()
 		style.bg_color = Color(0.25, 0.05, 0.05, 0.95)
 		style.border_color = Color(0.8, 0.1, 0.1)
-		style.set_border_width_all(3)
-		style.set_corner_radius_all(8)
+		style.set_border_width_all(2)
+		style.set_corner_radius_all(6)
 		btn.add_theme_stylebox_override("normal", style)
 		var hover_style = style.duplicate()
 		hover_style.bg_color = Color(0.35, 0.08, 0.08, 0.95)
@@ -47,7 +47,7 @@ func create_card(opt: Dictionary) -> Button:
 		btn.add_theme_stylebox_override("pressed", pressed_style)
 	
 	var vbox = VBoxContainer.new()
-	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 10)
+	vbox.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_MINSIZE, 5)
 	vbox.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
 	btn.add_child(vbox)
@@ -55,9 +55,9 @@ func create_card(opt: Dictionary) -> Button:
 	# "CURSED" label at top
 	if is_cursed:
 		var curse_tag = Label.new()
-		curse_tag.text = "⚠ CURSED"
+		curse_tag.text = "CURSED"
 		curse_tag.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		curse_tag.add_theme_font_size_override("font_size", 10)
+		curse_tag.add_theme_font_size_override("font_size", 8)
 		curse_tag.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
 		vbox.add_child(curse_tag)
 	
@@ -66,7 +66,7 @@ func create_card(opt: Dictionary) -> Button:
 	var tex = load(opt.icon)
 	if tex:
 		tex_rect.texture = tex
-	tex_rect.custom_minimum_size = Vector2(100, 100)
+	tex_rect.custom_minimum_size = Vector2(70, 70)
 	tex_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	tex_rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	tex_rect.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -77,8 +77,8 @@ func create_card(opt: Dictionary) -> Button:
 	lbl.text = "%s\n%s" % [opt.name.to_upper(), opt.desc]
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	lbl.custom_minimum_size = Vector2(120, 60)  # Force wrapping to card width
-	lbl.add_theme_font_size_override("font_size", 9)  # Slightly smaller for fit
+	lbl.custom_minimum_size = Vector2(90, 50)
+	lbl.add_theme_font_size_override("font_size", 7)
 	if is_cursed:
 		lbl.add_theme_color_override("font_color", Color(1.0, 0.7, 0.7))
 	vbox.add_child(lbl)
@@ -89,7 +89,7 @@ func create_card(opt: Dictionary) -> Button:
 	btn.pivot_offset = btn.custom_minimum_size / 2
 	btn.mouse_entered.connect(func():
 		var tween = create_tween()
-		tween.tween_property(btn, "scale", Vector2(1.05, 1.05), 0.1)
+		tween.tween_property(btn, "scale", Vector2(1.03, 1.03), 0.1)
 	)
 	btn.mouse_exited.connect(func():
 		var tween = create_tween()
@@ -122,21 +122,26 @@ func _on_card_selected(opt: Dictionary):
 func _show_curse_confirm(opt: Dictionary):
 	# Darken background
 	var overlay = ColorRect.new()
-	overlay.color = Color(0, 0, 0, 0.6)
+	overlay.color = Color(0, 0, 0, 0.7)
 	overlay.set_anchors_preset(Control.PRESET_FULL_RECT)
 	overlay.mouse_filter = Control.MOUSE_FILTER_STOP
 	add_child(overlay)
 	
+	var center = CenterContainer.new()
+	center.set_anchors_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(center)
+	
 	var panel = VBoxContainer.new()
-	panel.set_anchors_preset(Control.PRESET_CENTER)
 	panel.alignment = BoxContainer.ALIGNMENT_CENTER
-	overlay.add_child(panel)
+	center.add_child(panel)
 	
 	var warn = Label.new()
-	warn.text = "⚠ CURSED CARD ⚠\n%s\n\n%s\n\nAre you sure?" % [opt.name.to_upper(), opt.desc]
+	warn.text = "CURSED CARD\n%s\n%s\nAccept?" % [opt.name.to_upper(), opt.desc]
 	warn.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	warn.add_theme_font_size_override("font_size", 14)
+	warn.add_theme_font_size_override("font_size", 11)
 	warn.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+	warn.autowrap_mode = TextServer.AUTOWRAP_WORD
+	warn.custom_minimum_size = Vector2(280, 0)
 	panel.add_child(warn)
 	
 	var btn_row = HBoxContainer.new()
@@ -144,21 +149,23 @@ func _show_curse_confirm(opt: Dictionary):
 	panel.add_child(btn_row)
 	
 	var yes_btn = Button.new()
-	yes_btn.text = "ACCEPT CURSE"
-	yes_btn.custom_minimum_size = Vector2(120, 40)
+	yes_btn.text = "ACCEPT"
+	yes_btn.custom_minimum_size = Vector2(90, 32)
 	var yes_style = StyleBoxFlat.new()
 	yes_style.bg_color = Color(0.6, 0.1, 0.1)
-	yes_style.set_corner_radius_all(6)
+	yes_style.set_corner_radius_all(4)
 	yes_btn.add_theme_stylebox_override("normal", yes_style)
+	yes_btn.add_theme_font_size_override("font_size", 10)
 	btn_row.add_child(yes_btn)
 	
 	var spacer = Control.new()
-	spacer.custom_minimum_size = Vector2(20, 0)
+	spacer.custom_minimum_size = Vector2(15, 0)
 	btn_row.add_child(spacer)
 	
 	var no_btn = Button.new()
 	no_btn.text = "CANCEL"
-	no_btn.custom_minimum_size = Vector2(100, 40)
+	no_btn.custom_minimum_size = Vector2(80, 32)
+	no_btn.add_theme_font_size_override("font_size", 10)
 	btn_row.add_child(no_btn)
 	
 	yes_btn.pressed.connect(func():
