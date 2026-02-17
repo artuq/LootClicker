@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Project Loot Clicker"
-run/main_scene="res://TitleScreen.tscn"
+run/main_scene="res://src/scenes/TitleScreen.tscn"
 config/features=PackedStringArray("4.6", "Mobile")
-config/icon="res://icon.svg"
+config/icon="res://assets/sprites/icon.svg"
 
 [autoload]
 
-AudioManager="*res://AudioManager.gd"
-SettingsManager="*res://SettingsManager.gd"
+AudioManager="*res://src/scripts/AudioManager.gd"
+SettingsManager="*res://src/scripts/SettingsManager.gd"
 
 [display]
 
