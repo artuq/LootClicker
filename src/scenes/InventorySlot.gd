@@ -16,5 +16,8 @@ func set_item(texture: Texture2D, count: int = 1, rarity_color: Color = Color.WH
 	var style = get_theme_stylebox("panel").duplicate()
 	if style is StyleBoxFlat:
 		style.border_color = rarity_color
-		style.border_width_all = 2
+		style.border_width_left = 2
+		style.border_width_right = 2
+		style.border_width_top = 2
+		style.border_width_bottom = 2
 		add_theme_stylebox_override("panel", style)
