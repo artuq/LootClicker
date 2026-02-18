@@ -926,11 +926,8 @@ func _handle_player_death():
 	_vibrate(300)  # Strong vibration on death
 	# Reset near-death effects before scene change
 	_set_near_death(false)
-	# Death penalty: lose 20% gold, retry same stage (don't reset to stage 1)
-	player.gold = int(player.gold * 0.8)
-	# Restore full HP before saving so Continue starts alive
-	player.current_hp = player.max_hp
-	save_game()
+	# Don't save — last auto-save checkpoint (after previous kill) is preserved
+	# Player chooses Continue (reload checkpoint) or New Game from title screen
 	
 	# Return to main menu
 	var title_screen = load("res://src/scenes/TitleScreen.gd")
