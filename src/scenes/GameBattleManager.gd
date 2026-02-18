@@ -198,8 +198,12 @@ func _ready():
 		call_deferred("_show_tutorial")
 	else:
 		if not load_game():
+			print("WARN: load_game failed, starting fresh")
 			spawn_enemy()
 			call_deferred("_show_tutorial")
+	
+	# Always force a full UI refresh after initialization
+	call_deferred("_force_ui_refresh_after_load")
 	
 	_update_consumables_ui()
 	_update_inventory_ui()
@@ -370,6 +374,9 @@ func _play_hit_effect(is_crit: bool):
 
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		save_game()
+	# Android: save when app goes to background (user swipes away)
+	if what == NOTIFICATION_APPLICATION_PAUSED:
 		save_game()
 
 func save_game(slot: int = 1):
@@ -817,6 +824,9 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	if poison_timer and not poison_timer.is_stopped():
 		poison_timer.stop()
 	
+	# Auto-save after every kill
+	save_game()
+	
 	# SHOW VICTORY AND UPGRADE SCREEN
 	_update_loot_summary()
 	victory_ui.visible = true
@@ -871,6 +881,8 @@ func _handle_player_death():
 	# Death penalty
 	player.gold = int(player.gold * 0.8)
 	current_stage = 1
+	# Restore full HP before saving so Continue starts alive
+	player.current_hp = player.max_hp
 	save_game()
 	
 	# Return to main menu
