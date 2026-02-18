@@ -5,6 +5,8 @@ class_name InventorySlot
 @onready var count_label = %Count
 
 func set_item(texture: Texture2D, count: int = 1, rarity_color: Color = Color.WHITE):
+	if not is_node_ready():
+		await ready
 	icon_rect.texture = texture
 	if count > 1:
 		count_label.text = str(count)
