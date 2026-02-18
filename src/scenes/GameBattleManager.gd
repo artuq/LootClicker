@@ -156,6 +156,7 @@ func _ready():
 		player_hp_bar.value = c
 		_update_hp_bar_style(player_hp_bar)
 		_animate_label(hp_label)
+		_update_consumables_ui() # Refresh potion button on HP change
 		# Near Death Experience trigger
 		var hp_ratio = float(c) / float(m) if m > 0 else 1.0
 		_set_near_death(hp_ratio < NEAR_DEATH_THRESHOLD and c > 0)
@@ -717,8 +718,17 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	var is_mini_boss = (current_stage % 5 == 0) and not is_named_boss
 	var is_final_boss = (current_stage == 50)
 	
-	var hp = int(HP_BASE * pow(HP_SCALE, current_stage))
-	var dmg = int(DMG_BASE * pow(DMG_SCALE, current_stage))
+	# NERF: Softer scaling after stage 25
+	var effective_hp_scale = HP_SCALE
+	var effective_dmg_scale = DMG_SCALE
+	
+	if current_stage > 25:
+		# Reduce scaling factor slightly for mid-late game
+		effective_hp_scale = 1.0 + (HP_SCALE - 1.0) * 0.85 # 15% softer HP growth
+		effective_dmg_scale = 1.0 + (DMG_SCALE - 1.0) * 0.8 # 20% softer DMG growth
+	
+	var hp = int(HP_BASE * pow(effective_hp_scale, current_stage))
+	var dmg = int(DMG_BASE * pow(effective_dmg_scale, current_stage))
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
 	var enemy_name = ""
@@ -889,14 +899,9 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
-	# ITEM DROP (20% chance normally, 100% on bosses)
-	var drop_chance = 0.2
-	if current_stage % 5 == 0: drop_chance = 1.0
-	
-	if randf() < drop_chance:
-		kill_item = _generate_random_item()
-		player.add_item(kill_item)
-		_spawn_floating_text("LOOT: " + kill_item.name, kill_item.get_color())
+	# Force clean inventory from unauthorized "junk" items
+	player.inventory.clear()
+	player.equipped_item = null
 	
 	_update_info_label()
 	
@@ -927,50 +932,6 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	# SHOW VICTORY AND UPGRADE SCREEN
 	_update_loot_summary()
 	victory_ui.visible = true
-
-func _generate_random_item() -> GameItem:
-	var rarity = "Common"
-	var roll = randf()
-	
-	if current_stage >= 30 and roll < 0.05:
-		rarity = "Legendary"
-	elif current_stage >= 15 and roll < 0.15:
-		rarity = "Epic"
-	elif current_stage >= 5 and roll < 0.40:
-		rarity = "Rare"
-		
-	var base_dmg = 1 + int(current_stage * 0.2)
-	var mult = 1.0
-	var prefix = ""
-	
-	match rarity:
-		"Common":
-			mult = 1.0
-			prefix = ["Rusty", "Old", "Basic", "Wooden"].pick_random()
-		"Rare":
-			mult = 1.5
-			prefix = ["Shiny", "Sharp", "Steel", "Reinforced"].pick_random()
-		"Epic":
-			mult = 2.2
-			prefix = ["Glowing", "Ancient", "Masterwork", "Enchanted"].pick_random()
-		"Legendary":
-			mult = 3.5
-			prefix = ["Divine", "Omega", "God-Slaying", "Eternal"].pick_random()
-			
-	var types = ["Sword", "Blade", "Dagger", "Hammer", "Axe", "Staff"]
-	var item_name = prefix + " " + types.pick_random()
-	var final_dmg = max(1, int(base_dmg * mult))
-	
-	# Variation
-	final_dmg += randi_range(0, int(current_stage / 10.0) + 1)
-	
-	var item = GameItem.new(item_name, final_dmg, rarity)
-	
-	# Assign icon based on type (placeholder logic or icons if available)
-	# For now, we use existing icons or generic ones
-	item.icon_path = "res://assets/icons/cog_silver.png" # Placeholder
-	
-	return item
 
 func _on_player_leveled_up(_new_level):
 	_spawn_floating_text("LEVEL UP!", Color.GOLD)
@@ -1065,54 +1026,40 @@ func _on_settings_hud_pressed():
 # === WATCH AD FOR FULL HEAL ===
 var ad_uses_this_stage: int = 0
 const MAX_AD_PER_STAGE: int = 1
+const DEBUG_FORCE_FAKE_ADS: bool = true # ALWAYS TRUE for now
 
 # AdMob Rewarded Ad
 var _rewarded_ad: RewardedAd = null
 var _admob_available: bool = false
-# Joana Indiana HP — rewarded ad unit
-const REWARDED_AD_UNIT_ID = "ca-app-pub-4067533100503154/9484519330"
+const REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
 
 func _init_admob():
+	if DEBUG_FORCE_FAKE_ADS:
+		print("[AdMob] Mode: FAKE ADS ENABLED")
+		_admob_available = false
+		return
+		
 	print("[AdMob] OS.get_name() = %s" % OS.get_name())
-	print("[AdMob] has_feature android = %s" % str(OS.has_feature("android")))
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
-		print("[AdMob] Calling MobileAds.initialize()...")
+		var request_config := RequestConfiguration.new()
+		request_config.test_device_ids = ["AF60FD39718814D8E7ABDCB44DC92518"]
+		MobileAds.set_request_configuration(request_config)
+		
 		var listener = OnInitializationCompleteListener.new()
 		listener.on_initialization_complete = func(status: InitializationStatus):
-			print("[AdMob] Initialization complete! Status: %s" % str(status))
 			_admob_available = true
+			await get_tree().create_timer(1.0).timeout
 			_preload_rewarded_ad()
-			print("[AdMob] initialized successfully, loading first ad...")
 		MobileAds.initialize(listener)
-	else:
-		print("[AdMob] not available on %s — using fake ads" % OS.get_name())
 
 func _preload_rewarded_ad():
-	if not _admob_available:
-		print("[AdMob] _preload_rewarded_ad skipped — not available")
-		return
-	print("[AdMob] Loading rewarded ad: %s" % REWARDED_AD_UNIT_ID)
+	if not _admob_available or DEBUG_FORCE_FAKE_ADS: return
 	var callback = RewardedAdLoadCallback.new()
-	callback.on_ad_loaded = func(ad: RewardedAd):
-		_rewarded_ad = ad
-		print("[AdMob] Rewarded ad loaded successfully")
-	callback.on_ad_failed_to_load = func(error: LoadAdError):
-		_rewarded_ad = null
-		print("[AdMob] Rewarded ad failed to load: %s (code: %d)" % [error.message, error.code])
-		# Retry after 30 seconds
-		var retry_timer = Timer.new()
-		retry_timer.wait_time = 30.0
-		retry_timer.one_shot = true
-		retry_timer.timeout.connect(func():
-			_preload_rewarded_ad()
-			retry_timer.queue_free()
-		)
-		add_child(retry_timer)
-		retry_timer.start()
+	callback.on_ad_loaded = func(ad: RewardedAd): _rewarded_ad = ad
+	callback.on_ad_failed_to_load = func(_err): _rewarded_ad = null
 	RewardedAdLoader.new().load(REWARDED_AD_UNIT_ID, AdRequest.new(), callback)
 
 func _on_watch_ad_pressed():
-	print("[AdMob] Watch ad pressed. admob_available=%s, rewarded_ad=%s" % [str(_admob_available), str(_rewarded_ad != null)])
 	if ad_uses_this_stage >= MAX_AD_PER_STAGE:
 		_spawn_floating_text("AD LIMIT REACHED", Color.ORANGE)
 		return
@@ -1120,126 +1067,90 @@ func _on_watch_ad_pressed():
 		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
 		return
 	
-	if _admob_available and _rewarded_ad:
+	if not DEBUG_FORCE_FAKE_ADS and _admob_available and _rewarded_ad:
 		_show_real_ad()
 	else:
 		_show_fake_ad()
 
 func _grant_ad_reward():
-	"""Grant the full heal reward after watching ad."""
 	player.current_hp = player.max_hp
 	player.health_changed.emit(player.current_hp, player.max_hp)
 	ad_uses_this_stage += 1
-	_spawn_floating_text("FULL HEAL!", Color.GREEN)
+	_spawn_floating_text("FULL HEAL!", Color.SPRING_GREEN)
 	_vibrate(60)
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_coin_sound()
 	_update_consumables_ui()
 	save_game()
-	# Update ad button state
-	var ad_btn = get_node_or_null("%WatchAdButton")
-	if ad_btn:
-		ad_btn.disabled = true
-		ad_btn.text = "AD USED"
+	if %WatchAdButton:
+		%WatchAdButton.disabled = true
+		%WatchAdButton.text = "AD USED"
 
 func _show_real_ad():
-	if not _rewarded_ad:
-		_show_fake_ad()
-		return
-	
-	# Set up reward callback
 	var reward_listener = OnUserEarnedRewardListener.new()
-	reward_listener.on_user_earned_reward = func(_reward: RewardedItem):
-		_grant_ad_reward()
-		print("User earned reward: %s x%d" % [_reward.type, _reward.amount])
-	
-	# Set up dismiss callback to preload next ad
+	reward_listener.on_user_earned_reward = func(_reward): _grant_ad_reward()
 	_rewarded_ad.full_screen_content_callback.on_ad_dismissed_full_screen_content = func():
 		_rewarded_ad = null
 		_preload_rewarded_ad()
-	
-	_rewarded_ad.full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(error: AdError):
-		print("Ad failed to show: %s" % error.message)
-		_rewarded_ad = null
-		_preload_rewarded_ad()
-		# Fallback to fake ad
-		_show_fake_ad()
-	
 	_rewarded_ad.show(reward_listener)
 
 func _show_fake_ad():
-	# Create fullscreen ad overlay
 	var ad_layer = CanvasLayer.new()
 	ad_layer.layer = 100
 	add_child(ad_layer)
 	
-	# Dark backdrop
 	var backdrop = ColorRect.new()
 	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0, 0, 0, 0.9)
+	backdrop.color = Color(0, 0, 0, 0.95)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
 	ad_layer.add_child(backdrop)
 	
-	# Center container
 	var center = VBoxContainer.new()
 	center.set_anchors_preset(Control.PRESET_CENTER)
-	center.offset_left = -120
-	center.offset_right = 120
-	center.offset_top = -80
-	center.offset_bottom = 80
+	center.custom_minimum_size = Vector2(300, 200)
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
-	center.add_theme_constant_override("separation", 15)
+	center.add_theme_constant_override("separation", 20)
+	# Center manually to be sure
+	center.set_begin(Vector2(30, 220)) 
+	center.set_end(Vector2(330, 420))
 	ad_layer.add_child(center)
 	
-	# Ad title
-	var title_lbl = Label.new()
-	title_lbl.text = "WATCHING AD..."
-	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title_lbl.add_theme_font_size_override("font_size", 18)
-	title_lbl.add_theme_color_override("font_color", Color.WHITE)
-	center.add_child(title_lbl)
+	var title = Label.new()
+	title.text = "ADVERTISING"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color.GOLD)
+	center.add_child(title)
 	
-	# Subtitle
-	var sub_lbl = Label.new()
-	sub_lbl.text = "Reward: FULL HP HEAL"
-	sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sub_lbl.add_theme_font_size_override("font_size", 12)
-	sub_lbl.add_theme_color_override("font_color", Color.GREEN_YELLOW)
-	center.add_child(sub_lbl)
-	
-	# Progress bar
 	var progress = ProgressBar.new()
-	progress.custom_minimum_size = Vector2(200, 20)
-	progress.max_value = 10.0
+	progress.custom_minimum_size = Vector2(250, 24)
+	progress.max_value = 5.0
 	progress.value = 0.0
 	progress.show_percentage = false
 	center.add_child(progress)
 	
-	# Timer label
-	var time_lbl = Label.new()
-	time_lbl.text = "10s"
-	time_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	time_lbl.add_theme_font_size_override("font_size", 14)
-	time_lbl.add_theme_color_override("font_color", Color.LIGHT_GRAY)
-	center.add_child(time_lbl)
+	var status = Label.new()
+	status.text = "Reward in 5s..."
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	center.add_child(status)
 	
-	# Animate progress over 10 seconds
-	var elapsed = 0.0
-	var ad_timer = Timer.new()
-	ad_timer.wait_time = 0.05  # Update every 50ms
-	ad_timer.timeout.connect(func():
-		elapsed += 0.05
-		progress.value = elapsed
-		var remaining = max(0, 10.0 - elapsed)
-		time_lbl.text = "%ds" % ceili(remaining)
-		if elapsed >= 10.0:
-			ad_timer.stop()
-			_grant_ad_reward()
-			# Close overlay
-			ad_layer.queue_free()
+	# Use Tween for the 5s timer - more reliable than Timer node
+	var ad_tween = create_tween()
+	# Update progress bar
+	ad_tween.tween_property(progress, "value", 5.0, 5.0)
+	
+	# Periodic status update
+	var timer_loop = 5
+	for i in range(5):
+		ad_tween.parallel().tween_callback(func(): status.text = "Reward in %ds..." % (5-i)).set_delay(float(i))
+	
+	# Final cleanup and reward
+	ad_tween.tween_callback(func():
+		_grant_ad_reward()
+		var out_t = create_tween()
+		out_t.tween_property(ad_layer, "offset:y", -800, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		out_t.tween_callback(ad_layer.queue_free)
 	)
-	add_child(ad_timer)
-	ad_timer.start()
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()

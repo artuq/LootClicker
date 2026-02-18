@@ -24,10 +24,11 @@ func setup_enemy(hp: int, dmg: int, gold: int, xp: int, res_type: String = ""):
 	dodge_chance = 0.05 if hp > 1000 else 0.0
 
 func take_damage(amount: int) -> String:
+	if current_hp <= 0: return "DEAD"
 	if randf() < dodge_chance:
 		return "MISS"
 		
-	current_hp -= amount
+	current_hp = max(0, current_hp - amount)
 	if current_hp <= 0:
 		died.emit(xp_reward, gold_reward, enemy_resource)
 		queue_free()
