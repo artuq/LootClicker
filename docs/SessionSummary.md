@@ -8,6 +8,7 @@
    - **Expanded Skill Tree:** Increased max skill level from 10 to **50**.
    - **Skill Tier Bonuses:** Rewarded specialization (e.g., Level 41+ STR gives +5 DMG instead of +1).
    - **Adrenaline Mechanic:** Added active combat buff (50 clicks -> 5s of Double Damage).
+   - **Soft Landing Scaling:** Switched from exponential to linear scaling after Stage 30 to keep late-game challenge fair.
 3. **Bug Fixes:** 
    - Resolved **Negative HP display** bug in `Enemy.gd`.
    - Fixed **HP Potion button** getting stuck (now reactive via `health_changed` signal).

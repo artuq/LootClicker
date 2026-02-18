@@ -718,17 +718,32 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	var is_mini_boss = (current_stage % 5 == 0) and not is_named_boss
 	var is_final_boss = (current_stage == 50)
 	
-	# NERF: Softer scaling after stage 25
-	var effective_hp_scale = HP_SCALE
-	var effective_dmg_scale = DMG_SCALE
+	# SOFT LANDING SCALING: Exponential up to 30, Linear after 30
+	var hp: int = 0
+	var dmg: int = 0
 	
-	if current_stage > 25:
-		# Reduce scaling factor slightly for mid-late game
-		effective_hp_scale = 1.0 + (HP_SCALE - 1.0) * 0.85 # 15% softer HP growth
-		effective_dmg_scale = 1.0 + (DMG_SCALE - 1.0) * 0.8 # 20% softer DMG growth
+	if current_stage <= 30:
+		# Existing exponential logic with Stage 25 nerf
+		var eff_hp_scale = HP_SCALE
+		var eff_dmg_scale = DMG_SCALE
+		if current_stage > 25:
+			eff_hp_scale = 1.0 + (HP_SCALE - 1.0) * 0.85
+			eff_dmg_scale = 1.0 + (DMG_SCALE - 1.0) * 0.8
+		
+		hp = int(HP_BASE * pow(eff_hp_scale, current_stage))
+		dmg = int(DMG_BASE * pow(eff_dmg_scale, current_stage))
+	else:
+		# Linear logic: calculate peak at 30 and add constant increment
+		var hp_30 = int(HP_BASE * pow(1.0 + (HP_SCALE - 1.0) * 0.85, 30))
+		var dmg_30 = int(DMG_BASE * pow(1.0 + (DMG_SCALE - 1.0) * 0.8, 30))
+		
+		# Increments: approx 15% of the value at stage 30
+		var hp_inc = int(hp_30 * 0.12) 
+		var dmg_inc = int(dmg_30 * 0.10)
+		
+		hp = hp_30 + (current_stage - 30) * hp_inc
+		dmg = dmg_30 + (current_stage - 30) * dmg_inc
 	
-	var hp = int(HP_BASE * pow(effective_hp_scale, current_stage))
-	var dmg = int(DMG_BASE * pow(effective_dmg_scale, current_stage))
 	var gold = int(GOLD_BASE * pow(GOLD_SCALE, current_stage))
 	
 	var enemy_name = ""

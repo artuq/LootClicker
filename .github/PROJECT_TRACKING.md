@@ -8,7 +8,7 @@
 
 1. ✅ **Loot Drop System** (#19) — Reverted to core resources (Bandages, Venom, Shards).
 2. ✅ **AdMob Integration** — Switched to **Fake Ads** for development stability.
-3. ✅ **Enemy Balancing** — Nerfed scaling after stage 25. Buffed Gold drop (12 base).
+3. ✅ **Enemy Balancing** — Nerfed scaling after stage 25. Implemented **Soft Landing** (Linear scaling) after stage 30. Buffed Gold drop (12 base).
 4. ✅ **Power Creep** — Implemented **Skill Tier Bonuses** (Levels 20/40) and **Adrenaline** (x2 DMG on 50 clicks).
 5. ✅ **Skill Progression** — Increased max skill level from 10 to **50**.
 6. ✅ **UI/UX Fixes** — HP Potion responsiveness and negative HP bug fix.

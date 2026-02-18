@@ -1,34 +1,27 @@
 {
-  "timestamp": "2026-02-17T11:45:00",
-  "git_commit": "51fa613",
-  "project_status": "Critical Bugfixes Applied & Documented",
-  "recent_achievements": [
-    "BUGFIX: AudioManager - Fixed Master bus validation and error logging",
-    "BUGFIX: CardChoiceScene - Added null-checks to prevent post-combat crashes",
-    "BUGFIX: UpgradeManager - Fixed card icons (dodge/block) and added validation",
-    "BUGFIX: GameBattleManager - Added dodge_chance/block_chance to save/load system",
-    "DOCUMENTATION: Created detailed BUGFIX_CHANGELOG documenting all fixes",
-    "Previous: DYNAMIC HP BARS, INVENTORY GRID, COMBAT JUICE, PROCEDURAL AUDIO, MAJOR REORGANIZATION"
-  ],
-  "active_context": {
-    "focus_areas": ["Combat Feedback", "Loot System", "Lore/Story Integration"],
-    "key_files": [
-      "src/scenes/GameBattleManager.gd",
-      "src/scripts/PlayerStats.gd",
-      "src/scripts/AudioManager.gd",
-      "src/scenes/node_2d.tscn"
-    ],
-    "structure": "Standardized (src/, assets/, docs/)"
+  "last_session_date": "2026-02-18",
+  "project": "LootClicker",
+  "status": {
+    "admob": "Fake Ads enabled (DEBUG_FORCE_FAKE_ADS: true) using Tween timer. Real AdMob blocked by Google (Error 3: No fill).",
+    "balance": "Stage 25+ Nerf applied (-15% HP, -20% DMG scaling). Gold drop buffed (12 base, 1.15 scale).",
+    "mechanics": "Added Skill Tier Bonuses (STR/HP boosts at Lvl 20/40) and Adrenaline system (50 clicks -> x2 DMG for 5s).",
+    "inventory": "Unauthorized random loot system removed. Core resources (Bandages, Venom, Shards) kept. Junk cleanup on death active.",
+    "skill_tree": "Max skill level increased to 50."
   },
-  "next_steps_queue": [
-    "Loot drop system (Actual item drops from enemies)",
-    "Boss-specific sound effects and visual transitions",
-    "Story/Lore integration (Intro sequence, dialogue)",
-    "Prestige system mechanics",
-    "Optimization: Batching draw calls if performance drops"
+  "github": {
+    "issues_closed": [14, 15, 17, 18, 19, 20],
+    "project_board": "Updated to reflect 2026-02-18 progress.",
+    "last_commit": "cc0b3b4 (feat: Skill Tier Bonuses and Adrenaline system)"
+  },
+  "documentation": {
+    "session_summary": "docs/SessionSummary.md updated",
+    "roadmap_sync": ".github/ROADMAP_ISSUES_MAP.md updated"
+  },
+  "pending_tasks": [
+    "Combat Arena Action Bar UI (#11) - Shadow, white flash, action bar logic.",
+    "Flavorful Descriptions (#16) - Climate-themed text for cards/enemies.",
+    "Final Boss tuning (Stage 50) - Verify if Saddam is beatable with new buffs.",
+    "Lore implementation (#3) - Narrative and prestige system."
   ],
-  "user_preferences": {
-    "always_push_to_github": true,
-    "document_in_issues": true
-  }
+  "active_model": "Gemini 2.0 Pro"
 }
