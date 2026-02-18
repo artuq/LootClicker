@@ -16,20 +16,20 @@ if ($issues) {
     $commitMsg = "$message (fixes #$($issues.Replace(', ', ', #')))"
 }
 
-Write-Host "📝 Committing: $commitMsg" -ForegroundColor Cyan
+Write-Host "Committing: $commitMsg" -ForegroundColor Cyan
 git add .
-git commit -m $commitMsg
+git commit -m "$commitMsg"
 
 if ($LASTEXITCODE -eq 0) {
-    Write-Host "✅ Commit successful" -ForegroundColor Green
-    Write-Host "🔄 Pushing to GitHub..." -ForegroundColor Cyan
+    Write-Host "Commit successful" -ForegroundColor Green
+    Write-Host "Pushing to GitHub..." -ForegroundColor Cyan
     git push origin main
     
     if ($LASTEXITCODE -eq 0) {
-        Write-Host "✅ Pushed to GitHub successfully!" -ForegroundColor Green
+        Write-Host "Pushed to GitHub successfully!" -ForegroundColor Green
     } else {
-        Write-Host "⚠️ Push failed - check your network/credentials" -ForegroundColor Yellow
+        Write-Host "Push failed - check your network/credentials" -ForegroundColor Yellow
     }
 } else {
-    Write-Host "❌ Commit failed" -ForegroundColor Red
+    Write-Host "Commit failed" -ForegroundColor Red
 }
