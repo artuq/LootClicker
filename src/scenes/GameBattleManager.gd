@@ -383,6 +383,7 @@ func save_game(slot: int = 1):
 	var save_data = {
 		"current_stage": current_stage,
 		"enemy_hp": current_enemy.current_hp if current_enemy else -1,
+		"enemy_name": current_enemy.enemy_name if current_enemy else "",
 		"player": {
 			"max_hp": player.max_hp,
 			"current_hp": player.current_hp,
@@ -439,6 +440,7 @@ func load_game(slot: int = 1):
 	
 	current_stage = data["current_stage"]
 	var saved_enemy_hp = data.get("enemy_hp", -1)
+	var saved_enemy_name = data.get("enemy_name", "")
 	var player_data = data["player"]
 	
 	player.max_hp = player_data["max_hp"]
@@ -472,7 +474,7 @@ func load_game(slot: int = 1):
 		if player.equipped_item == null or new_item.damage_bonus > player.equipped_item.damage_bonus:
 			player.equipped_item = new_item
 
-	spawn_enemy(saved_enemy_hp)
+	spawn_enemy(saved_enemy_hp, saved_enemy_name)
 	# Force full UI refresh after load
 	call_deferred("_force_ui_refresh_after_load")
 	print("Game loaded from Slot %d!" % slot)
@@ -633,7 +635,17 @@ func _on_potion_button_pressed():
 	else:
 		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
 
-func spawn_enemy(saved_hp: int = -1):
+func _find_enemy_by_name(search_name: String) -> Dictionary:
+	"""Look up enemy data by name across all rosters."""
+	for e in enemy_roster_jungle:
+		if e.name == search_name:
+			return e
+	for e in enemy_roster_temple:
+		if e.name == search_name:
+			return e
+	return {}
+
+func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	if current_enemy:
 		current_enemy.queue_free()
 		
@@ -679,13 +691,20 @@ func spawn_enemy(saved_hp: int = -1):
 		hp *= BOSS_HP_MULT
 		dmg *= BOSS_DMG_MULT
 		gold *= BOSS_GOLD_MULT
-		var enemy_data = _get_enemy_for_stage(current_stage)
+		# Restore saved enemy or pick random
+		var base_name = saved_name.replace("ELITE: ", "") if saved_name.begins_with("ELITE: ") else saved_name
+		var enemy_data = _find_enemy_by_name(base_name) if base_name != "" else {}
+		if enemy_data.is_empty():
+			enemy_data = _get_enemy_for_stage(current_stage)
 		enemy_sprite.texture = load(enemy_data.texture)
 		enemy_name = "ELITE: %s" % enemy_data.name
 		res_type = enemy_data.resource
 		target_size = 180.0
 	else:
-		var enemy_data = _get_enemy_for_stage(current_stage)
+		# Restore saved enemy or pick random
+		var enemy_data = _find_enemy_by_name(saved_name) if saved_name != "" else {}
+		if enemy_data.is_empty():
+			enemy_data = _get_enemy_for_stage(current_stage)
 		enemy_sprite.texture = load(enemy_data.texture)
 		enemy_name = enemy_data.name
 		res_type = enemy_data.resource
