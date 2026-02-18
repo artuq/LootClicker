@@ -173,6 +173,13 @@ func _ready():
 	_add_button_juice(next_level_btn)
 	_add_button_juice(%OpenTreeButton)
 	
+	# Watch Ad button
+	var ad_btn = get_node_or_null("%WatchAdButton")
+	if ad_btn:
+		if not ad_btn.pressed.is_connected(_on_watch_ad_pressed):
+			ad_btn.pressed.connect(_on_watch_ad_pressed)
+		_add_button_juice(ad_btn)
+	
 	if %SettingsHUD and not %SettingsHUD.pressed.is_connected(_on_settings_hud_pressed):
 		%SettingsHUD.pressed.connect(_on_settings_hud_pressed)
 	_add_button_juice(%SettingsHUD)
@@ -676,7 +683,7 @@ func _add_button_juice(btn: BaseButton):
 
 func _on_potion_button_pressed():
 	if player.use_consumable("hp_potion"):
-		var heal_amount = max(30, int(player.max_hp * 0.2))
+		var heal_amount = max(30, int(player.max_hp * 0.3))
 		_spawn_floating_text("POTION +%d" % heal_amount, Color.SPRING_GREEN)
 		if get_node_or_null("/root/AudioManager"):
 			get_node("/root/AudioManager").play_coin_sound() # Temporary sound
@@ -898,6 +905,13 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	# Auto-save after every kill
 	save_game()
 	
+	# Reset ad counter for this stage & update ad button
+	ad_uses_this_stage = 0
+	var ad_btn = get_node_or_null("%WatchAdButton")
+	if ad_btn:
+		ad_btn.disabled = player.current_hp >= player.max_hp
+		ad_btn.text = "FULL HEAL (Ad)"
+	
 	# SHOW VICTORY AND UPGRADE SCREEN
 	_update_loot_summary()
 	victory_ui.visible = true
@@ -991,6 +1005,107 @@ func _on_settings_hud_pressed():
 	var settings = load("res://src/scenes/SettingsScene.tscn").instantiate()
 	%CanvasLayer.add_child(settings)
 	settings.setup()
+
+# === WATCH AD FOR FULL HEAL ===
+var ad_uses_this_stage: int = 0
+const MAX_AD_PER_STAGE: int = 1
+
+func _on_watch_ad_pressed():
+	if ad_uses_this_stage >= MAX_AD_PER_STAGE:
+		_spawn_floating_text("AD LIMIT REACHED", Color.ORANGE)
+		return
+	if player.current_hp >= player.max_hp:
+		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
+		return
+	_show_fake_ad()
+
+func _show_fake_ad():
+	# Create fullscreen ad overlay
+	var ad_layer = CanvasLayer.new()
+	ad_layer.layer = 100
+	add_child(ad_layer)
+	
+	# Dark backdrop
+	var backdrop = ColorRect.new()
+	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
+	backdrop.color = Color(0, 0, 0, 0.9)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	ad_layer.add_child(backdrop)
+	
+	# Center container
+	var center = VBoxContainer.new()
+	center.set_anchors_preset(Control.PRESET_CENTER)
+	center.offset_left = -120
+	center.offset_right = 120
+	center.offset_top = -80
+	center.offset_bottom = 80
+	center.alignment = BoxContainer.ALIGNMENT_CENTER
+	center.add_theme_constant_override("separation", 15)
+	ad_layer.add_child(center)
+	
+	# Ad title
+	var title_lbl = Label.new()
+	title_lbl.text = "WATCHING AD..."
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_size_override("font_size", 18)
+	title_lbl.add_theme_color_override("font_color", Color.WHITE)
+	center.add_child(title_lbl)
+	
+	# Subtitle
+	var sub_lbl = Label.new()
+	sub_lbl.text = "Reward: FULL HP HEAL"
+	sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub_lbl.add_theme_font_size_override("font_size", 12)
+	sub_lbl.add_theme_color_override("font_color", Color.GREEN_YELLOW)
+	center.add_child(sub_lbl)
+	
+	# Progress bar
+	var progress = ProgressBar.new()
+	progress.custom_minimum_size = Vector2(200, 20)
+	progress.max_value = 10.0
+	progress.value = 0.0
+	progress.show_percentage = false
+	center.add_child(progress)
+	
+	# Timer label
+	var time_lbl = Label.new()
+	time_lbl.text = "10s"
+	time_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	time_lbl.add_theme_font_size_override("font_size", 14)
+	time_lbl.add_theme_color_override("font_color", Color.LIGHT_GRAY)
+	center.add_child(time_lbl)
+	
+	# Animate progress over 10 seconds
+	var elapsed = 0.0
+	var ad_timer = Timer.new()
+	ad_timer.wait_time = 0.05  # Update every 50ms
+	ad_timer.timeout.connect(func():
+		elapsed += 0.05
+		progress.value = elapsed
+		var remaining = max(0, 10.0 - elapsed)
+		time_lbl.text = "%ds" % ceili(remaining)
+		if elapsed >= 10.0:
+			ad_timer.stop()
+			# Grant reward: full heal
+			player.current_hp = player.max_hp
+			player.health_changed.emit(player.current_hp, player.max_hp)
+			ad_uses_this_stage += 1
+			_spawn_floating_text("FULL HEAL!", Color.GREEN)
+			_vibrate(60)
+			if get_node_or_null("/root/AudioManager"):
+				get_node("/root/AudioManager").play_coin_sound()
+			_update_consumables_ui()
+			save_game()
+			# Update ad button state
+			var ad_btn = get_node_or_null("%WatchAdButton")
+			if ad_btn:
+				ad_btn.disabled = true
+				ad_btn.text = "AD USED"
+			# Close overlay
+			ad_layer.queue_free()
+	)
+	add_child(ad_timer)
+	ad_timer.start()
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()

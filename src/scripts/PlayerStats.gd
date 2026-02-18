@@ -102,8 +102,8 @@ func use_consumable(type: String):
 		match type:
 			"hp_potion":
 				if current_hp < max_hp:
-					# B: Potion heals 20% max HP or 30, whichever is bigger
-					var heal_amount = max(30, int(max_hp * 0.2))
+					# Potion heals 30% max HP or 30, whichever is bigger
+					var heal_amount = max(30, int(max_hp * 0.3))
 					current_hp = min(max_hp, current_hp + heal_amount)
 					consumables[type] -= 1
 					health_changed.emit(current_hp, max_hp)
