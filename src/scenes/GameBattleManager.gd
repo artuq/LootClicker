@@ -781,13 +781,6 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
-	# Chance for immediate healing (20% chance)
-	if randf() < 0.2:
-		var heal_amt = 20 + int(current_stage * 0.5)
-		player.current_hp = min(player.max_hp, player.current_hp + heal_amt)
-		player.health_changed.emit(player.current_hp, player.max_hp)
-		_spawn_floating_text("HEAL +%d" % heal_amt, Color.GREEN)
-	
 	_update_info_label()
 	
 	enemy_sprite.visible = false
