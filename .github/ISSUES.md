@@ -28,6 +28,7 @@ Features **fully implemented** on 2026-02-17 but issues remain open on GitHub:
 | #15 | [VFX] Near Death Experience (Winieta) | `afcd2ee` | Red vignette shader, low-pass filter, procedural heartbeat SFX |
 | #17 | Enemy Roster: 6 Unique Enemies (2 Biomes) | `8c5c1cf`, `b6ccd2c` | 8 enemies + Mummy/Snake legacy, biome spawning rules, 3 resource types |
 | #18 | Boss System: 3 Unique Boss Fights | `8c5c1cf` | The Allergic Idol (S10), Brad the Influencer (S25), Budget Sphinx (S40), greeting text UI |
+| #19 | Drop/Resource System: Enemy Loot Tables | — | Random item drops with rarity (Common-Legendary) scaling by stage |
 
 ### Additional work (no dedicated issue):
 - **Balance Pass** (`a3d0f93`): DMG% scaling, potion% heal, defense% reduction, crit damage scaling, speed soft cap, XP curve 1.4→1.3
@@ -43,7 +44,6 @@ Features **fully implemented** on 2026-02-17 but issues remain open on GitHub:
 | #4 | [RELEASE] Przygotowanie do publikacji Google Play | Low | — |
 | #7 | [BIZNES] Monetyzacja, Marketing i Analityka | Low | — |
 | #16 | [UX] Flavorful Descriptions (Klimatyczne Opisy) | Low | — |
-| #19 | Drop/Resource System: Enemy Loot Tables | Medium | enhancement |
 
 ---
 

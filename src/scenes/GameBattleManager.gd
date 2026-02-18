@@ -88,6 +88,7 @@ var kill_xp: int = 0
 var kill_resource: String = ""
 var kill_resource_amount: int = 0
 var kill_potion: bool = false
+var kill_item: GameItem = null # New item dropped this kill
 
 # Tutorial
 var tutorial_shown: bool = false
@@ -99,8 +100,8 @@ const DMG_BASE = 2
 const DMG_SCALE = 1.12 # Slightly lower scaling (was 1.15)
 const GOLD_BASE = 8    # More gold at start (was 5)
 const GOLD_SCALE = 1.1
-const BOSS_HP_MULT = 2.0 # Lowered boss HP (was 2.5)
-const BOSS_DMG_MULT = 1.3 # Lowered boss DMG (was 1.5)
+const BOSS_HP_MULT = 1.8 # Lowered boss HP (was 2.0)
+const BOSS_DMG_MULT = 1.2 # Lowered boss DMG (was 1.3)
 const BOSS_GOLD_MULT = 5  # More gold for boss kill (was 4)
 
 # Static variable to control game start from other scenes
@@ -855,6 +856,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	kill_resource = ""
 	kill_resource_amount = 0
 	kill_potion = false
+	kill_item = null
 	
 	player.gain_gold(gold)
 	
@@ -887,6 +889,15 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
+	# ITEM DROP (20% chance normally, 100% on bosses)
+	var drop_chance = 0.2
+	if current_stage % 5 == 0: drop_chance = 1.0
+	
+	if randf() < drop_chance:
+		kill_item = _generate_random_item()
+		player.add_item(kill_item)
+		_spawn_floating_text("LOOT: " + kill_item.name, kill_item.get_color())
+	
 	_update_info_label()
 	
 	enemy_sprite.visible = false
@@ -916,6 +927,50 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	# SHOW VICTORY AND UPGRADE SCREEN
 	_update_loot_summary()
 	victory_ui.visible = true
+
+func _generate_random_item() -> GameItem:
+	var rarity = "Common"
+	var roll = randf()
+	
+	if current_stage >= 30 and roll < 0.05:
+		rarity = "Legendary"
+	elif current_stage >= 15 and roll < 0.15:
+		rarity = "Epic"
+	elif current_stage >= 5 and roll < 0.40:
+		rarity = "Rare"
+		
+	var base_dmg = 1 + int(current_stage * 0.2)
+	var mult = 1.0
+	var prefix = ""
+	
+	match rarity:
+		"Common":
+			mult = 1.0
+			prefix = ["Rusty", "Old", "Basic", "Wooden"].pick_random()
+		"Rare":
+			mult = 1.5
+			prefix = ["Shiny", "Sharp", "Steel", "Reinforced"].pick_random()
+		"Epic":
+			mult = 2.2
+			prefix = ["Glowing", "Ancient", "Masterwork", "Enchanted"].pick_random()
+		"Legendary":
+			mult = 3.5
+			prefix = ["Divine", "Omega", "God-Slaying", "Eternal"].pick_random()
+			
+	var types = ["Sword", "Blade", "Dagger", "Hammer", "Axe", "Staff"]
+	var item_name = prefix + " " + types.pick_random()
+	var final_dmg = max(1, int(base_dmg * mult))
+	
+	# Variation
+	final_dmg += randi_range(0, int(current_stage / 10.0) + 1)
+	
+	var item = GameItem.new(item_name, final_dmg, rarity)
+	
+	# Assign icon based on type (placeholder logic or icons if available)
+	# For now, we use existing icons or generic ones
+	item.icon_path = "res://assets/icons/cog_silver.png" # Placeholder
+	
+	return item
 
 func _on_player_leveled_up(_new_level):
 	_spawn_floating_text("LEVEL UP!", Color.GOLD)
@@ -1397,6 +1452,8 @@ func _update_loot_summary():
 		parts.append("+%d %s" % [kill_resource_amount, kill_resource.capitalize()])
 	if kill_potion:
 		parts.append("+Potion")
+	if kill_item:
+		parts.append("+%s (%s)" % [kill_item.name, kill_item.rarity])
 	loot_summary_label.text = " · ".join(parts)
 	# Animate
 	loot_summary_label.modulate = Color(1, 1, 1, 0)

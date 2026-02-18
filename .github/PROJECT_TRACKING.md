@@ -1,17 +1,13 @@
 # LootClicker - Project Tracking Board
 
-**Status:** Active Development | **Last Updated:** 2026-02-17 | **Sprint:** Session 2026-02-17
+**Status:** Active Development | **Last Updated:** 2026-02-18 | **Sprint:** Session 2026-02-18
 
 ---
 
-## 📋 Session Goals (2026-02-17)
+## 📋 Session Goals (2026-02-18)
 
-1. ✅ **Near Death VFX** (#15) — Red vignette, heartbeat, low-pass filter
-2. ✅ **Cursed Cards** (#14) — 6 risk/reward cards with debuff system
-3. ✅ **Enemy Roster** (#17) — 8 enemies across 2 biomes (Jungle + Temple)
-4. ✅ **Boss System** (#18) — 3 unique bosses with greeting text
-5. ✅ **Balance Pass** — 6 core balance changes (DMG, DEF, Crit, Speed, Potion, XP)
-6. ✅ **Bug Fixes** — Signal mismatch, indentation, curse timing, card UI
+1. ✅ **Loot Drop System** (#19) — Random item drops with rarity and stage scaling
+2. 🔄 **AdMob Integration** — Fixing JNI types and async initialization (Pending approval)
 
 ---
 
@@ -49,7 +45,7 @@
 | #16 | [UX] Flavorful Descriptions | 🟢 Low | 4h |
 | #17 | Enemy Roster: 6 Enemies (2 Biomes) | ✅ Implemented | — (ready to close) |
 | #18 | Boss System: 3 Boss Fights | ✅ Implemented | — (ready to close) |
-| #19 | Drop/Resource System: Loot Tables | 🟡 Medium | 6h |
+| #19 | Drop/Resource System: Loot Tables | ✅ Implemented | — (ready to close) |
 
 ### 🧊 ICE BOX (1 item)
 

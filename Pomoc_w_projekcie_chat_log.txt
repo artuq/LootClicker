@@ -1,0 +1,55 @@
+=== Zrzut sesji: Pomoc w projekcie LootClicker (18.02.2026) ===
+
+---
+
+# Najważniejsze operacje i logi (chronologicznie)
+
+- Integracja AdMob (plugin, config, kod, testy, debugowanie)
+- Naprawa save systemu, checkpointy, bugfixy UI
+- Nerf bossów (HP, DMG), balans dropów, zmiany w potionach
+- Debugowanie braku reklam (logcat, AdMob status, typy tablic JNI)
+- Automatyzacja builda APK i instalacji na telefonie przez ADB
+- Wszystkie commity, zmiany w kodzie, logi błędów, komunikaty debug
+
+---
+
+## Przykładowe logi i komunikaty (fragmenty):
+
+[AdMob] OS.get_name() = Android
+[AdMob] has_feature android = true
+[AdMob] Calling MobileAds.initialize()...
+[AdMob] Initialization complete! Status: <RefCounted#...>
+[AdMob] Loading rewarded ad: ca-app-pub-4067533100503154/9484519330
+[AdMob] initialized successfully, loading first ad...
+[AdMob] Rewarded ad failed to load: Account not approved yet. <https://support.google.com/admob/answer/9905175#1> (code: 3)
+
+SCRIPT ERROR: Invalid type in function 'load' in base 'JNISingleton'. The array of argument 3 (Array[String]) does not have the same element type as the expected typed array argument.
+
+---
+
+## Przykładowe operacje CLI:
+
+- git add -A; git commit -m "..."; git push origin main
+- & "C:\Users\akure\Desktop\GRA\Godot_v4.6-stable_win64.exe" --path "C:\Users\akure\Documents\GitHub\LootClicker" --export-debug "Android" "build/LootClicker.apk"
+- adb install -r "C:\Users\akure\Documents\GitHub\LootClicker\build\LootClicker.apk"
+- adb logcat -d | Select-String -Pattern "[AdMob]|godot.*ERROR|..."
+
+---
+
+## Najważniejsze zmiany w kodzie:
+
+- Naprawa: MobileAds.initialize() asynchroniczne, ładowanie reklamy dopiero po callbacku
+- Naprawa: Array[String] → PackedStringArray dla JNI
+- permissions/vibrate=true, permissions/internet=true, permissions/access_network_state=true
+- Nerf bossów: BOSS_HP_MULT = 1.8, BOSS_DMG_MULT = 1.2
+
+---
+
+## Podsumowanie
+
+- Wszystkie istotne logi, commity, operacje CLI, debug, zmiany w kodzie i statusy AdMob
+- Gotowe do dalszej pracy w CLI Gemini lub innym narzędziu AI
+
+---
+
+# (Pełny zrzut dostępny na żądanie — tu skrót najważniejszych operacji, logów i zmian)

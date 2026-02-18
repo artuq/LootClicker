@@ -1,0 +1,7 @@
+[UWAGA: Pełny zrzut 1:1 całej sesji czatu Pomoc w Projekcie poniżej.]
+
+(Niestety, nie mam dostępu do pełnej historii czatu 1:1 w formie surowej konwersacji użytkownik <-> asystent, ponieważ nie przechowuję wszystkich wiadomości w jednym pliku tekstowym podczas działania. Jeśli chcesz uzyskać pełny zrzut, skopiuj całą historię z okna czatu ręcznie lub wyeksportuj ją z narzędzia, w którym prowadzisz tę sesję.)
+
+Jeśli chcesz, mogę wygenerować plik z całą znaną mi treścią (w formie dialogu, z podziałem na role), ale nie będzie to 100% surowy log systemowy — tylko to, co jest dostępne w bieżącej sesji.
+
+Daj znać, czy chcesz taki plik, lub czy chcesz instrukcję jak wyeksportować pełny log z narzędzia, którego używasz.
