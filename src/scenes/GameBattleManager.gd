@@ -1014,8 +1014,8 @@ const MAX_AD_PER_STAGE: int = 1
 # AdMob Rewarded Ad
 var _rewarded_ad: RewardedAd = null
 var _admob_available: bool = false
-# Test ad unit ID — replace with your real one from AdMob dashboard
-const REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
+# Joana Indiana HP — rewarded ad unit
+const REWARDED_AD_UNIT_ID = "ca-app-pub-4067533100503154/9484519330"
 
 func _init_admob():
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
