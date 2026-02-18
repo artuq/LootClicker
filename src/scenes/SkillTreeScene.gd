@@ -97,6 +97,7 @@ func _apply_skill(id: String):
 		"hp":
 			player.max_hp += 20
 			player.current_hp = player.max_hp
+			player.health_changed.emit(player.current_hp, player.max_hp)
 	player.skills_updated.emit()
 
 func _play_error():

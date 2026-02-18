@@ -1018,24 +1018,29 @@ var _admob_available: bool = false
 const REWARDED_AD_UNIT_ID = "ca-app-pub-4067533100503154/9484519330"
 
 func _init_admob():
+	print("[AdMob] OS.get_name() = %s" % OS.get_name())
+	print("[AdMob] has_feature android = %s" % str(OS.has_feature("android")))
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		print("[AdMob] Calling MobileAds.initialize()...")
 		MobileAds.initialize()
 		_admob_available = true
 		_preload_rewarded_ad()
-		print("AdMob initialized")
+		print("[AdMob] initialized successfully")
 	else:
-		print("AdMob not available on %s — using fake ads" % OS.get_name())
+		print("[AdMob] not available on %s — using fake ads" % OS.get_name())
 
 func _preload_rewarded_ad():
 	if not _admob_available:
+		print("[AdMob] _preload_rewarded_ad skipped — not available")
 		return
+	print("[AdMob] Loading rewarded ad: %s" % REWARDED_AD_UNIT_ID)
 	var callback = RewardedAdLoadCallback.new()
 	callback.on_ad_loaded = func(ad: RewardedAd):
 		_rewarded_ad = ad
-		print("Rewarded ad loaded successfully")
+		print("[AdMob] Rewarded ad loaded successfully")
 	callback.on_ad_failed_to_load = func(error: LoadAdError):
 		_rewarded_ad = null
-		print("Rewarded ad failed to load: %s" % error.message)
+		print("[AdMob] Rewarded ad failed to load: %s (code: %d)" % [error.message, error.code])
 		# Retry after 30 seconds
 		var retry_timer = Timer.new()
 		retry_timer.wait_time = 30.0
@@ -1049,6 +1054,7 @@ func _preload_rewarded_ad():
 	RewardedAdLoader.new().load(REWARDED_AD_UNIT_ID, AdRequest.new(), callback)
 
 func _on_watch_ad_pressed():
+	print("[AdMob] Watch ad pressed. admob_available=%s, rewarded_ad=%s" % [str(_admob_available), str(_rewarded_ad != null)])
 	if ad_uses_this_stage >= MAX_AD_PER_STAGE:
 		_spawn_floating_text("AD LIMIT REACHED", Color.ORANGE)
 		return
