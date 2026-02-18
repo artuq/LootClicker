@@ -51,7 +51,12 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 # Graphics
 @onready var enemy_sprite = %EnemySprite
 @onready var enemy_hp_bar = %EnemyHPBar
+@onready var biome_bg: TextureRect = %JungleBG
 @export var damage_container: Node # New export for damage labels
+
+# Biome backgrounds
+var bg_jungle: Texture2D = preload("res://assets/sprites/Jungle.jpeg")
+var bg_temple: Texture2D = preload("res://assets/sprites/Temple.jpeg")
 
 var shake_intensity: float = 0.0
 var idle_tween: Tween 
@@ -305,6 +310,21 @@ func _init_enemy_rosters():
 			"scale": 280.0,
 		},
 	}
+
+func _update_biome_bg():
+	"""Switch background texture based on current stage biome."""
+	if not biome_bg:
+		return
+	if current_stage <= 14:
+		biome_bg.texture = bg_jungle
+	elif current_stage <= 20:
+		# Transition zone — use temple
+		biome_bg.texture = bg_temple
+	elif current_stage <= 40:
+		biome_bg.texture = bg_temple
+	else:
+		# Stage 41+: mixed — use temple
+		biome_bg.texture = bg_temple
 
 func _get_enemy_for_stage(stage: int) -> Dictionary:
 	"""Returns a random enemy dict based on biome rules."""
@@ -746,6 +766,9 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 		
 	enemy_sprite.position = Vector2(180, 240)
 	original_enemy_pos = enemy_sprite.position
+	
+	# Switch biome background based on stage
+	_update_biome_bg()
 	
 	_start_idle_animation()
 		
