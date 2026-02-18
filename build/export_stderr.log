@@ -1,5 +1,0 @@
-ERROR: Cannot export project with preset "Android" due to configuration errors:
-
-   at: _fs_changed (editor/editor_node.cpp:1332)
-ERROR: Project export for preset "Android" failed.
-   at: _fs_changed (editor/editor_node.cpp:1348)
