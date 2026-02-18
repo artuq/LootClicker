@@ -136,6 +136,7 @@ func _ready():
 	add_child(player)
 	
 	_create_vignette_overlay()
+	_init_admob()
 	
 	if get_node_or_null("/root/AudioManager"):
 		get_node("/root/AudioManager").play_music()
@@ -1010,6 +1011,43 @@ func _on_settings_hud_pressed():
 var ad_uses_this_stage: int = 0
 const MAX_AD_PER_STAGE: int = 1
 
+# AdMob Rewarded Ad
+var _rewarded_ad: RewardedAd = null
+var _admob_available: bool = false
+# Test ad unit ID — replace with your real one from AdMob dashboard
+const REWARDED_AD_UNIT_ID = "ca-app-pub-3940256099942544/5224354917"
+
+func _init_admob():
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		MobileAds.initialize()
+		_admob_available = true
+		_preload_rewarded_ad()
+		print("AdMob initialized")
+	else:
+		print("AdMob not available on %s — using fake ads" % OS.get_name())
+
+func _preload_rewarded_ad():
+	if not _admob_available:
+		return
+	var callback = RewardedAdLoadCallback.new()
+	callback.on_ad_loaded = func(ad: RewardedAd):
+		_rewarded_ad = ad
+		print("Rewarded ad loaded successfully")
+	callback.on_ad_failed_to_load = func(error: LoadAdError):
+		_rewarded_ad = null
+		print("Rewarded ad failed to load: %s" % error.message)
+		# Retry after 30 seconds
+		var retry_timer = Timer.new()
+		retry_timer.wait_time = 30.0
+		retry_timer.one_shot = true
+		retry_timer.timeout.connect(func():
+			_preload_rewarded_ad()
+			retry_timer.queue_free()
+		)
+		add_child(retry_timer)
+		retry_timer.start()
+	RewardedAdLoader.new().load(REWARDED_AD_UNIT_ID, AdRequest.new(), callback)
+
 func _on_watch_ad_pressed():
 	if ad_uses_this_stage >= MAX_AD_PER_STAGE:
 		_spawn_floating_text("AD LIMIT REACHED", Color.ORANGE)
@@ -1017,7 +1055,53 @@ func _on_watch_ad_pressed():
 	if player.current_hp >= player.max_hp:
 		_spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
 		return
-	_show_fake_ad()
+	
+	if _admob_available and _rewarded_ad:
+		_show_real_ad()
+	else:
+		_show_fake_ad()
+
+func _grant_ad_reward():
+	"""Grant the full heal reward after watching ad."""
+	player.current_hp = player.max_hp
+	player.health_changed.emit(player.current_hp, player.max_hp)
+	ad_uses_this_stage += 1
+	_spawn_floating_text("FULL HEAL!", Color.GREEN)
+	_vibrate(60)
+	if get_node_or_null("/root/AudioManager"):
+		get_node("/root/AudioManager").play_coin_sound()
+	_update_consumables_ui()
+	save_game()
+	# Update ad button state
+	var ad_btn = get_node_or_null("%WatchAdButton")
+	if ad_btn:
+		ad_btn.disabled = true
+		ad_btn.text = "AD USED"
+
+func _show_real_ad():
+	if not _rewarded_ad:
+		_show_fake_ad()
+		return
+	
+	# Set up reward callback
+	var reward_listener = OnUserEarnedRewardListener.new()
+	reward_listener.on_user_earned_reward = func(_reward: RewardedItem):
+		_grant_ad_reward()
+		print("User earned reward: %s x%d" % [_reward.type, _reward.amount])
+	
+	# Set up dismiss callback to preload next ad
+	_rewarded_ad.full_screen_content_callback.on_ad_dismissed_full_screen_content = func():
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+	
+	_rewarded_ad.full_screen_content_callback.on_ad_failed_to_show_full_screen_content = func(error: AdError):
+		print("Ad failed to show: %s" % error.message)
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+		# Fallback to fake ad
+		_show_fake_ad()
+	
+	_rewarded_ad.show(reward_listener)
 
 func _show_fake_ad():
 	# Create fullscreen ad overlay
@@ -1086,21 +1170,7 @@ func _show_fake_ad():
 		time_lbl.text = "%ds" % ceili(remaining)
 		if elapsed >= 10.0:
 			ad_timer.stop()
-			# Grant reward: full heal
-			player.current_hp = player.max_hp
-			player.health_changed.emit(player.current_hp, player.max_hp)
-			ad_uses_this_stage += 1
-			_spawn_floating_text("FULL HEAL!", Color.GREEN)
-			_vibrate(60)
-			if get_node_or_null("/root/AudioManager"):
-				get_node("/root/AudioManager").play_coin_sound()
-			_update_consumables_ui()
-			save_game()
-			# Update ad button state
-			var ad_btn = get_node_or_null("%WatchAdButton")
-			if ad_btn:
-				ad_btn.disabled = true
-				ad_btn.text = "AD USED"
+			_grant_ad_reward()
 			# Close overlay
 			ad_layer.queue_free()
 	)
