@@ -757,39 +757,36 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	kill_xp = xp_reward
 	player.gain_xp(xp_reward) 
 	
-	# RESOURCE DROP (scaled amount, lower chance at higher stages)
+	# RESOURCE DROP (guaranteed, amounts scale with stage)
 	if res_type != "":
-		var res_chance = 0.6
-		if current_stage <= 3: res_chance = 1.0
-		if current_stage % 5 == 0: res_chance = 1.0
-		# Reduce chance slightly at higher stages to keep balance
-		if current_stage > 20: res_chance *= 0.8
-		if current_stage > 35: res_chance *= 0.7
-		
-		if randf() < res_chance:
-			# Drop more at higher stages, but rarer
-			var drop_amount = 1
-			if current_stage >= 15:
-				drop_amount = randi_range(1, 2)
-			if current_stage >= 30:
-				drop_amount = randi_range(1, 3)
-			player.add_resource(res_type, drop_amount)
-			kill_resource = res_type
-			kill_resource_amount = drop_amount
-			_spawn_floating_text("+%d %s" % [drop_amount, res_type.capitalize()], Color.MEDIUM_PURPLE)
+		var drop_amount = 1
+		if current_stage >= 5:
+			drop_amount = randi_range(1, 2)
+		if current_stage >= 15:
+			drop_amount = randi_range(2, 3)
+		if current_stage >= 30:
+			drop_amount = randi_range(2, 4)
+		# Bosses & elites drop extra
+		if current_stage % 5 == 0:
+			drop_amount += randi_range(1, 2)
+		player.add_resource(res_type, drop_amount)
+		kill_resource = res_type
+		kill_resource_amount = drop_amount
+		_spawn_floating_text("+%d %s" % [drop_amount, res_type.capitalize()], Color.MEDIUM_PURPLE)
 			
-	# POTION DROP (30% chance)
-	if randf() < 0.3:
+	# POTION DROP (40% chance)
+	if randf() < 0.4:
 		player.consumables["hp_potion"] += 1
 		kill_potion = true
 		_spawn_floating_text("LOOT: HP POTION", Color.GREEN_YELLOW)
 		player.consumables_updated.emit()
 	
-	# Chance for immediate healing (15% chance)
-	if randf() < 0.15:
-		player.current_hp = min(player.max_hp, player.current_hp + 20)
+	# Chance for immediate healing (20% chance)
+	if randf() < 0.2:
+		var heal_amt = 20 + int(current_stage * 0.5)
+		player.current_hp = min(player.max_hp, player.current_hp + heal_amt)
 		player.health_changed.emit(player.current_hp, player.max_hp)
-		_spawn_floating_text("HEAL +20", Color.GREEN)
+		_spawn_floating_text("HEAL +%d" % heal_amt, Color.GREEN)
 	
 	_update_info_label()
 	
