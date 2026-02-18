@@ -192,12 +192,16 @@ func _ready():
 	)
 	
 	# START MODE SELECTION
+	var loaded_between_fights = false
 	if startup_mode == "new_game":
 		spawn_enemy()
 		# Show tutorial on first run
 		call_deferred("_show_tutorial")
 	else:
-		if not load_game():
+		var load_result = load_game()
+		if load_result is Dictionary:
+			loaded_between_fights = load_result.get("between_fights", false)
+		elif not load_result:
 			print("WARN: load_game failed, starting fresh")
 			spawn_enemy()
 			call_deferred("_show_tutorial")
@@ -211,7 +215,16 @@ func _ready():
 	player.skills_updated.connect(_update_stats_ui)
 	player.health_changed.connect(func(_c, _m): _update_stats_ui())
 	player.gold_changed.connect(func(_g): _update_stats_ui())
-	_start_combat()
+	
+	if loaded_between_fights:
+		# Resume at victory screen — don't start combat
+		in_combat = false
+		enemy_sprite.visible = false
+		click_area.visible = false
+		victory_ui.visible = true
+		_update_loot_summary()
+	else:
+		_start_combat()
 
 # === Enemy Roster Data ===
 func _init_enemy_rosters():
@@ -373,17 +386,28 @@ func _play_hit_effect(is_crit: bool):
 	hit_tween.tween_property(enemy_sprite, "scale", base_scale, 0.2).set_trans(Tween.TRANS_ELASTIC)
 
 func _notification(what):
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		save_game()
-	# Android: save when app goes to background (user swipes away)
-	if what == NOTIFICATION_APPLICATION_PAUSED:
-		save_game()
+	if what == NOTIFICATION_WM_CLOSE_REQUEST or what == NOTIFICATION_APPLICATION_PAUSED:
+		# Mid-combat: save with full HP enemy so player restarts the stage
+		if in_combat and current_enemy:
+			var orig_hp = current_enemy.current_hp
+			current_enemy.current_hp = int(HP_BASE * pow(HP_SCALE, current_stage))
+			if boss_roster.has(current_stage):
+				current_enemy.current_hp *= BOSS_HP_MULT
+			elif current_stage % 5 == 0:
+				current_enemy.current_hp *= BOSS_HP_MULT
+			elif current_stage == 50:
+				current_enemy.current_hp *= 10
+			save_game()
+			current_enemy.current_hp = orig_hp  # Restore in case app resumes
+		else:
+			save_game()
 
 func save_game(slot: int = 1):
 	var save_data = {
 		"current_stage": current_stage,
 		"enemy_hp": current_enemy.current_hp if current_enemy else -1,
 		"enemy_name": current_enemy.enemy_name if current_enemy else "",
+		"between_fights": not in_combat,
 		"player": {
 			"max_hp": player.max_hp,
 			"current_hp": player.current_hp,
@@ -474,11 +498,16 @@ func load_game(slot: int = 1):
 		if player.equipped_item == null or new_item.damage_bonus > player.equipped_item.damage_bonus:
 			player.equipped_item = new_item
 
-	spawn_enemy(saved_enemy_hp, saved_enemy_name)
+	var between = data.get("between_fights", false)
+	if not between:
+		spawn_enemy(saved_enemy_hp, saved_enemy_name)
+	else:
+		# Between fights: spawn next stage enemy (ready for Next Level)
+		spawn_enemy(-1, saved_enemy_name)
 	# Force full UI refresh after load
 	call_deferred("_force_ui_refresh_after_load")
 	print("Game loaded from Slot %d!" % slot)
-	return true
+	return {"success": true, "between_fights": between}
 
 
 func _force_ui_refresh_after_load():
@@ -942,7 +971,7 @@ func _on_settings_hud_pressed():
 	get_tree().paused = true
 	var settings = load("res://src/scenes/SettingsScene.tscn").instantiate()
 	%CanvasLayer.add_child(settings)
-	settings.setup(save_game, load_game)
+	settings.setup()
 
 func _animate_label(lbl: Control):
 	var tween = create_tween()

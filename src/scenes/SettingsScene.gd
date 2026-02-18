@@ -1,48 +1,18 @@
 extends Control
 
 @onready var volume_slider = %VolumeSlider
-@onready var save_load_container = %SaveLoadContainer
-
-var _save_callable: Callable
-var _load_callable: Callable
-
 func _ready():
 	# Initialize slider with current value
 	if get_node_or_null("/root/SettingsManager"):
 		volume_slider.value = get_node("/root/SettingsManager").master_volume
 	
-	# Hide save/load by default (TitleScreen mode)
+	# Hide save/load container (no longer used — auto-checkpoint system)
+	var save_load_container = get_node_or_null("%SaveLoadContainer")
 	if save_load_container:
 		save_load_container.visible = false
 
-func setup(save_fn: Callable = Callable(), load_fn: Callable = Callable()):
-	# Call after adding to tree; shows save/load if callables provided
-	_save_callable = save_fn
-	_load_callable = load_fn
-	
-	if save_fn.is_valid() and load_fn.is_valid():
-		if save_load_container:
-			save_load_container.visible = true
-		# Connect save buttons
-		for i in range(1, 4):
-			var save_btn = get_node_or_null("%%%s" % ("Save%d" % i))
-			if save_btn and not save_btn.pressed.is_connected(_on_save_pressed):
-				save_btn.pressed.connect(_on_save_pressed.bind(i))
-			var load_btn = get_node_or_null("%%%s" % ("Load%d" % i))
-			if load_btn and not load_btn.pressed.is_connected(_on_load_pressed):
-				load_btn.pressed.connect(_on_load_pressed.bind(i))
-
-func _on_save_pressed(slot: int):
-	if _save_callable.is_valid():
-		_save_callable.call(slot)
-		_spawn_feedback("Saved to Slot %d!" % slot)
-
-func _on_load_pressed(slot: int):
-	if _load_callable.is_valid():
-		_load_callable.call(slot)
-		_spawn_feedback("Loaded Slot %d!" % slot)
-		# Close settings after loading
-		_on_back_button_pressed()
+func setup():
+	pass  # Volume-only settings, no save/load needed
 
 func _spawn_feedback(msg: String):
 	var lbl = Label.new()
