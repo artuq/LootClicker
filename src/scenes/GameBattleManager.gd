@@ -1022,10 +1022,13 @@ func _init_admob():
 	print("[AdMob] has_feature android = %s" % str(OS.has_feature("android")))
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		print("[AdMob] Calling MobileAds.initialize()...")
-		MobileAds.initialize()
-		_admob_available = true
-		_preload_rewarded_ad()
-		print("[AdMob] initialized successfully")
+		var listener = OnInitializationCompleteListener.new()
+		listener.on_initialization_complete = func(status: InitializationStatus):
+			print("[AdMob] Initialization complete! Status: %s" % str(status))
+			_admob_available = true
+			_preload_rewarded_ad()
+			print("[AdMob] initialized successfully, loading first ad...")
+		MobileAds.initialize(listener)
 	else:
 		print("[AdMob] not available on %s — using fake ads" % OS.get_name())
 
