@@ -40,35 +40,37 @@ func get_random_options(count: int = 3) -> Array:
 
 func apply_upgrade(player: PlayerStats, upgrade_id: String):
 	match upgrade_id:
-		"str": player.str_lvl += 2
-		"crit": player.crit_lvl += 5
-		"speed": player.speed_lvl += 2
+		"str": player.card_str += 2
+		"crit": player.card_crit += 5
+		"speed": player.card_speed += 2
 		"hp":
+			player.card_hp += 1
 			player.max_hp += 20
-			player.current_hp = player.max_hp # Leczymy przy okazji
-		"gold": player.greed_lvl += 3
-		"def": player.def_lvl += 1
+			player.current_hp = player.max_hp
+		"gold": player.card_greed += 3
+		"def": player.card_def += 1
 		"dodge": player.dodge_chance += 0.03
 		"block": player.block_chance += 0.05
 		# === Cursed Cards ===
 		"curse_berserker":
-			player.str_lvl += 8
+			player.card_str += 8
 			player.apply_curse({"id": "curse_berserker", "stages": 5})
 		"curse_glass":
-			player.crit_lvl += 20
+			player.card_crit += 20
 			player.max_hp = int(player.max_hp * 0.5)
 			player.current_hp = min(player.current_hp, player.max_hp)
-			player.apply_curse({"id": "curse_glass", "stages": -1})  # Permanent
+			player.apply_curse({"id": "curse_glass", "stages": -1})
 		"curse_blood":
-			player.greed_lvl += 15  # Huge gold boost
+			player.card_greed += 15
 			player.apply_curse({"id": "curse_blood", "stages": -1})
 		"curse_frenzy":
-			player.speed_lvl += player.speed_lvl + 10  # Double+ speed
+			player.card_speed += player.card_speed + player.speed_lvl + 10
 			player.def_lvl = 0
+			player.card_def = 0
 			player.apply_curse({"id": "curse_frenzy", "stages": 5})
 		"curse_toxic":
-			player.str_lvl += 5
-			player.crit_lvl += 10
+			player.card_str += 5
+			player.card_crit += 10
 			player.apply_curse({"id": "curse_toxic", "stages": 8})
 		"curse_thorns":
 			player.apply_curse({"id": "curse_thorns", "stages": 10})

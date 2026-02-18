@@ -384,6 +384,12 @@ func save_game(slot: int = 1):
 			"heal_count": player.heal_count,
 			"dodge_chance": player.dodge_chance,
 			"block_chance": player.block_chance,
+			"card_str": player.card_str,
+			"card_crit": player.card_crit,
+			"card_speed": player.card_speed,
+			"card_greed": player.card_greed,
+			"card_def": player.card_def,
+			"card_hp": player.card_hp,
 			"resources": player.resources,
 			"consumables": player.consumables,
 			"inventory": []
@@ -435,6 +441,12 @@ func load_game(slot: int = 1):
 	player.heal_count = player_data.get("heal_count", 0)
 	player.dodge_chance = player_data.get("dodge_chance", 0.05)
 	player.block_chance = player_data.get("block_chance", 0.0)
+	player.card_str = player_data.get("card_str", 0)
+	player.card_crit = player_data.get("card_crit", 0)
+	player.card_speed = player_data.get("card_speed", 0)
+	player.card_greed = player_data.get("card_greed", 0)
+	player.card_def = player_data.get("card_def", 0)
+	player.card_hp = player_data.get("card_hp", 0)
 	player.resources = player_data.get("resources", player.resources)
 	player.consumables = player_data.get("consumables", player.consumables)
 	
@@ -510,10 +522,13 @@ func _update_stats_ui():
 	if not combat_stats_label or not skill_stats_label or not player: return
 	var dmg = player.get_total_damage()
 	var spd = player.get_attack_speed()
-	var crit_ch = min(80.0, player.crit_lvl * 1.0)
+	var total_crit = player.crit_lvl + player.card_crit
+	var total_def = player.def_lvl + player.card_def
+	var total_greed = player.greed_lvl + player.card_greed
+	var crit_ch = min(80.0, total_crit * 1.0)
 	var crit_m = player.get_crit_multiplier()
-	var def_red = min(50.0, player.def_lvl * 2.0)
-	var gold_b = player.greed_lvl * 5
+	var def_red = min(50.0, total_def * 2.0)
+	var gold_b = total_greed * 5
 	var dodge = player.dodge_chance * 100.0
 	var block = player.block_chance * 100.0
 
@@ -530,15 +545,15 @@ func _update_stats_ui():
 	cl += "Block: %.0f%%" % block
 	combat_stats_label.text = cl
 
-	# Right column — Skills + Curses
+	# Right column — Skills (tree + card) + Curses
 	var sr := ""
-	sr += "[b]Skills[/b]\n"
-	sr += "STR: %d\n" % player.str_lvl
-	sr += "HP: %d\n" % int((player.max_hp - 100) / 20.0)
-	sr += "Greed: %d\n" % player.greed_lvl
-	sr += "Crit: %d\n" % player.crit_lvl
-	sr += "Speed: %d\n" % player.speed_lvl
-	sr += "Def: %d\n" % player.def_lvl
+	sr += "[b]Skills (Tree+Card)[/b]\n"
+	sr += "STR: %d+%d\n" % [player.str_lvl, player.card_str]
+	sr += "HP: %d+%d\n" % [int((player.max_hp - 100 - player.card_hp * 20) / 20.0), player.card_hp]
+	sr += "Greed: %d+%d\n" % [player.greed_lvl, player.card_greed]
+	sr += "Crit: %d+%d\n" % [player.crit_lvl, player.card_crit]
+	sr += "Speed: %d+%d\n" % [player.speed_lvl, player.card_speed]
+	sr += "Def: %d+%d\n" % [player.def_lvl, player.card_def]
 	if player.active_curses.size() > 0:
 		sr += "[b]Curses[/b]\n"
 		for c in player.active_curses:

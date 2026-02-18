@@ -38,6 +38,14 @@ var greed_lvl: int = 0
 var def_lvl: int = 0
 var heal_count: int = 0
 
+# Card bonuses (separate from skill tree levels)
+var card_str: int = 0
+var card_crit: int = 0
+var card_speed: int = 0
+var card_greed: int = 0
+var card_def: int = 0
+var card_hp: int = 0  # tracks extra HP from cards
+
 # New combat stats
 var dodge_chance: float = 0.05 # 5% base
 var block_chance: float = 0.0  # 0% base
@@ -127,8 +135,9 @@ func take_damage(amount: int) -> String:
 		final_dmg = int(amount * 0.5)
 		block_msg = "BLOCKED "
 		
-	# C: Defense as % reduction (2% per level, cap 50%) instead of flat subtraction
-	var def_reduction = min(0.50, def_lvl * 0.02)
+	# C: Defense as % reduction (2% per level, cap 50%) — combined skill tree + cards
+	var total_def = def_lvl + card_def
+	var def_reduction = min(0.50, total_def * 0.02)
 	var dmg = max(1, int(final_dmg * (1.0 - def_reduction)))
 	current_hp -= dmg
 	if current_hp < 0: current_hp = 0
@@ -145,29 +154,28 @@ func add_item(item: GameItem):
 		equipped_item = item
 
 func get_total_damage() -> int:
-	# A: Base damage + STR, then multiply by % bonus from STR stacking
-	var base = 1 + str_lvl
+	# Combined STR from skill tree + cards
+	var total_str = str_lvl + card_str
+	var base = 1 + total_str
 	if equipped_item: base += equipped_item.damage_bonus
-	# Every 2 STR levels = +5% total damage (multiplicative scaling)
-	var str_bonus = 1.0 + (str_lvl * 0.025)
+	var str_bonus = 1.0 + (total_str * 0.025)
 	return int(base * str_bonus)
 
 func get_crit_multiplier() -> float:
-	# D: Crit damage scales with crit investment
-	return 2.0 + (crit_lvl * 0.02)
+	var total_crit = crit_lvl + card_crit
+	return 2.0 + (total_crit * 0.02)
 
 func get_attack_speed() -> float:
-	# E: Soft cap with diminishing returns instead of hard wall
-	# Formula: 1.0 / (1.0 + speed_lvl * 0.08) — never reaches 0, smooth curve
-	# speed_lvl 0 = 1.0s, 5 = 0.71s, 10 = 0.56s, 16 = 0.44s, 25 = 0.33s, 50 = 0.2s
-	return max(0.15, 1.0 / (1.0 + speed_lvl * 0.08))
+	var total_speed = speed_lvl + card_speed
+	return max(0.15, 1.0 / (1.0 + total_speed * 0.08))
 
 func is_critical_hit() -> bool:
-	# Cap crit chance at 80%
-	return randf() < min(0.8, crit_lvl * 0.01)
+	var total_crit = crit_lvl + card_crit
+	return randf() < min(0.8, total_crit * 0.01)
 
 func gain_gold(amount: int):
-	gold += int(amount * (1.0 + (greed_lvl * 0.05)))
+	var total_greed = greed_lvl + card_greed
+	gold += int(amount * (1.0 + (total_greed * 0.05)))
 	gold_changed.emit(gold)
 
 func add_resource(type: String, amount: int):

@@ -10,6 +10,8 @@ class_name SkillNode
 
 var player: PlayerStats
 var _name_label: Label
+var _desc_label: Label
+var _req_label: Label
 
 # ── theme colours ────────────────────────────────────────────────────
 const _BG_NORMAL   := Color(0.12, 0.12, 0.18, 0.92)
@@ -81,6 +83,28 @@ func _create_name_label():
 	_name_label.text = _skill_display_name()
 	add_child(_name_label)
 
+	# Description label (what the skill does)
+	_desc_label = Label.new()
+	_desc_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_desc_label.add_theme_font_size_override("font_size", 7)
+	_desc_label.add_theme_color_override("font_color", Color(0.7, 0.8, 0.7, 0.85))
+	_desc_label.position = Vector2(-18, size.y + 16)
+	_desc_label.size = Vector2(size.x + 36, 14)
+	_desc_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_desc_label.text = _skill_description()
+	add_child(_desc_label)
+
+	# Requirement label (shows unlock condition for locked nodes)
+	_req_label = Label.new()
+	_req_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_req_label.add_theme_font_size_override("font_size", 7)
+	_req_label.add_theme_color_override("font_color", Color(1.0, 0.5, 0.3, 0.9))
+	_req_label.position = Vector2(-18, size.y + 28)
+	_req_label.size = Vector2(size.x + 36, 14)
+	_req_label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_req_label.visible = false
+	add_child(_req_label)
+
 func _skill_display_name() -> String:
 	match skill_id:
 		"str":   return "STR"
@@ -90,6 +114,26 @@ func _skill_display_name() -> String:
 		"speed": return "SPEED"
 		"def":   return "DEF"
 	return skill_id.to_upper()
+
+func _skill_description() -> String:
+	match skill_id:
+		"str":   return "DMG +1 per lvl"
+		"hp":    return "Max HP +20"
+		"greed": return "Gold +5%/lvl"
+		"crit":  return "Crit +1%/lvl"
+		"speed": return "Atk Spd up"
+		"def":   return "DMG taken -2%"
+	return ""
+
+func _req_display_name(id: String) -> String:
+	match id:
+		"str": return "STR"
+		"hp": return "HP"
+		"greed": return "GREED"
+		"crit": return "CRIT"
+		"speed": return "SPEED"
+		"def": return "DEF"
+	return id.to_upper()
 
 # ── juice ────────────────────────────────────────────────────────────
 func _on_button_down():
@@ -127,16 +171,27 @@ func update_state():
 		modulate = Color(1.0, 0.95, 0.7)
 		_set_border_color(_BORDER_MAX)
 		text = "MAX"
+		if _req_label: _req_label.visible = false
+		if _desc_label: _desc_label.add_theme_color_override("font_color", Color(1.0, 0.84, 0.0, 0.9))
 	elif not req_met:
 		modulate = Color(0.45, 0.45, 0.45, 0.85)
 		_set_border_color(_BORDER_LOCK)
 		text = ""
+		if _req_label:
+			_req_label.text = "Need: %s Lv.%d" % [_req_display_name(requirement_skill), requirement_level]
+			_req_label.visible = true
+		if _desc_label: _desc_label.add_theme_color_override("font_color", Color(0.5, 0.5, 0.5, 0.7))
 	else:
 		modulate = Color.WHITE
 		var border_col = _BORDER_AVAIL if can_afford else _BORDER_DEF
 		_set_border_color(border_col)
+		var res_name = _get_resource_display_name()
 		var suffix = "G" if currency_type == "gold" else _get_res_id().substr(0,1).to_upper()
 		text = "L%d\n%d%s" % [current_lvl, cost, suffix]
+		if _req_label:
+			_req_label.text = "Cost: %d %s" % [cost, res_name]
+			_req_label.visible = true
+		if _desc_label: _desc_label.add_theme_color_override("font_color", Color(0.7, 0.8, 0.7, 0.85))
 
 func _get_player_skill_lvl(id: String = ""):
 	var target_id = id if id != "" else skill_id
@@ -155,3 +210,12 @@ func _get_res_id():
 		"crit", "speed": return "venom"
 		"def": return "relic_shards"
 	return "bandages"
+
+func _get_resource_display_name() -> String:
+	if currency_type == "gold":
+		return "Gold"
+	match skill_id:
+		"str", "greed": return "Bandages"
+		"crit", "speed": return "Venom"
+		"def": return "Shards"
+	return "Bandages"
