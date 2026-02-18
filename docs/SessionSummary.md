@@ -2,7 +2,10 @@
 
 ## 🎯 Achievements
 1. **AdMob Strategy:** Switched to a robust **Fake Ads** system using Tweens. This bypasses Google's current "Account not approved" (Error 3) and "No fill" issues, allowing development to proceed.
-2. **Game Balance:** Implemented a **Stage 25+ Nerf**. Enemy HP scaling reduced by 15% and Damage scaling by 20% after Stage 25 to prevent unfair difficulty spikes.
+2. **Game Balance:** 
+   - Implemented a **Stage 25+ Nerf**. Enemy HP scaling reduced by 15% and Damage scaling by 20% after Stage 25.
+   - **Buffed Gold Drop:** Increased base gold (8→12) and scaling (1.1→1.15).
+   - **Expanded Skill Tree:** Increased max skill level from 10 to **50**.
 3. **Bug Fixes:** 
    - Resolved **Negative HP display** bug in `Enemy.gd`.
    - Fixed **HP Potion button** getting stuck (now reactive via `health_changed` signal).

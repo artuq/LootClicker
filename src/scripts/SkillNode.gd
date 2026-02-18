@@ -3,7 +3,7 @@ class_name SkillNode
 
 @export var skill_id: String = "str"
 @export var currency_type: String = "resource" # "gold" lub "resource"
-@export var max_level: int = 10
+@export var max_level: int = 50
 @export var requirement_skill: String = ""
 @export var requirement_level: int = 0
 @export var icon_texture: Texture2D
