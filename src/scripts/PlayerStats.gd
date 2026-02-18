@@ -154,12 +154,36 @@ func add_item(item: GameItem):
 		equipped_item = item
 
 func get_total_damage() -> int:
-	# Combined STR from skill tree + cards
-	var total_str = str_lvl + card_str
+	# TIERED STR BONUS: 1-20 (+1), 21-40 (+2), 41-50 (+5)
+	var tiered_str = 0
+	if str_lvl <= 20:
+		tiered_str = str_lvl
+	elif str_lvl <= 40:
+		tiered_str = 20 + (str_lvl - 20) * 2
+	else:
+		tiered_str = 60 + (str_lvl - 40) * 5
+		
+	# Combined tiered STR from skill tree + cards
+	var total_str = tiered_str + card_str
 	var base = 1 + total_str
 	if equipped_item: base += equipped_item.damage_bonus
 	var str_bonus = 1.0 + (total_str * 0.025)
 	return int(base * str_bonus)
+
+func get_max_hp_from_skills() -> int:
+	# TIERED HP BONUS: 1-20 (+20), 21-40 (+50), 41-50 (+150)
+	var hp_lvl = int((max_hp - 100 - card_hp * 20) / 20.0)
+	if hp_lvl <= 0: return 100 + card_hp * 20
+	
+	var bonus = 0
+	if hp_lvl <= 20:
+		bonus = hp_lvl * 20
+	elif hp_lvl <= 40:
+		bonus = 400 + (hp_lvl - 20) * 50
+	else:
+		bonus = 1400 + (hp_lvl - 40) * 150
+		
+	return 100 + bonus + card_hp * 20
 
 func get_crit_multiplier() -> float:
 	var total_crit = crit_lvl + card_crit

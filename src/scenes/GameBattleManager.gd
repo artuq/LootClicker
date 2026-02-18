@@ -805,17 +805,65 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	_update_hp_bar_style(enemy_hp_bar)
 	enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(hp)]
 
+# Adrenaline mechanic
+var adrenaline_clicks: int = 0
+const ADRENALINE_THRESHOLD: int = 50
+const ADRENALINE_DURATION: float = 5.0
+var adrenaline_timer_left: float = 0.0
+var adrenaline_active: bool = false
+
 func _on_click_area_pressed():
 	_on_player_attack()
+	
+	# Adrenaline build up
+	if not adrenaline_active:
+		adrenaline_clicks += 1
+		if adrenaline_clicks >= ADRENALINE_THRESHOLD:
+			_activate_adrenaline()
+			
 	# Blood Price curse: HP cost per click (only during combat)
 	if in_combat and player.click_hp_cost > 0:
 		player.on_click_curse_cost()
 		if player.current_hp <= 0:
 			_handle_player_death()
 
+func _activate_adrenaline():
+	adrenaline_active = true
+	adrenaline_clicks = 0
+	adrenaline_timer_left = ADRENALINE_DURATION
+	_spawn_floating_text("ADRENALINE!!! x2 DMG", Color.GOLDENROD)
+	_vibrate(150)
+	
+	# Visual pulsing label
+	var ad_label = Label.new()
+	ad_label.text = "ADRENALINE ACTIVE!"
+	ad_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	ad_label.add_theme_font_size_override("font_size", 20)
+	ad_label.add_theme_color_override("font_color", Color.ORANGE_RED)
+	ad_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	ad_label.position.y += 100
+	%CanvasLayer.add_child(ad_label)
+	
+	var tween = create_tween().set_loops()
+	tween.tween_property(ad_label, "scale", Vector2(1.2, 1.2), 0.3)
+	tween.tween_property(ad_label, "scale", Vector2(1.0, 1.0), 0.3)
+	
+	# Timer to stop
+	await get_tree().create_timer(ADRENALINE_DURATION).timeout
+	adrenaline_active = false
+	adrenaline_clicks = 0
+	tween.kill()
+	ad_label.queue_free()
+	_spawn_floating_text("Adrenaline ended", Color.GRAY)
+
 func _on_player_attack():
 	if current_enemy:
 		var dmg = player.get_total_damage()
+		
+		# Apply Adrenaline buff
+		if adrenaline_active:
+			dmg *= 2
+			
 		var is_crit = player.is_critical_hit()
 		if is_crit: dmg = int(dmg * player.get_crit_multiplier())
 		

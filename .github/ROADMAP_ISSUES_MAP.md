@@ -73,8 +73,8 @@ Progress bar, biome, loot summary, DPS, tutorial verified.
 | Issue | Files Modified | Key Changes |
 |-------|---------------|-------------|
 | #19 | GameBattleManager.gd | Reverted random loot, added auto-cleanup of junk items. |
-| Balance | GameBattleManager.gd | Post-Stage 25 Nerf (HP -15%, DMG -20%). |
-| Bugfix | GameBattleManager.gd, Enemy.gd | Fixed Negative HP, Potion UI, Fake Ads Tween timer. |
+| Mechanics | PlayerStats.gd, GameBattleManager.gd | Added Skill Tier Bonuses (STR/HP) and Adrenaline (50 clicks -> x2 DMG). |
+| Balance | GameBattleManager.gd | Post-Stage 25 Nerf (HP -15%, DMG -20%). Buffed Gold (12 base). |
 
 ---
 
