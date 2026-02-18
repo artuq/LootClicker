@@ -51,7 +51,7 @@ var boss_roster: Dictionary = {}   # stage -> boss data
 # Graphics
 @onready var enemy_sprite = %EnemySprite
 @onready var enemy_hp_bar = %EnemyHPBar
-@onready var biome_bg: TextureRect = %JungleBG
+@onready var biome_bg: TextureRect = get_node_or_null("../BackgroundLayer/JungleBG")
 @export var damage_container: Node # New export for damage labels
 
 # Biome backgrounds
@@ -99,9 +99,9 @@ const DMG_BASE = 2
 const DMG_SCALE = 1.12 # Slightly lower scaling (was 1.15)
 const GOLD_BASE = 8    # More gold at start (was 5)
 const GOLD_SCALE = 1.1
-const BOSS_HP_MULT = 2.5 # Lowered boss HP (was 4)
-const BOSS_DMG_MULT = 1.5 # Lowered boss DMG (was 2)
-const BOSS_GOLD_MULT = 4  # More gold for boss kill
+const BOSS_HP_MULT = 2.0 # Lowered boss HP (was 2.5)
+const BOSS_DMG_MULT = 1.3 # Lowered boss DMG (was 1.5)
+const BOSS_GOLD_MULT = 5  # More gold for boss kill (was 4)
 
 # Static variable to control game start from other scenes
 static var startup_mode: String = "continue" # "continue" or "new_game"
