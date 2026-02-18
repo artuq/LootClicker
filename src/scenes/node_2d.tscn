@@ -132,7 +132,7 @@ theme_override_constants/separation = 6
 
 [node name="SettingsHUD" type="TextureButton" parent="CanvasLayer/TopHUD/VBox/TopBar" unique_id=1359125702]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(20, 20)
+custom_minimum_size = Vector2(28, 28)
 layout_mode = 2
 size_flags_vertical = 4
 texture_normal = ExtResource("26_cog_icon")
@@ -377,6 +377,7 @@ columns = 6
 unique_name_in_owner = true
 layout_mode = 2
 horizontal_scroll_mode = 0
+scroll_deadzone = 0
 metadata/_tab_index = 1
 
 [node name="StatsColumns" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Stats"]
@@ -396,6 +397,7 @@ theme_override_font_sizes/normal_font_size = 10
 theme_override_font_sizes/bold_font_size = 10
 text = ""
 scroll_active = false
+mouse_filter = 2
 
 [node name="SkillStats" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsColumns"]
 unique_name_in_owner = true
@@ -408,6 +410,7 @@ theme_override_font_sizes/normal_font_size = 10
 theme_override_font_sizes/bold_font_size = 10
 text = ""
 scroll_active = false
+mouse_filter = 2
 
 [connection signal="pressed" from="CanvasLayer/TopHUD/VBox/TopBar/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]
 [connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]

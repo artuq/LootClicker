@@ -340,6 +340,10 @@ func _start_idle_animation():
 	idle_tween.tween_property(enemy_sprite, "scale", base_scale * 1.05, 1.2).set_trans(Tween.TRANS_SINE)
 	idle_tween.tween_property(enemy_sprite, "scale", base_scale, 1.2).set_trans(Tween.TRANS_SINE)
 
+func _vibrate(duration_ms: int = 50):
+	if OS.has_feature("android") or OS.has_feature("ios"):
+		Input.vibrate_handheld(duration_ms)
+
 func _play_hit_effect(is_crit: bool):
 	shake_intensity = 15.0 if is_crit else 5.0
 	
@@ -462,14 +466,26 @@ func load_game(slot: int = 1):
 			player.equipped_item = new_item
 
 	spawn_enemy(saved_enemy_hp)
+	# Force full UI refresh after load
+	call_deferred("_force_ui_refresh_after_load")
+	print("Game loaded from Slot %d!" % slot)
+	return true
+
+
+func _force_ui_refresh_after_load():
+	# Deferred to ensure all @onready nodes are fully ready
+	hp_label.text = "HP: %s/%s" % [format_number(player.current_hp), format_number(player.max_hp)]
+	player_hp_bar.max_value = player.max_hp
+	player_hp_bar.value = player.current_hp
+	_update_hp_bar_style(player_hp_bar)
+	gold_label.text = format_number(player.gold)
 	player.health_changed.emit(player.current_hp, player.max_hp)
 	player.gold_changed.emit(player.gold)
 	player.skills_updated.emit()
 	_update_inventory_ui()
 	_update_consumables_ui()
-	print("Game loaded from Slot %d!" % slot)
-	return true
-
+	_update_stats_ui()
+	_update_xp_label()
 
 func format_number(n: int) -> String:
 	if n >= 1_000_000:
@@ -719,6 +735,8 @@ func _on_player_attack():
 			enemy_hp_label.text = "%s / %s" % [format_number(current_enemy.current_hp), format_number(enemy_hp_bar.max_value)]
 			_spawn_floating_text(result + ("!!" if is_crit else ""), Color.YELLOW if not is_crit else Color.ORANGE)
 			_play_hit_effect(is_crit)
+			# Vibration feedback on hit
+			_vibrate(30 if not is_crit else 60)
 			# Thorns: reflect damage to player
 			if player.thorns_percent > 0 and current_enemy:
 				var reflect_dmg = int(dmg * player.thorns_percent)
@@ -743,6 +761,8 @@ func _on_enemy_attack():
 				get_node("/root/AudioManager").play_hit_sound(0.7)
 
 func _on_enemy_died(_xp, gold, res_type = ""):
+	# Vibrate on kill
+	_vibrate(100)
 	# Reset loot summary for this kill
 	kill_gold = gold
 	kill_xp = 0
@@ -845,6 +865,7 @@ func _on_skills_updated():
 
 func _handle_player_death():
 	print("PLAYER DIED - GAME OVER")
+	_vibrate(300)  # Strong vibration on death
 	# Reset near-death effects before scene change
 	_set_near_death(false)
 	# Death penalty
