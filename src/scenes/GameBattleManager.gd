@@ -1288,8 +1288,8 @@ func _show_fake_ad():
 	ad_tween.tween_callback(func():
 		_grant_ad_reward()
 		var out_t = create_tween()
-		out_t.tween_property(ad_layer, "offset:y", -800, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-		out_t.tween_callback(ad_layer.queue_free)
+		out_t.tween_property(backdrop, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		out_t.tween_callback(backdrop.queue_free)
 	)
 
 func _animate_label(lbl: Control):
