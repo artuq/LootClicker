@@ -763,8 +763,8 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	var target_size = 160.0
 	
 	if is_final_boss:
-		hp *= 10
-		dmg *= 3
+		hp *= 4
+		dmg *= 1.8
 		gold *= 10
 		enemy_sprite.texture = boss_texture
 		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
@@ -866,7 +866,7 @@ func _activate_adrenaline():
 	ad_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ad_label.add_theme_font_size_override("font_size", 20)
 	ad_label.add_theme_color_override("font_color", Color.ORANGE_RED)
-	ad_label.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	ad_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
 	ad_label.position.y += 100
 	%CanvasLayer.add_child(ad_label)
 	
@@ -1252,9 +1252,7 @@ func _show_fake_ad():
 	center.custom_minimum_size = Vector2(300, 200)
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
 	center.add_theme_constant_override("separation", 20)
-	# Center manually to be sure
-	center.set_begin(Vector2(30, 220)) 
-	center.set_end(Vector2(330, 420))
+	# Rely on anchors instead of hardcoded coordinates
 	ad_layer.add_child(center)
 	
 	var title = Label.new()
