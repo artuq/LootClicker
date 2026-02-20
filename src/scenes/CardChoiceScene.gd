@@ -32,7 +32,8 @@ func create_card(opt: Dictionary) -> Button:
 	var is_cursed = opt.get("cursed", false)
 	
 	if not is_cursed:
-		# Apply empty styles so the Godot button background is fully transparent
+		# Make the button flat and apply empty styles so the Godot background is fully transparent
+		btn.flat = true
 		var empty_style = StyleBoxEmpty.new()
 		btn.add_theme_stylebox_override("normal", empty_style)
 		btn.add_theme_stylebox_override("hover", empty_style)

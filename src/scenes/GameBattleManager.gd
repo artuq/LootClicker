@@ -1240,21 +1240,17 @@ func _show_real_ad():
 	_rewarded_ad.show(reward_listener)
 
 func _show_fake_ad():
-	var ad_layer = CanvasLayer.new()
-	ad_layer.layer = 100
-	add_child(ad_layer)
+	var backdrop = ColorRect.new()
+	backdrop.color = Color(0, 0, 0, 0.95)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	%CanvasLayer.add_child(backdrop)
 	
-				var backdrop = ColorRect.new()
-				backdrop.color = Color(0, 0, 0, 0.95)
-				backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-				backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-				ad_layer.add_child(backdrop)
-				
-				var center = VBoxContainer.new()
-				center.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-				center.alignment = BoxContainer.ALIGNMENT_CENTER
-				center.add_theme_constant_override("separation", 20)
-				backdrop.add_child(center)	var title = Label.new()
+	var center = VBoxContainer.new()
+	center.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	center.alignment = BoxContainer.ALIGNMENT_CENTER
+	center.add_theme_constant_override("separation", 20)
+	backdrop.add_child(center)	var title = Label.new()
 	title.text = "ADVERTISING"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 22)
