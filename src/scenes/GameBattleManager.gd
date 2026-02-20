@@ -748,9 +748,9 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 		var hp_30 = int(HP_BASE * pow(1.0 + (HP_SCALE - 1.0) * 0.85, 30))
 		var dmg_30 = int(DMG_BASE * pow(1.0 + (DMG_SCALE - 1.0) * 0.8, 30))
 		
-		# Increments: approx 15% of the value at stage 30
-		var hp_inc = int(hp_30 * 0.12) 
-		var dmg_inc = int(dmg_30 * 0.10)
+		# Increments: heavily reduced to prevent massive endgame spikes
+		var hp_inc = int(hp_30 * 0.06) 
+		var dmg_inc = int(dmg_30 * 0.05)
 		
 		hp = hp_30 + (current_stage - 30) * hp_inc
 		dmg = dmg_30 + (current_stage - 30) * dmg_inc
@@ -763,8 +763,8 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	var target_size = 160.0
 	
 	if is_final_boss:
-		hp *= 4
-		dmg *= 1.8
+		hp = int(hp * 2.5)
+		dmg = int(dmg * 1.4)
 		gold *= 10
 		enemy_sprite.texture = boss_texture
 		enemy_name = "ULTIMATE BOSS: Saddam on the Raft"
