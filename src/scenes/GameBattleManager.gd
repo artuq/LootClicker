@@ -62,6 +62,10 @@ var shake_intensity: float = 0.0
 var idle_tween: Tween 
 var original_enemy_pos: Vector2
 
+# Action Bar & Shadow
+var enemy_action_bar: ProgressBar
+var enemy_shadow: Panel
+
 # Near Death Experience (Vignette)
 var vignette_overlay: ColorRect
 var vignette_tween: Tween
@@ -136,6 +140,7 @@ func _ready():
 	player = PlayerStats.new()
 	add_child(player)
 	
+	_create_enemy_ui()
 	_create_vignette_overlay()
 	_init_admob()
 	
@@ -370,6 +375,12 @@ func _process(delta):
 		shake_intensity = move_toward(shake_intensity, 0, delta * 50.0)
 	else:
 		enemy_sprite.position = original_enemy_pos
+		
+	# Action Bar UI Update
+	if in_combat and enemy_action_bar and enemy_timer and not enemy_timer.is_stopped():
+		var progress = 1.0 - (enemy_timer.time_left / enemy_timer.wait_time)
+		enemy_action_bar.value = progress * 100.0
+
 	# DPS tracking
 	if in_combat:
 		dps_timer += delta
@@ -911,14 +922,82 @@ func _on_enemy_attack():
 	if current_enemy and player.current_hp > 0:
 		var result = player.take_damage(current_enemy.damage)
 		
+		# Enemy White Flash & Lunge
+		var base_scale = enemy_sprite.scale
+		var flash_tween = create_tween()
+		enemy_sprite.modulate = Color(10, 10, 10) # White flash
+		enemy_sprite.scale = base_scale * 1.1
+		enemy_sprite.position.y += 20 # Small lunge forward
+		flash_tween.tween_property(enemy_sprite, "modulate", Color.WHITE, 0.15)
+		flash_tween.parallel().tween_property(enemy_sprite, "scale", base_scale, 0.15)
+		flash_tween.parallel().tween_property(enemy_sprite, "position:y", original_enemy_pos.y, 0.15).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+		
 		if result == "DODGED":
 			_spawn_floating_text("DODGED", Color.AQUA)
 		else:
 			var color = Color.WHITE if "BLOCKED" in result else Color(1, 0.2, 0.2)
 			_spawn_floating_text(result, color)
+			
+			# Screen Flash on hit
+			if not "BLOCKED" in result:
+				var screen_flash = ColorRect.new()
+				screen_flash.set_anchors_preset(Control.PRESET_FULL_RECT)
+				screen_flash.color = Color(1, 0.8, 0.8, 0.3) # Slight reddish white
+				screen_flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+				var flash_layer = CanvasLayer.new()
+				flash_layer.layer = 105
+				add_child(flash_layer)
+				flash_layer.add_child(screen_flash)
+				var out_tween = create_tween()
+				out_tween.tween_property(screen_flash, "color:a", 0.0, 0.1)
+				out_tween.tween_callback(flash_layer.queue_free)
+				
 			if player.current_hp <= 0: _handle_player_death()
 			if get_node_or_null("/root/AudioManager"):
 				get_node("/root/AudioManager").play_hit_sound(0.7)
+
+func _create_enemy_ui():
+	# Create Shadow (an elliptical dark panel)
+	enemy_shadow = Panel.new()
+	var shadow_style = StyleBoxFlat.new()
+	shadow_style.bg_color = Color(0, 0, 0, 0.35)
+	shadow_style.corner_radius_top_left = 60
+	shadow_style.corner_radius_top_right = 60
+	shadow_style.corner_radius_bottom_left = 60
+	shadow_style.corner_radius_bottom_right = 60
+	enemy_shadow.add_theme_stylebox_override("panel", shadow_style)
+	enemy_shadow.custom_minimum_size = Vector2(140, 20)
+	enemy_shadow.position = original_enemy_pos + Vector2(-70, 110)
+	%CanvasLayer.add_child(enemy_shadow)
+	
+	if %EnemySprite:
+		%CanvasLayer.move_child(enemy_shadow, %EnemySprite.get_index())
+
+	# Create Action Bar
+	enemy_action_bar = ProgressBar.new()
+	enemy_action_bar.custom_minimum_size = Vector2(120, 10)
+	enemy_action_bar.show_percentage = false
+	enemy_action_bar.value = 0.0
+	
+	# Style the action bar (Orange to look distinct from Red HP)
+	var bg_style = StyleBoxFlat.new()
+	bg_style.bg_color = Color(0.1, 0.1, 0.1, 0.8)
+	bg_style.corner_radius_top_left = 4
+	bg_style.corner_radius_top_right = 4
+	bg_style.corner_radius_bottom_left = 4
+	bg_style.corner_radius_bottom_right = 4
+	
+	var fg_style = StyleBoxFlat.new()
+	fg_style.bg_color = Color(1.0, 0.6, 0.1, 1.0) # Vibrant Orange
+	fg_style.corner_radius_top_left = 4
+	fg_style.corner_radius_top_right = 4
+	fg_style.corner_radius_bottom_left = 4
+	fg_style.corner_radius_bottom_right = 4
+	
+	enemy_action_bar.add_theme_stylebox_override("background", bg_style)
+	enemy_action_bar.add_theme_stylebox_override("fill", fg_style)
+	enemy_action_bar.position = original_enemy_pos + Vector2(-60, 140)
+	%CanvasLayer.add_child(enemy_action_bar)
 
 func _on_enemy_died(_xp, gold, res_type = ""):
 	# Vibrate on kill

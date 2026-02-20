@@ -3,7 +3,7 @@
   "project": "LootClicker",
   "status": {
     "admob": "Fake Ads enabled (DEBUG_FORCE_FAKE_ADS: true) using Tween timer. Real AdMob blocked by Google (Error 3: No fill).",
-    "balance": "Stage 25+ Nerf applied (-15% HP, -20% DMG scaling). Gold drop buffed (12 base, 1.15 scale).",
+    "balance": "Stage 25+ Nerf and Stage 30+ Soft Landing (Linear scaling) applied. Gold drop buffed (12 base, 1.15 scale).",
     "mechanics": "Added Skill Tier Bonuses (STR/HP boosts at Lvl 20/40) and Adrenaline system (50 clicks -> x2 DMG for 5s).",
     "inventory": "Unauthorized random loot system removed. Core resources (Bandages, Venom, Shards) kept. Junk cleanup on death active.",
     "skill_tree": "Max skill level increased to 50."
