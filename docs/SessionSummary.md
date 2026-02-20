@@ -25,4 +25,23 @@
 - **Next Focus:** Action Bar UI (#11) and Flavorful Descriptions (#16).
 
 ---
-*Created by Gemini Pro*
+# Session Summary - 2026-02-20
+
+## 🎯 Achievements
+1. **Framework Adaptation (CLAUDE.md):** 
+   - Agreed to follow the 3-layer architecture for project consistency, but swapped the "Python Execution" layer for **PowerShell/Godot CLI** to better suit game development.
+   - Established the **Detailed Logbook Protocol**: I will automatically summarize our discussions and technical decisions in this file to preserve context across sessions.
+2. **UI & Android Fixes:** 
+   - Fixed the Fake Ad positioning by anchoring it symmetrically inside the main `%CanvasLayer` (`GROW_DIRECTION_BOTH`) instead of a broken separate `CanvasLayer`.
+   - Fixed the persistent gray background behind pixel art upgrade cards by swapping the root node from `Button` to `TextureButton` and applying `flat = true`.
+3. **Bug Fixes:**
+   - Resolved a critical GDScript parser error (`ad_layer` undefined variable) in `GameBattleManager.gd` that silently broke Android deployments.
+   - Resolved a strict type mismatch in `CardChoiceScene.gd` (`func create_card(...) -> TextureButton:` instead of `Button:`) which caused immediate crashes on Android startup.
+
+## 🛠 Technical Changes
+- `GameBattleManager.gd`: Modified `_show_fake_ad()` to attach to `%CanvasLayer` and removed faulty tween cleanup.
+- `CardChoiceScene.gd`: Changed card base from `Button` to `TextureButton` and updated the return type signature to fix the strict typing crash.
+- `.gemini_session_checkpoint.json`: Integrated as our primary state-saver for rapid context restoration.
+
+## 📈 Project Status
+- **Next Focus:** Verifying the Android build works with the new `TextureButton` type fix, then moving to Action Bar UI (#11).

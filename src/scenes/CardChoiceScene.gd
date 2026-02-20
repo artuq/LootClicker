@@ -25,7 +25,7 @@ func setup(p_ref: PlayerStats):
 		var card = create_card(opt)
 		card_container.add_child(card)
 
-func create_card(opt: Dictionary) -> Button:
+func create_card(opt: Dictionary) -> TextureButton:
 	# Use TextureButton to guarantee no default gray GUI background is drawn
 	var btn = TextureButton.new()
 	btn.ignore_texture_size = true

@@ -1,8 +1,10 @@
 {
-  "last_session_date": "2026-02-18",
+  "last_session_date": "2026-02-20",
   "project": "LootClicker",
   "status": {
-    "admob": "Fake Ads enabled (DEBUG_FORCE_FAKE_ADS: true) using Tween timer. Real AdMob blocked by Google (Error 3: No fill).",
+    "admob": "Fake Ads UI fixed. Replaced separate CanvasLayer with direct integration into %CanvasLayer to inherit correct mobile scaling and anchoring (GROW_DIRECTION_BOTH). Also removed leftover ad_layer tween that crashed the game.",
+    "cards": "Fixed gray background issue on level-up cards by switching from Button to TextureButton. Strict type mismatch in CardChoiceScene.gd (Button vs TextureButton) has been fixed.",
+    "current_issue": "Game compiles successfully and works in Godot editor/headless mode, but crashes immediately upon startup on Android. We wrote execution/run_godot.py based on CLAUDE.md to debug this deterministically.",
     "balance": "Stage 25+ Nerf and Stage 30+ Soft Landing (Linear scaling) applied. Gold drop buffed (12 base, 1.15 scale).",
     "mechanics": "Added Skill Tier Bonuses (STR/HP boosts at Lvl 20/40) and Adrenaline system (50 clicks -> x2 DMG for 5s).",
     "inventory": "Unauthorized random loot system removed. Core resources (Bandages, Venom, Shards) kept. Junk cleanup on death active.",
@@ -10,14 +12,15 @@
   },
   "github": {
     "issues_closed": [14, 15, 17, 18, 19, 20],
-    "project_board": "Updated to reflect 2026-02-18 progress.",
-    "last_commit": "cc0b3b4 (feat: Skill Tier Bonuses and Adrenaline system)"
+    "project_board": "Updated to reflect 2026-02-20 progress.",
+    "last_commit": "d99ae8e (fix: remove undefined ad_layer reference in Fake Ad tween cleanup causing parser crash)"
   },
   "documentation": {
-    "session_summary": "docs/SessionSummary.md updated",
+    "session_summary": "docs/SessionSummary.md updated with 2026-02-20 progress",
     "roadmap_sync": ".github/ROADMAP_ISSUES_MAP.md updated"
   },
   "pending_tasks": [
+    "Debug Android startup crash (likely related to TitleScreen.gd or CardChoiceScene.gd type changes).",
     "Combat Arena Action Bar UI (#11) - Shadow, white flash, action bar logic.",
     "Flavorful Descriptions (#16) - Climate-themed text for cards/enemies.",
     "Final Boss tuning (Stage 50) - Verify if Saddam is beatable with new buffs.",
