@@ -26,19 +26,16 @@ func setup(p_ref: PlayerStats):
 		card_container.add_child(card)
 
 func create_card(opt: Dictionary) -> Button:
-	var btn = Button.new()
+	# Use TextureButton to guarantee no default gray GUI background is drawn
+	var btn = TextureButton.new()
+	btn.ignore_texture_size = true
 	btn.custom_minimum_size = Vector2(95, 140)
 	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var is_cursed = opt.get("cursed", false)
 	
 	if not is_cursed:
-		# Make the button flat and apply empty styles so the Godot background is fully transparent
-		btn.flat = true
-		var empty_style = StyleBoxEmpty.new()
-		btn.add_theme_stylebox_override("normal", empty_style)
-		btn.add_theme_stylebox_override("hover", empty_style)
-		btn.add_theme_stylebox_override("pressed", empty_style)
-		btn.add_theme_stylebox_override("focus", empty_style)
+		# TextureButton has no background, so no styles are needed to hide it.
+		pass
 
 	# Cursed card styling — dark red background
 	if is_cursed:
