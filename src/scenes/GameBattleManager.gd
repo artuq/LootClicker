@@ -862,13 +862,16 @@ func _activate_adrenaline():
 	
 	# Visual pulsing label
 	var ad_label = Label.new()
+	%CanvasLayer.add_child(ad_label)
 	ad_label.text = "ADRENALINE ACTIVE!"
 	ad_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	ad_label.add_theme_font_size_override("font_size", 20)
 	ad_label.add_theme_color_override("font_color", Color.ORANGE_RED)
-	ad_label.set_anchors_preset(Control.PRESET_TOP_WIDE)
-	ad_label.position.y += 100
-	%CanvasLayer.add_child(ad_label)
+	ad_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	ad_label.position.y = 100
+	
+	# Fix scaling pivot (assuming standard 360 width, center is 180)
+	ad_label.pivot_offset = Vector2(180, 15)
 	
 	var tween = create_tween().set_loops()
 	tween.tween_property(ad_label, "scale", Vector2(1.2, 1.2), 0.3)
@@ -1241,20 +1244,21 @@ func _show_fake_ad():
 	ad_layer.layer = 100
 	add_child(ad_layer)
 	
-	var backdrop = ColorRect.new()
-	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.color = Color(0, 0, 0, 0.95)
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	ad_layer.add_child(backdrop)
-	
-	var center = VBoxContainer.new()
-	center.set_anchors_preset(Control.PRESET_CENTER)
-	center.custom_minimum_size = Vector2(300, 200)
-	center.alignment = BoxContainer.ALIGNMENT_CENTER
-	center.add_theme_constant_override("separation", 20)
-	# Rely on anchors inside the full-rect backdrop
-	backdrop.add_child(center)
-	
+		var backdrop = ColorRect.new()
+		backdrop.color = Color(0, 0, 0, 0.95)
+		backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+		ad_layer.add_child(backdrop)
+		backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		
+		var center_container = CenterContainer.new()
+		backdrop.add_child(center_container)
+		center_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		
+		var center = VBoxContainer.new()
+		center.custom_minimum_size = Vector2(300, 200)
+		center.alignment = BoxContainer.ALIGNMENT_CENTER
+		center.add_theme_constant_override("separation", 20)
+		center_container.add_child(center)	
 	var title = Label.new()
 	title.text = "ADVERTISING"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
