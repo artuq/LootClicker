@@ -31,6 +31,14 @@ func create_card(opt: Dictionary) -> Button:
 	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var is_cursed = opt.get("cursed", false)
 	
+	if not is_cursed:
+		# Apply empty styles so the Godot button background is fully transparent
+		var empty_style = StyleBoxEmpty.new()
+		btn.add_theme_stylebox_override("normal", empty_style)
+		btn.add_theme_stylebox_override("hover", empty_style)
+		btn.add_theme_stylebox_override("pressed", empty_style)
+		btn.add_theme_stylebox_override("focus", empty_style)
+
 	# Cursed card styling — dark red background
 	if is_cursed:
 		var style = StyleBoxFlat.new()
