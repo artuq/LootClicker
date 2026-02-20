@@ -29,7 +29,7 @@ func create_card(opt: Dictionary) -> Button:
 	# Use Button with all styleboxes cleared to prevent default gray background on Android
 	var btn = Button.new()
 	btn.custom_minimum_size = Vector2(95, 140)
-	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+	btn.size_flags_vertical = Control.SIZE_SHRINK_BEGIN
 	var is_cursed = opt.get("cursed", false)
 	
 	if not is_cursed:
@@ -98,7 +98,7 @@ func create_card(opt: Dictionary) -> Button:
 	lbl.text = opt.desc
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
-	lbl.custom_minimum_size = Vector2(90, 0)
+	lbl.custom_minimum_size = Vector2(90, 35)
 	lbl.add_theme_font_size_override("font_size", 10)
 	if is_cursed:
 		lbl.add_theme_color_override("font_color", Color(1.0, 0.7, 0.7))
