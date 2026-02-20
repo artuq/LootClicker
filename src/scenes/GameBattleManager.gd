@@ -1252,8 +1252,8 @@ func _show_fake_ad():
 	center.custom_minimum_size = Vector2(300, 200)
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
 	center.add_theme_constant_override("separation", 20)
-	# Rely on anchors instead of hardcoded coordinates
-	ad_layer.add_child(center)
+	# Rely on anchors inside the full-rect backdrop
+	backdrop.add_child(center)
 	
 	var title = Label.new()
 	title.text = "ADVERTISING"
