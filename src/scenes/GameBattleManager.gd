@@ -1244,22 +1244,20 @@ func _show_fake_ad():
 	ad_layer.layer = 100
 	add_child(ad_layer)
 	
-		var backdrop = ColorRect.new()
-		backdrop.color = Color(0, 0, 0, 0.95)
-		backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-		ad_layer.add_child(backdrop)
-		backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		
-		var center_container = CenterContainer.new()
-		backdrop.add_child(center_container)
-		center_container.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-		
-		var center = VBoxContainer.new()
-		center.custom_minimum_size = Vector2(300, 200)
-		center.alignment = BoxContainer.ALIGNMENT_CENTER
-		center.add_theme_constant_override("separation", 20)
-		center_container.add_child(center)	
-	var title = Label.new()
+			var backdrop = ColorRect.new()
+			backdrop.color = Color(0, 0, 0, 0.95)
+			backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+			backdrop.custom_minimum_size = get_viewport().get_visible_rect().size
+			ad_layer.add_child(backdrop)
+			
+			var center_container = CenterContainer.new()
+			center_container.custom_minimum_size = get_viewport().get_visible_rect().size
+			backdrop.add_child(center_container)
+			
+			var center = VBoxContainer.new()
+			center.alignment = BoxContainer.ALIGNMENT_CENTER
+			center.add_theme_constant_override("separation", 20)
+			center_container.add_child(center)	var title = Label.new()
 	title.text = "ADVERTISING"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.add_theme_font_size_override("font_size", 22)

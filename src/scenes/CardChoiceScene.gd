@@ -28,6 +28,7 @@ func setup(p_ref: PlayerStats):
 func create_card(opt: Dictionary) -> Button:
 	var btn = Button.new()
 	btn.custom_minimum_size = Vector2(95, 140)
+	btn.size_flags_vertical = Control.SIZE_SHRINK_CENTER
 	var is_cursed = opt.get("cursed", false)
 	
 	# Cursed card styling — dark red background
