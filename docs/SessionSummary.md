@@ -33,15 +33,35 @@
    - Established the **Detailed Logbook Protocol**: I will automatically summarize our discussions and technical decisions in this file to preserve context across sessions.
 2. **UI & Android Fixes:** 
    - Fixed the Fake Ad positioning by anchoring it symmetrically inside the main `%CanvasLayer` (`GROW_DIRECTION_BOTH`) instead of a broken separate `CanvasLayer`.
-   - Fixed the persistent gray background behind pixel art upgrade cards by swapping the root node from `Button` to `TextureButton` and applying `flat = true`.
+   - Reverted from `TextureButton` back to `Button` for upgrade cards due to Android crashing when styling `normal` states. Instead, overrode ALL states (normal, hover, pressed, focus, disabled) with `StyleBoxEmpty` to eliminate the default gray GUI backgrounds entirely.
+   - Fixed a layout issue where buttons in the HBoxContainer became staggered stairs. Enforced uniform physical card heights by changing `btn.size_flags_vertical` to `Control.SIZE_SHRINK_BEGIN` and setting `lbl.custom_minimum_size = Vector2(90, 35)` so single-line descriptions occupy the exact same space as multi-line ones.
 3. **Bug Fixes:**
    - Resolved a critical GDScript parser error (`ad_layer` undefined variable) in `GameBattleManager.gd` that silently broke Android deployments.
-   - Resolved a strict type mismatch in `CardChoiceScene.gd` (`func create_card(...) -> TextureButton:` instead of `Button:`) which caused immediate crashes on Android startup.
+   - Resolved a strict type mismatch in `CardChoiceScene.gd` (`func create_card(...) -> TextureButton:` vs `Button:`) which initially caused crashes on Android startup.
 
 ## 🛠 Technical Changes
 - `GameBattleManager.gd`: Modified `_show_fake_ad()` to attach to `%CanvasLayer` and removed faulty tween cleanup.
-- `CardChoiceScene.gd`: Changed card base from `Button` to `TextureButton` and updated the return type signature to fix the strict typing crash.
+- `CardChoiceScene.gd`: Changed card base back to `Button`, cleared all StyleBoxes, forced description labels to 35px min-height, and set `SIZE_SHRINK_BEGIN`.
 - `.gemini_session_checkpoint.json`: Integrated as our primary state-saver for rapid context restoration.
 
 ## 📈 Project Status
-- **Next Focus:** Verifying the Android build works with the new `TextureButton` type fix, then moving to Action Bar UI (#11).
+- **Next Focus:** Moving on to Action Bar UI (#11) and Flavorful Descriptions (#16) now that the Android crash and layout rendering issues are fully resolved.
+
+---
+# Session Summary - 2026-02-23
+
+## 🎯 Achievements
+1. **Tutorial UI Fix:** Resolved the issue where tutorial text icons disappeared on Android devices. Replaced the static TTF font with Godot's native `SystemFont`, leveraging Android's built-in emoji fonts (like "Noto Color Emoji") to render standard emojis correctly without bloating the APK.
+2. **Flavorful Descriptions (#16):** Implemented the "Solver First" humorous flavor texts for all upgrade and cursed cards.
+   - Introduced the English parody style (Indiana Jones/Hot Shots vibe) to match the v0.2 MVP constraints.
+   - Restructured the UI in `CardChoiceScene` to show `flavor_name`, `flavor_desc` prominently, while keeping the raw data in a `stat_short` field down below in brackets.
+3. **Action Bar UI (#11):** Verified that the Action Bar feature, including enemy shadow and white damage flash, was already fully merged into `GameBattleManager.gd`.
+4. **Draft Release (APK):** Used Godot 4.6 headless export to build a new Android APK (`LootClicker.apk`) and pushed it to GitHub as a pre-release Draft (v0.2.0-beta).
+
+## 🛠 Technical Changes
+- `UpgradeManager.gd`: Modified the dictionary lists to include detailed `flavor_name`, `flavor_desc`, and `stat_short` instead of simple static text.
+- `GameBattleManager.gd`: Rewrote the `_show_tutorial()` screen's Label definitions to employ `SystemFont`.
+- `CardChoiceScene.gd`: Redesigned dynamically spawned card texts to utilize the new flavor structure.
+
+## 📈 Project Status
+- **Next Focus:** Apply flavor texts to the permanent skill tree/shop (`UpgradeScreen`) and verify balance of the final boss (Stage 50).
