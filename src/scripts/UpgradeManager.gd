@@ -3,24 +3,24 @@ class_name UpgradeManager
 
 # Definitions for possible upgrades (Cards)
 var available_cards = [
-	{"id": "str", "name": "Brawn", "desc": "STR +2, DMG +5%", "icon": "res://assets/ui/cards/card_str.png"},
-	{"id": "crit", "name": "Precision", "desc": "Crit +5%, Crit DMG up", "icon": "res://assets/ui/cards/card_crit.png"},
-	{"id": "speed", "name": "Agility", "desc": "Attack Speed up", "icon": "res://assets/ui/cards/card_speed.png"},
-	{"id": "hp", "name": "Vitality", "desc": "Max HP +20, Full Heal", "icon": "res://assets/ui/cards/card_hp.png"},
-	{"id": "gold", "name": "Greed", "desc": "Gold Gain +15%", "icon": "res://assets/ui/cards/card_gold.png"},
-	{"id": "def", "name": "Armor", "desc": "Defense +2% DMG reduction", "icon": "res://assets/ui/cards/card_def.png"},
-	{"id": "dodge", "name": "Evasion", "desc": "Dodge Chance +3%", "icon": "res://assets/ui/cards/card_crit.png"},
-	{"id": "block", "name": "Bulwark", "desc": "Block Chance +5%", "icon": "res://assets/ui/cards/card_hp.png"}
+	{"id": "str", "name": "Brawn", "flavor_name": "Jungle Protein", "desc": "STR +2, DMG +5%", "flavor_desc": "Muscles grow just by glaring at the locals.", "stat_short": "STR +2, DMG +5%", "icon": "res://assets/ui/cards/card_str.png"},
+	{"id": "crit", "name": "Precision", "flavor_name": "Dead-eye", "desc": "Crit +5%, Crit DMG up", "flavor_desc": "Joana aims exactly where it hurts the most.", "stat_short": "Crit +5%, C.DMG up", "icon": "res://assets/ui/cards/card_crit.png"},
+	{"id": "speed", "name": "Agility", "flavor_name": "Caffeine Shot!", "desc": "Attack Speed up", "flavor_desc": "Whipping like crazy! No time for coffee breaks!", "stat_short": "Atk Speed up", "icon": "res://assets/ui/cards/card_speed.png"},
+	{"id": "hp", "name": "Vitality", "flavor_name": "Thick Skin", "desc": "Max HP +20, Full Heal", "flavor_desc": "Years in the jungle harden the body against bites.", "stat_short": "Max HP +20, Heal", "icon": "res://assets/ui/cards/card_hp.png"},
+	{"id": "gold", "name": "Greed", "flavor_name": "Deep Pockets", "desc": "Gold Gain +15%", "flavor_desc": "Gold coins somehow find their own way into the pouch.", "stat_short": "Gold +15%", "icon": "res://assets/ui/cards/card_gold.png"},
+	{"id": "def", "name": "Armor", "flavor_name": "Heavy Fedora", "desc": "Defense +2% DMG reduction", "flavor_desc": "Deflects ricochets, stones, and enemy insults.", "stat_short": "Def +2%", "icon": "res://assets/ui/cards/card_def.png"},
+	{"id": "dodge", "name": "Evasion", "flavor_name": "Cat Reflexes", "desc": "Dodge Chance +3%", "flavor_desc": "Hard to hit someone who trips over their own feet.", "stat_short": "Dodge +3%", "icon": "res://assets/ui/cards/card_crit.png"},
+	{"id": "block", "name": "Bulwark", "flavor_name": "Leather Whip", "desc": "Block Chance +5%", "flavor_desc": "Blocking tiger fangs with a leather strap? Hold my beer.", "stat_short": "Block +5%", "icon": "res://assets/ui/cards/card_hp.png"}
 ]
 
 # Cursed cards — high risk, high reward
 var cursed_cards = [
-	{"id": "curse_berserker", "name": "Berserker", "desc": "STR +8\nNo healing for 5 stages!", "icon": "res://assets/ui/cards/card_curse_berserker.png", "cursed": true},
-	{"id": "curse_glass", "name": "Glass Cannon", "desc": "Crit +20%\nMax HP halved!", "icon": "res://assets/ui/cards/card_curse_glass.png", "cursed": true},
-	{"id": "curse_blood", "name": "Blood Price", "desc": "Gold x2\n-3 HP per click!", "icon": "res://assets/ui/cards/card_curse_blood.png", "cursed": true},
-	{"id": "curse_frenzy", "name": "Frenzy", "desc": "Speed x2\nDefense = 0!", "icon": "res://assets/ui/cards/card_curse_frenzy.png", "cursed": true},
-	{"id": "curse_toxic", "name": "Toxic", "desc": "STR +5, Crit +10%\nPoison: -2 HP/s!", "icon": "res://assets/ui/cards/card_curse_toxic.png", "cursed": true},
-	{"id": "curse_thorns", "name": "Thorns", "desc": "Reflect 30% dmg\nBleed: -1 HP/s!", "icon": "res://assets/ui/cards/card_curse_thorns.png", "cursed": true},
+	{"id": "curse_berserker", "name": "Berserker", "flavor_name": "Battle Trance", "desc": "STR +8\nNo healing for 5 stages!", "flavor_desc": "Pain? No time for pain! A true bloodbath!", "stat_short": "STR +8\nNO HEAL (5 stages)", "icon": "res://assets/ui/cards/card_curse_berserker.png", "cursed": true},
+	{"id": "curse_glass", "name": "Glass Cannon", "flavor_name": "Glass Jaw", "desc": "Crit +20%\nMax HP halved!", "flavor_desc": "Your one punch decides everything. Theirs too.", "stat_short": "Crit +20%\nMAX HP -50%", "icon": "res://assets/ui/cards/card_curse_glass.png", "cursed": true},
+	{"id": "curse_blood", "name": "Blood Price", "flavor_name": "Curse of Greed", "desc": "Gold x2\n-3 HP per click!", "flavor_desc": "This gold smells of blood... Oh wait, it's your blood.", "stat_short": "Gold x2\n-3 HP/Tap", "icon": "res://assets/ui/cards/card_curse_blood.png", "cursed": true},
+	{"id": "curse_frenzy", "name": "Frenzy", "flavor_name": "Suicidal Charge", "desc": "Speed x2\nDefense = 0!", "flavor_desc": "Dropping armor to run faster. What could go wrong?", "stat_short": "Speed x2\nDEF = 0", "icon": "res://assets/ui/cards/card_curse_frenzy.png", "cursed": true},
+	{"id": "curse_toxic", "name": "Toxic", "flavor_name": "Poisoned Blade", "desc": "STR +5, Crit +10%\nPoison: -2 HP/s!", "flavor_desc": "Tiger venom grants power, but eats you from the inside.", "stat_short": "STR +5, Crit +10%\nPoison -2 HP/s", "icon": "res://assets/ui/cards/card_curse_toxic.png", "cursed": true},
+	{"id": "curse_thorns", "name": "Thorns", "flavor_name": "Armor of Thorns", "desc": "Reflect 30% dmg\nBleed: -1 HP/s!", "flavor_desc": "Inflicting wounds with spikes, but bleeding just from wearing them.", "stat_short": "Reflect 30%\nBleed -1 HP/s", "icon": "res://assets/ui/cards/card_curse_thorns.png", "cursed": true},
 ]
 
 const CURSE_CHANCE = 0.25 # 25% chance to include a cursed card in options

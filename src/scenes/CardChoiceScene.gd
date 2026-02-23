@@ -86,16 +86,16 @@ func create_card(opt: Dictionary) -> Button:
 	
 	# Tekst - nazwa
 	var name_lbl = Label.new()
-	name_lbl.text = opt.name.to_upper()
+	name_lbl.text = opt.get("flavor_name", opt.name).to_upper()
 	name_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_lbl.add_theme_font_size_override("font_size", 11)
 	if is_cursed:
 		name_lbl.add_theme_color_override("font_color", Color(1.0, 0.5, 0.5))
 	vbox.add_child(name_lbl)
 	
-	# Tekst - opis
+	# Tekst - opis klimatyczny
 	var lbl = Label.new()
-	lbl.text = opt.desc
+	lbl.text = opt.get("flavor_desc", opt.desc)
 	lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
 	lbl.custom_minimum_size = Vector2(90, 35)
@@ -103,6 +103,17 @@ func create_card(opt: Dictionary) -> Button:
 	if is_cursed:
 		lbl.add_theme_color_override("font_color", Color(1.0, 0.7, 0.7))
 	vbox.add_child(lbl)
+	
+	# Tekst - statystyki w nawiasie
+	var stat_lbl = Label.new()
+	stat_lbl.text = "(" + opt.get("stat_short", opt.desc) + ")"
+	stat_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	stat_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD
+	stat_lbl.add_theme_font_size_override("font_size", 8)
+	stat_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	if is_cursed:
+		stat_lbl.add_theme_color_override("font_color", Color(0.9, 0.3, 0.3))
+	vbox.add_child(stat_lbl)
 	
 	btn.pressed.connect(_on_card_selected.bind(opt))
 	
@@ -157,7 +168,10 @@ func _show_curse_confirm(opt: Dictionary):
 	center.add_child(panel)
 	
 	var warn = Label.new()
-	warn.text = "CURSED CARD\n%s\n%s\nAccept?" % [opt.name.to_upper(), opt.desc]
+	var f_name = opt.get("flavor_name", opt.name).to_upper()
+	var f_desc = opt.get("flavor_desc", opt.desc)
+	var s_short = opt.get("stat_short", opt.desc)
+	warn.text = "CURSED CARD\n%s\n\n%s\n(%s)\n\nAccept?" % [f_name, f_desc, s_short]
 	warn.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	warn.add_theme_font_size_override("font_size", 11)
 	warn.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))

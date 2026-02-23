@@ -1536,8 +1536,11 @@ func _show_tutorial():
 	tut_layer.add_child(panel)
 	
 	var title_lbl = Label.new()
+	var sys_font = SystemFont.new()
+	sys_font.font_names = PackedStringArray(["sans-serif", "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji"])
 	title_lbl.text = "⚔ Welcome, adventurer!"
 	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_override("font", sys_font)
 	title_lbl.add_theme_font_size_override("font_size", 16)
 	title_lbl.add_theme_color_override("font_color", Color.GOLD)
 	panel.add_child(title_lbl)
@@ -1558,6 +1561,7 @@ func _show_tutorial():
 	for tip in tips:
 		var lbl = Label.new()
 		lbl.text = tip
+		lbl.add_theme_font_override("font", sys_font)
 		lbl.add_theme_font_size_override("font_size", 12)
 		lbl.add_theme_color_override("font_color", Color.WHITE)
 		lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
