@@ -1,7 +1,7 @@
 extends Control
 
 @onready var volume_slider = %VolumeSlider
-const PRIVACY_POLICY_URL := "https://artuq.github.io/LootClicker/privacy-policy.html"
+const PRIVACY_POLICY_URL := "https://gist.github.com/artuq/24733cc4575012af3ec41bf53d2088cb"
 
 func _ready():
 	# Initialize slider with current value
