@@ -1,6 +1,8 @@
 extends Control
 
 @onready var volume_slider = %VolumeSlider
+const PRIVACY_POLICY_URL := "https://artuq.github.io/LootClicker/privacy-policy.html"
+
 func _ready():
 	# Initialize slider with current value
 	if get_node_or_null("/root/SettingsManager"):
@@ -44,3 +46,10 @@ func _on_back_button_pressed():
 	else:
 		# If we are a separate scene from the main menu
 		get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
+
+func _on_privacy_button_pressed():
+	var ok = OS.shell_open(PRIVACY_POLICY_URL)
+	if ok != OK:
+		_spawn_feedback("FAILED TO OPEN PRIVACY POLICY")
+	else:
+		_spawn_feedback("OPENING PRIVACY POLICY...")
