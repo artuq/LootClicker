@@ -102,6 +102,7 @@ var reward_popup_node: Control = null
 var level_up_sequence_pending: bool = false
 var victory_popup_pending_after_reward: bool = false
 var victory_ui_tween: Tween = null
+var _next_stage_label: Label = null
 var _selected_inventory_slot: InventorySlot = null
 var _item_desc_panel: PanelContainer = null
 var _item_desc_label: RichTextLabel = null
@@ -1452,27 +1453,26 @@ func _show_victory_popup_animated():
 			btn.pivot_offset = btn.size * 0.5
 			UIAnimations.bounce_control(btn, 1.12, 0.18)
 
+	if _next_stage_label and is_instance_valid(_next_stage_label):
+		_next_stage_label.free()
+		_next_stage_label = null
 	var vbox := victory_ui.get_node_or_null("VBox")
 	if vbox:
-		var old := vbox.get_node_or_null("NextStageLabel")
-		if old:
-			old.queue_free()
-		var next_label := Label.new()
-		next_label.name = "NextStageLabel"
-		next_label.text = _get_next_stage_preview()
-		next_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		next_label.add_theme_font_size_override("font_size", 11)
+		_next_stage_label = Label.new()
+		_next_stage_label.text = _get_next_stage_preview()
+		_next_stage_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		_next_stage_label.add_theme_font_size_override("font_size", 11)
 		var nl_ls := LabelSettings.new()
 		nl_ls.font_color = Color(0.85, 0.75, 0.45, 0.9)
 		nl_ls.outline_size = 2
 		nl_ls.outline_color = Color(0, 0, 0, 0.7)
-		next_label.label_settings = nl_ls
-		next_label.layout_mode = 2
-		next_label.modulate.a = 0.0
-		vbox.add_child(next_label)
-		vbox.move_child(next_label, 2)
+		_next_stage_label.label_settings = nl_ls
+		_next_stage_label.layout_mode = 2
+		_next_stage_label.modulate.a = 0.0
+		vbox.add_child(_next_stage_label)
+		vbox.move_child(_next_stage_label, 2)
 		var nl_t := create_tween()
-		nl_t.tween_property(next_label, "modulate:a", 1.0, 0.3).set_delay(0.1)
+		nl_t.tween_property(_next_stage_label, "modulate:a", 1.0, 0.3).set_delay(0.1)
 
 func _get_next_stage_preview() -> String:
 	var next := current_stage + 1
