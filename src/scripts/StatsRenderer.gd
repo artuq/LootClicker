@@ -35,7 +35,7 @@ func update_stats():
 		{"name": "Greed", "kind": "base_bonus", "base": _player.greed_lvl, "bonus": _player.card_greed},
 		{"name": "Crit", "kind": "base_bonus", "base": _player.crit_lvl, "bonus": _player.card_crit},
 		{"name": "Speed", "kind": "base_bonus", "base": _player.speed_lvl, "bonus": _player.card_speed},
-		{"name": "Def", "kind": "base_bonus", "base": _player.def_lvl, "bonus": _player.card_def},
+		{"name": "DEF", "kind": "base_bonus", "base": _player.def_lvl, "bonus": _player.card_def},
 	]
 	var skill_sections: Array[Dictionary] = [
 		{"title": "BASE SKILLS", "rows": skill_rows}
@@ -49,16 +49,30 @@ func update_stats():
 		skill_sections.append({"title": "CURSES", "rows": curse_rows})
 	_render_panel(_combat_stats_panel, skill_sections)
 
+	var dps := dmg / max(0.01, spd)
+	var def_str: String
+	var def_color: Color
+	if def_red >= 0:
+		def_str = "-%.0f%%" % def_red
+		def_color = Color(0.18, 0.12, 0.06, 1.0)
+	else:
+		def_str = "+%.0f%% dmg" % absf(def_red)
+		def_color = Color(1.0, 0.3, 0.3, 1.0)
+
 	var combat_rows: Array[Dictionary] = [
+		{"name": "DPS", "kind": "plain", "value": "%.1f" % dps, "color": Color(0.75, 0.45, 0.05, 1.0)},
 		{"name": "DMG", "kind": "plain", "value": str(dmg)},
 		{"name": "SPD", "kind": "plain", "value": "%.2fs" % spd},
 		{"name": "Crit", "kind": "plain", "value": "%.0f%%" % crit_ch},
 		{"name": "Crit DMG", "kind": "plain", "value": "x%.2f" % crit_m},
-		{"name": "DEF", "kind": "plain", "value": "-%.0f%%" % def_red},
-		{"name": "Gold", "kind": "plain", "value": "+%d%%" % gold_b},
-		{"name": "Dodge", "kind": "plain", "value": "%.0f%%" % dodge},
-		{"name": "Block", "kind": "plain", "value": "%.0f%%" % block},
+		{"name": "DEF", "kind": "plain", "value": def_str, "color": def_color},
 	]
+	if gold_b > 0:
+		combat_rows.append({"name": "Gold", "kind": "plain", "value": "+%d%%" % gold_b, "color": Color(0.6, 0.45, 0.05, 1.0)})
+	if dodge > 0:
+		combat_rows.append({"name": "Dodge", "kind": "plain", "value": "%.0f%%" % dodge})
+	if block > 0:
+		combat_rows.append({"name": "Block", "kind": "plain", "value": "%.0f%%" % block})
 	var combat_sections: Array[Dictionary] = [{"title": "COMBAT STATS", "rows": combat_rows}]
 	if _player.prestige_level > 0:
 		var prestige_rows: Array[Dictionary] = [
@@ -195,18 +209,16 @@ func _create_row(row_data: Dictionary, alt: bool) -> Control:
 		base_label.add_theme_font_size_override("font_size", 10)
 		base_label.add_theme_color_override("font_color", Color(0.18, 0.12, 0.06, 1.0))
 		value_wrap.add_child(base_label)
-		var bonus_label := Label.new()
-		if bonus_val > 0:
-			bonus_label.text = " +%d" % bonus_val
-			bonus_label.add_theme_color_override("font_color", Color(0.1, 0.5, 0.15, 1.0))
-		elif bonus_val < 0:
-			bonus_label.text = " %d" % bonus_val
-			bonus_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.45, 1.0))
-		else:
-			bonus_label.text = " +0"
-			bonus_label.add_theme_color_override("font_color", Color(0.45, 0.4, 0.3, 1.0))
-		bonus_label.add_theme_font_size_override("font_size", 10)
-		value_wrap.add_child(bonus_label)
+		if bonus_val != 0:
+			var bonus_label := Label.new()
+			if bonus_val > 0:
+				bonus_label.text = " +%d" % bonus_val
+				bonus_label.add_theme_color_override("font_color", Color(0.1, 0.5, 0.15, 1.0))
+			else:
+				bonus_label.text = " %d" % bonus_val
+				bonus_label.add_theme_color_override("font_color", Color(1.0, 0.45, 0.45, 1.0))
+			bonus_label.add_theme_font_size_override("font_size", 10)
+			value_wrap.add_child(bonus_label)
 	else:
 		var value_label := Label.new()
 		value_label.text = str(row_data.get("value", "-"))
