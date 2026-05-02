@@ -1,0 +1,68 @@
+[gd_scene format=3 uid="uid://wn2htqf0c0fd"]
+
+[ext_resource type="Script" uid="uid://2m62qlctstq3" path="res://src/scenes/SplashScreen.gd" id="2_controller"]
+[ext_resource type="Texture2D" uid="uid://cjd3lo35tqkdl" path="res://assets/ARTQ GAMES LOGO (2).png" id="3_r3e7e"]
+[ext_resource type="Script" uid="uid://b7ldgr5ux7o1g" path="res://src/scenes/SplashLoaderSlide.gd" id="3_slide_script"]
+
+[node name="SplashScreen" type="Control" unique_id=58271977]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_controller")
+delay_between_slides = 0.0
+skip_input_action = &"ui_accept"
+delete_after_finished = false
+
+[node name="Background" type="ColorRect" parent="." unique_id=1354411083]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.180392, 1)
+
+[node name="LoadTitleSlide" type="Control" parent="." unique_id=1592226837]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_slide_script")
+continue_after_duration = false
+
+[node name="Logo" type="TextureRect" parent="LoadTitleSlide" unique_id=517167274]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -168.0
+offset_right = 128.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_r3e7e")
+expand_mode = 3
+stretch_mode = 5
+
+[node name="LoadingBar" type="ProgressBar" parent="LoadTitleSlide" unique_id=1353512201]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -138.0
+offset_top = 126.0
+offset_right = 138.0
+offset_bottom = 156.0
+grow_horizontal = 2
+grow_vertical = 2
+show_percentage = false

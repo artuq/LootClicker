@@ -1,26 +1,28 @@
 [gd_scene format=3 uid="uid://2nn5mnsdx7xi"]
 
-[ext_resource type="Script" path="res://src/scenes/GameBattleManager.gd" id="1_wtcfe"]
-[ext_resource type="PackedScene" path="res://src/scenes/InventorySlot.tscn" id="23_slot_scene"]
-[ext_resource type="PackedScene" path="res://src/scenes/HitParticles.tscn" id="24_hit_particles"]
-[ext_resource type="Texture2D" path="res://assets/sprites/icon.svg" id="2_0e48y"]
-[ext_resource type="PackedScene" path="res://src/scenes/DamageLabel.tscn" id="3_0hol4"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Jungle.jpeg" id="5_jungle"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Mumia-removebg-preview.png" id="6_mummy"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Sadam-removebg-preview.png" id="7_sadam"]
-[ext_resource type="Texture2D" path="res://assets/sprites/Snake-removebg-preview.png" id="8_snake"]
+[ext_resource type="Script" uid="uid://cm0xty3mq0e5p" path="res://src/scenes/GameBattleManager.gd" id="1_wtcfe"]
+[ext_resource type="Texture2D" uid="uid://bh5v02ihpgsxb" path="res://assets/sprites/icon.svg" id="2_0e48y"]
+[ext_resource type="PackedScene" uid="uid://6lmhw6qpdnim" path="res://src/scenes/DamageLabel.tscn" id="3_0hol4"]
+[ext_resource type="Texture2D" uid="uid://bpffilr4rwjfd" path="res://assets/sprites/Jungle.jpeg" id="5_jungle"]
+[ext_resource type="Texture2D" uid="uid://bjuk3kiecaxwa" path="res://assets/sprites/Mumia-removebg-preview.png" id="6_mummy"]
+[ext_resource type="Texture2D" uid="uid://2bnvf5rfx83m" path="res://assets/sprites/Sadam-removebg-preview.png" id="7_sadam"]
+[ext_resource type="Texture2D" uid="uid://m2gnue60fm56" path="res://assets/sprites/Snake-removebg-preview.png" id="8_snake"]
 [ext_resource type="PackedScene" path="res://src/scenes/UpgradeScreen.tscn" id="9_upgrade"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/panel_brown.png" id="10_panel_brown"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige.png" id="11_btn_beige"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barGreen_horizontalMid.png" id="16_bar_green"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barYellow_horizontalMid.png" id="17_bar_yellow"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
-[ext_resource type="Texture2D" path="res://assets/icons/coin.png" id="25_gold_icon"]
-[ext_resource type="Texture2D" path="res://assets/icons/cog_silver.png" id="26_cog_icon"]
-[ext_resource type="PackedScene" path="res://src/scenes/SkillTreeScene.tscn" id="22_skill_scene"]
+[ext_resource type="Texture2D" uid="uid://dhhwpcvem0d6w" path="res://assets/ui/kenney_ui/PNG/panel_brown.png" id="10_panel_brown"]
+[ext_resource type="Texture2D" uid="uid://cn1fuc8tklxyl" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige.png" id="11_btn_beige"]
+[ext_resource type="Texture2D" uid="uid://dlanduys4y0sa" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
+[ext_resource type="Texture2D" uid="uid://bcm0xjvbtvq5j" path="res://assets/ui/kenney_ui/PNG/barBack_horizontalMid.png" id="13_bar_bg"]
+[ext_resource type="Texture2D" uid="uid://duponlvyv584r" path="res://assets/ui/kenney_ui/PNG/barRed_horizontalMid.png" id="14_bar_red"]
+[ext_resource type="Texture2D" uid="uid://d1wu3cxs7cogy" path="res://assets/ui/kenney_ui/PNG/barBlue_horizontalBlue.png" id="15_bar_blue"]
+[ext_resource type="Texture2D" uid="uid://d0sp00hfw6wqn" path="res://assets/ui/kenney_ui/PNG/barGreen_horizontalMid.png" id="16_bar_green"]
+[ext_resource type="Texture2D" uid="uid://bk5e3o31n2t11" path="res://assets/ui/kenney_ui/PNG/barYellow_horizontalMid.png" id="17_bar_yellow"]
+[ext_resource type="PackedScene" uid="uid://dpbkh0bnlatf3" path="res://src/scenes/SkillTreeScene.tscn" id="22_skill_scene"]
+[ext_resource type="PackedScene" uid="uid://c8l7d7n8p4x1j" path="res://src/scenes/InventorySlot.tscn" id="23_slot_scene"]
+[ext_resource type="PackedScene" uid="uid://dn8v7r8e4j2p" path="res://src/scenes/HitParticles.tscn" id="24_hit_particles"]
+[ext_resource type="Texture2D" uid="uid://d0d4hntp3qoig" path="res://assets/icons/coin.png" id="25_gold_icon"]
+[ext_resource type="Texture2D" uid="uid://glek1w2gkik4" path="res://assets/icons/cog_silver.png" id="26_cog_icon"]
+[ext_resource type="Texture2D" uid="uid://d2rxm5yo8iavh" path="res://assets/kenney_tiny-dungeon/Tiles/tile_0115.png" id="27_potion_tile"]
+[ext_resource type="Texture2D" uid="uid://cvm04icqtdgua" path="res://assets/sprites/Temple.jpeg" id="28_temple"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_hp"]
 outline_size = 4
@@ -33,6 +35,13 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_blue"]
+texture = ExtResource("15_bar_blue")
+texture_margin_left = 6.0
+texture_margin_top = 6.0
+texture_margin_right = 6.0
+texture_margin_bottom = 6.0
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_red"]
 texture = ExtResource("14_bar_red")
 texture_margin_left = 6.0
@@ -40,12 +49,37 @@ texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_blue"]
-texture = ExtResource("15_bar_blue")
+[sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
+font_size = 13
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bar_yellow"]
+texture = ExtResource("17_bar_yellow")
 texture_margin_left = 6.0
 texture_margin_top = 6.0
 texture_margin_right = 6.0
 texture_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6r6c"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdubu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_victory"]
+content_margin_left = 10.0
+content_margin_top = 8.0
+content_margin_right = 10.0
+content_margin_bottom = 8.0
+texture = ExtResource("10_panel_brown")
+texture_margin_left = 10.0
+texture_margin_top = 10.0
+texture_margin_right = 10.0
+texture_margin_bottom = 10.0
+region_rect = Rect2(0, 0, 100, 100)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_btn"]
 texture = ExtResource("11_btn_beige")
@@ -63,14 +97,6 @@ texture_margin_right = 6.0
 texture_margin_bottom = 4.0
 region_rect = Rect2(0, 0, 190, 45)
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0hol4"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_q6r6c"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_kdubu"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_d21ai"]
-
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_panel"]
 texture = ExtResource("10_panel_brown")
 texture_margin_left = 10.0
@@ -84,13 +110,24 @@ region_rect = Rect2(0, 0, 100, 100)
 [node name="BackgroundLayer" type="CanvasLayer" parent="." unique_id=555944658]
 layer = -1
 
-[node name="JungleBG" type="TextureRect" parent="BackgroundLayer" unique_id=364913644]
+[node name="JungleBaseBG" type="TextureRect" parent="BackgroundLayer" unique_id=913001441]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("5_jungle")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TempleBG" type="TextureRect" parent="BackgroundLayer" unique_id=882100113]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("28_temple")
 expand_mode = 1
 stretch_mode = 6
 
@@ -110,19 +147,19 @@ bar_red = ExtResource("14_bar_red")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=250716058]
 unique_name_in_owner = true
+layer = 10
 
 [node name="TopHUD" type="MarginContainer" parent="CanvasLayer" unique_id=990949166]
 anchors_preset = 10
 anchor_right = 1.0
-offset_top = 0.0
 offset_bottom = 130.0
 grow_horizontal = 2
 theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 28
 theme_override_constants/margin_right = 8
-theme_override_constants/margin_top = 4
 theme_override_constants/margin_bottom = 0
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/TopHUD"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/TopHUD" unique_id=614059776]
 layout_mode = 2
 theme_override_constants/separation = 2
 
@@ -132,7 +169,7 @@ theme_override_constants/separation = 6
 
 [node name="SettingsHUD" type="TextureButton" parent="CanvasLayer/TopHUD/VBox/TopBar" unique_id=1359125702]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(28, 28)
+custom_minimum_size = Vector2(44, 44)
 layout_mode = 2
 size_flags_vertical = 4
 texture_normal = ExtResource("26_cog_icon")
@@ -149,31 +186,32 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="InfoLabel" type="Label" parent="CanvasLayer/TopHUD/VBox"]
+[node name="InfoLabel" type="Label" parent="CanvasLayer/TopHUD/VBox" unique_id=204966804]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
-text = ""
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 clip_text = true
 
 [node name="EnemyHPLabel" type="Label" parent="CanvasLayer/TopHUD/VBox" unique_id=264580371]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 theme_override_font_sizes/font_size = 11
 text = "Toilet Paper Mummy  20/23"
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
-[node name="EnemyHPBar" type="ProgressBar" parent="CanvasLayer/TopHUD/VBox" unique_id=7749261]
+[node name="EnemyHPBar" type="TextureProgressBar" parent="CanvasLayer/TopHUD/VBox" unique_id=7749261]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 12)
+visible = false
+custom_minimum_size = Vector2(0, 16)
 layout_mode = 2
-theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
-theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
+size_flags_horizontal = 3
 value = 100.0
-show_percentage = false
+texture_under = ExtResource("13_bar_bg")
+texture_progress = ExtResource("14_bar_red")
 
 [node name="MidHUD" type="MarginContainer" parent="CanvasLayer" unique_id=912345678]
 anchors_preset = 12
@@ -185,21 +223,22 @@ offset_bottom = -125.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_right = 10
 theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 0
 
-[node name="VBox" type="VBoxContainer" parent="CanvasLayer/MidHUD"]
+[node name="VBox" type="VBoxContainer" parent="CanvasLayer/MidHUD" unique_id=1839688353]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 4
 alignment = 2
 
-[node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
+[node name="GoldContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox" unique_id=1091456711]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 4
 
-[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/MidHUD/VBox/GoldContainer"]
+[node name="GoldIcon" type="TextureRect" parent="CanvasLayer/MidHUD/VBox/GoldContainer" unique_id=708887925]
 custom_minimum_size = Vector2(24, 24)
 layout_mode = 2
 texture = ExtResource("25_gold_icon")
@@ -214,32 +253,71 @@ theme_override_font_sizes/font_size = 20
 text = "0"
 label_settings = SubResource("LabelSettings_hp")
 
-[node name="DPSLabel" type="Label" parent="CanvasLayer/MidHUD/VBox"]
+[node name="DPSLabel" type="Label" parent="CanvasLayer/MidHUD/VBox" unique_id=1142158089]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 0.8)
 theme_override_font_sizes/font_size = 9
-text = ""
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 
-[node name="XPLabel" type="Label" parent="CanvasLayer/MidHUD/VBox"]
-unique_name_in_owner = true
+[node name="XPRowMargin" type="MarginContainer" parent="CanvasLayer/MidHUD/VBox" unique_id=740449212]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.6, 0.8, 1, 0.9)
-theme_override_font_sizes/font_size = 10
-text = "XP 0/50"
-label_settings = SubResource("LabelSettings_hp")
-horizontal_alignment = 0
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_right = 8
 
-[node name="PlayerHPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox"]
+[node name="XPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox/XPRowMargin" unique_id=100001011]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+theme_override_constants/separation = 8
+
+[node name="XPIcon" type="Label" parent="CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer" unique_id=1944633578]
+custom_minimum_size = Vector2(28, 0)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.75, 1, 0.9)
+theme_override_font_sizes/font_size = 10
+text = "XP"
+vertical_alignment = 1
+
+[node name="XPBar" type="ProgressBar" parent="CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer" unique_id=1806608790]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 14)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 10.0
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_blue")
+max_value = 50.0
+show_percentage = false
+
+[node name="XPLabel" type="Label" parent="CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer" unique_id=1919835636]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(56, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 9
+text = "0 / 50"
+label_settings = SubResource("LabelSettings_hp")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayerHPContainer" type="HBoxContainer" parent="CanvasLayer/MidHUD/VBox" unique_id=935666369]
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 6
+
+[node name="HeartIcon" type="Label" parent="CanvasLayer/MidHUD/VBox/PlayerHPContainer" unique_id=1870710945]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
+theme_override_font_sizes/font_size = 14
+text = "❤"
+vertical_alignment = 1
 
 [node name="PlayerHPBar" type="ProgressBar" parent="CanvasLayer/MidHUD/VBox/PlayerHPContainer" unique_id=1103201743]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 16)
+custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
@@ -263,15 +341,99 @@ vertical_alignment = 1
 
 [node name="PotionButton" type="Button" parent="CanvasLayer/MidHUD/VBox/PlayerHPContainer" unique_id=20260215]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(70, 24)
+custom_minimum_size = Vector2(88, 44)
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "HP Pot: 0"
+icon = ExtResource("27_potion_tile")
 
 [node name="PlayerStatsBox" type="VBoxContainer" parent="CanvasLayer" unique_id=1713548447]
 visible = false
 
-[node name="VictoryUI" type="VBoxContainer" parent="CanvasLayer" unique_id=909046622]
+[node name="EnemyNameLabel" type="Label" parent="CanvasLayer" unique_id=444555666]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_top = 152.0
+offset_right = 100.0
+offset_bottom = 172.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.85)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 12
+text = "Enemy"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="EnemyFloatingUI" type="VBoxContainer" parent="CanvasLayer" unique_id=444555777]
+unique_name_in_owner = true
+z_index = 50
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = 134.0
+offset_right = -8.0
+offset_bottom = 202.0
+grow_horizontal = 2
+mouse_filter = 2
+theme_override_constants/separation = 10
+
+[node name="EnemyFloatName" type="Label" parent="CanvasLayer/EnemyFloatingUI" unique_id=444555778]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 12
+text = "Enemy - Lvl 1"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="EnemyFloatHPBar" type="ProgressBar" parent="CanvasLayer/EnemyFloatingUI" unique_id=444555779]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 12)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_red")
+value = 100.0
+show_percentage = false
+
+[node name="EnemyFloatAttackBar" type="ProgressBar" parent="CanvasLayer/EnemyFloatingUI" unique_id=444555780]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 8)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_styles/background = SubResource("StyleBoxTexture_bar_bg")
+theme_override_styles/fill = SubResource("StyleBoxTexture_bar_yellow")
+max_value = 1.0
+show_percentage = false
+
+[node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1194533878]
+unique_name_in_owner = true
+position = Vector2(177, 287)
+texture = ExtResource("2_0e48y")
+
+[node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=735586390]
+unique_name_in_owner = true
+offset_left = 63.0
+offset_top = 170.0
+offset_right = 303.0
+offset_bottom = 440.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_0hol4")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_q6r6c")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
+action_mode = 0
+
+[node name="VictoryLayer" type="CanvasLayer" parent="." unique_id=700000001]
+layer = 100
+
+[node name="VictoryUI" type="PanelContainer" parent="VictoryLayer" unique_id=909046622]
 unique_name_in_owner = true
 visible = false
 anchors_preset = 8
@@ -279,25 +441,35 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -120.0
-offset_top = -100.0
-offset_right = 120.0
-offset_bottom = 40.0
+offset_left = -130.0
+offset_top = -140.0
+offset_right = 130.0
+offset_bottom = 80.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_victory")
+
+[node name="VBox" type="VBoxContainer" parent="VictoryLayer/VictoryUI" unique_id=1174490686]
+layout_mode = 2
 theme_override_constants/separation = 8
 alignment = 1
 
-[node name="LootSummaryLabel" type="Label" parent="CanvasLayer/VictoryUI"]
+[node name="LootIconsGrid" type="HBoxContainer" parent="VictoryLayer/VictoryUI/VBox" unique_id=1675412273]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 12
+
+[node name="LootSummaryLabel" type="Label" parent="VictoryLayer/VictoryUI/VBox" unique_id=791221557]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
 theme_override_font_sizes/font_size = 9
-text = ""
 label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="NextLevelButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=1203486473]
+[node name="NextLevelButton" type="Button" parent="VictoryLayer/VictoryUI/VBox" unique_id=1203486473]
 unique_name_in_owner = true
 process_mode = 3
 custom_minimum_size = Vector2(200, 50)
@@ -309,7 +481,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "NEXT LEVEL"
 
-[node name="OpenTreeButton" type="Button" parent="CanvasLayer/VictoryUI" unique_id=1467126027]
+[node name="OpenTreeButton" type="Button" parent="VictoryLayer/VictoryUI/VBox" unique_id=1467126027]
 unique_name_in_owner = true
 process_mode = 3
 custom_minimum_size = Vector2(200, 50)
@@ -321,7 +493,7 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "UPGRADES"
 
-[node name="WatchAdButton" type="Button" parent="CanvasLayer/VictoryUI"]
+[node name="WatchAdButton" type="Button" parent="VictoryLayer/VictoryUI/VBox" unique_id=276740761]
 unique_name_in_owner = true
 process_mode = 3
 custom_minimum_size = Vector2(200, 50)
@@ -333,50 +505,50 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "FULL HEAL (Ad)"
 
-[node name="EnemySprite" type="Sprite2D" parent="CanvasLayer" unique_id=1194533878]
-unique_name_in_owner = true
-position = Vector2(180, 240)
-texture = ExtResource("2_0e48y")
+[node name="BottomNavLayer" type="CanvasLayer" parent="." unique_id=792636724]
+layer = 110
 
-[node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=735586390]
-unique_name_in_owner = true
-offset_left = 60.0
-offset_top = 150.0
-offset_right = 300.0
-offset_bottom = 390.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_0hol4")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_q6r6c")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_d21ai")
-action_mode = 0
-
-[node name="BottomPanel" type="Panel" parent="CanvasLayer" unique_id=1034517161]
+[node name="BottomPanel" type="Panel" parent="BottomNavLayer" unique_id=1034517161]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = -120.0
+offset_top = -56.0
 grow_horizontal = 2
 grow_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxTexture_panel")
 
-[node name="TabContainer" type="TabContainer" parent="CanvasLayer/BottomPanel" unique_id=806840910]
+[node name="BottomLayout" type="VBoxContainer" parent="BottomNavLayer/BottomPanel" unique_id=1030161615]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="ContentArea" type="MarginContainer" parent="BottomNavLayer/BottomPanel/BottomLayout" unique_id=1306795087]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="TabContainer" type="TabContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea" unique_id=806840910]
+layout_mode = 2
 theme_override_font_sizes/font_size = 12
 tab_alignment = 1
 current_tab = 0
+tabs_visible = false
 
-[node name="Inventory" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer" unique_id=2017051804]
+[node name="Inventory" type="ScrollContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer" unique_id=2017051804]
 unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="InventoryGrid" type="GridContainer" parent="CanvasLayer/BottomPanel/TabContainer/Inventory" unique_id=361829792]
+[node name="InventoryGrid" type="GridContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Inventory" unique_id=361829792]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -385,46 +557,71 @@ theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 10
 columns = 6
 
-[node name="Stats" type="ScrollContainer" parent="CanvasLayer/BottomPanel/TabContainer"]
+[node name="Stats" type="ScrollContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer" unique_id=349246620]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
-scroll_deadzone = 0
 metadata/_tab_index = 1
 
-[node name="StatsColumns" type="HBoxContainer" parent="CanvasLayer/BottomPanel/TabContainer/Stats"]
+[node name="StatsColumns" type="VBoxContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats" unique_id=1559007520]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_constants/separation = 10
+
+[node name="CombatStats" type="PanelContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats/StatsColumns" unique_id=739690023]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats/StatsColumns/CombatStats" unique_id=1562340677]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 2
+
+[node name="SkillStats" type="PanelContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats/StatsColumns" unique_id=128907495]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 170)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="Rows" type="VBoxContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats/StatsColumns/SkillStats" unique_id=536007742]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/separation = 2
+
+[node name="BottomNav" type="HBoxContainer" parent="BottomNavLayer/BottomPanel/BottomLayout" unique_id=240858597]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 8
 
-[node name="CombatStats" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsColumns"]
+[node name="InventoryTabBtn" type="Button" parent="BottomNavLayer/BottomPanel/BottomLayout/BottomNav" unique_id=2071918348]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_minimum_size = Vector2(0, 200)
-bbcode_enabled = true
-theme_override_font_sizes/normal_font_size = 10
-theme_override_font_sizes/bold_font_size = 10
-text = ""
-scroll_active = false
-mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+text = "INVENTORY"
 
-[node name="SkillStats" type="RichTextLabel" parent="CanvasLayer/BottomPanel/TabContainer/Stats/StatsColumns"]
+[node name="StatsTabBtn" type="Button" parent="BottomNavLayer/BottomPanel/BottomLayout/BottomNav" unique_id=1370289986]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_minimum_size = Vector2(0, 200)
-bbcode_enabled = true
-theme_override_font_sizes/normal_font_size = 10
-theme_override_font_sizes/bold_font_size = 10
-text = ""
-scroll_active = false
-mouse_filter = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.95, 1)
+text = "STATS"
 
 [connection signal="pressed" from="CanvasLayer/TopHUD/VBox/TopBar/SettingsHUD" to="GameManager" method="_on_settings_hud_pressed"]
-[connection signal="pressed" from="CanvasLayer/VictoryUI/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/VictoryUI/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="CanvasLayer/ClickArea" to="GameManager" method="_on_click_area_pressed"]
+[connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
+[connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]

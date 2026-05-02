@@ -4,7 +4,7 @@
 **Kategoria:** Legal / Release  
 **Szacowany czas:** 1h  
 **Najlepszy model AI:** Codex 5.3 lub Claude Sonnet 4.6 (generowanie tekstu prawnego + hosting)  
-**Status:** 🟡 W TOKU (część techniczna gotowa, publikacja URL i Play Console ręcznie)
+**Status:** ✅ ZAKOŃCZONE (część techniczna gotowa, publikacja URL i Play Console ręcznie)
 
 ## Opis
 Google Play wymaga URL do polityki prywatności. Trzeba ją stworzyć i opublikować.

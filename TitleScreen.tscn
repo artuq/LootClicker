@@ -40,7 +40,7 @@ grow_vertical = 2
 mouse_filter = 2
 texture = ExtResource("2_image")
 expand_mode = 1
-stretch_mode = 6
+stretch_mode = 4
 
 [node name="MenuButtons" type="VBoxContainer" parent="." unique_id=2141978157]
 layout_mode = 1

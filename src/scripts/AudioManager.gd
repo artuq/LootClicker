@@ -8,6 +8,11 @@ var low_pass_enabled: bool = false
 var heartbeat_player: AudioStreamPlayer
 var heartbeat_playing: bool = false
 
+const MASTER_BUS := "Master"
+const MUSIC_BUS := "Music"
+const SFX_BUS := "SFX"
+const UI_BUS := "UI"
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	music_player = AudioStreamPlayer.new()
@@ -17,9 +22,7 @@ func _ready():
 	if music_stream:
 		music_player.stream = music_stream
 		music_player.volume_db = -10 # Slightly quieter background
-		# Ensure Master bus exists before assignment
-		if AudioServer.get_bus_index("Master") >= 0:
-			music_player.bus = "Master"
+		music_player.bus = _pick_bus([MUSIC_BUS, MASTER_BUS])
 		music_player.finished.connect(func(): music_player.play())
 		print("AudioManager: Music loaded successfully")
 	else:
@@ -124,8 +127,7 @@ func _play_heartbeat_loop():
 	stream.data = data
 	heartbeat_player.stream = stream
 	heartbeat_player.volume_db = -6
-	if AudioServer.get_bus_index("Master") >= 0:
-		heartbeat_player.bus = "Master"
+	heartbeat_player.bus = _pick_bus([SFX_BUS, MASTER_BUS])
 	heartbeat_player.play()
 	# Loop after pause (heartbeat rhythm ~0.9s cycle)
 	heartbeat_player.finished.connect(func():
@@ -216,8 +218,19 @@ func _play_generated_sound(type: String, p_shift: float = 1.0):
 	stream.data = data
 	player.stream = stream
 	player.pitch_scale = p_shift
-	if AudioServer.get_bus_index("Master") >= 0:
-		player.bus = "Master" # Ensure it plays on Master bus
+	var target_bus := _pick_sound_bus(type)
+	player.bus = target_bus
 	player.play()
 	
 	player.finished.connect(func(): player.queue_free())
+
+func _pick_sound_bus(sound_type: String) -> String:
+	if sound_type == "ui_click" or sound_type == "ui_hover":
+		return _pick_bus([UI_BUS, SFX_BUS, MASTER_BUS])
+	return _pick_bus([SFX_BUS, MASTER_BUS])
+
+func _pick_bus(candidates: Array[String]) -> String:
+	for bus_name in candidates:
+		if AudioServer.get_bus_index(bus_name) >= 0:
+			return bus_name
+	return MASTER_BUS

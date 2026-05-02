@@ -1,18 +1,18 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene format=3 uid="uid://cx01kcf8ogmmc"]
 
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/panel_brown.png" id="1_panel"]
-[ext_resource type="Script" path="res://src/scenes/UpgradeScreen.gd" id="2_script"]
+[ext_resource type="Texture2D" uid="uid://dhhwpcvem0d6w" path="res://assets/ui/kenney_ui/PNG/panel_brown.png" id="1_panel"]
+[ext_resource type="Script" uid="uid://cf1o556pbyatx" path="res://src/scenes/UpgradeScreen.gd" id="2_script"]
 
-[node name="UpgradeScreen" type="Control"]
-script = ExtResource("2_script")
+[node name="UpgradeScreen" type="Control" unique_id=1086671207]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("2_script")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=369816726]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -21,7 +21,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.470588)
 
-[node name="Panel" type="NinePatchRect" parent="."]
+[node name="Panel" type="NinePatchRect" parent="." unique_id=1800886705]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -40,7 +40,7 @@ patch_margin_top = 10
 patch_margin_right = 10
 patch_margin_bottom = 10
 
-[node name="VBox" type="VBoxContainer" parent="Panel"]
+[node name="VBox" type="VBoxContainer" parent="Panel" unique_id=1677863715]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -50,19 +50,19 @@ grow_vertical = 2
 theme_override_constants/separation = 15
 alignment = 1
 
-[node name="Title" type="Label" parent="Panel/VBox"]
+[node name="Title" type="Label" parent="Panel/VBox" unique_id=502159327]
 layout_mode = 2
 theme_override_font_sizes/font_size = 20
 text = "LEVEL UP!"
 horizontal_alignment = 1
 
-[node name="CardContainer" type="VBoxContainer" parent="Panel/VBox"]
+[node name="CardContainer" type="VBoxContainer" parent="Panel/VBox" unique_id=585862384]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="Instruction" type="Label" parent="Panel/VBox"]
+[node name="Instruction" type="Label" parent="Panel/VBox" unique_id=1083757700]
 layout_mode = 2
 theme_override_font_sizes/font_size = 10
 text = "Pick one reward"

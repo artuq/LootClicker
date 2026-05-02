@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://nuavhlhv60sb"
+path="res://.godot/imported/Crystal System Boot.mp3-95f0d617e5284e4619871c6083d76b04.mp3str"
+
+[deps]
+
+source_file="res://assets/audio/Crystal System Boot.mp3"
+dest_files=["res://.godot/imported/Crystal System Boot.mp3-95f0d617e5284e4619871c6083d76b04.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c8l7d7n8p4x1j"]
 
-[ext_resource type="Script" path="res://src/scenes/InventorySlot.gd" id="1_slot"]
+[ext_resource type="Script" uid="uid://vdt27hk0wn2w" path="res://src/scenes/InventorySlot.gd" id="1_slot"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
 bg_color = Color(0.2, 0.2, 0.2, 0.6)
@@ -14,27 +14,27 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="InventorySlot" type="PanelContainer"]
+[node name="InventorySlot" type="PanelContainer" unique_id=113810804]
 custom_minimum_size = Vector2(48, 48)
 offset_right = 48.0
 offset_bottom = 48.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 script = ExtResource("1_slot")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1243109801]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="Icon" type="TextureRect" parent="MarginContainer"]
+[node name="Icon" type="TextureRect" parent="MarginContainer" unique_id=2107259745]
 unique_name_in_owner = true
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Count" type="Label" parent="MarginContainer"]
+[node name="Count" type="Label" parent="MarginContainer" unique_id=276666242]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8

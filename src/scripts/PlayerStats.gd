@@ -10,6 +10,15 @@ signal leveled_up(new_level) # New level up signal
 signal xp_changed(current, required) # New XP change signal
 signal resources_updated # Signal for skill tree
 signal consumables_updated # New signal for potions
+signal prestige_updated
+
+# Prestige / Rebirth (persists across rebirths)
+var prestige_level: int = 0
+var soul_shards: int = 0
+
+# Daily login streak (persists across rebirths)
+var daily_last_claim: String = ""
+var daily_streak: int = 0
 
 var gold: int = 25
 var xp: int = 0
@@ -168,7 +177,9 @@ func get_total_damage() -> int:
 	var base = 1 + total_str
 	if equipped_item: base += equipped_item.damage_bonus
 	var str_bonus = 1.0 + (total_str * 0.025)
-	return int(base * str_bonus)
+	# Prestige bonus: +2% DMG per soul shard
+	var prestige_mult = 1.0 + (soul_shards * 0.02)
+	return int(base * str_bonus * prestige_mult)
 
 func get_max_hp_from_skills() -> int:
 	# TIERED HP BONUS: 1-20 (+20), 21-40 (+50), 41-50 (+150)
@@ -199,7 +210,9 @@ func is_critical_hit() -> bool:
 
 func gain_gold(amount: int):
 	var total_greed = greed_lvl + card_greed
-	gold += int(amount * (1.0 + (total_greed * 0.05)))
+	# Prestige bonus: +3% Gold per soul shard
+	var prestige_mult = 1.0 + (soul_shards * 0.03)
+	gold += int(amount * (1.0 + (total_greed * 0.05)) * prestige_mult)
 	gold_changed.emit(gold)
 
 func add_resource(type: String, amount: int):
@@ -209,6 +222,53 @@ func add_resource(type: String, amount: int):
 
 func trigger_error(msg: String):
 	error_occurred.emit(msg)
+
+func get_prestige_dmg_bonus() -> float:
+	return soul_shards * 2.0
+
+func get_prestige_gold_bonus() -> float:
+	return soul_shards * 3.0
+
+func rebirth(shards_earned: int):
+	# Accumulate permanent prestige rewards
+	prestige_level += 1
+	soul_shards += shards_earned
+	# Reset everything except prestige, daily login
+	gold = 25
+	xp = 0
+	level = 1
+	xp_required = 20
+	max_hp = 100
+	current_hp = 100
+	str_lvl = 0
+	speed_lvl = 0
+	crit_lvl = 0
+	greed_lvl = 0
+	def_lvl = 0
+	heal_count = 0
+	card_str = 0
+	card_crit = 0
+	card_speed = 0
+	card_greed = 0
+	card_def = 0
+	card_hp = 0
+	dodge_chance = 0.05
+	block_chance = 0.0
+	resources = {"bandages": 0, "venom": 0, "relic_shards": 0}
+	consumables = {"hp_potion": 0}
+	inventory.clear()
+	equipped_item = null
+	active_curses.clear()
+	heal_blocked = false
+	click_hp_cost = 0
+	poison_dps = 0
+	thorns_percent = 0.0
+	prestige_updated.emit()
+	gold_changed.emit(gold)
+	health_changed.emit(current_hp, max_hp)
+	skills_updated.emit()
+	resources_updated.emit()
+	consumables_updated.emit()
 
 func gain_xp(amount: int):
 	xp += amount

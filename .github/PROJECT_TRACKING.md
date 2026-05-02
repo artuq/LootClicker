@@ -1,53 +1,58 @@
-# LootClicker - Project Tracking Board
+# LootClicker — Board Projektu
 
-**Status:** Active Development | **Last Updated:** 2026-02-18 | **Sprint:** Session 2026-02-18
-
----
-
-## 📋 Session Goals (2026-02-18)
-
-1. ✅ **Loot Drop System** (#19) — Reverted to core resources (Bandages, Venom, Shards).
-2. ✅ **AdMob Integration** — Switched to **Fake Ads** for development stability.
-3. ✅ **Enemy Balancing** — Nerfed scaling after stage 25. Implemented **Soft Landing** (Linear scaling) after stage 30. Buffed Gold drop (12 base).
-4. ✅ **Power Creep** — Implemented **Skill Tier Bonuses** (Levels 20/40) and **Adrenaline** (x2 DMG on 50 clicks).
-5. ✅ **Skill Progression** — Increased max skill level from 10 to **50**.
-6. ✅ **UI/UX Fixes** — HP Potion responsiveness and negative HP bug fix.
+**Status:** Closed Alpha (Google Play) | **Ostatnia aktualizacja:** 2026-05-02 | **Wersja:** 0.6.3 (code 31)
 
 ---
 
-## 📊 Project Board (GitHub Projects)
+## 📋 Osiągnięcia projektu (cały czas trwania)
 
-### ✅ DONE (10 items)
+Projekt realizowany przez osobę bez wcześniejszego doświadczenia w programowaniu i tworzeniu gier.  
+Narzędzie: **GitHub Copilot (VS Code)**. Czas realizacji: ~2 miesiące.
 
-| # | Title | Key Commits |
-|---|-------|-------------|
-| #1 | [CORE] Implementacja mechanik gry i systemów danych | `51fa613` |
+| Data | Kamień milowy |
+|------|---------------|
+| 2026-02 | Pierwsze commity — core loop walki, zapis, UI |
+| 2026-02-18 | AdMob, balance nerf, loot system, skill tree 50 |
+| 2026-02-23 | Flavor texts, tutorial font fix, APK draft release |
+| 2026-03-07 | Background rollback (statyczne tła), stabilność Android |
+| 2026-03-10 | AAB bundle fix (Play Asset Delivery + PCK) |
+| 2026-03-19 | Hit juice, boss spectacle, 9 bugfixów po testach wewnętrznych |
+| **2026-05-02** | **Closed Alpha opublikowana na Google Play** |
+
+---
+
+## 📊 Board (bieżący stan)
+
+### ✅ ZAMKNIĘTE
+
+| # | Tytuł | Kluczowe commity |
+|---|-------|-----------------|
+| #1 | [CORE] Mechaniki gry i systemy danych | `51fa613` |
+| #10 | [MVP] Wersja 0.2 — angielski, Stage 50 | `fdf8704` |
+| #11 | [UI] Combat Arena — Action Bar, shadow, flash | `29986c6` |
 | #14 | [DESIGN] High Stakes Cards | `36a0f00` |
 | #15 | [VFX] Near Death Experience | `afcd2ee` |
-| #17 | Enemy Roster: 6 Enemies (2 Biomes) | `b6ccd2c` |
-| #18 | Boss System: 3 Boss Fights | `8c5c1cf` |
+| #16 | [UX] Flavorful Descriptions | `fdf8704` |
+| #17 | Enemy Roster: 6 wrogów (2 biomy) | `b6ccd2c` |
+| #18 | Boss System: 3 unikalne bossy | `8c5c1cf` |
 | #19 | Drop/Resource System: Loot Tables | `be8d12a` |
-| — | Fix: Negative HP & Potion UI | `be8d12a` |
-| — | Fix: Fake Ads System (Tween) | `be8d12a` |
-| — | Balance: Post-Stage 25 Nerf | `be8d12a` |
+| #20 | MVP Polish: pasek postępu, biom, podsumowanie łupów | `3a67b51` |
+| — | Testy wewnętrzne: 17 bugfixów (UI, UX, stabilność) | `df7504a` |
+| — | Google Play Closed Alpha — wersja 0.6.3 | `df7504a` |
 
-### 🟢 IN PROGRESS (3 items)
+### 🔄 W TOKU
 
-| # | Title | Progress | Notes |
-|---|-------|----------|-------|
-| #10 | [MVP] Zakres wersji 0.2 (English Only Release) | ~50% | Core loop done. Needs: English texts, Stage 50 final boss tuning. |
-| #11 | [UI] Combat Arena - Styl "Action Bar" | ~50% | HUD redesigned. Missing: action bar, white flash. |
-| #12 | [ART] Styl Graficzny: Pixel Art (Stardew-like) | ~60% | Needs: 32x32 character sprites. |
+| # | Tytuł | Notatki |
+|---|-------|---------|
+| #3 | [LORE] Fabuła i przedmioty | Odłożone do Open Beta |
+| #7 | [BIZNES] Monetyzacja, AdMob live, analityka | Zablokowane przez weryfikację AdMob |
 
-### 🕒 TODO (4 items)
+### 🕒 PLANOWANE
 
-| # | Title | Priority | Est. Hours |
-|---|-------|----------|------------|
-| #3 | [LORE] Implementacja fabuły i przedmiotów | 🟡 Medium | 8h |
-| #16 | [UX] Flavorful Descriptions | 🟢 Low | 4h |
-| #4 | [RELEASE] Przygotowanie do publikacji Google Play | 🔴 Low | 6h |
-| #7 | [BIZNES] Monetyzacja, Marketing i Analityka | 🔴 Low | 10h |
+| # | Tytuł | Priorytet |
+|---|-------|-----------|
+| #4 | [RELEASE] Pełna premiera Google Play (v1.0) | Po stabilizacji Closed Alpha |
 
 ---
 
-**Maintained By:** Gemini Pro | **Last Reviewed:** 2026-02-18 @ 19:15 UTC
+**Utrzymywane przez:** GitHub Copilot + autor | **Ostatni przegląd:** 2026-05-02

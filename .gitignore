@@ -8,3 +8,15 @@ icons_grid.jpg.import
 icon_preview.html
 build/
 .tmp/
+secrets/
+*.keystore
+*.jks
+*.aab
+*.log
+err.log
+out.log
+temp_*.log
+aab_contents.txt
+aab_contents_utf8.txt
+logs/
+*.tmp

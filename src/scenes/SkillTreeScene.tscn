@@ -1,18 +1,16 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene format=3 uid="uid://dpbkh0bnlatf3"]
 
-[ext_resource type="Script" path="res://src/scenes/SkillTreeScene.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/icons/tree_background.png" id="2_bg"]
-[ext_resource type="Script" path="res://src/scripts/SkillNode.gd" id="3_node_script"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_str.png" id="4_icon_str"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_crit.png" id="5_icon_crit"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_gold.png" id="6_icon_gold"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_speed.png" id="7_icon_spd"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_def.png" id="8_icon_def"]
-[ext_resource type="Texture2D" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige.png" id="9_btn_bg"]
-[ext_resource type="Texture2D" path="res://assets/ui/cards/card_hp.png" id="10_icon_hp"]
-[ext_resource type="Script" path="res://src/scenes/SkillTreeLines.gd" id="11_lines"]
+[ext_resource type="Script" uid="uid://cvkvcvm4k8vi1" path="res://src/scenes/SkillTreeScene.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://dw5f7341fxknk" path="res://assets/icons/tree_background.png" id="2_bg"]
+[ext_resource type="Script" uid="uid://c8xn5la3n4mje" path="res://src/scripts/SkillNode.gd" id="3_node_script"]
+[ext_resource type="Texture2D" uid="uid://cngi4ueiwj32v" path="res://assets/ui/cards/card_str.png" id="4_icon_str"]
+[ext_resource type="Texture2D" uid="uid://cgbtl8mdsc3j7" path="res://assets/ui/cards/card_crit.png" id="5_icon_crit"]
+[ext_resource type="Texture2D" uid="uid://d2kld1ekcoevs" path="res://assets/ui/cards/card_gold.png" id="6_icon_gold"]
+[ext_resource type="Texture2D" uid="uid://cn0qmyw0a3nip" path="res://assets/ui/cards/card_speed.png" id="7_icon_spd"]
+[ext_resource type="Texture2D" uid="uid://r36vifis88qy" path="res://assets/ui/cards/card_def.png" id="8_icon_def"]
+[ext_resource type="Texture2D" uid="uid://bp4vq1dcc4a03" path="res://assets/ui/cards/card_hp.png" id="10_icon_hp"]
 
-[node name="SkillTreeScene" type="Control"]
+[node name="SkillTreeScene" type="Control" unique_id=1690922969]
 process_mode = 3
 layout_mode = 3
 anchors_preset = 15
@@ -22,7 +20,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=1072359362]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -33,7 +31,7 @@ texture = ExtResource("2_bg")
 expand_mode = 1
 stretch_mode = 6
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="." unique_id=1622807302]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,47 +40,47 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Title" type="Label" parent="."]
+[node name="Title" type="Label" parent="." unique_id=1127383968]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -100.0
-offset_top = 15.0
-offset_right = 100.0
-offset_bottom = 50.0
+offset_left = -180.0
+offset_top = 14.0
+offset_right = 180.0
+offset_bottom = 52.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 24
+theme_override_font_sizes/font_size = 26
 text = "SKILL TREE"
 horizontal_alignment = 1
 
-[node name="PointsLabel" type="Label" parent="."]
+[node name="PointsLabel" type="Label" parent="." unique_id=1055516824]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -170.0
+offset_left = -220.0
 offset_top = 50.0
-offset_right = 170.0
-offset_bottom = 68.0
+offset_right = 220.0
+offset_bottom = 74.0
 grow_horizontal = 2
-theme_override_font_sizes/font_size = 10
+theme_override_font_sizes/font_size = 13
 text = "Gold: 0 | B: 0, V: 0, S: 0"
 horizontal_alignment = 1
 
-[node name="TreePanel" type="Control" parent="."]
+[node name="TreePanel" type="Control" parent="." unique_id=1471110332]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 75.0
-offset_bottom = -70.0
+offset_top = 90.0
+offset_bottom = -74.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Lines" type="Control" parent="TreePanel"]
+[node name="Connections" type="Control" parent="TreePanel" unique_id=1953301750]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -91,10 +89,50 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-script = ExtResource("11_lines")
 
-[node name="TreeLayout" type="Control" parent="TreePanel"]
+[node name="Line_STR_to_GREED" type="ColorRect" parent="TreePanel/Connections" unique_id=1977640173]
 unique_name_in_owner = true
+layout_mode = 0
+offset_left = 108.0
+offset_top = 84.0
+offset_right = 112.0
+offset_bottom = 130.0
+mouse_filter = 2
+color = Color(0.55, 0.55, 0.75, 0.58)
+
+[node name="Line_HP_to_CRIT" type="ColorRect" parent="TreePanel/Connections" unique_id=843656838]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 248.0
+offset_top = 84.0
+offset_right = 252.0
+offset_bottom = 130.0
+mouse_filter = 2
+color = Color(0.55, 0.55, 0.75, 0.58)
+
+[node name="Line_GREED_to_SPEED" type="ColorRect" parent="TreePanel/Connections" unique_id=436985428]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 108.0
+offset_top = 194.0
+offset_right = 112.0
+offset_bottom = 240.0
+mouse_filter = 2
+color = Color(0.55, 0.55, 0.75, 0.58)
+
+[node name="Line_CRIT_to_DEF" type="ColorRect" parent="TreePanel/Connections" unique_id=2092538820]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 248.0
+offset_top = 194.0
+offset_right = 252.0
+offset_bottom = 240.0
+mouse_filter = 2
+color = Color(0.55, 0.55, 0.75, 0.58)
+
+[node name="TreeLayout" type="Control" parent="TreePanel" unique_id=1793896145]
+unique_name_in_owner = true
+z_index = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -102,39 +140,38 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="SkillStr" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillStr" type="Button" parent="TreePanel/TreeLayout" unique_id=1387268638]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 78.0
-offset_top = 28.0
+offset_top = 20.0
 offset_right = 142.0
-offset_bottom = 92.0
+offset_bottom = 84.0
 tooltip_text = "Strength: Increase Base Damage"
 script = ExtResource("3_node_script")
-skill_id = "str"
 currency_type = "gold"
 icon_texture = ExtResource("4_icon_str")
 
-[node name="SkillHP" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillHP" type="Button" parent="TreePanel/TreeLayout" unique_id=1525452509]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
 offset_left = 218.0
-offset_top = 28.0
+offset_top = 20.0
 offset_right = 282.0
-offset_bottom = 92.0
+offset_bottom = 84.0
 tooltip_text = "HP: Increase Max Health"
 script = ExtResource("3_node_script")
 skill_id = "hp"
 currency_type = "gold"
 icon_texture = ExtResource("10_icon_hp")
 
-[node name="SkillGold" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillGold" type="Button" parent="TreePanel/TreeLayout" unique_id=1365990024]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 53.0
-offset_top = 158.0
-offset_right = 117.0
-offset_bottom = 222.0
+offset_left = 78.0
+offset_top = 130.0
+offset_right = 142.0
+offset_bottom = 194.0
 tooltip_text = "Greed: Increase Gold Gain"
 script = ExtResource("3_node_script")
 skill_id = "greed"
@@ -142,13 +179,13 @@ requirement_skill = "str"
 requirement_level = 1
 icon_texture = ExtResource("6_icon_gold")
 
-[node name="SkillCrit" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillCrit" type="Button" parent="TreePanel/TreeLayout" unique_id=139349507]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 243.0
-offset_top = 158.0
-offset_right = 307.0
-offset_bottom = 222.0
+offset_left = 218.0
+offset_top = 130.0
+offset_right = 282.0
+offset_bottom = 194.0
 tooltip_text = "Crit: Critical Hit Chance"
 script = ExtResource("3_node_script")
 skill_id = "crit"
@@ -156,13 +193,13 @@ requirement_skill = "hp"
 requirement_level = 1
 icon_texture = ExtResource("5_icon_crit")
 
-[node name="SkillSpd" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillSpd" type="Button" parent="TreePanel/TreeLayout" unique_id=678135800]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 38.0
-offset_top = 288.0
-offset_right = 102.0
-offset_bottom = 352.0
+offset_left = 78.0
+offset_top = 240.0
+offset_right = 142.0
+offset_bottom = 304.0
 tooltip_text = "Speed: Increase Attack Speed"
 script = ExtResource("3_node_script")
 skill_id = "speed"
@@ -170,13 +207,13 @@ requirement_skill = "greed"
 requirement_level = 1
 icon_texture = ExtResource("7_icon_spd")
 
-[node name="SkillDef" type="Button" parent="TreePanel/TreeLayout"]
+[node name="SkillDef" type="Button" parent="TreePanel/TreeLayout" unique_id=792890197]
 custom_minimum_size = Vector2(64, 64)
 layout_mode = 0
-offset_left = 258.0
-offset_top = 288.0
-offset_right = 322.0
-offset_bottom = 352.0
+offset_left = 218.0
+offset_top = 240.0
+offset_right = 282.0
+offset_bottom = 304.0
 tooltip_text = "Defense: Reduce Damage Taken"
 script = ExtResource("3_node_script")
 skill_id = "def"
@@ -184,20 +221,54 @@ requirement_skill = "crit"
 requirement_level = 1
 icon_texture = ExtResource("8_icon_def")
 
-[node name="BackButton" type="Button" parent="."]
+[node name="TooltipBG" type="ColorRect" parent="TreePanel" unique_id=1741000001]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_top = -62.0
+offset_right = -5.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.04, 0.08, 0.16, 0.93)
+
+[node name="TooltipLabel" type="Label" parent="TreePanel/TooltipBG" unique_id=1741000002]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 4.0
+offset_right = -8.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="." unique_id=1620871195]
+process_mode = 3
 layout_mode = 1
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -80.0
-offset_top = -55.0
-offset_right = 80.0
-offset_bottom = -15.0
+offset_left = -110.0
+offset_top = -132.0
+offset_right = 110.0
+offset_bottom = -80.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_font_sizes/font_size = 13
-text = "BACK TO FIGHT"
+theme_override_font_sizes/font_size = 17
+text = "◄ BACK TO FIGHT"
 
 [connection signal="pressed" from="BackButton" to="." method="_on_back_button_pressed"]

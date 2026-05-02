@@ -8,10 +8,15 @@ var upgrade_manager = UpgradeManager.new()
 func _ready():
 	# Allow window to process while game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	UIAnimations.slide_in_from_bottom(self, 0.3, 56.0)
 
 func setup(player: PlayerStats):
 	# Allow window to process while game is paused
 	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	var title_label: Label = get_node_or_null("Title")
+	if title_label:
+		title_label.text = "YOU GET LEVEL UP CHOOSE IMPROVEMENT"
 	
 	if card_container == null:
 		card_container = %CardContainer
@@ -36,5 +41,7 @@ func setup(player: PlayerStats):
 func _on_card_pressed(id: String, player: PlayerStats):
 	upgrade_manager.apply_upgrade(player, id)
 	upgrade_selected.emit(id)
+	var t := UIAnimations.slide_out_to_bottom(self, 0.18, 40.0)
+	await t.finished
 	queue_free()
 	get_tree().paused = false

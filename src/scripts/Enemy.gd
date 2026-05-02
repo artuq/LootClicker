@@ -2,6 +2,7 @@ extends Node
 class_name Enemy
 
 signal died(xp, gold, resource_type)
+signal hp_changed(current_hp, max_hp)
 
 var max_hp: int
 var current_hp: int
@@ -20,6 +21,7 @@ func setup_enemy(hp: int, dmg: int, gold: int, xp: int, res_type: String = ""):
 	gold_reward = gold
 	xp_reward = xp
 	enemy_resource = res_type
+	hp_changed.emit(current_hp, max_hp)
 	# Enemies get a small dodge chance after stage 10
 	dodge_chance = 0.05 if hp > 1000 else 0.0
 
@@ -29,6 +31,7 @@ func take_damage(amount: int) -> String:
 		return "MISS"
 		
 	current_hp = max(0, current_hp - amount)
+	hp_changed.emit(current_hp, max_hp)
 	if current_hp <= 0:
 		died.emit(xp_reward, gold_reward, enemy_resource)
 		queue_free()

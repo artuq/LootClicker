@@ -1,48 +1,47 @@
 # .github Directory - Project Management
 
-**Project:** LootClicker | **Engine:** Godot 4.6 | **Repo:** [artuq/LootClicker](https://github.com/artuq/LootClicker)
+**Projekt:** LootClicker | **Silnik:** Godot 4.6 | **Repo:** [artuq/LootClicker](https://github.com/artuq/LootClicker) | **Status:** Zamknięte Testy Alfa Google Play
 
 ---
 
-## 📁 Files
+## 📁 Pliki
 
-| File | Purpose | Update Frequency |
-|------|---------|-----------------|
-| **ISSUES.md** | All 19 GitHub issues with status, commits, session log | After each session |
-| **PROJECT_TRACKING.md** | Project board mirror, velocity metrics, milestones | After each session |
-| **ROADMAP_ISSUES_MAP.md** | Issue → implementation mapping, code structure | After features ship |
-| **COMMIT_WORKFLOW.md** | Commit conventions and push workflow | Stable |
+| Plik | Zawartość | Częstotliwość aktualizacji |
+|------|-----------|--------------------------|
+| **ISSUES.md** | Wszystkie issues z statusem, commitami, logiem sesji | Po każdej sesji |
+| **PROJECT_TRACKING.md** | Board projektu, metryki, kamienie milowe | Po każdej sesji |
+| **ROADMAP_ISSUES_MAP.md** | Mapa issues → implementacja, struktura kodu | Po wdrożeniu funkcji |
+| **COMMIT_WORKFLOW.md** | Konwencje commitów i workflow push | Stabilny |
 
 ---
 
-## 📊 Current Status (2026-02-17)
+## 📊 Aktualny status (2026-05-02)
 
 ```
-Total Issues:       19
-├─ Closed:           6 ✅ (#1, #2, #5, #6, #8, #13)
-├─ Implemented:      4 🟢 (#14, #15, #17, #18) — ready to close
-├─ In Progress:      4 🔄 (#5, #10, #11, #12)
-├─ Todo:             5 🕒 (#3, #4, #7, #16, #19)
-└─ Ice Box:          1 🧊 (#9)
+Wersja:             0.6.3 (version code 31)
+Status dystrybucji: Zamknięte Testy Alfa — Google Play
 
-Session Commits:     9
-Features:            4 (Cursed Cards, Near Death VFX, Enemy Roster, Boss System)
-Balance Changes:     6 (DMG, DEF, Crit, Speed, Potion, XP)
-Bug Fixes:           7 (card size, fonts, curse timing, signals, indentation, drops)
-Sprites Added:      15 (9 enemies/bosses + 6 cursed card icons)
+Zamknięte issues:   11 ✅
+W toku:              2 🔄 (#3, #7)
+Zaplanowane:         1 🕒 (#4 — pełna premiera)
+
+Aktywne testy:      Google Play Closed Alpha
+Ostatni commit:     df7504a (fix AAB Play Asset Delivery — 2026-03-10)
 ```
 
 ---
 
-## 🎯 Milestone Progress
+## 🎯 Postęp kamieni milowych
 
-| Milestone | Status | Key Features |
-|-----------|--------|-------------|
-| v0.1 Foundation | ✅ Done | Combat, save/load, UI, audio |
-| v0.1.5 Game Feel | ✅ Done | VFX, cursed cards, enemies, bosses, balance |
-| v0.2 MVP Release | 🔄 40% | English text, Stage 50, drop system |
-| v0.3 Story | 🕒 Planned | Narrative, prestige, lore |
-| v1.0 Release | 🕒 Future | Google Play, monetization |
+| Kamień milowy | Status | Kluczowe funkcje |
+|---------------|--------|-----------------|
+| v0.1 Fundament | ✅ Gotowe | Walka, zapis/odczyt, UI, dźwięk |
+| v0.2 MVP (English, Stage 50) | ✅ Gotowe | Teksty EN, drop system, Action Bar |
+| v0.3 Game Feel | ✅ Gotowe | Hit juice, boss spectacle, floating text, card polish |
+| v0.4 Stabilność Android | ✅ Gotowe | AAB, keystore, Gradle, hotfixes |
+| v0.5–0.6 Testy wewnętrzne | ✅ Gotowe | 17 bugfixów, testy na fizycznym urządzeniu |
+| **v0.6.3 Closed Alpha** | 🔴 **Aktywne** | Google Play, Privacy Policy, AAB bundle fix |
+| v1.0 Pełna premiera | 🕒 Planowane | AdMob live, monetyzacja, lore |
 
 ---
 
