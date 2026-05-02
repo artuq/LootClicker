@@ -2123,10 +2123,13 @@ func _on_watch_ad_pressed():
 	if _admob_available and _rewarded_ad:
 		print("[AdMob] WatchAd: showing rewarded")
 		_show_real_ad()
+	elif not _admob_available:
+		print("[AdMob] WatchAd: AdMob unavailable — showing fake ad")
+		_show_fake_ad()
 	else:
-		notif.show_toast("Ad not ready. Try again in a moment.")
-		print("[AdMob] WatchAd: ad not ready, preload triggered")
+		print("[AdMob] WatchAd: ad not loaded yet — showing fake ad fallback, preload triggered")
 		_preload_rewarded_ad()
+		_show_fake_ad()
 
 func _grant_ad_reward():
 	player.current_hp = player.max_hp
