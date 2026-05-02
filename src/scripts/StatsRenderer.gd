@@ -52,12 +52,15 @@ func update_stats():
 	var dps: float = float(dmg) / max(0.01, spd)
 	var def_str: String
 	var def_color: Color
-	if def_red >= 0:
+	if def_red > 0:
 		def_str = "-%.0f%%" % def_red
 		def_color = Color(0.18, 0.12, 0.06, 1.0)
-	else:
+	elif def_red < 0:
 		def_str = "+%.0f%% dmg" % absf(def_red)
 		def_color = Color(1.0, 0.3, 0.3, 1.0)
+	else:
+		def_str = "0%"
+		def_color = Color(0.45, 0.4, 0.3, 1.0)
 
 	var combat_rows: Array[Dictionary] = [
 		{"name": "DPS", "kind": "plain", "value": "%.1f" % dps, "color": Color(0.75, 0.45, 0.05, 1.0)},
