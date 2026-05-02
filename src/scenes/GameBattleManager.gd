@@ -1452,6 +1452,39 @@ func _show_victory_popup_animated():
 			btn.pivot_offset = btn.size * 0.5
 			UIAnimations.bounce_control(btn, 1.12, 0.18)
 
+	var next_label := Label.new()
+	next_label.text = _get_next_stage_preview()
+	next_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	next_label.add_theme_font_size_override("font_size", 11)
+	var nl_ls := LabelSettings.new()
+	nl_ls.font_color = Color(0.85, 0.75, 0.45, 0.9)
+	nl_ls.outline_size = 2
+	nl_ls.outline_color = Color(0, 0, 0, 0.7)
+	next_label.label_settings = nl_ls
+	next_label.anchor_left = 0.0
+	next_label.anchor_right = 1.0
+	next_label.anchor_bottom = 1.0
+	next_label.anchor_top = 1.0
+	next_label.offset_top = -22
+	next_label.offset_bottom = -4
+	next_label.modulate.a = 0.0
+	victory_ui.add_child(next_label)
+	var nl_t := create_tween()
+	nl_t.tween_property(next_label, "modulate:a", 1.0, 0.3).set_delay(0.1)
+
+func _get_next_stage_preview() -> String:
+	var next := current_stage + 1
+	if next > 50:
+		return "All stages complete!"
+	if next == 50:
+		return "→ Stage 50  ★  FINAL BOSS"
+	if boss_roster.has(next):
+		return "→ Stage %d  ⚔  BOSS: %s" % [next, boss_roster[next]["name"]]
+	if next % 5 == 0:
+		return "→ Stage %d  ⚔  Boss Fight!" % next
+	var biome := "Jungle" if next <= 14 else "Temple"
+	return "→ Stage %d  —  %s" % [next, biome]
+
 func _ensure_overlay_background_is_visible():
 	_fix_parallax_sizes()
 	_update_biome_bg()

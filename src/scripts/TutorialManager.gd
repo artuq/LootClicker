@@ -15,6 +15,7 @@ var tutorial_bubble: Label = null
 var tutorial_hand: TextureRect = null
 var tutorial_enemy_pulse: Tween = null
 var tutorial_enemy_base_scale: Vector2 = Vector2.ONE
+var _xp_pulse_tween: Tween = null
 
 const TUTORIAL_NONE := 0
 const TUTORIAL_COMBAT_TAPS := 1
@@ -54,6 +55,11 @@ func clear_overlay():
 	if tutorial_enemy_pulse:
 		tutorial_enemy_pulse.kill()
 	tutorial_enemy_pulse = null
+	if _xp_pulse_tween:
+		_xp_pulse_tween.kill()
+	_xp_pulse_tween = null
+	if _xp_bar and is_instance_valid(_xp_bar):
+		_xp_bar.modulate = Color.WHITE
 	if tutorial_layer and is_instance_valid(tutorial_layer):
 		tutorial_layer.queue_free()
 	tutorial_layer = null
@@ -191,6 +197,12 @@ func show_xp_hint_step() -> void:
 		xp_pos + Vector2(70, -28),
 		xp_pos + Vector2(-65, -68)
 	)
+	if _xp_bar and is_instance_valid(_xp_bar):
+		if _xp_pulse_tween:
+			_xp_pulse_tween.kill()
+		_xp_pulse_tween = _owner_node.create_tween().set_loops()
+		_xp_pulse_tween.tween_property(_xp_bar, "modulate", Color(1.4, 1.4, 0.6, 1.0), 0.35).set_trans(Tween.TRANS_SINE)
+		_xp_pulse_tween.tween_property(_xp_bar, "modulate", Color.WHITE, 0.35).set_trans(Tween.TRANS_SINE)
 	await _owner_node.get_tree().create_timer(1.0).timeout
 
 func show_stage_progress_step() -> void:

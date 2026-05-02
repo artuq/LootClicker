@@ -26,7 +26,7 @@ const STATE_MAX := 3
 
 # ── theme colours ────────────────────────────────────────────────────
 const _HEX_BG := Color(0.06, 0.11, 0.18, 1.0)
-const _LINE_LOCKED := Color(0.45, 0.5, 0.6, 0.7)
+const _LINE_LOCKED := Color(0.55, 0.62, 0.78, 0.9)
 const _LINE_UNLOCKED := Color(0.2, 0.92, 0.45, 1.0)
 const _LINE_AVAILABLE := Color(0.35, 1.0, 0.8, 1.0)
 const _LINE_MAX := Color(1.0, 0.9, 0.35, 1.0)
@@ -187,7 +187,7 @@ func update_state():
 		modulate = Color(1.0, 1.0, 0.95, 1.0)
 	elif not _req_met:
 		_state = STATE_LOCKED
-		modulate = Color(0.6, 0.6, 0.65, 0.65)
+		modulate = Color(0.8, 0.8, 0.88, 0.88)
 	else:
 		modulate = Color.WHITE
 		if _can_afford:
