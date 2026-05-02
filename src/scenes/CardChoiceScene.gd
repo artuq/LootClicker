@@ -172,9 +172,25 @@ func _show_tutorial_hint_for_card(target_card: Button):
 	tutorial_guide_label.add_theme_font_size_override("font_size", 16)
 	tutorial_guide_label.add_theme_color_override("font_color", Color.WHITE)
 	var ls = LabelSettings.new()
-	ls.outline_size = 3
-	ls.outline_color = Color.BLACK
+	ls.outline_size = 2
+	ls.outline_color = Color(0, 0, 0, 0.6)
 	tutorial_guide_label.label_settings = ls
+	var bubble_bg = StyleBoxFlat.new()
+	bubble_bg.bg_color = Color(0.08, 0.06, 0.18, 0.88)
+	bubble_bg.corner_radius_top_left = 12
+	bubble_bg.corner_radius_top_right = 12
+	bubble_bg.corner_radius_bottom_left = 12
+	bubble_bg.corner_radius_bottom_right = 12
+	bubble_bg.content_margin_left = 14
+	bubble_bg.content_margin_right = 14
+	bubble_bg.content_margin_top = 10
+	bubble_bg.content_margin_bottom = 10
+	bubble_bg.border_width_left = 2
+	bubble_bg.border_width_right = 2
+	bubble_bg.border_width_top = 2
+	bubble_bg.border_width_bottom = 2
+	bubble_bg.border_color = Color(0.55, 0.45, 0.9, 0.7)
+	tutorial_guide_label.add_theme_stylebox_override("normal", bubble_bg)
 	add_child(tutorial_guide_label)
 
 	tutorial_hand_icon = TextureRect.new()
