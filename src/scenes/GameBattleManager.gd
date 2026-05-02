@@ -1454,7 +1454,11 @@ func _show_victory_popup_animated():
 
 	var vbox := victory_ui.get_node_or_null("VBox")
 	if vbox:
+		var old := vbox.get_node_or_null("NextStageLabel")
+		if old:
+			old.queue_free()
 		var next_label := Label.new()
+		next_label.name = "NextStageLabel"
 		next_label.text = _get_next_stage_preview()
 		next_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		next_label.add_theme_font_size_override("font_size", 11)
