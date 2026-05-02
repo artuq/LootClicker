@@ -121,7 +121,7 @@ var resource_icon_paths: Dictionary = {
 var icon_texture_cache: Dictionary = {}
 
 # Tutorial texture (passed to TutorialManager)
-const TUTORIAL_HAND_TEXTURE: Texture2D = preload("res://assets/ui/tutorial/finger_tap.png")
+const TUTORIAL_HAND_TEXTURE: Texture2D = preload("res://assets/ui/tutorial/hand_cursor.png")
 
 # Constants for scaling and balance
 const HP_BASE = 20
