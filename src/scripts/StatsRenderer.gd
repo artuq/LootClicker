@@ -49,7 +49,7 @@ func update_stats():
 		skill_sections.append({"title": "CURSES", "rows": curse_rows})
 	_render_panel(_combat_stats_panel, skill_sections)
 
-	var dps := dmg / max(0.01, spd)
+	var dps: float = float(dmg) / max(0.01, spd)
 	var def_str: String
 	var def_color: Color
 	if def_red >= 0:
