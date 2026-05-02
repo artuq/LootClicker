@@ -79,13 +79,29 @@ func _create_overlay():
 	tutorial_bubble.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	tutorial_bubble.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	tutorial_bubble.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	tutorial_bubble.custom_minimum_size = Vector2(280, 0)
+	tutorial_bubble.custom_minimum_size = Vector2(240, 0)
 	tutorial_bubble.add_theme_font_size_override("font_size", 18)
 	tutorial_bubble.add_theme_color_override("font_color", Color.WHITE)
 	var ls = LabelSettings.new()
-	ls.outline_size = 3
-	ls.outline_color = Color.BLACK
+	ls.outline_size = 2
+	ls.outline_color = Color(0, 0, 0, 0.6)
 	tutorial_bubble.label_settings = ls
+	var bubble_bg = StyleBoxFlat.new()
+	bubble_bg.bg_color = Color(0.08, 0.06, 0.18, 0.88)
+	bubble_bg.corner_radius_top_left = 12
+	bubble_bg.corner_radius_top_right = 12
+	bubble_bg.corner_radius_bottom_left = 12
+	bubble_bg.corner_radius_bottom_right = 12
+	bubble_bg.content_margin_left = 14
+	bubble_bg.content_margin_right = 14
+	bubble_bg.content_margin_top = 10
+	bubble_bg.content_margin_bottom = 10
+	bubble_bg.border_width_left = 2
+	bubble_bg.border_width_right = 2
+	bubble_bg.border_width_top = 2
+	bubble_bg.border_width_bottom = 2
+	bubble_bg.border_color = Color(0.55, 0.45, 0.9, 0.7)
+	tutorial_bubble.add_theme_stylebox_override("normal", bubble_bg)
 	tutorial_layer.add_child(tutorial_bubble)
 
 	tutorial_hand = TextureRect.new()
