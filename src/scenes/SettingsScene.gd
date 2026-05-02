@@ -85,6 +85,12 @@ func _on_back_button_pressed():
 		# If we are a separate scene from the main menu
 		get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
 
+func _on_main_menu_button_pressed():
+	if get_node_or_null("/root/SettingsManager"):
+		get_node("/root/SettingsManager").save_settings()
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
+
 func _on_privacy_button_pressed():
 	# Show privacy policy in-app — no external hosting needed
 	var layer = CanvasLayer.new()

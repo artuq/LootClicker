@@ -1403,7 +1403,7 @@ func _show_victory_popup_animated():
 
 	# Disable buttons during 1s buffer to prevent misclicks
 	var victory_buttons: Array[Button] = []
-	for btn_name in ["NextLevelButton", "OpenTreeButton", "WatchAdButton"]:
+	for btn_name in ["NextLevelButton", "OpenTreeButton", "WatchAdButton", "MainMenuButton"]:
 		var btn = get_node_or_null("%" + btn_name)
 		if btn and btn is Button:
 			victory_buttons.append(btn)
@@ -1466,6 +1466,13 @@ func _on_next_level_button_pressed():
 		exit_t.tween_property(victory_ui, "scale", Vector2(1.06, 1.06), 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		await exit_t.finished
 	_advance_to_next_stage()
+
+func _on_main_menu_button_pressed():
+	if ui_state != UI_STATE_VICTORY:
+		return
+	save_game()
+	vfx.set_near_death(false)
+	get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
 
 func _advance_to_next_stage():
 	save_game()
