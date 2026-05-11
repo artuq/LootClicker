@@ -577,6 +577,7 @@ unique_name_in_owner = true
 visible = false
 layout_mode = 2
 horizontal_scroll_mode = 0
+scroll_deadzone = 20
 metadata/_tab_index = 1
 
 [node name="StatsColumns" type="VBoxContainer" parent="BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer/Stats" unique_id=1559007520]

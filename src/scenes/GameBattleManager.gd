@@ -1636,8 +1636,21 @@ func _show_rebirth_confirmation(shards: int):
 	title_lbl.label_settings = tls
 	vbox.add_child(title_lbl)
 	
+	var total_shards := player.soul_shards + shards
+	var cur_dmg := player.soul_shards * 2
+	var new_dmg := total_shards * 2
+	var cur_gold := player.soul_shards * 3
+	var new_gold := total_shards * 3
+
 	var desc_lbl := Label.new()
-	desc_lbl.text = "Reset all progress and start from Stage 1.\n\nYou will earn %d Soul Shards.\nEach shard gives +2%% DMG and +3%% Gold permanently.\n\nCurrent shards: %d\nAfter rebirth: %d" % [shards, player.soul_shards, player.soul_shards + shards]
+	desc_lbl.text = (
+		"Reset all progress and start from Stage 1.\n\n"
+		+ "You will earn %d Soul Shards.\n"
+		+ "Shards stack — bonuses are cumulative!\n\n"
+		+ "DMG bonus:   +%d%%  →  +%d%%\n"
+		+ "Gold bonus:  +%d%%  →  +%d%%\n\n"
+		+ "Soul Shards: %d  →  %d"
+	) % [shards, cur_dmg, new_dmg, cur_gold, new_gold, player.soul_shards, total_shards]
 	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc_lbl.add_theme_font_size_override("font_size", 10)
 	desc_lbl.add_theme_color_override("font_color", Color(0.9, 0.9, 0.9))
@@ -1736,10 +1749,10 @@ func _show_offline_reward_popup(gold_amount: int, seconds: int):
 	
 	var panel := PanelContainer.new()
 	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
-	panel.offset_left = -130
-	panel.offset_top = -80
-	panel.offset_right = 130
-	panel.offset_bottom = 80
+	panel.offset_left = -145
+	panel.offset_top = -110
+	panel.offset_right = 145
+	panel.offset_bottom = 110
 	var ps := StyleBoxFlat.new()
 	ps.bg_color = Color(0.12, 0.15, 0.08, 0.95)
 	ps.set_corner_radius_all(8)
@@ -1768,11 +1781,22 @@ func _show_offline_reward_popup(gold_amount: int, seconds: int):
 	title_lbl.label_settings = tls
 	vbox.add_child(title_lbl)
 	
+	var gold_lbl := Label.new()
+	gold_lbl.text = "+ %s Gold" % format_number(gold_amount)
+	gold_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	gold_lbl.add_theme_font_size_override("font_size", 22)
+	gold_lbl.add_theme_color_override("font_color", Color.GOLD)
+	var gls := LabelSettings.new()
+	gls.outline_size = 3
+	gls.outline_color = Color.BLACK
+	gold_lbl.label_settings = gls
+	vbox.add_child(gold_lbl)
+
 	var desc := Label.new()
-	desc.text = "You were away for %s.\nYour adventurers earned:\n\n%s Gold" % [time_str, format_number(gold_amount)]
+	desc.text = "Away for %s — your crew kept fighting!\n(Idle income: 30%% efficiency, max 8h)" % time_str
 	desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc.add_theme_font_size_override("font_size", 11)
-	desc.add_theme_color_override("font_color", Color(0.9, 0.9, 0.85))
+	desc.add_theme_font_size_override("font_size", 10)
+	desc.add_theme_color_override("font_color", Color(0.75, 0.75, 0.7))
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(desc)
 	
