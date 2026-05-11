@@ -128,7 +128,8 @@ func show_boss_greeting(text: String):
 	tween.parallel().tween_property(lbl, "modulate:a", 0.0, 0.5)
 	tween.tween_callback(func():
 		if enemy_nameplate_label: enemy_nameplate_label.visible = true
-		greeting_layer.queue_free()
+		if is_instance_valid(greeting_layer):
+			greeting_layer.queue_free()
 	)
 
 func dismiss_greeting():
