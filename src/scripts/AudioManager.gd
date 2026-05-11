@@ -1,6 +1,6 @@
 extends Node
 
-# Procedural Sound Manager for LootClicker (16-bit version)
+# Procedural Sound Manager for LootClicker
 
 var music_player: AudioStreamPlayer
 var low_pass_filter: AudioEffectLowPassFilter
@@ -13,20 +13,81 @@ const MUSIC_BUS := "Music"
 const SFX_BUS := "SFX"
 const UI_BUS := "UI"
 
+const MUSIC_VOLUME_DB := -10.0
+const CROSSFADE_DURATION := 0.6
+
+var _tracks: Dictionary = {}
+var _current_track: String = ""
+var _crossfade_tween: Tween = null
+
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	music_player = AudioStreamPlayer.new()
+	music_player.volume_db = MUSIC_VOLUME_DB
+	music_player.bus = _pick_bus([MUSIC_BUS, MASTER_BUS])
 	add_child(music_player)
-	
-	var music_stream = load("res://assets/audio/bg_music.mp3")
-	if music_stream:
-		music_player.stream = music_stream
-		music_player.volume_db = -10 # Slightly quieter background
-		music_player.bus = _pick_bus([MUSIC_BUS, MASTER_BUS])
-		music_player.finished.connect(func(): music_player.play())
-		print("AudioManager: Music loaded successfully")
+
+	var track_files := {
+		"jungle":  "res://assets/audio/jungle_theme.mp3",
+		"temple":  "res://assets/audio/temple_theme.mp3",
+		"boss":    "res://assets/audio/boss_theme.mp3",
+		"title":   "res://assets/audio/title_theme.mp3",
+		"victory": "res://assets/audio/victory_jingle.mp3",
+	}
+	for key in track_files:
+		var stream = load(track_files[key])
+		if stream:
+			_tracks[key] = stream
+		else:
+			print("AudioManager: missing track — ", track_files[key])
+
+func play_track(track_name: String):
+	if track_name == _current_track and music_player.playing:
+		return
+	if not _tracks.has(track_name):
+		print("AudioManager: unknown track — ", track_name)
+		return
+	_current_track = track_name
+	_crossfade_to(_tracks[track_name], track_name != "victory")
+
+func play_victory_jingle(return_track: String):
+	if not _tracks.has("victory"):
+		return
+	_current_track = "victory"
+	_crossfade_to(_tracks["victory"], false)
+	music_player.finished.connect(func():
+		play_track(return_track)
+	, CONNECT_ONE_SHOT)
+
+func _crossfade_to(stream: AudioStream, loop: bool):
+	if _crossfade_tween:
+		_crossfade_tween.kill()
+	if music_player.playing:
+		_crossfade_tween = create_tween()
+		_crossfade_tween.tween_property(music_player, "volume_db", -80.0, CROSSFADE_DURATION)
+		_crossfade_tween.tween_callback(func():
+			_start_stream(stream, loop)
+		)
 	else:
-		print("ERROR: AudioManager - Failed to load music from res://assets/audio/bg_music.mp3")
+		_start_stream(stream, loop)
+
+func _start_stream(stream: AudioStream, loop: bool):
+	music_player.stream = stream
+	music_player.volume_db = -80.0
+	music_player.play()
+	if _crossfade_tween:
+		_crossfade_tween.kill()
+	_crossfade_tween = create_tween()
+	_crossfade_tween.tween_property(music_player, "volume_db", MUSIC_VOLUME_DB, CROSSFADE_DURATION)
+	if loop:
+		if not music_player.finished.is_connected(_on_loop):
+			music_player.finished.connect(_on_loop)
+	else:
+		if music_player.finished.is_connected(_on_loop):
+			music_player.finished.disconnect(_on_loop)
+
+func _on_loop():
+	music_player.play()
 
 func play_music():
 	if music_player and not music_player.playing:
@@ -35,6 +96,7 @@ func play_music():
 func stop_music():
 	if music_player:
 		music_player.stop()
+	_current_track = ""
 
 # === Near Death Audio Effects ===
 func set_near_death_audio(enabled: bool):

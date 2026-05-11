@@ -10,9 +10,9 @@ func _ready():
 	# Force portrait orientation on Android
 	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
 
-	# Start music via AudioManager (Autoload)
+	# Start title music via AudioManager (Autoload)
 	if get_node_or_null("/root/AudioManager"):
-		get_node("/root/AudioManager").play_music()
+		get_node("/root/AudioManager").play_track("title")
 
 	if last_run_result == "DEFEAT":
 		if $MenuButtons.has_node("Title"):

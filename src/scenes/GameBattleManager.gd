@@ -511,6 +511,14 @@ func _fix_parallax_sizes():
 		temple_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		temple_bg.stretch_mode = 6
 
+func _get_biome_track() -> String:
+	return "jungle" if current_stage <= 14 else "temple"
+
+func _update_biome_music():
+	var am = get_node_or_null("/root/AudioManager")
+	if am:
+		am.play_track(_get_biome_track())
+
 func _update_biome_bg():
 	"""Switch visible biome background based on stage."""
 	if not jungle_base_bg and not temple_bg:
@@ -1066,14 +1074,21 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	
 	# Switch biome background based on stage
 	_update_biome_bg()
-	
+
+	var am = get_node_or_null("/root/AudioManager")
+	if am:
+		if is_named_boss or is_mini_boss or is_final_boss:
+			am.play_track("boss")
+		else:
+			am.play_track(_get_biome_track())
+
 	vfx.start_idle_animation()
-		
+
 	current_enemy.setup_enemy(hp, dmg, gold, 10 + current_stage, res_type)
 	current_enemy.enemy_name = enemy_name
 	if saved_hp != -1:
 		current_enemy.current_hp = saved_hp
-		
+
 	current_enemy.hp_changed.connect(enemy_hud.on_hp_changed)
 	current_enemy.died.connect(_on_enemy_died)
 	
@@ -1221,6 +1236,13 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	# Immediately dismiss boss greeting & floating texts so they don't leak over reward screen
 	enemy_hud.dismiss_greeting()
 	vfx.clear_floating_texts()
+
+	var am = get_node_or_null("/root/AudioManager")
+	if am:
+		if current_stage % 5 == 0:
+			am.play_victory_jingle(_get_biome_track())
+		else:
+			am.play_track(_get_biome_track())
 	# Reset loot summary for this kill
 	# LOOT BUFF: +20% gold globalnie od stage 1
 	var final_gold = int(gold * 1.2)
