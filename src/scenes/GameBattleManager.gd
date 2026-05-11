@@ -1717,10 +1717,10 @@ func _check_offline_rewards(data: Dictionary):
 	var elapsed = now - last_save
 	if elapsed < 60:  # Less than 1 minute — skip
 		return
-	# Cap at 8 hours
-	elapsed = min(elapsed, 28800.0)
-	# Gold per second at 30% efficiency
-	var gold_per_sec = GOLD_BASE * pow(GOLD_SCALE, current_stage) * 0.3
+	# Cap at 12 hours (covers overnight)
+	elapsed = min(elapsed, 43200.0)
+	# Gold per second at 60% efficiency
+	var gold_per_sec = GOLD_BASE * pow(GOLD_SCALE, current_stage) * 0.6
 	var offline_gold = int(gold_per_sec * elapsed)
 	if offline_gold <= 0:
 		return
@@ -1793,7 +1793,7 @@ func _show_offline_reward_popup(gold_amount: int, seconds: int):
 	vbox.add_child(gold_lbl)
 
 	var desc := Label.new()
-	desc.text = "Away for %s — your crew kept fighting!\n(Idle income: 30%% efficiency, max 8h)" % time_str
+	desc.text = "Away for %s — your crew kept fighting!\n(Idle income: 60%% efficiency, max 12h)" % time_str
 	desc.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	desc.add_theme_font_size_override("font_size", 10)
 	desc.add_theme_color_override("font_color", Color(0.75, 0.75, 0.7))
