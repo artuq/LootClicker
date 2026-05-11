@@ -6,75 +6,29 @@
 
 ## Post Title
 
-> **Joana Indiana – Idle Clicker RPG | Closed Alpha on Google Play | Need 12 testers, will test back for 14 days! (Built from scratch in 2 months with zero prior coding experience)**
+> **Built an Android game with zero coding experience using GitHub Copilot — need 12 testers for 14 days, will test back**
 
 ---
 
 ## Post Body
 
-Hi everyone! 👋
+Two months ago I had zero coding experience. Never touched game dev in my life.
 
-I need to be upfront with you — two months ago I had **zero coding experience and had never touched game development** in my life.
+I got curious about AI tools — wanted to actually understand how they work, not just read about it. So I opened VS Code, grabbed GitHub Copilot, and started building a game. No plan, no background, just figuring it out as I went.
 
-What I *did* have was curiosity about AI tools. I wanted to genuinely understand how AI models, AI agents, and AI-assisted development actually work in practice — not just read about them. So I picked up **GitHub Copilot in VS Code**, opened a blank Godot project, and started building.
+The result is **Joana Indiana** — an idle clicker RPG for Android. It's in Google Play Closed Alpha now and I need 12 testers for 14 days.
 
-Two months later, **Joana Indiana** is a real, working Android game in **Google Play Closed Alpha**.
+The game: tap to fight, collect loot, upgrade your character, survive 50 stages. There's a skill tree, randomized level-up cards (including cursed ones), boss fights every 5 stages, and an adrenaline mechanic that doubles your damage on fast tapping. Built in Godot 4.6.
 
----
+**To join:**
+1. Google Group: https://groups.google.com/g/joanaindianatesters
+2. Opt-in: https://play.google.com/apps/testing/com.artuq.lootclicker2
 
-### About the game
-
-**Joana Indiana** is a mobile idle clicker RPG with real-time combat, a skill tree, randomized level-up cards, loot drops, and boss fights.
-
-**Core loop:** tap to attack → deal damage → collect loot → upgrade your character → survive the next stage
-
-**What's in the game right now:**
-- ⚔️ Combat with hit effects, crit system, screen shake and boss death spectacle
-- 🃏 Randomized level-up cards (including cursed cards with debuffs)
-- 🌿 Skill Tree — STR / HP / Speed / Crit / DEF up to level 50 with tier bonuses
-- 👾 6 unique enemies across 2 biomes (Jungle & Temple) + 3 named bosses
-- 🏆 Adrenaline system — 50 taps = ×2 DMG for 5 seconds
-- 💊 Inventory system with consumable resources
-- 📊 Stats panel with DPS tracking
-- 🎯 50 stages with a final boss
-
-Built with **Godot 4.6 / GDScript**, exported as AAB for Android.
-
----
-
-### How to join closed testing
-
-1. **Join the Google Group:** [LINK — replace with your Google Group URL]
-2. **Opt-in link:** https://play.google.com/apps/testing/com.artuq.lootclicker2
-3. **Play Store:** https://play.google.com/store/apps/details?id=com.artuq.lootclicker2
-
----
-
-### The deal
-
-I will **test your app in return for the full 14+ days** — just drop your links in the comments and I'll get on it immediately.
-
-If you test mine, please leave a comment with:
-- A screenshot of the game installed on your device
-- Your app link so I can return the favor
-
----
-
-### Why I'm sharing this
-
-Honestly — this whole project has been an experiment in learning by doing. If you're curious about AI-assisted development, game dev, or just want to see what someone with no background can build in 60 days, I'd love your feedback.
-
-Thanks for reading — and thanks in advance for any testing help! 🙏
-
----
-
-*Built with: Godot 4.6 · GDScript · GitHub Copilot · Google Play Closed Alpha*
-*Package: com.artuq.lootclicker2*
+I'll test back for the full 14 days — just drop your link in the comments.
 
 ---
 
 ## Notes
 
-- Replace `[LINK — replace with your Google Group URL]` with the actual Google Group testing link from Play Console
 - Best posting time: weekday evenings (UTC 18:00–21:00)
-- Add 1–2 screenshots of the game when posting (use files from `build/` or `docs/screenshots/`)
+- Add 1–2 screenshots when posting (use files from `docs/screenshots/`)
