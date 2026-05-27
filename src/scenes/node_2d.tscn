@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bjuk3kiecaxwa" path="res://assets/sprites/Mumia-removebg-preview.png" id="6_mummy"]
 [ext_resource type="Texture2D" uid="uid://2bnvf5rfx83m" path="res://assets/sprites/Sadam-removebg-preview.png" id="7_sadam"]
 [ext_resource type="Texture2D" uid="uid://m2gnue60fm56" path="res://assets/sprites/Snake-removebg-preview.png" id="8_snake"]
-[ext_resource type="PackedScene" path="res://src/scenes/UpgradeScreen.tscn" id="9_upgrade"]
+[ext_resource type="PackedScene" uid="uid://cx01kcf8ogmmc" path="res://src/scenes/UpgradeScreen.tscn" id="9_upgrade"]
 [ext_resource type="Texture2D" uid="uid://dhhwpcvem0d6w" path="res://assets/ui/kenney_ui/PNG/panel_brown.png" id="10_panel_brown"]
 [ext_resource type="Texture2D" uid="uid://cn1fuc8tklxyl" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige.png" id="11_btn_beige"]
 [ext_resource type="Texture2D" uid="uid://dlanduys4y0sa" path="res://assets/ui/kenney_ui/PNG/buttonLong_beige_pressed.png" id="12_btn_beige_pr"]
@@ -309,10 +309,11 @@ size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
 [node name="HeartIcon" type="Label" parent="CanvasLayer/MidHUD/VBox/PlayerHPContainer" unique_id=1870710945]
+visible = false
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.25, 0.25, 1)
-theme_override_font_sizes/font_size = 14
-text = "❤"
+theme_override_font_sizes/font_size = 16
+text = ""
 vertical_alignment = 1
 
 [node name="PlayerHPBar" type="ProgressBar" parent="CanvasLayer/MidHUD/VBox/PlayerHPContainer" unique_id=1103201743]
@@ -339,27 +340,25 @@ label_settings = SubResource("LabelSettings_hp")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-
 [node name="PotionButton" type="Button" parent="CanvasLayer" unique_id=20260215]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(52, 44)
-layout_mode = 1
+anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -62.0
-offset_top = -158.0
-offset_right = -6.0
-offset_bottom = -108.0
+offset_left = -360.0
+offset_top = -417.0
+offset_right = -299.0
+offset_bottom = -367.0
 grow_horizontal = 0
 grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.9, 0.9, 1)
 theme_override_font_sizes/font_size = 12
-theme_override_colors/font_color = Color(1.0, 0.9, 0.9, 1.0)
 text = "HP Pot: 0"
 icon = ExtResource("27_potion_tile")
 expand_icon = true
-icon_max_width = 28
 
 [node name="PlayerStatsBox" type="VBoxContainer" parent="CanvasLayer" unique_id=1713548447]
 visible = false
@@ -435,9 +434,9 @@ texture = ExtResource("2_0e48y")
 [node name="ClickArea" type="Button" parent="CanvasLayer" unique_id=735586390]
 unique_name_in_owner = true
 offset_left = 63.0
-offset_top = 170.0
+offset_top = 248.0
 offset_right = 303.0
-offset_bottom = 440.0
+offset_bottom = 518.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_0hol4")
 theme_override_styles/pressed = SubResource("StyleBoxEmpty_q6r6c")
 theme_override_styles/hover = SubResource("StyleBoxEmpty_kdubu")

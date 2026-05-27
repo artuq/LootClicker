@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cmhrs60t2ejbj"
-path="res://.godot/imported/finger_tap.png-d9e41064950e205150399c04286abe3b.ctex"
+uid="uid://dmgvbhh2q24x3"
+path="res://.godot/imported/cursed_tourist.png-92ff5290f4a3576f0b9d19b8aa84416e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/tutorial/finger_tap.png"
-dest_files=["res://.godot/imported/finger_tap.png-d9e41064950e205150399c04286abe3b.ctex"]
+source_file="res://assets/sprites/enemies/temple/cursed_tourist.png"
+dest_files=["res://.godot/imported/cursed_tourist.png-92ff5290f4a3576f0b9d19b8aa84416e.ctex"]
 
 [params]
 

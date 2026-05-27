@@ -22,7 +22,12 @@ const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 # Enemy roster — loaded dynamically
 var enemy_roster_jungle: Array[Dictionary] = []
 var enemy_roster_temple: Array[Dictionary] = []
+var enemy_roster_desert: Array[Dictionary] = []
 var boss_roster: Dictionary = {}   # stage -> boss data
+
+# Phase 1 content gate (v0.7.0): max stage with real biome content
+# Stage above this shows "TO BE CONTINUED" screen
+const MAX_AVAILABLE_STAGE: int = 55
 @export var bar_yellow: Texture2D
 @export var bar_red: Texture2D
 
@@ -77,6 +82,8 @@ var tut: Node  # TutorialManager
 # Biome backgrounds
 var bg_jungle: Texture2D = preload("res://assets/sprites/Jungle.jpeg")
 var bg_temple: Texture2D = preload("res://assets/sprites/Temple.jpeg")
+# Desert.jpeg loaded at runtime — generated for Phase 1 (v0.7.0), Godot auto-imports on first editor open
+var bg_desert: Texture2D = null  # lazy-loaded in _ready
 
 # Enemy floating HUD timer bar
 var enemy_action_bar: ProgressBar # 20% HP
@@ -161,6 +168,13 @@ func _ready():
 
 	# Initialize enemy rosters
 	_init_enemy_rosters()
+
+	# Lazy-load Desert biome background (Phase 1 / v0.7.0)
+	if ResourceLoader.exists("res://assets/sprites/Desert.jpeg"):
+		bg_desert = load("res://assets/sprites/Desert.jpeg")
+	else:
+		push_warning("[Phase1] Desert.jpeg not found — desert biome will fall back to temple bg")
+		bg_desert = bg_temple
 
 	player = PlayerStats.new()
 	add_child(player)
@@ -371,6 +385,13 @@ func _set_combat_hud_visible(visible_state: bool):
 	if enemy_action_bar:
 		enemy_action_bar.visible = visible_state
 
+	# In-combat PotionButton: hide during victory popup (was visible bleeding through to the left of popup)
+	var potion_btn = get_node_or_null("CanvasLayer/PotionButton")
+	if potion_btn == null:
+		potion_btn = get_node_or_null("../CanvasLayer/PotionButton")
+	if potion_btn:
+		potion_btn.visible = visible_state
+
 func _configure_touch_mouse_filters():
 	# Non-interactive wrappers should ignore touch entirely.
 	var ignore_nodes = [
@@ -442,6 +463,11 @@ func _init_enemy_rosters():
 			"texture": "res://assets/sprites/Snake-removebg-preview.png",
 			"resource": "venom",
 		},
+		{
+			"name": "Jaguar Influencer",
+			"texture": "res://assets/sprites/enemies/jungle/jaguar_influencer.png",
+			"resource": "bandages",
+		},
 	]
 	enemy_roster_temple = [
 		{
@@ -469,6 +495,38 @@ func _init_enemy_rosters():
 			"texture": "res://assets/sprites/Snake-removebg-preview.png",
 			"resource": "venom",
 		},
+		{
+			"name": "Cursed Tourist",
+			"texture": "res://assets/sprites/enemies/temple/cursed_tourist.png",
+			"resource": "relic_shards",
+		},
+	]
+	enemy_roster_desert = [
+		{
+			"name": "Sand Karen",
+			"texture": "res://assets/sprites/enemies/desert/sand_karen.png",
+			"resource": "venom",
+		},
+		{
+			"name": "Cursed Camel",
+			"texture": "res://assets/sprites/enemies/desert/cursed_camel.png",
+			"resource": "bandages",
+		},
+		{
+			"name": "Dust Devil Brad",
+			"texture": "res://assets/sprites/enemies/desert/dust_devil_brad.png",
+			"resource": "venom",
+		},
+		{
+			"name": "Pyramid Scheme Scarab",
+			"texture": "res://assets/sprites/enemies/desert/pyramid_scheme_scarab.png",
+			"resource": "relic_shards",
+		},
+		{
+			"name": "Sandstone Bouncer",
+			"texture": "res://assets/sprites/enemies/desert/sandstone_bouncer.png",
+			"resource": "relic_shards",
+		},
 	]
 	boss_roster = {
 		10: {
@@ -490,6 +548,15 @@ func _init_enemy_rosters():
 			"texture": "res://assets/sprites/enemies/boss_sphinx.png",
 			"resource": "relic_shards",
 			"greeting": "Meow. Give me gold.",
+			"scale": 280.0,
+		},
+		# Stage 50: ULTIMATE BOSS Saddam on the Raft — NOT in boss_roster,
+		# handled by is_final_boss flag in spawn_enemy (uses @export boss_texture)
+		55: {
+			"name": "Ramboses",
+			"texture": "res://assets/sprites/enemies/desert/boss_ramboses.png",
+			"resource": "relic_shards",
+			"greeting": "Surely you can't be serious. I am Pharaoh. And don't call me Sherbet.",
 			"scale": 280.0,
 		},
 	}
@@ -524,29 +591,26 @@ func _update_biome_bg():
 	if not jungle_base_bg and not temple_bg:
 		return
 	if current_stage <= 14:
+		# Pure jungle
 		if jungle_base_bg:
 			jungle_base_bg.visible = true
 		if temple_bg:
 			temple_bg.visible = false
-	elif current_stage <= 20:
-		if jungle_base_bg:
-			jungle_base_bg.visible = false
-		if temple_bg:
-			temple_bg.visible = true
-			temple_bg.texture = bg_temple
 	elif current_stage <= 40:
+		# Jungle/Temple transition (15-20) + Pure Temple (21-35) + Temple/Desert transition (36-40)
+		# Background stays Temple for the whole 15-40 range
 		if jungle_base_bg:
 			jungle_base_bg.visible = false
 		if temple_bg:
 			temple_bg.visible = true
 			temple_bg.texture = bg_temple
 	else:
-		# Stage 41+: mixed — keep temple for now.
+		# Stage 41+: Desert (uses temple_bg slot but with Desert texture — no need for 3rd TextureRect)
 		if jungle_base_bg:
 			jungle_base_bg.visible = false
 		if temple_bg:
 			temple_bg.visible = true
-			temple_bg.texture = bg_temple
+			temple_bg.texture = bg_desert
 
 func _get_enemy_for_stage(stage: int) -> Dictionary:
 	"""Returns a random enemy dict based on biome rules."""
@@ -564,17 +628,52 @@ func _get_enemy_for_stage(stage: int) -> Dictionary:
 		# Pure temple
 		return enemy_roster_temple.pick_random()
 	elif stage <= 40:
-		# 80% temple / 20% jungle
+		# 80% temple / 20% desert (transition into desert biome)
 		if roll < 0.8:
 			return enemy_roster_temple.pick_random()
 		else:
-			return enemy_roster_jungle.pick_random()
+			return enemy_roster_desert.pick_random()
 	else:
-		# Stage 41+: mixed
-		if roll < 0.5:
-			return enemy_roster_jungle.pick_random()
-		else:
-			return enemy_roster_temple.pick_random()
+		# Stage 41-MAX_AVAILABLE_STAGE (55): Pure desert
+		# Stage MAX_AVAILABLE_STAGE+: same desert pool (TO BE CONTINUED screen blocks progression anyway)
+		return enemy_roster_desert.pick_random()
+
+# DEBUG: skip-to-stage shortcuts (only in editor / debug builds)
+# F8 = -5 stages, F9 = +5 stages, F10 = jump to stage 35 (pre-Desert),
+# F11 = jump to stage 49 (pre-Saddam), F12 = jump to stage 54 (pre-Ramboses)
+func _unhandled_input(event):
+	if not OS.is_debug_build():
+		return
+	if not event is InputEventKey or not event.pressed:
+		return
+	var ev: InputEventKey = event
+	match ev.keycode:
+		KEY_F8:
+			_debug_jump_to_stage(max(1, current_stage - 5))
+		KEY_F9:
+			_debug_jump_to_stage(current_stage + 5)
+		KEY_F10:
+			_debug_jump_to_stage(35)
+		KEY_F11:
+			_debug_jump_to_stage(49)
+		KEY_F12:
+			_debug_jump_to_stage(54)
+
+func _debug_jump_to_stage(target_stage: int):
+	print("[DEBUG] Jumping to stage %d (was %d)" % [target_stage, current_stage])
+	current_stage = target_stage
+	# Refill player resources so test isn't immediately bottlenecked
+	player.current_hp = player.max_hp
+	player.health_changed.emit(player.current_hp, player.max_hp)
+	# Despawn current enemy and respawn fresh for new stage
+	if current_enemy and is_instance_valid(current_enemy):
+		current_enemy.queue_free()
+		current_enemy = null
+	_update_biome_bg()
+	_update_biome_music()
+	spawn_enemy()
+	_start_combat()
+	vfx.spawn_floating_text("→ Stage %d (DEBUG)" % target_stage, Color.MAGENTA)
 
 func _process(delta):
 	# Action Bar UI Update
@@ -690,6 +789,12 @@ func load_game(slot: int = 1):
 	
 	player.max_hp = player_data["max_hp"]
 	player.current_hp = player_data["current_hp"]
+	# Defensive: if save was corrupted with 0 HP (race condition with death), restore to 25% HP
+	# so player isn't immortal-but-dead. _on_enemy_attack guards on current_hp > 0, which would
+	# leave them invincible at 0 HP otherwise. 25% lets them play with risk, requires healing.
+	if player.current_hp <= 0:
+		player.current_hp = max(1, int(player.max_hp * 0.25))
+		print("[Save] Corrupt HP=0 on load — restored to %d/%d (25%% of max)" % [player.current_hp, player.max_hp])
 	player.gold = player_data["gold"]
 	player.xp = int(player_data.get("xp", 0))
 	player.level = int(player_data.get("level", 1))
@@ -1068,7 +1173,10 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	enemy_sprite.scale = Vector2(new_enemy_scale, new_enemy_scale)
 	print("DEBUG: Enemy texture set to %s, scale: %.2f" % [enemy_name, new_enemy_scale])
 		
-	var spawn_y = 202.0 + (target_size / 2.0) + 4.0
+	# Enemy positioned ~55% from top of viewport — visually centered on tall screens (9:20+)
+	# and approximately matches biome backgrounds (pyramids in Desert, ruins in Temple, etc).
+	# Previous value (202 base) placed enemy too high on modern tall phones.
+	var spawn_y = 280.0 + (target_size / 2.0) + 4.0
 	enemy_sprite.position = Vector2(180, spawn_y)
 	vfx.original_enemy_pos = enemy_sprite.position
 	
@@ -1191,6 +1299,10 @@ func _on_player_attack(from_click: bool = false):
 				get_node("/root/AudioManager").play_hit_sound(1.5 if is_crit else 1.0)
 
 func _on_enemy_attack():
+	# Defensive: if HP ended up at 0 without death triggering (e.g. corrupt save), force death now.
+	if current_enemy and player.current_hp <= 0:
+		_handle_player_death()
+		return
 	if current_enemy and player.current_hp > 0:
 		var result = player.take_damage(current_enemy.damage)
 		
@@ -1516,6 +1628,13 @@ func _ensure_overlay_background_is_visible():
 func _on_next_level_button_pressed():
 	if ui_state != UI_STATE_VICTORY:
 		return
+	# v0.7.0 content gate: stage 55 (Ramboses) is end of current content
+	if current_stage >= MAX_AVAILABLE_STAGE:
+		_show_to_be_continued_popup()
+		return
+	# Block re-entry IMMEDIATELY (before await) to prevent spam clicks from advancing multiple stages.
+	# Without this, fast double-click during the 0.18s exit animation would trigger _advance_to_next_stage() twice.
+	ui_state = UI_STATE_COMBAT
 	# Juice: animate victory panel out before advancing
 	if victory_ui and is_instance_valid(victory_ui):
 		var exit_t: Tween = create_tween().set_parallel(true)
@@ -1523,6 +1642,72 @@ func _on_next_level_button_pressed():
 		exit_t.tween_property(victory_ui, "scale", Vector2(1.06, 1.06), 0.18).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
 		await exit_t.finished
 	_advance_to_next_stage()
+
+func _show_to_be_continued_popup():
+	"""End-of-content gate. Shown when player beats stage 55 (Ramboses) in v0.7.0."""
+	var overlay := CanvasLayer.new()
+	overlay.layer = 160
+	add_child(overlay)
+
+	var dimmer := ColorRect.new()
+	dimmer.color = Color(0, 0, 0, 0.85)
+	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.add_child(dimmer)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.offset_left = -160
+	panel.offset_top = -130
+	panel.offset_right = 160
+	panel.offset_bottom = 130
+	var ps := StyleBoxFlat.new()
+	ps.bg_color = Color(0.08, 0.06, 0.04, 0.95)
+	ps.set_corner_radius_all(8)
+	ps.set_border_width_all(2)
+	ps.border_color = Color(0.85, 0.7, 0.3)
+	ps.content_margin_left = 16
+	ps.content_margin_right = 16
+	ps.content_margin_top = 14
+	ps.content_margin_bottom = 14
+	panel.add_theme_stylebox_override("panel", ps)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 10)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(vbox)
+
+	var title_lbl := Label.new()
+	title_lbl.text = "TO BE CONTINUED..."
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_size_override("font_size", 20)
+	title_lbl.add_theme_color_override("font_color", Color.GOLD)
+	var tls := LabelSettings.new()
+	tls.outline_size = 3
+	tls.outline_color = Color.BLACK
+	title_lbl.label_settings = tls
+	vbox.add_child(title_lbl)
+
+	var msg_lbl := Label.new()
+	msg_lbl.text = "Joana completed her desert expedition!\n\nMore biomes (Frozen Peaks, Catacombs, Atlantis, Sky Temple) coming soon in upcoming updates.\n\nThanks for playing!"
+	msg_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	msg_lbl.add_theme_font_size_override("font_size", 11)
+	msg_lbl.add_theme_color_override("font_color", Color(0.85, 0.85, 0.75))
+	msg_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(msg_lbl)
+
+	var ok_btn := Button.new()
+	ok_btn.text = "MAIN MENU"
+	ok_btn.custom_minimum_size = Vector2(160, 40)
+	ok_btn.add_theme_color_override("font_color", Color.GOLD)
+	_add_button_juice(ok_btn)
+	ok_btn.pressed.connect(func():
+		overlay.queue_free()
+		save_game()
+		get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
+	)
+	vbox.add_child(ok_btn)
 
 func _on_main_menu_button_pressed():
 	if ui_state != UI_STATE_VICTORY:
@@ -1535,6 +1720,7 @@ func _advance_to_next_stage():
 	save_game()
 	vfx.play_stage_transition_flash()
 	current_stage += 1
+	_revive_used_this_stage = false  # reset revive availability per stage
 	# Tick down stage-based curses
 	player.on_stage_advance()
 	if player.active_curses.size() > 0:
@@ -1586,17 +1772,272 @@ func _on_skills_updated():
 func _handle_player_death():
 	print("PLAYER DIED - GAME OVER")
 	vfx.vibrate(300)  # Strong vibration on death
-	# Reset near-death effects before scene change
+	# Reset near-death effects before showing popup
 	vfx.set_near_death(false)
+	# Stop combat timers so enemy can't hit again during popup
+	if enemy_timer and not enemy_timer.is_stopped():
+		enemy_timer.stop()
+	if player_timer and not player_timer.is_stopped():
+		player_timer.stop()
+	if poison_timer and not poison_timer.is_stopped():
+		poison_timer.stop()
+	in_combat = false
+
+	# ISSUE-27: offer revive via rewarded ad if eligible
+	# On desktop/editor (no AdMob) we still show the popup with simulated ad — for testing UX.
+	var can_revive = (current_stage >= REVIVE_MIN_STAGE) \
+		and not _revive_used_this_stage \
+		and not DEBUG_FORCE_FAKE_ADS
+	if can_revive:
+		_show_defeat_popup_with_revive()
+		return
+
+	_go_to_defeat_screen()
+
+func _go_to_defeat_screen():
 	# Don't save — last auto-save checkpoint (after previous kill) is preserved
 	# Player chooses Continue (reload checkpoint) or New Game from title screen
-	
-	# Return to main menu
 	var title_screen = load("res://src/scenes/TitleScreen.gd")
 	if title_screen:
 		title_screen.last_run_result = "DEFEAT"
-	
 	get_tree().change_scene_to_file("res://src/scenes/TitleScreen.tscn")
+
+func _show_defeat_popup_with_revive():
+	var overlay := CanvasLayer.new()
+	overlay.layer = 160
+	add_child(overlay)
+
+	var dimmer := ColorRect.new()
+	dimmer.color = Color(0, 0, 0, 0.75)
+	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.add_child(dimmer)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.offset_left = -150
+	panel.offset_top = -110
+	panel.offset_right = 150
+	panel.offset_bottom = 110
+	var ps := StyleBoxFlat.new()
+	ps.bg_color = Color(0.2, 0.05, 0.05, 0.95)
+	ps.set_corner_radius_all(8)
+	ps.set_border_width_all(2)
+	ps.border_color = Color(0.9, 0.2, 0.2)
+	ps.content_margin_left = 16
+	ps.content_margin_right = 16
+	ps.content_margin_top = 12
+	ps.content_margin_bottom = 12
+	panel.add_theme_stylebox_override("panel", ps)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 8)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(vbox)
+
+	var title_lbl := Label.new()
+	title_lbl.text = "DEFEATED"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_size_override("font_size", 20)
+	title_lbl.add_theme_color_override("font_color", Color(1.0, 0.3, 0.3))
+	var tls := LabelSettings.new()
+	tls.outline_size = 3
+	tls.outline_color = Color.BLACK
+	title_lbl.label_settings = tls
+	vbox.add_child(title_lbl)
+
+	var enemy_label := "the enemy"
+	if current_enemy and current_enemy.enemy_name != "":
+		enemy_label = current_enemy.enemy_name.replace("BOSS: ", "").replace("ELITE: ", "").replace("ULTIMATE BOSS: ", "")
+	var sub_lbl := Label.new()
+	sub_lbl.text = "Stage %d — fell to %s" % [current_stage, enemy_label]
+	sub_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	sub_lbl.add_theme_font_size_override("font_size", 11)
+	sub_lbl.add_theme_color_override("font_color", Color(0.8, 0.75, 0.75))
+	sub_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(sub_lbl)
+
+	var hint_lbl := Label.new()
+	hint_lbl.text = "Watch a short ad to get back up with full HP"
+	hint_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	hint_lbl.add_theme_font_size_override("font_size", 10)
+	hint_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	hint_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(hint_lbl)
+
+	# Buttons
+	var btn_row := HBoxContainer.new()
+	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_row.add_theme_constant_override("separation", 8)
+	vbox.add_child(btn_row)
+
+	var resolved := {"done": false}
+	var remaining := {"sec": REVIVE_TIMEOUT_SEC}
+
+	var continue_btn := Button.new()
+	continue_btn.text = "CONTINUE (%ds)" % REVIVE_TIMEOUT_SEC
+	continue_btn.custom_minimum_size = Vector2(140, 40)
+	continue_btn.add_theme_color_override("font_color", Color.GOLD)
+	_add_button_juice(continue_btn)
+	btn_row.add_child(continue_btn)
+
+	var giveup_btn := Button.new()
+	giveup_btn.text = "GIVE UP"
+	giveup_btn.custom_minimum_size = Vector2(100, 40)
+	giveup_btn.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	_add_button_juice(giveup_btn)
+	btn_row.add_child(giveup_btn)
+
+	# Countdown ticker
+	var countdown := Timer.new()
+	countdown.wait_time = 1.0
+	countdown.one_shot = false
+	overlay.add_child(countdown)
+	countdown.timeout.connect(func():
+		remaining["sec"] -= 1
+		if remaining["sec"] <= 0:
+			countdown.stop()
+			if not resolved["done"]:
+				resolved["done"] = true
+				overlay.queue_free()
+				_go_to_defeat_screen()
+		else:
+			continue_btn.text = "CONTINUE (%ds)" % remaining["sec"]
+	)
+	countdown.start()
+
+	continue_btn.pressed.connect(func():
+		if resolved["done"]: return
+		resolved["done"] = true
+		countdown.stop()
+		continue_btn.disabled = true
+		giveup_btn.disabled = true
+		continue_btn.text = "LOADING..."
+		_show_revive_ad(overlay)
+	)
+	giveup_btn.pressed.connect(func():
+		if resolved["done"]: return
+		resolved["done"] = true
+		countdown.stop()
+		overlay.queue_free()
+		_go_to_defeat_screen()
+	)
+
+func _show_revive_ad(overlay: CanvasLayer):
+	# Desktop / editor — no AdMob initialized at all; simulate watched ad
+	if not _admob_available:
+		overlay.queue_free()
+		_grant_revive()
+		return
+	# Android with AdMob OK but no rewarded ad loaded (e.g. AdMob app still pending review,
+	# slow network, or ad consumed by another placement) — fallback to fake ad + grant revive.
+	# Better UX than silent "Continue → main menu" failure.
+	if not _rewarded_ad:
+		overlay.queue_free()
+		_show_fake_revive_ad()
+		return
+
+	var ad_ref = _rewarded_ad
+	var reward_granted := {"done": false}
+
+	var reward_listener = OnUserEarnedRewardListener.new()
+	reward_listener.on_user_earned_reward = func(_reward):
+		reward_granted["done"] = true
+		overlay.queue_free()
+		_grant_revive()
+
+	var content_callback := FullScreenContentCallback.new()
+	content_callback.on_ad_dismissed_full_screen_content = func():
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+		if not reward_granted["done"]:
+			# Ad dismissed without reward — give up
+			if is_instance_valid(overlay):
+				overlay.queue_free()
+			_go_to_defeat_screen()
+	content_callback.on_ad_failed_to_show_full_screen_content = func(err):
+		print("[AdMob] Revive ad failed to show: ", err)
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+		if is_instance_valid(overlay):
+			overlay.queue_free()
+		_go_to_defeat_screen()
+	ad_ref.full_screen_content_callback = content_callback
+	ad_ref.show(reward_listener)
+
+func _grant_revive():
+	_revive_used_this_stage = true
+	# Full heal
+	player.current_hp = player.max_hp
+	player.health_changed.emit(player.current_hp, player.max_hp)
+	# Boss HP reset (hybrid rule — only on stage % 5 == 0)
+	if current_enemy and current_stage % 5 == 0:
+		current_enemy.current_hp = current_enemy.max_hp
+		current_enemy.hp_changed.emit(current_enemy.current_hp, current_enemy.max_hp)
+	# Resume combat
+	in_combat = true
+	if player_timer:
+		player_timer.start()
+	if enemy_timer:
+		enemy_timer.start()
+	if player.poison_dps > 0 and poison_timer:
+		poison_timer.start()
+	vfx.spawn_floating_text("REVIVED!", Color.SPRING_GREEN)
+	vfx.vibrate(60)
+	save_game()
+
+func _show_fake_revive_ad():
+	# Fake ad fallback when revive is requested but no rewarded ad is loaded.
+	# Same UX pattern as _show_fake_ad (5s timer with progress bar), but grants revive at the end.
+	# Use dedicated high-layer CanvasLayer (layer=200) so it covers all HUD (enemy HP bars, etc).
+	var ad_layer := CanvasLayer.new()
+	ad_layer.layer = 200
+	add_child(ad_layer)
+
+	var backdrop = ColorRect.new()
+	backdrop.color = Color(0, 0, 0, 1.0)
+	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	ad_layer.add_child(backdrop)
+
+	var center = VBoxContainer.new()
+	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	center.grow_vertical = Control.GROW_DIRECTION_BOTH
+	center.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	center.alignment = BoxContainer.ALIGNMENT_CENTER
+	center.add_theme_constant_override("separation", 20)
+	backdrop.add_child(center)
+
+	var title = Label.new()
+	title.text = "FAKE AD"
+	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_color_override("font_color", Color.GOLD)
+	center.add_child(title)
+
+	var progress = ProgressBar.new()
+	progress.custom_minimum_size = Vector2(250, 24)
+	progress.max_value = 5.0
+	progress.value = 0.0
+	progress.show_percentage = false
+	center.add_child(progress)
+
+	var status = Label.new()
+	status.text = "Revive in 5s..."
+	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	center.add_child(status)
+
+	var ad_tween = create_tween()
+	ad_tween.tween_property(progress, "value", 5.0, 5.0)
+	for i in range(5):
+		ad_tween.parallel().tween_callback(func(): status.text = "Revive in %ds..." % (5-i)).set_delay(float(i))
+	ad_tween.tween_callback(func():
+		_grant_revive()
+		var out_t = create_tween()
+		out_t.tween_property(backdrop, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		out_t.tween_callback(ad_layer.queue_free)
+	)
 
 # === PRESTIGE / REBIRTH SYSTEM ===
 const REBIRTH_MIN_STAGE := 25
@@ -1746,8 +2187,7 @@ func _check_offline_rewards(data: Dictionary):
 	var offline_gold = int(gold_per_sec * elapsed)
 	if offline_gold <= 0:
 		return
-	player.gain_gold(offline_gold)
-	# Show welcome back popup
+	# Gold is granted by the popup (Claim 1× or Watch Ad 2×)
 	call_deferred("_show_offline_reward_popup", offline_gold, int(elapsed))
 
 func _show_offline_reward_popup(gold_amount: int, seconds: int):
@@ -1821,14 +2261,86 @@ func _show_offline_reward_popup(gold_amount: int, seconds: int):
 	desc.add_theme_color_override("font_color", Color(0.75, 0.75, 0.7))
 	desc.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	vbox.add_child(desc)
-	
-	var ok_btn := Button.new()
-	ok_btn.text = "COLLECT"
-	ok_btn.custom_minimum_size = Vector2(140, 40)
-	ok_btn.add_theme_color_override("font_color", Color.GOLD)
-	_add_button_juice(ok_btn)
-	ok_btn.pressed.connect(overlay.queue_free)
-	vbox.add_child(ok_btn)
+
+	# Buttons row: Claim 1x + Watch Ad for 2x
+	var btn_row := HBoxContainer.new()
+	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_row.add_theme_constant_override("separation", 8)
+	vbox.add_child(btn_row)
+
+	var claimed_state := {"done": false}
+
+	var grant_and_close = func(multiplier: int, label: String):
+		if claimed_state["done"]: return
+		claimed_state["done"] = true
+		var final_gold = gold_amount * multiplier
+		player.gain_gold(final_gold)
+		vfx.spawn_floating_text("+%s Gold%s" % [format_number(final_gold), label], Color.GOLD)
+		var fade := create_tween()
+		fade.tween_property(overlay, "modulate:a", 0.0, 0.2)
+		fade.tween_callback(overlay.queue_free)
+
+	var claim_btn := Button.new()
+	claim_btn.text = "CLAIM"
+	claim_btn.custom_minimum_size = Vector2(100, 40)
+	claim_btn.add_theme_color_override("font_color", Color.WHITE)
+	_add_button_juice(claim_btn)
+	claim_btn.pressed.connect(func(): grant_and_close.call(1, ""))
+	btn_row.add_child(claim_btn)
+
+	# x2 button — always visible
+	# • Android+ad loaded → real rewarded ad
+	# • Android no ad → grant 1× with "ad not ready" notice
+	# • Desktop/editor → simulate ad watched, grant 2× (for testing)
+	var x2_btn := Button.new()
+	x2_btn.text = "x2 GOLD ▶"
+	x2_btn.custom_minimum_size = Vector2(120, 40)
+	x2_btn.add_theme_color_override("font_color", Color.GOLD)
+	_add_button_juice(x2_btn)
+	x2_btn.pressed.connect(func():
+		if claimed_state["done"]: return
+		claim_btn.disabled = true
+		x2_btn.disabled = true
+		if _admob_available and _rewarded_ad and not DEBUG_FORCE_FAKE_ADS:
+			_show_offline_x2_ad(grant_and_close)
+		elif _admob_available:
+			# Android but ad not loaded yet — fallback 1× and re-preload
+			_preload_rewarded_ad()
+			grant_and_close.call(1, " (ad not ready)")
+		else:
+			# Desktop / editor — simulate ad for testing
+			grant_and_close.call(2, " (x2 — sim)")
+	)
+	btn_row.add_child(x2_btn)
+
+func _show_offline_x2_ad(grant_and_close: Callable):
+	if not _admob_available or not _rewarded_ad or DEBUG_FORCE_FAKE_ADS:
+		# Fallback: grant 1x
+		grant_and_close.call(1, " (ad unavailable)")
+		return
+
+	var ad_ref = _rewarded_ad
+	var reward_granted := {"done": false}
+
+	var reward_listener = OnUserEarnedRewardListener.new()
+	reward_listener.on_user_earned_reward = func(_reward):
+		reward_granted["done"] = true
+		grant_and_close.call(2, " (x2!)")
+
+	var content_callback := FullScreenContentCallback.new()
+	content_callback.on_ad_dismissed_full_screen_content = func():
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+		# If ad was dismissed without reward, fallback to 1x
+		if not reward_granted["done"]:
+			grant_and_close.call(1, " (ad cancelled)")
+	content_callback.on_ad_failed_to_show_full_screen_content = func(err):
+		print("[AdMob] Offline x2 ad failed to show: ", err)
+		_rewarded_ad = null
+		_preload_rewarded_ad()
+		grant_and_close.call(1, " (ad failed)")
+	ad_ref.full_screen_content_callback = content_callback
+	ad_ref.show(reward_listener)
 
 # === DAILY LOGIN / STREAK REWARDS ===
 const DAILY_REWARDS := [
@@ -2000,6 +2512,11 @@ const INTERSTITIAL_FREQUENCY: int = 8
 const INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-4067533100503154/7266733306"
 var _interstitial_ad: InterstitialAd = null
 var _kills_since_interstitial: int = 0
+
+# Revive after death (ISSUE-27) — 1 per stage, from stage 6+
+const REVIVE_MIN_STAGE: int = 6
+const REVIVE_TIMEOUT_SEC: int = 7
+var _revive_used_this_stage: bool = false
 
 func _init_admob():
 	if DEBUG_FORCE_FAKE_ADS:
@@ -2201,14 +2718,21 @@ func _show_real_ad():
 	_rewarded_ad.show(reward_listener)
 
 func _show_fake_ad():
-	if not DEBUG_FORCE_FAKE_ADS:
-		return
+	# Fake ad fallback shown when:
+	# • DEBUG_FORCE_FAKE_ADS = true (dev override)
+	# • _admob_available = false (desktop/editor — for testing)
+	# • _admob_available = true but _rewarded_ad failed to load (Android error fallback)
+	# Better UX than silent fail. Real AdMob still preferred — called by _show_real_ad first.
+	# Dedicated high-layer CanvasLayer covers HUD (enemy HP/timer bars).
+	var ad_layer := CanvasLayer.new()
+	ad_layer.layer = 200
+	add_child(ad_layer)
 
 	var backdrop = ColorRect.new()
-	backdrop.color = Color(0, 0, 0, 0.95)
+	backdrop.color = Color(0, 0, 0, 1.0)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	%CanvasLayer.add_child(backdrop)
+	ad_layer.add_child(backdrop)
 	
 	var center = VBoxContainer.new()
 	# Crucial fix: Make it grow symmetrically from its anchor point
@@ -2252,7 +2776,7 @@ func _show_fake_ad():
 		_grant_ad_reward()
 		var out_t = create_tween()
 		out_t.tween_property(backdrop, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
-		out_t.tween_callback(backdrop.queue_free)
+		out_t.tween_callback(ad_layer.queue_free)
 	)
 
 func _tween_bar(bar: Range, target: float, duration: float = 0.2):

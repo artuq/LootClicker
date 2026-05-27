@@ -1,7 +1,8 @@
-# LootClicker — Roadmap Issues (v0.4.1-hotfix)
+# LootClicker — Roadmap Issues (v0.6.5)
 
-> Zaktualizowano: 7 marca 2026  
-> Cel: Closed Beta na Google Play z prawdziwymi reklamami AdMob
+> Zaktualizowano: 25 maja 2026
+> Status: Closed Alpha zakończona, **prośba o publikację w Google Play wysłana 2026-05-25**.
+> Cel: po publikacji — rozszerzenie monetyzacji (ISSUE-26, ISSUE-27) i polish.
 
 ---
 
@@ -12,6 +13,28 @@
 - [ISSUE-25: Czyszczenie ekranu i nakladanie warstw (UI Polish)](issues/ISSUE-25_ui_layer_cleanup_and_toast_positioning.md)
 
 Te zadania sa Android-first i sa gotowe do bezposredniej implementacji.
+
+---
+
+## Monetization Pack — Post-Launch Rewarded Ads (2026-05-25)
+
+> **Status:** Gra wysłana do publikacji w Google Play (v0.6.5). Po publikacji wdrożyć rozszerzenie monetyzacji.
+>
+> **Kontekst:** Obecnie w grze są 3 reklamy AdMob (banner / interstitial / rewarded full-heal). Konfiguracja konserwatywna — przyjazna graczom, ale ~40-60% potencjału monetyzacji nadal niezagospodarowane (głównie rewarded ads). Decyzja produktowa: dodać 2 dodatkowe rewarded placementy.
+
+**Kolejność priorytetów (decyzja 2026-05-25):**
+
+1. **[ISSUE-26: x2 Offline Earnings (rewarded ad)](ISSUE-26_admob_rewarded_offline_x2.md)** 🔴 NAJPIERW
+   - Większy wpływ na retencję i przychód, prostszy do zbalansowania, mniej kontrowersyjny.
+   - Plug-in do istniejącego popupu "WELCOME BACK!" — minimum kodu, maksimum efektu.
+   - Estymacja: 2-3h, +30-50% przychodu z rewarded.
+
+2. **[ISSUE-27: Revive po śmierci (rewarded ad)](ISSUE-27_admob_rewarded_revive.md)** 🔴 PO ISSUE-26
+   - Największy emocjonalny impact (najwyższa konwersja w gatunku: 40-60%).
+   - Wymaga przemyślenia balansu (szczególnie bossy) — większy zakres.
+   - Estymacja: 3-5h, +50-100% przychodu z rewarded.
+
+Łącznie po wdrożeniu obu: monetyzacja powinna osiągnąć **~70-80% potencjału dobrze zoptymalizowanej gry idle/clicker**, przy zachowaniu przyjaznego dla gracza odczucia (oba placementy są dobrowolne).
 
 ---
 
@@ -111,6 +134,33 @@ Cel: naprawa hierarchii wizualnej, czytelności UI mobilnego i płynności core 
 > 🚀 **BUILD #3 — AAB → Google Play Closed Beta (v0.5.0-beta, grafiki)**
 > Po ISSUE-21. Wgraj zaktualizowany AAB z nową grafiką na ten sam Closed Beta track (version/code +1).
 > Testerzy automatycznie dostaną aktualizację przez sklep.
+
+### FAZA 3.5: Post-launch monetization (2026-05-25)
+| # | Issue | Priorytet | Model AI | Czas | Status |
+|---|-------|-----------|----------|------|--------|
+| 26 | [Rewarded ad: x2 Offline Earnings](ISSUE-26_admob_rewarded_offline_x2.md) | 🔴 WYSOKI | **Claude Opus 4.7** | 2-3h | ✅ DONE 2026-05-25 |
+| 27 | [Rewarded ad: Revive po śmierci](ISSUE-27_admob_rewarded_revive.md) | 🔴 WYSOKI | **Claude Opus 4.7** | 3-5h | ✅ DONE 2026-05-25 |
+
+> 💰 **Cel fazy:** Rozszerzyć monetyzację po publikacji w Google Play. Wdrożone w kolejności 26 → 27.
+
+### FAZA 5: Late-game content expansion (post-launch, 2026-05-25)
+
+> 🌍 **Epicki ticket:** [ISSUE-28: Late-game content roadmap (stage 50+)](ISSUE-28_late_game_content_roadmap.md) — strategiczny przegląd: 5 nowych biomów, 27 nowych wrogów (5 per biom + 2 doposażenie istniejących), 6 nowych bossów. *Czemu* i *co*.
+>
+> 🎨 **Główny dokument operacyjny:** [**docs/ART_PLAN.md**](../ART_PLAN.md) — przewodnik generowania grafik w stylu War Meat ART_PLAN: ustawienia Nano Banana Pro/Imagen 4, PREFIX-y, gotowe-do-kopiowania prompty dla **38 assetów** (5 teł + 27 wrogów + 6 bossów), image reference workflow, palety per biome, status tracker. *Jak*.
+
+**Sub-tickety (sekwencyjnie):**
+
+| # | Issue | Biome | Stage | Czas | Status |
+|---|-------|-------|-------|------|--------|
+| 18 | [Desert biome + Ramzes](ISSUE-18_desert_biome.md) (rewrite 2026-05-25) | Desert | 36-55 | 4-6h kod + 2-4h art | 🔜 Phase 1 |
+| 29 | Frozen Peaks biome + Yeti CEO (do utworzenia) | Frozen Peaks | 56-75 | ~6-8h | 🔜 Phase 2 |
+| 30 | Catacombs biome + Skeleton CFO + Anglerfish Tycoon (do utworzenia) | Catacombs | 76-95 | ~8h | 🔜 Phase 3 |
+| 31 | Atlantis + Sky Temple endgame (do utworzenia) | Atlantis + Sky Temple | 96-endgame | ~10h | 🔜 Phase 4 |
+| (—) | Doposażenie Jungle (Jaguar Influencer) + Temple (Cursed Tourist) | istniejące | 1-35 | ~2h | 🔜 Phase 5 (warm-up) |
+
+> 🎨 **Workflow grafik:** wszystkie sprite'y i tła generowane w Google AI Studio (Imagen 4). Pełne prompty per character + style guide w [ISSUE-28 sekcja 5](ISSUE-28_late_game_content_roadmap.md#5-generowanie-grafik--google-ai-studio-settings).
+> 📊 **Decyzja:** przed Phase 3+ sprawdzić w ISSUE-19 Firebase Analytics ile % graczy dochodzi do stage 40+. Bez tej informacji ryzyko inwestowania w content, do którego nikt nie dotrze.
 
 ### FAZA 4: Polish i monitoring
 | # | Issue | Priorytet | Model AI | Czas |

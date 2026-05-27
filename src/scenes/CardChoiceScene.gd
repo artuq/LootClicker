@@ -283,12 +283,13 @@ func create_card(opt: Dictionary) -> Button:
 	lbl.add_theme_font_size_override("font_size", 11)
 	if is_cursed:
 		var ls_curse = LabelSettings.new()
+		ls_curse.font_size = 11  # MUST match non-cursed font_size — label_settings overrides theme overrides
 		ls_curse.font_color = Color(1.0, 0.82, 0.78)
 		ls_curse.outline_size = 2
 		ls_curse.outline_color = Color(0.3, 0.0, 0.0, 0.9)
 		lbl.label_settings = ls_curse
 	vbox.add_child(lbl)
-	
+
 	# Tekst - statystyki w nawiasie
 	var stat_lbl = Label.new()
 	stat_lbl.text = opt.get("stat_short", opt.desc)
@@ -298,6 +299,7 @@ func create_card(opt: Dictionary) -> Button:
 	stat_lbl.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	if is_cursed:
 		var ls_stat = LabelSettings.new()
+		ls_stat.font_size = 10  # MUST match non-cursed font_size
 		ls_stat.font_color = Color(1.0, 0.5, 0.45)
 		ls_stat.outline_size = 2
 		ls_stat.outline_color = Color(0.2, 0.0, 0.0, 0.9)

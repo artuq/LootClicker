@@ -20,3 +20,11 @@ aab_contents.txt
 aab_contents_utf8.txt
 logs/
 *.tmp
+
+# macOS junk
+.DS_Store
+**/.DS_Store
+
+# Local archives
+Archiwum.zip
+*.apk
