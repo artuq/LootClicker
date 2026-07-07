@@ -1,13 +1,32 @@
 # ISSUE-12: Poprawa UI — nowy skin interfejsu walki
 
-**Status:** ✅ ZAMKNIETE (2026-03-07)
+**Status:** ✅ ZAMKNIETE v1 (2026-03-07) · 🟢 ITERACJA v2 „Joana Indiana" (2026-06-15)
 
 **Priorytet:** 🟡 ŚREDNI  
 **Kategoria:** Grafika / UI  
 **Szacowany czas:** 3-4h  
-**Najlepszy model AI:** Claude Sonnet 4.6 (Godot theme/style edycja) + **Gemini 2.5 Pro** (mockupy UI, generowanie tekstur przycisków i HP barów)
+**Najlepszy model AI:** Claude Sonnet 4.6 (Godot theme/style edycja) + **Gemini Nano Banana** (generowanie tekstur UI: przyciski, panele, paski, ikony)
 
-## Opis
+---
+
+## 🟢 ITERACJA v2 — custom UI „Joana Indiana" (2026-06-15)
+
+Pierwsza wersja (v1, niżej) opierała się na assetach Kenney + smooth tween. v2 zastąpiła to **własnym, spójnym skinem** (user-generated, Nano Banana → Photopea, chroma key magenta).
+
+- [x] **Paski HP/XP/wroga** — wspólna rama (`HP_BACKGROUND.png`) + jeden tintowalny fill (`HP_FILL.png`), kolor przez `tint_progress`/`modulate_color` (Opcja A). Marginy 9-slice ujednolicone 10/5/10/5.
+- [x] **PlayerHP + XP** przeniesione na `CanvasLayer` (poza kontenery) → swobodnie przesuwalne; XP z napisem „XP 0 / 50" na pasku.
+- [x] **Enemy HP bar (styl Tap Titans 2)** — nazwa na fillu (lewa), wartość HP po prawej, biała czcionka z konturem.
+- [x] **StageBar** (`StageBar.tscn` + `StageBar.gd`) — wizualny pasek progresji 5 węzłów (miniatury biomów, pierścienie normal/boss, kropki ścieżki, skalowanie aktywnego).
+- [x] **Assety UI** — przyciski (`btn_normal/pressed`), panel okna, ikony nawigacji (inventory/stats), potion, ikony zasobów (coin/cog/bandage/venom/crystal).
+- [x] **Coins/DPS** pozycjonowane z kodu (`MID_HUD_OFFSET_TOP`) — odporne na zapisy sceny z edytora.
+- [x] **Usunięty** stały opis „Jungle 1/15 …" (zastąpiony przez StageBar).
+- [x] Kolory czcionek (buttony, okno inventory, loot) dostrojone do ciepłej palety parchment.
+
+> Dokumentacja stylu/pipeline UI: **[ART_PLAN.md](../ART_PLAN.md) §12 (U1-U12 style guide)**.
+
+---
+
+## Opis (v1)
 Interfejs walki wymaga odświeżenia wizualnego: lepsze HP bary, czytelniejsze etykiety, spójne tło.
 
 ## Zadania

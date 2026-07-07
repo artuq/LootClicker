@@ -1,3 +1,78 @@
+# Session Summary — 2026-06-15 (UI Overhaul „Joana Indiana" + Regeneracja Artu Wrogów V2)
+
+## Kontekst
+Wielka sesja UI/UX + art direction po wydaniu Phase 1 (`v0.7.0` — Desert biome + monetyzacja). Cel: zastąpić generyczne assety Kenney własnym, spójnym stylem „Joana Indiana" oraz ujednolicić art wrogów (pixel-art mix + agresja).
+
+---
+
+## 1. UI Overhaul — własny system zamiast Kenney
+
+### Paski HP / XP / wroga (custom „Joana Indiana")
+- **Wspólny system:** jedna rama (`HP_BACKGROUND.png`) + jeden tintowalny fill (`HP_FILL.png`), kolorowany przez `tint_progress` / `modulate_color` (decyzja: **Opcja A** — neutralny jasny fill + tint, zamiast osobnych tekstur per kolor).
+- **Marginy 9-slice ujednolicone** na 10/5/10/5 wszędzie (PlayerHP, XP, EnemyHP, EnemyAttack).
+- **PlayerHPBar + XPBar** = `TextureProgressBar` przeniesione na `CanvasLayer` (poza kontenery) → **swobodnie przesuwalne** w edytorze. XP ma napis „XP 0 / 50" na pasku.
+- **Enemy HP bar (styl Tap Titans 2, „nasz styl, bez skosu"):** nazwa nałożona na fill (lewa), wartość HP po prawej stronie tego samego paska, biała czcionka z konturem (czytelność). Bez osobnego ciemnego boxu.
+
+### Stage Progression Bar (nowa scena)
+- **`StageBar.tscn` + `StageBar.gd`** — wizualny pasek 5 węzłów (current ±2) z miniaturami biomów, pierścieniami (normal/boss), kropkami ścieżki, skalowaniem aktywnego węzła. Wyciągnięty z kodu do **edytowalnej sceny**.
+
+### Pipeline assetów UI (user-generated, Nano Banana → Photopea)
+- Wdrożone: przyciski (`btn_normal/pressed`), panele (`panel_window`), ikony nawigacji (inventory/stats), potion, ikony zasobów (coin/cog/bandage/venom/crystal).
+- **Chroma key MAGENTA `#FF00FF`** jako tło generacji (działa dla białych elementów).
+- Kolory czcionek na buttonach/oknach/loocie dostrojone do ciepłej palety parchment.
+
+---
+
+## 2. Regeneracja artu wrogów — V2 (pixel-art mix + agresja)
+
+### Problem
+Pierwsza regeneracja (V1) wyszła „za gładko" (chibi cartoon zamiast Stardew/Cult of the Lamb pixel-art) i „za słodko" (wrogowie pasywni/uroczy zamiast groźnych).
+
+### Rozwiązanie — `docs/ART_PLAN_V2.md` (nowy plik)
+- **Pixel-art mix** wymuszany post-process: `execution/pixelate.py` (NEAREST downscale + kwantyzacja palety + twardy alpha).
+- **Agresja** wbudowana w `PREFIX_ENEMY_V2` / `PREFIX_BOSS_V2` (gniew, kły, dynamiczne pozy).
+- **STYLE LOCK (anchor):** wybrany **Angry Kaboom Squirrel** jako wzorzec; każdy kolejny wróg generowany z anchorem jako image reference + klauzulą „match the reference, don't drift". Dwa zamki spójności: (1) image ref + style lock, (2) `pixelate.py` z identycznymi `--res/--colors`.
+- **Black-outline fix** dopisany do `PREFIX_BOSS_V2` (B1 Idol wyszedł ze złotym konturem — AI pomyliło „gold aura" z obrysem; teraz explicit „outline MUST be solid black").
+- Dodane sekcje **3.5** (J6, T6, D1-D5 — opisy V2 zachowujące oryginalny design) i **3.6** (bossy B1-B4, B55).
+
+### Wdrożone sprite'y (wszystkie 15 wrogów — V2, 384×384)
+✅ **E1-E8:** squirrel, monkey, plant, mummy, snake, skeleton, golem, ghost
+✅ **J6** jaguar_influencer, **T6** cursed_tourist
+✅ **D1-D5:** sand_karen, cursed_camel, dust_devil_brad, pyramid_scheme_scarab, sandstone_bouncer
+- Podmienione pod istniejącymi ścieżkami → **kod (`GameBattleManager.gd`) bez zmian**, tylko nadpisane pliki + usunięte stare `.import` (Godot reimportuje).
+
+### Pozostało (prompty gotowe w ART_PLAN_V2 §3.6)
+⬜ Bossy: B1 Idol, B2 Brad, B3 Sphinx, B4 Saddam, B55 Ramboses (regen 512×512, `pixelate --res 150 --colors 40`)
+⬜ Zapis finalnej wiewiórki jako `assets/_anchor_squirrel.png` (referencja dla kolejnych generacji)
+
+---
+
+## 3. Poprawki kodu (ta sesja)
+
+### MidHUD (coins/DPS) pozycjonowany z kodu (`GameBattleManager.gd`)
+- **Problem:** pozycja bloku coins/DPS rozjeżdżała się przy zapisach sceny z edytora.
+- **Fix:** stałe `MID_HUD_OFFSET_TOP` (= `-205.0`) + `MID_HUD_HEIGHT` ustawiane w `_ready()` → kod jest źródłem prawdy. Strojenie jednym constem (mniej ujemne = niżej).
+
+### Usunięty stały napis „Jungle 1/15 Brad the Influencer" (`NotificationManager.gd`)
+- `_refresh_info_label()` czyści tekst zamiast budować opis stage'a (StageBar pokazuje progresję wizualnie). Mechanizm powiadomień (level up itp.) **nietknięty**.
+- Usunięty martwy kod: `_get_biome_name`, `_get_next_boss_stage`.
+
+---
+
+## Pliki zmodyfikowane / utworzone
+- **Nowe:** `docs/ART_PLAN_V2.md`, `execution/pixelate.py`, `src/scenes/StageBar.tscn`, `src/scripts/StageBar.gd`
+- **Art:** 15 sprite'ów wrogów (V2), assety UI (paski/przyciski/panele/ikony)
+- **Kod:** `GameBattleManager.gd`, `EnemyHUD.gd`, `NotificationManager.gd`, `node_2d.tscn`, `InventorySlot.tscn`
+- **Dokumentacja:** `ART_PLAN.md` (§0.5 normalizacja, §2.5/2.6 regen prompty, §12 UI style guide U1-U12), `ART_PLAN_V2.md`
+
+## Next Focus
+1. Regeneracja bossów (B1-B4 + B55) wg ART_PLAN_V2 §3.6.
+2. Zapis anchora `_anchor_squirrel.png`.
+3. (Opcjonalnie) batch `pixelate.py` na komplet wrogów dla finalnego ujednolicenia palety/gridu.
+4. Test in-game całości UI + nowego rosteru na urządzeniu.
+
+---
+
 # Status projektu — 2026-05-02 (Zamknięte Testy Alfa Google Play)
 
 ## Kontekst

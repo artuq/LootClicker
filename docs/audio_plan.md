@@ -18,12 +18,19 @@
 
 ## Aktualna sytuacja
 
-| Plik | Użycie | Problem |
-|------|--------|---------|
-| `bg_music.mp3` | Główna pętla przez całą grę | Jedna ścieżka na wszystko — szybko irytuje |
-| `Crystal System Boot.mp3` | Splash screen | OK |
+> ✅ **Aktualizacja 2026-06-15:** wszystkie docelowe tracki zostały wygenerowane (Suno, 2026-05-11) i są w `assets/audio/`. Pozostaje weryfikacja podpięcia rotacji w `AudioManager` (per biom / boss / title / victory).
 
-**Cel:** 4–5 nowych tracków, rotacja per biom + boss + title screen.
+| Plik | Użycie | Status |
+|------|--------|--------|
+| `jungle_theme.mp3` | Stage 1–14 (Jungle) | ✅ w repo |
+| `temple_theme.mp3` | Stage 15–35 (Temple) | ✅ w repo |
+| `boss_theme.mp3` | Boss fight (`stage % 5 == 0`) | ✅ w repo |
+| `title_theme.mp3` | TitleScreen | ✅ w repo |
+| `victory_jingle.mp3` | Po pokonaniu bossa (krótki) | ✅ w repo |
+| `Crystal System Boot.mp3` | Splash screen | ✅ bez zmian |
+| `bg_music.mp3` | (legacy — zastąpiony przez jungle_theme) | ⚠️ do usunięcia po weryfikacji |
+
+> ⚠️ **Desert (stage 36-55, v0.7.0)** nie ma jeszcze dedykowanego tracku — obecnie najpewniej dziedziczy temple/boss. Opcjonalny `desert_theme.mp3` do rozważenia.
 
 ---
 

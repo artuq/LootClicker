@@ -1,0 +1,2 @@
+- [Art bible project state](project_art_bible.md) — ART_BIBLE.md status, V2 pipeline gaps (bosses pending, anchor file missing), visual debt list
+- [User doc conventions](feedback_user_doc_conventions.md) — docs/ location, audit-from-documented-evidence approach, cross-check for drift

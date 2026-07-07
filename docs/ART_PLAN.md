@@ -58,11 +58,51 @@
 3. **Image reference:** dla pierwszego wroga biomu — brak. Dla kolejnych — przeciągnij wcześniejszy sprite (`monkey.png` lub pierwszy z biomu).
 4. **Prompt:** skopiuj z sekcji 2-7, wklej tag `[PREFIX_ENEMY]` lub `[PREFIX_BOSS]` lub `[PREFIX_BG]` z sekcji 1, dodaj `[NEGATIVE]` z sekcji 0.3.
 5. **Generate** → przejrzyj 4 warianty → wybierz najlepszy.
-6. **Download** PNG → otwórz w https://remove.bg (lub Photopea) → wymaż tło → **save as RGBA PNG 1024×1024**.
+6. **Download** PNG → Photopea → wymaż tło (chroma/remove.bg) → **NORMALIZUJ KADR wg sekcji 0.5** (fit-to-box + wyśrodkowanie) → **downscale do 384×384** → save RGBA PNG.
 7. **Zapisz** w `assets/sprites/enemies/{biome}/{snake_case_name}.png` (utwórz subfolder per biom).
 8. **W Godot:** Import → Texture Filter: Nearest (zachowuje piksele) lub Linear (gładkie skalowanie — preferowane dla mobile), Mipmaps: Off, Fix Alpha Border: ✓.
 9. **W kodzie:** dodaj wpis do `enemy_roster_desert` (lub odpowiedni biome) w `src/scenes/GameBattleManager.gd`.
 10. **Mark ✅** w trackerze (sekcja 8).
+
+---
+
+## 0.5 Normalizacja sprite'a wroga (kadr + downscale) — SPÓJNY ROZMIAR
+
+> **Cel:** żeby wszyscy wrogowie mieli **spójną obecność na ekranie** bez walki ze skalowaniem. Sam crop nie wystarcza — potrzebny **wspólny kadr**. Po normalizacji istniejący kod (`_get_sprite_content_size` w `GameBattleManager.gd`, skaluje `max(w,h)` do `target_size`) daje identyczny rozmiar dla każdego — **bez zmian w kodzie**.
+
+### Dlaczego (geneza)
+Wcześniej sprite'y miały różny padding / różną wielkość treści w canvasie → na ekranie wyglądały na różnej wielkości. Fix w kodzie (bbox-scaling) to ratował, ale to było leczenie objawu. Normalizacja kadru leczy **źródło** + zostawia kod jako **safety net** (pas i szelki).
+
+### Przepis w Photopea (per sprite)
+
+1. **Wytnij tło** (chroma/remove.bg) → przezroczystość.
+2. **`Image → Trim`** (Transparent Pixels) → canvas ciasno na postaci.
+3. **Zapamiętaj proporcje** postaci (np. wysoka mumia vs szeroki wąż — to OK, kształty się różnią).
+4. **`Image → Canvas Size`** → ustaw **kwadrat** (większy bok postaci × ~1.14, np. jeśli postać 700px wys → canvas ~800), **Anchor: środek**. To daje **~88% wypełnienia** (margines ~6% z każdej strony) i **wyśrodkowanie w obu osiach**.
+   - Kluczowe: **postać wyśrodkowana** → środek tekstury = środek postaci → gra (która pozycjonuje sprite po środku) ustawi wszystkich spójnie.
+   - **Najdłuższy bok postaci = ~88% canvasu** → bbox-scaling skaluje wszystkich tak samo.
+5. **`Image → Image Size`** → **384 × 384**, Resample **Bilinear** (gładko — to nie pixel-art UI, to sprite postaci).
+6. **Export PNG** (RGBA, przezroczyste).
+
+### Standard (trzymaj się go dla WSZYSTKICH wrogów)
+
+| Parametr | Wartość |
+|---|---|
+| Canvas | **kwadrat**, postać wyśrodkowana |
+| Wypełnienie | **najdłuższy bok postaci ≈ 88%** canvasu (margines ~6%) |
+| Eksport | **384×384** (bossy: 512×512 jeśli chcesz ostrzej) |
+| Filtr w Godot | **Linear**, Mipmaps Off, Fix Alpha Border ✓ |
+
+> ⚠️ **Wypełnienie ZAWSZE 88%** — to jest sedno spójności. Jeśli jeden sprite da 70% a drugi 95%, znów będą różnej wielkości. Ten jeden parametr trzymaj sztywno.
+
+### Co z kodem
+**Nic nie zmieniasz.** `_get_sprite_content_size` mierzy bbox i skaluje `max(w,h) → target_size`. Przy spójnym 88% wypełnieniu wszystkie wychodzą równo. Kod zostaje jako zabezpieczenie gdyby któryś sprite miał inny kadr.
+
+### Pilot (zanim zrobisz kilkadziesiąt)
+1. Zregeneruj **2 wrogów** (np. 1 wysoki + 1 szeroki — najtrudniejszy test spójności).
+2. Znormalizuj wg przepisu (oba 88% wypełnienia, 384×384).
+3. Podmień w grze, odpal — sprawdź czy **oba wyglądają na tę samą wielkość/obecność**.
+4. Jeśli OK → przepis zatwierdzony, lecisz z resztą. Jeśli nie → korygujemy % wypełnienia lub metrykę skalowania.
 
 ---
 
@@ -81,9 +121,10 @@ max 3 tones per element (highlight + base + shadow), NO gradients.
 CHIBI PROPORTIONS — oversized head (40-50% of total height), small
 expressive body, large readable eyes. Single character centered,
 fills ~85% of canvas. NO weapon, NO ground shadow, NO background scenery —
-isolated subject on a clean flat solid white background #FFFFFF
-(transparent will be added in post via remove.bg). Square 1:1 canvas
-1024×1024 source resolution. Style consistent with existing LootClicker
+isolated subject on a clean flat solid MAGENTA background #FF00FF
+(chroma key — cut to transparent in Photopea; magenta works even for
+white parts of the character. The character has NO magenta on its body).
+Square 1:1 canvas 1024×1024 source resolution. Style consistent with existing LootClicker
 enemies (cartoon humorous tone, recognizable silhouette at 32px thumbnail).
 LootClicker palette base (universal): black outline #1a1a2e,
 white #ffffff, gold accent #ffd700, red accent #cc0000, blue accent
@@ -103,7 +144,9 @@ max 4 tones per element, NO gradients. CHIBI-BUT-MENACING PROPORTIONS —
 large detailed head, more body presence than regular enemies, props/accessories
 visible (crown, weapon, gear). Single boss centered, fills ~90% of canvas.
 NO ground shadow, NO background scenery — isolated subject on a clean
-flat solid white background #FFFFFF. Square 1:1 canvas 1024×1024 source
+flat solid MAGENTA background #FF00FF (chroma key — cut to transparent
+in Photopea; works even for white parts of the boss; boss has NO magenta
+on its body). Square 1:1 canvas 1024×1024 source
 resolution. Style consistent with existing LootClicker bosses (boss_brad.png
 as primary reference — humorous yet imposing). Biome-specific palette
 OVERRIDES below.
@@ -192,6 +235,252 @@ backpack straps visible on shoulders (#8b6914). Holding a small ancient
 relic stone in one hand (gray stone #8c8378 with glowing turquoise
 runes #4a9e6b). TEMPLE palette accent: turquoise moss #4a9e6b on relic.
 Single character centered.
+```
+
+---
+
+## 2.5 Regeneracja STARYCH sprite'ów wrogów (E1-E8) — odświeżenie artu + normalizacja
+
+> **Cel:** podmiana starych/niespójnych sprite'ów (m.in. `*-removebg-preview.png`, surowe `monkey/snake/plant`) na nowe w jednolitym chibi-stylu, **znormalizowane wg sekcji 0.5** (88% fill, 384×384). Po regeneracji wrogowie będą spójni rozmiarowo i stylistycznie — bez walki ze skalowaniem.
+>
+> **Workflow per wróg:** `[PREFIX_ENEMY]` (sekcja 1.1) + opis poniżej + **MAGENTA OVERRIDE (niżej)** + `[NEGATIVE]` (0.3) → Imagen 4, 1:1, 4 obrazy → wybierz → **normalizuj (0.5): trim → kwadrat 88% środek → 384×384** → zapisz pod istniejącą nazwą (nadpisuje stary).
+>
+> ### ✅ MAGENTA BACKGROUND — już w PREFIX_ENEMY (sekcja 1.1)
+> Zaktualizowałem `PREFIX_ENEMY` i `PREFIX_BOSS` (sekcja 1.1/1.2): tło = **MAGENTA #FF00FF** (nie białe). Czyli **nic nie dopisujesz do promptów** — magenta jest w prefixie, który i tak wklejasz na początku. Powód: ci wrogowie mają **białe elementy** (papier mumii, prześcieradło, kości, koszula) → biel-na-bieli nie da się wyciąć; magenta tak.
+> **Jedyne co dodaj ręcznie:** do `[NEGATIVE]` (sekcja 0.3) dopisz `white background`. W Photopea: `Select → Color Range` → magenta → Delete (jak przy U1-U12).
+>
+> **Image reference (anchor):** użyj `jaguar_influencer.png` (jungle) / `cursed_tourist.png` (temple) — już w nowym stylu. Pierwszy zregenerowany staje się dodatkowym anchorem.
+>
+> **Kod: bez zmian** — nadpisujesz pliki pod tymi samymi ścieżkami z `enemy_roster_*`, gra podchwytuje automatycznie.
+
+| # | Wróg | Plik (nadpisz) | Biom | Resource |
+|---|---|---|---|---|
+| E1 | Angry Kaboom Squirrel | `enemies/squirrel.png` | Jungle | bandages |
+| E2 | Intern Monkey | `enemies/monkey.png` | Jungle | bandages |
+| E3 | Dieting Plant | `enemies/plant.png` | Jungle | venom |
+| E4 | Toilet Paper Mummy | `Mumia-removebg-preview.png` → **przenieś na** `enemies/mummy.png` | Jungle/Temple | bandages |
+| E5 | Confused Snake | `Snake-removebg-preview.png` → **przenieś na** `enemies/snake.png` | Jungle/Temple | venom |
+| E6 | Tourist Skeleton | `enemies/skeleton.png` | Temple | venom |
+| E7 | Budget Golem | `enemies/golem.png` | Temple | relic_shards |
+| E8 | Sheet Ghost | `enemies/ghost.png` | Temple | venom |
+
+> ⚠️ **E4/E5** mają brzydkie nazwy `*-removebg-preview.png` — przy okazji **zmień nazwę** na `enemies/mummy.png` / `enemies/snake.png` i zaktualizuj ścieżki w `enemy_roster_jungle`/`temple` w `GameBattleManager.gd` (dam znać / zrobię gdy będą gotowe).
+
+> ### 📐 ROZMIAR ZAPISU (wszystkie E1-E8): **384 × 384 px**
+> Generujesz w **1024×1024** (Imagen) → w Photopea: wytnij magentę → `Trim` → `Canvas Size` **kwadrat, postać = 88%, wyśrodkowana** → `Image Size` **384×384** (Bilinear) → export RGBA. Bossy: **512×512**. (Pełny przepis: sekcja 0.5.)
+> **To jest odpowiednik "→ zapis X×Y px" z U1-U12 — dla wrogów: 384×384.**
+
+#### **E1: Angry Kaboom Squirrel**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon ANGRY SQUIRREL — jungle enemy. Body: small round
+squirrel, warm brown fur (#a06a3a base, #7a4e28 shadow, #c89060 highlight),
+big fluffy tail curled up behind, large furious eyes (#1a1a2e pupils +
+#ffffff sclera), furrowed brow (#1a1a2e thick angry lines), buck teeth
+(#ffffff) bared in a snarl. PROP: clutching a lit ACORN-BOMB in both paws
+— a round dark acorn (#5a3a1a) wrapped like a cartoon bomb with a glowing
+sparking fuse on top (#ffd700 spark + #ff6b35 + #ffffff hot dot). Cheeks
+puffed with fury. JUNGLE palette: leaf green accent #3d6e3a. Single
+character centered.
+```
+
+#### **E2: Intern Monkey**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon OVERWORKED INTERN MONKEY — jungle enemy. Body:
+small monkey, tan-brown fur (#b8895a base, #8a6038 shadow, #d8a878 high-
+light), oversized chibi head, big tired eyes with dark under-eye bags
+(#1a1a2e + #6a5a7a bags), forced exhausted smile. CLOTHING: a too-big
+white dress shirt (#ffffff, #d0d0d0 shadow) with a crooked red clip-on
+tie (#cc3344), a company LANYARD with a blank ID badge (#1a1a2e strap,
+#ffffff badge, #4a9eff dot). PROPS: holding a tray with a wobbling stack
+of papers (#ffffff sheets, #d0d0d0 edges) in one paw and a takeaway
+coffee cup (#ffffff + #6a4a2a sleeve) in the other. JUNGLE palette accent
+#3d6e3a. Single character centered.
+```
+
+#### **E3: Dieting Plant**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon VENUS FLYTRAP on a DIET — jungle enemy. Body:
+potted carnivorous plant, green bulb-head with a toothy maw (#4a9e3a base,
+#2e6e22 shadow, #6ed44a highlight, #cc3344 pink inner mouth, #ffffff
+triangular teeth). Two big sad hungry eyes (#1a1a2e pupils + #ffffff +
+sad #4a9eff teardrop). Skinny green stem + two leaf-arms. POT: small
+terracotta pot (#c0683a base, #8a4a24 shadow). PROP: one leaf-arm holding
+a tiny sad SALAD bowl (#ffffff bowl, #4a9e3a lettuce, #cc3344 tomato) it
+clearly doesn't want; tummy-rumble look. JUNGLE palette. Single character
+centered.
+```
+
+#### **E4: Toilet Paper Mummy**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon MUMMY wrapped in TOILET PAPER (not bandages) —
+jungle/temple enemy. Body: humanoid mummy fully wrapped in soft WHITE
+toilet-paper strips (#ffffff base, #e0e0e0 soft shadow, slightly fluffy
+perforated edges visible). Oversized chibi head, two round eyes peeking
+through the wrapping (#1a1a2e pupils + #ffffff), tiny embarrassed/sneezy
+expression. PROP: one hand holding a half-unrolled TOILET PAPER ROLL
+(#ffffff roll, #c0a060 cardboard tube), a loose strip trailing to the
+ground. A small "achoo" sparkle near the nose (#4a9eff + #ffffff). Single
+character centered.
+```
+
+#### **E5: Confused Snake**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon CONFUSED SNAKE — jungle/temple enemy. Body: small
+round green snake coiled up / tied in a loose KNOT in its own body
+(#4a9e3a base, #2e6e22 shadow on underside, #6ed44a highlight, #c8e8b0
+belly). Oversized chibi head, big CROSS-EYED googly eyes (both pupils
+pointing inward, #1a1a2e + #ffffff sclera), tiny forked tongue (#cc3344)
+sticking out sideways. Confused spiral / question-mark vibe — a small "?"
+floating above head (#ffffff + #1a1a2e outline). Little pink cheek
+blush (#ff99aa). Single character centered.
+```
+
+#### **E6: Tourist Skeleton**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon TOURIST SKELETON — temple enemy. Body: humanoid
+skeleton, off-white bones (#e8e8e0 base, #b8b8a8 shadow, #ffffff high-
+light), oversized chibi skull with hollow eye sockets (#1a1a2e voids) and
+a permanent toothy grin. CLOTHING: a loud Hawaiian shirt (#ffffff base
+with #cc3344 hibiscus + #3d6e3a palm leaves), khaki shorts (#c4a570), and
+a wide-brim straw SUN HAT (#d8b878 + #8a6038 band). PROPS: a chunky
+vintage CAMERA on a neck strap (#2a2a2a body, #6a4a2a strap, #8c8c8c lens
++ #ffffff glint) and oversized sunglasses pushed up on the skull
+(#1a1a2e frames, #4a9eff lens). Cheerful clueless-tourist vibe. TEMPLE
+palette accent #4a9e6b. Single character centered.
+```
+
+#### **E7: Budget Golem**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon BUDGET STONE GOLEM — temple enemy. Body: stocky
+humanoid golem made of MISMATCHED cheap rocks of different gray-brown
+shades poorly stacked (#8c8378 base, #6a6058 shadow, #a89e90 highlight,
+plus a couple odd-colored blocks #a67c3a and #7a8a7a to look "budget").
+Oversized blocky chibi head, two small glowing eyes (#4a9e6b soft glow +
+#ffffff core). Slightly crooked/lopsided build, one arm bigger than the
+other, a small crack here and there (#3a3530 lines). PROP: a dangling
+yellow PRICE TAG tied to one arm ("50%" or just a tag shape #ffd700 +
+#1a1a2e string). Goofy "assembled on a budget" charm. TEMPLE palette
+accent #4a9e6b. Single character centered.
+```
+
+#### **E8: Sheet Ghost**
+```
+[PREFIX_ENEMY]
+Subject: a CHIBI cartoon BEDSHEET GHOST — temple enemy. Body: classic
+floating ghost made of a draped WHITE bedsheet (#ffffff base, #d8d8e0 soft
+shadow in folds, #ffffff highlights), rounded top, wavy scalloped bottom
+hem floating above the ground. Two simple cut-out eye holes (#1a1a2e
+voids) and a small "oooh" round mouth hole (#1a1a2e). Tiny stubby sheet-
+arms raised in a half-hearted "boo". PROP (optional, mundane joke): one
+sheet-arm loosely holding an everyday object — a small alarm clock or a
+cup of tea (#8c8c8c / #ffffff + #6a4a2a) — totally unbothered. Faint
+translucent edge glow (#c4dce8, subtle). TEMPLE palette accent #4a9e6b.
+Single character centered.
+```
+
+> **Bossy** (boss_idol "The Allergic Idol", boss_brad, boss_sphinx): regeneruj analogicznie z `[PREFIX_BOSS]` (sekcja 1.2) + normalizacja 0.5, ale **512×512** (większy detal). Prompty bossów — dopiszemy gdy ruszysz, na razie skup się na E1-E8.
+
+### Pilot E1-E8
+Zacznij od **2 kontrastowych** (np. **E2 Intern Monkey** wysoki + **E5 Confused Snake** szeroki/zwinięty) → znormalizuj oba (88%, 384) → wrzuć do gry → sprawdź spójność rozmiaru. OK → reszta.
+
+---
+
+## 2.6 Regeneracja istniejących BOSSÓW (B1-B4)
+
+> **Workflow:** `[PREFIX_BOSS]` (sekcja 1.2, **ma już magentę**) + opis poniżej + `[NEGATIVE]` (0.3, dodaj `white background`) → Imagen 4, 1:1, 4 obrazy → normalizuj (0.5) → **512×512** (bossy = większy detal) → nadpisz plik.
+>
+> ### 📐 ROZMIAR ZAPISU (B1-B4): **512 × 512 px** (kwadrat, postać 88%, środek — sekcja 0.5)
+>
+> **Anchor:** `boss_brad.png` to obecny wzorzec bossów (sekcja 0.2). Regenerujesz też Brada → **zacznij od B2 (Brad)**, zatwierdź styl, potem użyj **nowego Brada jako image reference** dla B1/B3/B4. **Kod bez zmian** (nadpisujesz pod tymi samymi ścieżkami; `scale` w `boss_roster` zostaje).
+
+| # | Boss | Plik (nadpisz) | Stage | Greeting |
+|---|---|---|---|---|
+| B1 | The Allergic Idol | `enemies/boss_idol.png` | 10 | "Ah... Ah... CHOO!" |
+| B2 | Brad the Influencer | `enemies/boss_brad.png` | 25 | "Don't forget to like and subscribe!" |
+| B3 | The Budget Sphinx | `enemies/boss_sphinx.png` | 40 | "Meow. Give me gold." |
+| B4 | Saddam on the Raft (ULTIMATE) | `Sadam-removebg-preview.png` → **przenieś na** `enemies/boss_saddam.png` | 50 | — |
+
+> ⚠️ **B4** ma brzydką nazwę `Sadam-removebg-preview.png` → przy okazji rename na `enemies/boss_saddam.png` + zaktualizuj `@export boss_texture` w scenie (zrobię gdy będzie gotowy).
+
+#### **B1: The Allergic Idol** → zapis `512 × 512`
+```
+[PREFIX_BOSS]
+Subject: a CHIBI cartoon ANCIENT TEMPLE IDOL BOSS that is perpetually
+SNEEZING — "The Allergic Idol". Body: a big carved stone TIKI / Aztec-
+style idol head-and-torso statue, mossy weathered stone (#8c8378 base,
+#5a5048 deep shadow, #b4aa98 highlight) with carved geometric grooves
+(#3a3530) and patches of green moss (#4a9e6b). Oversized blocky chibi
+idol face: huge round GLOWING eyes (#ffd700 + #ffffff core) now WATERY
+and half-squinted (about to sneeze), thick stone brow, wide open carved
+mouth mid-"ACHOO". A runny glowing nose-drip (#4a9eff + #ffffff). Clouds
+of POLLEN / SPORE DUST puffing around the head (#c8e89a + #ffffff
+specks, #4a9e6b green motes). Small stone arms raised. A faint gold aura
+(#ffd700, 8px). TEMPLE/JUNGLE palette: stone gray + gold + moss green.
+Imposing but comedic (sneezy). Single boss centered.
+```
+
+#### **B2: Brad the Influencer** (NOWY ANCHOR — generuj pierwszy) → zapis `512 × 512`
+```
+[PREFIX_BOSS]
+Subject: a CHIBI cartoon SMUG INFLUENCER BOSS — "Brad the Influencer".
+Body: a confident young human guy, oversized chibi head, perfect swept-up
+dirty-blonde fauxhawk hair (#c4a060 base, #8a6038 shadow, #e8d0a0 high-
+light), flawless white grin (#ffffff teeth), expensive mirror sunglasses
+(#1a1a2e frames, #4a9eff + #ffffff lens reflection). CLOTHING: trendy
+white designer tee (#ffffff, #d0d0d0 shadow) under an open varsity
+jacket (#cc3344 + #1a1a2e sleeves), gold chain (#ffd700). PROPS: one hand
+thrusting a SMARTPHONE toward viewer (#1a1a2e body, glowing screen
+#4a9eff with a red REC dot #cc0000), other hand giving a thumbs-up; a
+SELFIE-STICK and a glowing hexagonal RING LIGHT behind his head
+(#ffffff core + #ffd700 outer glow). Floating "LIKE" + "♥" + "SUBSCRIBE"
+UI bubbles around him (#cc3344 / #4a9eff + #ffffff). Punchable smug
+deadpan confidence. Single boss centered.
+```
+
+#### **B3: The Budget Sphinx** → zapis `512 × 512`
+```
+[PREFIX_BOSS]
+Subject: a CHIBI cartoon DISCOUNT EGYPTIAN SPHINX BOSS — "The Budget
+Sphinx". Body: a small crouching sphinx (lion/cat body + human-ish
+pharaoh head) made of CHEAP cracked sandstone, poorly repaired
+(#d4a060 sand base, #a67c3a shadow, #f5dca0 highlight, visible crack
+lines #6a4a20, a couple mismatched gray patch-stones #8c8378). Oversized
+chibi CAT face with a smug bored expression, narrow eyes (#1a1a2e +
+#ffd700 glint), tiny whiskers (#1a1a2e), a striped pharaoh NEMES head-
+dress (gold #ffd700 + dark blue #2a4a7a stripes) that's chipped and
+crooked. PROPS: a small "SALE 50%" cardboard sign hung on one paw
+(#ffffff sign, #cc3344 text shape, #1a1a2e string) and a tiny TIP JAR /
+coin cup in front (#8c8c8c glass, #ffd700 coins). One paw lazily held
+out demanding gold. DESERT/TEMPLE palette: sandstone + gold + blue
+accent. Cheap-but-smug vibe. Single boss centered.
+```
+
+#### **B4: Saddam on the Raft** (ULTIMATE — istniejący joke boss) → zapis `512 × 512`
+```
+[PREFIX_BOSS]
+Subject: a CHIBI cartoon ABSURD "RAFT WARLORD" BOSS — a deadpan
+cartoon mustachioed dictator-parody figure floating on a tiny makeshift
+RAFT. Keep it FULLY cartoon, goofy and absurd (Naked Gun / deadpan
+parody energy), NOT a realistic likeness of any real person. Body:
+oversized chibi head with a big bushy black cartoon MUSTACHE (#1a1a2e),
+stern unimpressed expression, beret or military cap (#3a4a2e olive +
+#ffd700 tiny star), olive-green military jacket (#4a5238 base, #2e3622
+shadow, #6a7250 highlight) with cartoon medals (#ffd700 + #cc3344). He
+stands stiff and self-serious. RAFT: a small lopsided raft of lashed
+wooden logs (#8b6914 wood, #5a3a10 shadow, #c4a060 highlight, frayed
+rope #c4a070) floating on a few cartoon water ripples (#4fb3bf + #ffffff
+foam) at the very bottom. PROP (the visual joke): he solemnly holds a
+tiny bright yellow RUBBER DUCKY (#ffd700 body + #ff6b00 beak + #1a1a2e
+dot eyes) like a serious scepter. A faint gold "final boss" aura
+(#ffd700, 8-10px). 100% deadpan — he has no idea he's ridiculous.
+Single boss centered.
 ```
 
 ---
@@ -1439,7 +1728,7 @@ assets/sprites/
 4. ⬜ Wklej PREFIX (sekcja 1) + opis konkretnego assetu (sekcje 2-7)
 5. ⬜ Dodaj NEGATIVE PROMPT (sekcja 0.3)
 6. ⬜ Generate → wybierz najlepszy z 4 wariantów
-7. ⬜ Download PNG → remove.bg → save RGBA PNG 1024×1024
+7. ⬜ Download PNG → wytnij tło → **normalizuj kadr (sekcja 0.5: fit-to-box 88% + środek)** → **downscale 384×384** → save RGBA
 8. ⬜ Zapisz do `assets/sprites/enemies/{biome}/{snake_case}.png`
 9. ⬜ Godot: Texture Filter Linear, Mipmaps Off, Fix Alpha Border ✓
 10. ⬜ Update `src/scenes/GameBattleManager.gd` — dodaj wpis do `enemy_roster_*` lub `boss_roster`
@@ -1481,7 +1770,404 @@ assets/sprites/
 
 ---
 
-## 12. Następne kroki
+## 12. UI / GUI Style Guide (paski, przyciski, panele, ikony)
+
+> **Cel sekcji:** spójny styl i **konkretne rozmiary pikseli** dla elementów interfejsu generowanych w **Gemini Nano Banana Pro / Imagen 4**, tak żebyś przy wycinaniu w Photopea wiedział **dokładnie jaki rozmiar PNG zapisać**.
+> **Powód powstania:** do tej pory UI było składanką (paczka Kenney + tymczasowy `hpbar2` + improwizacja). Ta sekcja ustala JEDEN punkt odniesienia, żeby nie improwizować przy każdym dotknięciu UI.
+
+### 12.0 Kluczowa zasada rozmiarów (przeczytaj najpierw)
+
+Gra ma **design resolution 360×640** (`viewport_width/height`), a renderuje się **2× = 720×1280** (`window_*_override`), stretch `canvas_items` / `expand`. Z tego wynikają 3 reguły:
+
+1. **Pixel-art UI rysujemy w MAŁEJ natywnej rozdzielczości**, nie w 1024². W AI generujemy duży obraz (1024², bo tyle daje Imagen), ale **w Photopea zmniejszamy do docelowego małego rozmiaru z tabeli 12.1** — używając resamplingu **"Nearest Neighbor" / "Pixels"** (NIE Bilinear!), żeby zachować ostre piksele. Zapisana liczba pikseli = liczba z kolumny **"Zapis PNG"**.
+
+2. **9-slice (StyleBoxTexture) = mały obrazek wystarcza.** Paski, przyciski i panele są **rozciągane** przez Godota — narożniki zostają ostre, środek się rozciąga. Dlatego np. ramka paska 64×16 px obsłuży pasek szeroki na 340 px. **Nie generuj UI w docelowej szerokości ekranu** — generuj mały kafelek z ładnym narożnikiem.
+
+3. **Filtr tekstury w Godot:** dla geometrycznego UI (ramki, paski, przyciski, panele) → **Nearest** (ostre krawędzie pikseli). Dla ikon z miękkim cieniowaniem → **Linear**. To jest **wyjątek** od reguły sprite'ów postaci z sekcji 0.4 (tam Linear) — UI jest geometryczne, więc Nearest wygląda lepiej.
+
+> ⚠️ **Tło do chroma key:** generuj UI na **jednolitym magenta `#FF00FF`**, NIE na białym. Ramki UI mają kremowe/białe wnętrza — na białym tle nie dałoby się ich wyciąć. Magenta = łatwy "Select Color Range → Delete" w Photopea.
+
+### 12.1 Tabela rozmiarów — "jaki PNG zapisać"
+
+| Element | **Zapis PNG (px)** | 9-slice margin L/T/R/B | Filtr Godot | Rozmiar na ekranie (1×) |
+|---|---|---|---|---|
+| Pasek — ramka/tło (wspólna dla wszystkich pasków) | **64 × 16** | 7 / 3 / 7 / 3 | Nearest | rozciąg → szer. × 8–20 |
+| Pasek — wypełnienie (1 neutralny, kolor przez tint) | **48 × 12** | 5 / 1 / 0 / 1 | Nearest | rozciąg (pod ramką) |
+| Przycisk — normal | **96 × 36** | 12 / 12 / 12 / 12 | Nearest | ~150 × 44 |
+| Przycisk — pressed | **96 × 34** | 12 / 12 / 12 / 12 | Nearest | ~150 × 42 |
+| Przycisk — disabled | **96 × 36** | 12 / 12 / 12 / 12 | Nearest | ~150 × 44 |
+| Panel duży (okno: sklep, upgrade, dialog) | **96 × 96** | 24 / 24 / 24 / 24 | Nearest | dowolny |
+| Panel mały (tooltip / badge / ramka ikony) | **48 × 48** | 14 / 14 / 14 / 14 | Nearest | mały |
+| Tło przycisku bottom-nav | **64 × 48** | 14 / 14 / 14 / 14 | Nearest | ~64 × 56 |
+| Ikona zasobu / statystyki (kwadrat) | **64 × 64** | — (bez slice) | Linear | 24–32 |
+| Ikona waluty / mikstury (feature) | **64 × 64** | — (bez slice) | Linear | 32–44 |
+
+> **Margin = liczba pikseli narożnika/krawędzi, które NIE rozciągają się** (wpisujesz je w `texture_margin_*` w `.tscn`). Małe marginy pionowe pasków (3 / 1 px) są celowe — żeby cienki Attack Bar (8 px) też się nie zniekształcał.
+
+### 12.2 PREFIX_UI (wklej na początku każdego promptu UI)
+
+```
+2D mobile game UI element, chibi cartoon pixel art style matching the
+LootClicker game (humorous archaeology adventure — "Joana Indiana").
+Hard pixel edges, NO anti-aliasing. Strong black outline 2-3px on the
+outer silhouette only. Flat cel-shading, max 3 tones per material
+(highlight + base + shadow), NO gradients, NO glossy 3D plastic bevels.
+Theme: weathered explorer / archaeology aesthetic — aged parchment,
+dark leather-brown wood frame, small brass rivets, subtle gold trim.
+Single UI element centered, fills ~80% of canvas, isolated on a clean
+flat solid MAGENTA background #FF00FF (chroma key — will be cut to
+transparent in Photopea). NO drop shadow cast on the background, NO text
+baked into the element (the game engine renders all labels), NO extra
+props or decorations outside the element bounds. Square 1:1 canvas
+1024×1024 source. Shapes must stay crisp and readable when downscaled
+to a tiny 16–96px asset. UI palette below.
+```
+
+**Negative prompt (do każdego UI generowania):**
+```
+realistic, 3D render, glossy plastic, soft drop shadow, gradient mesh,
+anti-aliasing, blurry, text, letters, numbers, watermark, signature,
+photo, skeuomorphic glass, neon glow, busy background, multiple elements
+```
+
+> ⚠️ **WYJĄTEK od reguły konturu:** PREFIX_UI wymusza czarny kontur ("Strong black outline") — to dotyczy elementów z **własną obudową** (U1 ramka, U3-U8 przyciski/panele, U9-U10 ikony). **Fill paska (U2) NIE ma konturu** — siedzi wewnątrz kanału ramki, która już daje obramowanie. W promptcie U2 jest to jawnie nadpisane ("ABSOLUTELY NO black outline"). Nie używaj surowego PREFIX_UI do U2 — użyj pełnego promptu z U2 poniżej.
+
+### 12.3 Paleta UI (spójna z motywem Joana Indiana)
+
+| Rola | Hex | Użycie |
+|---|---|---|
+| Outline zewn. | `#1a1a2e` | czarny kontur wszystkich elementów (jak sprite'y) |
+| Rama — drewno/skóra base | `#6b4a2a` | korpus ramek przycisków/paneli |
+| Rama — cień | `#3a2614` | dolna/wewn. krawędź ramy |
+| Rama — highlight | `#8a6a3a` | górna krawędź ramy |
+| Nity / okucia brass | `#ffd700` + cień `#8a6a20` | gold akcent, nity w narożnikach |
+| Pergamin wnętrze base | `#f0e0bd` | tło paneli, wnętrze okien |
+| Pergamin cień / highlight | `#d4bd8a` / `#fff8e8` | cieniowanie wnętrza |
+| Wnętrze paska (empty) | `#e8d4a8` | tło pod fill paska |
+| Fill HP (czerwony) | `#c0504a` (cień `#9a3f3a`) | pasek życia gracza/wroga |
+| Fill XP (niebieski) | `#4a78c0` (cień `#3a5e9a`) | pasek doświadczenia |
+| Fill Attack (bursztyn) | `#d9a441` (cień `#b0832f`) | pasek ataku/castu wroga |
+| Fill warn. (zielony/żółty) | `#4a9e6b` / `#d9c441` | progi HP (>50% / 25-50%) |
+| Danger / akcent | `#cc3344` | przyciski "delete", alerty |
+
+> 💡 **Spójność z istniejącym:** ta paleta zastępuje tymczasowy `hpbar2` (biało-brązowy) oraz beżowe Kenney (`buttonLong_beige`, `panel_brown`). Po wygenerowaniu nowych assetów podmienimy je w `node_2d.tscn` (tam gdzie teraz są `StyleBoxTexture_btn`, `StyleBoxTexture_panel`, `StyleBoxTexture_hpbar2_*`).
+
+### 12.4 Prompty per element
+
+> ⚠️ **PASKI: TYLKO 2 PLIKI NA WSZYSTKIE PASKI (Opcja A — tint).** W Godot `ProgressBar` renderuje dwie warstwy: **`background`** (tło/ramka — zawsze pełna szerokość) i **`fill`** (wypełnienie — przycinane do wartości). Zamiast generować osobny kolorowy fill na każdy pasek, robimy **jeden neutralny jasny fill** i **kolorujemy go w kodzie** przez `self_modulate`. Dlatego wystarczą **2 assety**:
+> - **U1 `bar_frame.png`** — wspólna ramka/tło (generujesz RAZ)
+> - **U2 `bar_fill.png`** — jeden neutralny kremowo-biały fill (generujesz RAZ; kolor nadaje silnik)
+>
+> **Mapa pasków w grze → kolor (tint), nie osobny plik:**
+>
+> | Pasek (`node_2d.tscn`) | Tint koloru | Źródło koloru |
+> |---|---|---|
+> | `PlayerHPBar` | czerwony `#c0504a` | stały |
+> | `XPBar` | niebieski `#4a78c0` | stały |
+> | `EnemyFloatHPBar` | zielony→żółty→czerwony | **dynamicznie** wg % HP w [EnemyHUD.gd](../src/scripts/EnemyHUD.gd) (`update_hp_bar_style`, progi >50% / 25-50% / <25%) |
+> | `EnemyFloatAttackBar` | bursztyn `#d9a441` | stały |
+>
+> ➡️ **Zysk:** dodanie nowego koloru / zmiana progów HP = zmiana liczby w kodzie, **zero nowych plików graficznych**. Nie wycinaj samego fill bez ramki (i odwrotnie) — w grze zawsze działają obie warstwy naraz.
+
+#### **U1: Pasek — ramka/tło (empty bar frame)** → zapis `64 × 16 px`
+
+```
+[PREFIX_UI]
+A horizontal progress bar FRAME (empty container, no fill inside).
+Capsule / rounded-rectangle shape. Outer frame: dark leather-brown wood
+(#6b4a2a base, #3a2614 bottom shadow edge, #8a6a3a top highlight edge)
+with a 2px black outline #1a1a2e. Rounded end-caps on left and right.
+Interior hollow channel is empty parchment-tan (#e8d4a8 base, #c4a878
+inner shadow at the top edge to suggest depth), ready to be filled by a
+separate colored bar on top. One small brass rivet (#ffd700 + #8a6a20)
+near each rounded end. Horizontal element, much wider than tall.
+```
+
+#### **U2: Pasek — wypełnienie (1 neutralny fill, kolor przez tint)** → zapis `48 × 12 px`
+
+> **Generujesz TYLKO JEDEN** neutralny jasny fill. Kolory (HP/XP/atak/progi wroga) nadaje silnik przez `self_modulate` — patrz mapa w 12.4. Fill musi być **jasny i nasycony bielą**, żeby tint zadziałał poprawnie (modulate mnoży kolory — ciemny fill = brudny tint).
+
+```
+[PREFIX_UI]
+OVERRIDE the PREFIX_UI black-outline rule: this fill has NO outline.
+A horizontal progress bar FILL strip — the colored liquid that fills a
+bar from the left. NEUTRAL near-WHITE creamy color (#fff8e8 base) so the
+engine can tint it any color — do NOT make it red/blue/etc. Almost solid
+flat fill: ONLY a 1px brighter highlight line along the TOP edge
+(#ffffff) and a 1px slightly darker cream shade along the BOTTOM edge
+(#e8dcc0), NO gradient. ROUNDED LEFT end-cap (it seats into the rounded
+left of the frame channel). FLAT right end (this is the moving liquid
+surface, clipped to the HP/XP value). ABSOLUTELY NO black outline
+anywhere — not top, bottom, left or right; the frame already provides
+the border. Soft clean cream pill, wider than tall.
+```
+
+Dodaj do **negative prompt** (oprócz standardowego): `black outline, dark border, heavy black stroke, outlined`
+
+> **Dlaczego lewy zaokrąglony, prawy płaski:** fill to "płyn w pojemniku". Lewy koniec wsuwa się w zaokrąglony lewy kanał ramki U1 → **musi pasować (oba zaokrąglone)**. Prawy koniec to powierzchnia płynu, która przesuwa się gdy HP spada → płaskie pionowe cięcie. Zaokrąglony prawy dałby wędrującą "kroplę" w środku paska.
+>
+> **Dlaczego BEZ konturu:** fill leży WEWNĄTRZ kanału ramki, która już ma ciemny brzeg. Własny czarny kontur fill = podwójna linia + (przy tincie `modulate` czarny zostaje czarny) gruba brudna obwódka. Ramka robi obramowanie, fill to czysty kolor.
+
+> 💡 **W kodzie** (przy implementacji): `fill_bar.self_modulate = Color("c0504a")` dla HP itd. W `EnemyHUD.gd` zamiast podmieniać `StyleBoxTexture` ustawiasz `self_modulate` na zielony/żółty/czerwony wg progów — ten sam jeden plik. 9-slice fill: `margin L = promień lewego capa, R = 0` (płaski prawy).
+
+#### **U3: Przycisk — normal** → zapis `96 × 36 px`
+
+```
+[PREFIX_UI]
+A rectangular GAME BUTTON in idle/normal state, slightly raised.
+Rounded-rectangle shape. Body: warm wood/leather panel (#6b4a2a base,
+#8a6a3a top highlight band suggesting a raised surface, #3a2614 bottom
+shadow band), 2-3px black outline #1a1a2e all around. A thin gold trim
+line (#ffd700) inset just inside the outline. One small brass rivet
+(#ffd700 + #8a6a20) in each of the 4 corners. Center is a flat clean
+panel area (empty — no text, label added by engine). Subtle, clean,
+readable. Horizontal button shape (~3:1 wide).
+```
+
+#### **U4: Przycisk — pressed** → zapis `96 × 34 px`
+
+```
+[PREFIX_UI]
+The SAME button as the normal-state reference but in PRESSED/pushed-in
+state. Inverted depth: now the top edge has the shadow band (#3a2614)
+and the bottom is flat — looks pushed inward. Body darkened ~15%
+(#5a3d22 base). Same rounded-rectangle, same 4 corner brass rivets, same
+black outline #1a1a2e and gold trim. Slightly shorter than the normal
+button (pressed-down look). No text. Horizontal button shape.
+```
+
+#### **U5: Przycisk — disabled** → zapis `96 × 36 px`
+
+```
+[PREFIX_UI]
+The SAME button as the normal-state reference but DISABLED/inactive:
+fully desaturated to muted gray-brown (#6a5e50 base, #8a8074 highlight,
+#4a4038 shadow), gold trim turned dull gray (#9a8c6a), rivets dull
+(#9a8c6a). Lower contrast overall (looks "greyed out"). Same shape,
+outline, rivets. No text. Horizontal button shape.
+```
+
+#### **U6: Panel duży — okno (sklep / upgrade / dialog)** → zapis `96 × 96 px`
+
+```
+[PREFIX_UI]
+A large 9-slice WINDOW PANEL / frame (for shop, upgrade or dialog
+screens). Square. Thick ornate border: dark leather-brown wood frame
+(#6b4a2a base, #3a2614 inner shadow, #8a6a3a outer highlight) with a
+3px black outline #1a1a2e and a thin gold trim line (#ffd700) running
+along the inner edge of the frame. A small brass rivet (#ffd700 +
+#8a6a20) in each of the 4 corners. The CENTER is a large flat parchment
+fill (#f0e0bd base, very subtle #e4d2a8 mottled texture, #fff8e8 faint
+top highlight) — empty, content placed by engine. The corners must hold
+ALL the decorative detail (this is 9-sliced — center stretches). Clean,
+readable, not busy.
+```
+
+#### **U7: Panel mały — tooltip / badge / ramka ikony** → zapis `48 × 48 px`
+
+```
+[PREFIX_UI]
+A small rounded SQUARE badge/tooltip frame (e.g. an item-slot or icon
+border). Simpler than the large window: leather-brown rounded-square
+frame (#6b4a2a base, #3a2614 shadow, #8a6a3a highlight), 2px black
+outline #1a1a2e, thin gold inner trim (#ffd700), one tiny brass rivet
+per corner. Center: flat parchment fill (#f0e0bd). Compact, all detail
+in the border (9-sliced). No text.
+```
+
+#### **U8: Tło przycisku bottom-nav** → zapis `64 × 48 px`
+
+```
+[PREFIX_UI]
+A bottom-navigation TAB button background, rounded-top rectangle.
+Leather-brown (#6b4a2a base, #8a6a3a top highlight, #3a2614 bottom
+shadow), 2px black outline #1a1a2e, thin gold trim (#ffd700) along the
+top edge only. Center flat (icon placed by engine on top). Slightly
+taller-than-wide tab shape. No text, no icon baked in.
+```
+
+#### **U9: Ikony zasobów** (bandages / venom / relic_shards) → zapis `64 × 64 px` każda
+
+```
+[PREFIX_UI]
+A single small game RESOURCE ICON, centered, NO frame around it (frame
+added separately). Chibi cartoon pixel art, 2px black outline #1a1a2e,
+max 3 flat tones, readable at 24px. Subject: [WYBIERZ]:
+- BANDAGES: a rolled cloth bandage / gauze roll, off-white (#f0e6d0 base,
+  #c4b496 shadow, #fff8e8 highlight), one loose end unrolling, tiny
+  blood-spot accent optional (#cc3344).
+- VENOM: a small glass vial of bright green poison (#4a9e6b liquid +
+  #6ed499 highlight + #2a6e4b shadow, #c4dce8 glass glint, dark cork
+  #6a4a2a on top).
+- RELIC SHARDS: 2-3 broken golden ancient relic fragments (#ffd700 base,
+  #8a6a20 shadow, #fff0a0 highlight), faint turquoise rune glow #4a9e6b
+  on one shard.
+Isolated on magenta #FF00FF. Single icon, no background scenery.
+```
+
+#### **U10: Ikony waluty / mikstury** (gold, cog, HP potion) → zapis `64 × 64 px` każda
+
+```
+[PREFIX_UI]
+A single shiny game CURRENCY/ITEM icon, centered, NO frame. Chibi
+cartoon pixel art, 2px black outline #1a1a2e, max 3-4 flat tones,
+readable at 32px. Subject: [WYBIERZ]:
+- GOLD COIN: round gold coin face-on (#ffd700 base, #8a6a20 rim shadow,
+  #fff0a0 top highlight, small engraved ankh or pyramid #8a6a20 in
+  center), one #ffffff sparkle dot.
+- COG / GEAR (upgrade): silver mechanical cog (#b8b8b8 base, #7a7a7a
+  shadow, #e8e8e8 highlight), 8 teeth, central hole.
+- HP POTION: small rounded potion bottle with bright red liquid
+  (#cc3344 base, #ff6677 highlight, #8a1a28 shadow), cork stopper
+  (#6a4a2a), #ffffff glass glint, tiny heart bubble #ff6677 optional.
+Isolated on magenta #FF00FF. Single icon.
+```
+
+### 12.5 Workflow w Photopea (cut → resize → save)
+
+1. Otwórz pobrany PNG z Nano Banana (1024²) w **Photopea**.
+2. **Wytnij tło:** `Select → Color Range` → kliknij magenta `#FF00FF` → `Delete`. Zostaje element na przezroczystości.
+3. **Przytnij do elementu:** `Image → Trim` (transparent pixels) — kadr ciasno do krawędzi elementu.
+4. **Zmniejsz do rozmiaru z tabeli 12.1:** `Image → Image Size` → wpisz **dokładnie** px z kolumny "Zapis PNG" (np. `64 × 16`) → **Resample: "Nearest Neighbor" / "Preserve hard edges"** (NIE Bilinear — inaczej rozmaże piksele).
+5. **Zapisz:** `File → Export as → PNG` → nazwa wg konwencji niżej.
+6. **Godot:** zaznacz plik → Import → `Texture Filter: Nearest` (UI geometryczne) lub `Linear` (ikony) → `Mipmaps: Off` → `Fix Alpha Border: ✓` → Reimport.
+7. **Wpięcie w scenę:** podmień teksturę w odpowiednim `StyleBoxTexture` w `src/scenes/node_2d.tscn` i ustaw `texture_margin_*` wg kolumny "9-slice margin".
+
+**Konwencja nazw plików** (folder `assets/ui/joana_ui/`):
+```
+bar_frame.png   bar_fill.png      ← tylko 2 pliki na WSZYSTKIE paski (kolor = tint w kodzie)
+btn_normal.png   btn_pressed.png   btn_disabled.png
+panel_window.png   panel_small.png   nav_tab.png
+icon_bandages.png   icon_venom.png   icon_relic.png
+icon_gold.png   icon_cog.png   icon_potion.png
+```
+
+### 12.6 Notatki / decyzje
+
+- **9-slice margin musi mieścić się w rozmiarze tekstury.** Jeśli ramka jest 96×96 a margin 24 → środek = 96-48 = 48 px na rozciąganie (OK). Nie ustawiaj marginu > połowa wymiaru.
+- **Cienki Attack Bar (8 px on-screen):** używa tej samej `bar_frame.png` co HP, ale ma małe marginy pionowe (3/1) — dlatego się nie zniekształca przy 8 px. Zweryfikować w grze po podmianie.
+- **✅ DECYZJA: tint (Opcja A).** Paski = tylko `bar_frame.png` + `bar_fill.png`; kolory (HP/XP/atak/progi wroga) przez `self_modulate` w kodzie. Fill MUSI być jasny (#fff8e8), bo modulate mnoży kolory. Przy wpięciu: w `EnemyHUD.gd` zamień podmianę `StyleBoxTexture` na ustawianie `self_modulate` wg progów % HP.
+- **Walidacja w silniku:** po wygenerowaniu pierwszej partii (bar_frame + btn_normal + panel_window) — zanim zrobisz resztę — wrzuć je do gry i sprawdź czy `texture_margin_*` z tabeli 12.1 dają ostre narożniki. Mamy do tego skill `godot-master` (9-slice / StyleBoxTexture patterns) i agenta `game-developer`, który może dograć je do `node_2d.tscn` i dostroić marginy empirycznie.
+
+---
+
+## 12.7 Stage Progression Bar (pasek postępu etapów — model 5-węzłowy)
+
+> **Cel:** zamiana tekstowego „Stage: 7" na wizualny pasek węzłów z miniaturami biomów + ścieżką. **Decyzja: 5 węzłów (current ±2)** — aktywny środkowy powiększony.
+> **Zysk UX specyficzny dla nas:** gra cyklu​je biomy (Jungle 1-14, Temple 15-40, Desert 36-55…) — gdy zbliżasz się do przejścia, węzeł `+1`/`+2` pokazuje **miniaturę nowego biomu** → pasek staje się teaserem „nowa strefa". Plus węzły bossów (co 5. etap / `boss_roster`) wyróżnione → telegraf „idzie boss".
+
+### 12.7.1 Layout
+
+```
+[gear] (n-2)··(n-1)··(( n ))··(n+1)··(n+2)
+        |       |       |        |      |
+     biom    biom   AKTYWNY    biom   biom
+                    +1.3× scale
+   (pod spodem zostaje InfoLabel: "Jungle 7/10 — The Allergic Idol")
+```
+
+- Górny pasek ekranu. Aktywny (środkowy) węzeł powiększony ~1.3× (Tween przy zmianie etapu).
+- Etapy < 1 (na starcie, np. current=1 → węzły -1, 0) → węzeł **ukryty** (`visible=false`).
+- ⚠️ Na 360px szeroko​ści 5 węzłów + gear jest **ciasno** — kręgi małe (~36px), do dostrojenia w silniku.
+
+### 12.7.2 Assety (mało — większość reuse/proceduralnie)
+
+| Element | Zapis PNG | Skąd | Filtr |
+|---|---|---|---|
+| Ring węzła — normal (U11) | **48 × 48** | Nano Banana (nasz styl) | Nearest |
+| Ring węzła — boss (U12) | **48 × 48** | Nano Banana | Nearest |
+| Miniatura biomu (kołowa) | **40 × 40** | **reuse teł** (Jungle/Temple/Desert.jpeg) — przycięte do koła proceduralnie, ja robię | Linear |
+| Kropka ścieżki | **6 × 6** | proceduralnie, ja robię (tiling) | Nearest |
+| Gear (ustawienia) | — | mamy `cog_silver.png` ✅ | — |
+
+> **Maskowanie koła (pixel-art!):** NIE StyleBoxFlat clip (antyaliasuje). Zamiast tego: miniatura biomu **przycięta do koła z twardą krawędzią** (robię w kodzie/PIL z teł) + na wierzchu **ring PNG z przezroczystym środkiem** (dziura) i **przezroczystymi rogami** (węzeł jest okrągły, nie kwadratowy). Oba ostre.
+
+#### **U11: Ring węzła — normal** → zapis `48 × 48 px`
+
+```
+[PREFIX_UI]
+A small circular UI FRAME RING for a stage/level node icon. PERFECT
+CIRCLE, thick rounded ring border ONLY. The whole image background,
+the CENTER HOLE, and the 4 CORNERS are ALL the SAME solid MAGENTA
+#FF00FF (chroma key — everything magenta is cut to transparent in
+Photopea, so the center becomes a see-through hole and the node ends up
+round, not square). ONLY the ring band itself is opaque: leather-brown
+wood (#6b4a2a base, #3a2614 inner shadow, #8a6a3a outer highlight),
+2px black outline #1a1a2e on BOTH inner and outer edges, thin gold trim
+line (#ffd700) on the inner rim. Keep the ring band THIN (~20% of the
+radius) so a biome thumbnail behind the hole stays clearly visible.
+Crisp, readable at 36px. NO text, NO thumbnail inside — just the ring on
+magenta.
+```
+Negative (dodaj): `square frame, filled center, opaque center, transparent background, thumbnail, photo inside`
+
+#### **U12: Ring węzła — boss** → zapis `48 × 48 px`
+
+```
+[PREFIX_UI]
+Same circular stage-node RING as the normal version but a BOSS variant:
+GOLD ring band (#ffd700 base, #8a6a20 shadow, #fff0a0 highlight), black
+outline #1a1a2e, slightly thicker than normal. A tiny boss marker at the
+TOP of the ring — a small red gem (#cc3344) or a small bone-white skull
+(#e8e8e0 + #1a1a2e eye sockets). The whole background, the CENTER HOLE,
+and the 4 CORNERS are ALL the same solid MAGENTA #FF00FF (chroma key —
+cut to transparent in Photopea). ONLY the ring band + boss marker are
+opaque. Crisp at 36px. NO text inside.
+```
+
+> **U13 (kropka ścieżki)** — nie generuj, zrobię proceduralnie (6×6, kremowo-brązowa, `Texture Repeat = Enabled`, tiling na ~16px segmentach `TextureRect` `stretch_mode = TILE`).
+
+### 12.7.3 Struktura sceny (do wdrożenia)
+
+```
+StageBar (HBoxContainer)            ← góra ekranu (zastępuje TopBar)
+├── SettingsHUD (TextureButton)     ← gear (istniejący)
+└── StagePath (HBoxContainer, sep ~4)
+    ├── StageNode0 (Control)        ← current-2
+    │   ├── Thumb (TextureRect)     ← miniatura biomu (kołowa), centered
+    │   ├── Ring  (TextureRect)     ← ring PNG na wierzchu
+    │   └── NumLabel (Label)        ← numer etapu, dół, outline
+    ├── Dot0 (TextureRect, TILE)
+    ├── StageNode1 … Dot1 … StageNode2(AKTYWNY) … Dot2 … StageNode3 … Dot3 … StageNode4
+```
+
+- **5 stałych slotów** — kod aktualizuje treść (nie przebudowuje drzewa).
+
+### 12.7.4 Zachowanie (kod — `StageBar.gd` lub w `GameBattleManager`)
+
+```gdscript
+func update_stage_bar(current: int):
+    for i in 5:
+        var s = current - 2 + i          # etap w slocie
+        var slot = nodes[i]
+        if s < 1:
+            slot.visible = false
+            continue
+        slot.visible = true
+        slot.num_label.text = str(s)
+        slot.thumb.texture = biome_thumb_for_stage(s)   # jungle/temple/desert…
+        slot.ring.texture = ring_boss if _is_boss(s) else ring_normal
+        var active = (i == 2)
+        # Tween scale 1.0 ↔ 1.3 dla aktywnego
+        var t = slot.create_tween()
+        t.tween_property(slot, "scale", Vector2.ONE * (1.3 if active else 1.0), 0.2)
+
+func _is_boss(s): return boss_roster.has(s) or (s % 5 == 0)
+# biome_for_stage: reuse istniejącej logiki (jungle ≤14, temple ≤40, desert ≤55…)
+```
+
+- Wołaj `update_stage_bar(current_stage)` w `_advance_stage` / po `current_stage += 1`.
+- `InfoLabel` (biom + nazwa bossa) **zostaje** pod paskiem — węzły dają orientację, tekst dookreśla.
+
+### 12.7.5 Kolejność wdrożenia
+
+1. **Ja (proceduralnie, od zaraz jeśli chcesz):** miniatury kołowe z teł (jungle/temple/desert) + kropka ścieżki.
+2. **Ty (Nano Banana):** U11 ring normal + U12 ring boss (48×48, środek+rogi przezroczyste).
+3. **Wspólnie (zamknij scenę w Godot!):** budowa `StageBar` w `node_2d.tscn` + `StageBar.gd` + podpięcie `update_stage_bar`. Walidacja rozmiarów na 360px.
+
+---
+
+## 13. Następne kroki
 
 1. **Wygeneruj 2 sprite'y warm-upowe** (J6 Jaguar Influencer + T6 Cursed Tourist) — sprawdź czy workflow działa, czy styl jest spójny z istniejącymi.
 2. Jeśli OK → **Phase 1: Desert** (BG + D1 anchor → reszta D2-D5 + boss).

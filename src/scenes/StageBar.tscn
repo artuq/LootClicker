@@ -1,0 +1,227 @@
+[gd_scene format=3 uid="uid://bst4gebar001"]
+
+[ext_resource type="Script" path="res://src/scripts/StageBar.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/ui/stage/node_ring.png" id="2_ring"]
+[ext_resource type="Texture2D" path="res://assets/ui/stage/thumb_jungle.png" id="3_thumb"]
+[ext_resource type="Texture2D" path="res://assets/ui/stage/path_dot.png" id="4_dot"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_num"]
+font_size = 9
+outline_size = 3
+outline_color = Color(0, 0, 0, 1)
+
+[node name="StageBar" type="HBoxContainer"]
+theme_override_constants/separation = 3
+alignment = 1
+script = ExtResource("1_script")
+
+[node name="N0" type="Control" parent="."]
+custom_minimum_size = Vector2(30, 42)
+layout_mode = 2
+size_flags_vertical = 4
+pivot_offset = Vector2(15, 21)
+mouse_filter = 2
+
+[node name="Thumb" type="TextureRect" parent="N0"]
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("3_thumb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ring" type="TextureRect" parent="N0"]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("2_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="N0"]
+offset_top = 29.0
+offset_right = 30.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+label_settings = SubResource("LabelSettings_num")
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D0" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(14, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_dot")
+stretch_mode = 1
+
+[node name="N1" type="Control" parent="."]
+custom_minimum_size = Vector2(30, 42)
+layout_mode = 2
+size_flags_vertical = 4
+pivot_offset = Vector2(15, 21)
+mouse_filter = 2
+
+[node name="Thumb" type="TextureRect" parent="N1"]
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("3_thumb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ring" type="TextureRect" parent="N1"]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("2_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="N1"]
+offset_top = 29.0
+offset_right = 30.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+label_settings = SubResource("LabelSettings_num")
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D1" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(14, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_dot")
+stretch_mode = 1
+
+[node name="N2" type="Control" parent="."]
+custom_minimum_size = Vector2(30, 42)
+layout_mode = 2
+size_flags_vertical = 4
+pivot_offset = Vector2(15, 21)
+mouse_filter = 2
+
+[node name="Thumb" type="TextureRect" parent="N2"]
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("3_thumb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ring" type="TextureRect" parent="N2"]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("2_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="N2"]
+offset_top = 29.0
+offset_right = 30.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+label_settings = SubResource("LabelSettings_num")
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D2" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(14, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_dot")
+stretch_mode = 1
+
+[node name="N3" type="Control" parent="."]
+custom_minimum_size = Vector2(30, 42)
+layout_mode = 2
+size_flags_vertical = 4
+pivot_offset = Vector2(15, 21)
+mouse_filter = 2
+
+[node name="Thumb" type="TextureRect" parent="N3"]
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("3_thumb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ring" type="TextureRect" parent="N3"]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("2_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="N3"]
+offset_top = 29.0
+offset_right = 30.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+label_settings = SubResource("LabelSettings_num")
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="D3" type="TextureRect" parent="."]
+texture_filter = 1
+custom_minimum_size = Vector2(14, 16)
+layout_mode = 2
+size_flags_vertical = 4
+mouse_filter = 2
+texture = ExtResource("4_dot")
+stretch_mode = 1
+
+[node name="N4" type="Control" parent="."]
+custom_minimum_size = Vector2(30, 42)
+layout_mode = 2
+size_flags_vertical = 4
+pivot_offset = Vector2(15, 21)
+mouse_filter = 2
+
+[node name="Thumb" type="TextureRect" parent="N4"]
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("3_thumb")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Ring" type="TextureRect" parent="N4"]
+texture_filter = 1
+offset_right = 30.0
+offset_bottom = 30.0
+mouse_filter = 2
+texture = ExtResource("2_ring")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Num" type="Label" parent="N4"]
+offset_top = 29.0
+offset_right = 30.0
+offset_bottom = 42.0
+mouse_filter = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+label_settings = SubResource("LabelSettings_num")
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1

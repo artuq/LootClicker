@@ -24,35 +24,12 @@ func update_stage_info(stage: int, boss_roster: Dictionary):
 
 
 func _refresh_info_label():
+	# Persistent stage description (e.g. "Jungle 1/15 Brad the Influencer") is
+	# disabled by request — the StageBar already shows progression visually.
+	# InfoLabel is still used for transient notifications (level up, etc.).
 	if not info_label:
 		return
-	var biome = _get_biome_name(_current_stage)
-	if _current_stage % 5 == 0:
-		info_label.text = "%s  BOSS" % biome
-		return
-	var boss_text = ""
-	var next_boss = _get_next_boss_stage(_current_stage - 1)
-	if next_boss == -1:
-		boss_text = "Free roam"
-	else:
-		var prev_boss = 0
-		var boss_stages = _boss_roster.keys()
-		boss_stages.sort()
-		for bs in boss_stages:
-			if bs < _current_stage:
-				prev_boss = bs
-		var total = next_boss - prev_boss
-		var done = _current_stage - prev_boss
-		if _current_stage == next_boss:
-			boss_text = "BOSS!"
-		else:
-			var bname = ""
-			if _boss_roster.has(next_boss):
-				bname = _boss_roster[next_boss].name
-			elif next_boss == 50:
-				bname = "Final Boss"
-			boss_text = "%d/%d %s" % [done, total, bname]
-	info_label.text = "%s  %s" % [biome, boss_text]
+	info_label.text = ""
 
 
 func queue_notification(message: String, color: Color = Color.WHITE, duration: float = 1.5):
@@ -118,27 +95,3 @@ func show_toast(text: String, duration: float = 2.0):
 		if _toast_node == toast:
 			_toast_node = null
 	)
-
-
-func _get_biome_name(stage: int) -> String:
-	if stage <= 14:
-		return "Jungle"
-	elif stage <= 20:
-		return "Jungle/Temple"
-	elif stage <= 35:
-		return "Temple"
-	elif stage <= 40:
-		return "Temple/Jungle"
-	else:
-		return "Endless"
-
-
-func _get_next_boss_stage(from_stage: int) -> int:
-	var boss_stages = _boss_roster.keys()
-	boss_stages.sort()
-	for bs in boss_stages:
-		if bs > from_stage:
-			return bs
-	if from_stage < 50:
-		return 50
-	return -1

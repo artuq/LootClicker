@@ -25,6 +25,10 @@ logs/
 .DS_Store
 **/.DS_Store
 
+# Windows junk
+Thumbs.db
+**/Thumbs.db
+
 # Local archives
 Archiwum.zip
 *.apk

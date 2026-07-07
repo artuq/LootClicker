@@ -9,6 +9,13 @@ var enemy_timer: Timer
 
 const SAVE_PASSWORD = "JoannaIndianaLootClicker2026"
 
+# Coins/DPS block (MidHUD) vertical position — driven from code so it stays
+# authoritative and immune to scene/editor re-saves. MidHUD is anchored to the
+# screen BOTTOM, so offsets are negative; MORE negative = higher up.
+# Lower the block on screen → make MID_HUD_OFFSET_TOP LESS negative.
+const MID_HUD_OFFSET_TOP := -205.0   # bump toward 0 to move coins/DPS lower
+const MID_HUD_HEIGHT := 65.0         # block height (top→bottom), keep constant
+
 @export var damage_label_scene: PackedScene
 @export var upgrade_screen_scene: PackedScene # New export for level up UI
 @export var skill_tree_scene: PackedScene # New export for full screen tree
@@ -24,6 +31,7 @@ var enemy_roster_jungle: Array[Dictionary] = []
 var enemy_roster_temple: Array[Dictionary] = []
 var enemy_roster_desert: Array[Dictionary] = []
 var boss_roster: Dictionary = {}   # stage -> boss data
+var _sprite_content_size_cache: Dictionary = {}  # texture resource_path -> Vector2 content size
 
 # Phase 1 content gate (v0.7.0): max stage with real biome content
 # Stage above this shows "TO BE CONTINUED" screen
@@ -37,6 +45,7 @@ const MAX_AVAILABLE_STAGE: int = 55
 @onready var enemy_hp_label = %EnemyFloatName
 @onready var gold_label = %GoldLabel
 @onready var stage_label = %StageLabel
+@onready var stage_bar = %StageBar
 @onready var next_level_btn = %NextLevelButton
 @onready var click_area = %ClickArea
 @onready var victory_ui = %VictoryUI
@@ -67,6 +76,7 @@ const MAX_AVAILABLE_STAGE: int = 55
 @onready var enemy_sprite = %EnemySprite
 @onready var enemy_hp_bar = %EnemyFloatHPBar
 @onready var enemy_attack_bar = %EnemyFloatAttackBar
+@onready var enemy_hp_value = %EnemyFloatHPValue
 @onready var jungle_base_bg: TextureRect = get_node_or_null("../BackgroundLayer/JungleBaseBG")
 @onready var temple_bg: TextureRect = get_node_or_null("../BackgroundLayer/TempleBG")
 @export var damage_container: Node # New export for damage labels
@@ -120,7 +130,7 @@ const UI_STATE_REWARD = 2
 var ui_state: int = UI_STATE_COMBAT
 
 const POTION_ICON_PATH = "res://assets/kenney_tiny-dungeon/Tiles/tile_0115.png"
-const POTION_ICON_TEXTURE: Texture2D = preload("res://assets/kenney_tiny-dungeon/Tiles/tile_0115.png")
+const POTION_ICON_TEXTURE: Texture2D = preload("res://assets/icons/potion.png")
 var resource_icon_paths: Dictionary = {
 	"bandages": "res://assets/icons/bandage.png",
 	"venom": "res://assets/icons/venom.png",
@@ -169,6 +179,12 @@ func _ready():
 	# Initialize enemy rosters
 	_init_enemy_rosters()
 
+	# Coins/DPS block position — authoritative from code (survives scene re-saves)
+	var mid_hud = get_node_or_null("../CanvasLayer/MidHUD")
+	if mid_hud:
+		mid_hud.offset_top = MID_HUD_OFFSET_TOP
+		mid_hud.offset_bottom = MID_HUD_OFFSET_TOP + MID_HUD_HEIGHT
+
 	# Lazy-load Desert biome background (Phase 1 / v0.7.0)
 	if ResourceLoader.exists("res://assets/sprites/Desert.jpeg"):
 		bg_desert = load("res://assets/sprites/Desert.jpeg")
@@ -199,6 +215,7 @@ func _ready():
 		"enemy_hp_bar": enemy_hp_bar,
 		"enemy_nameplate_label": enemy_nameplate_label,
 		"enemy_attack_bar": enemy_attack_bar,
+		"enemy_hp_value": enemy_hp_value,
 		"bar_green": bar_green,
 		"bar_yellow": bar_yellow,
 		"bar_red": bar_red,
@@ -385,6 +402,12 @@ func _set_combat_hud_visible(visible_state: bool):
 	if enemy_action_bar:
 		enemy_action_bar.visible = visible_state
 
+	# Free-floating player bars (moved out of MidHUD) — hide with the combat HUD.
+	if player_hp_bar:
+		player_hp_bar.visible = visible_state
+	if xp_bar:
+		xp_bar.visible = visible_state
+
 	# In-combat PotionButton: hide during victory popup (was visible bleeding through to the left of popup)
 	var potion_btn = get_node_or_null("CanvasLayer/PotionButton")
 	if potion_btn == null:
@@ -402,15 +425,14 @@ func _configure_touch_mouse_filters():
 		get_node_or_null("CanvasLayer/TopHUD/VBox/InfoLabel"),
 		get_node_or_null("CanvasLayer/MidHUD"),
 		get_node_or_null("CanvasLayer/MidHUD/VBox"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/XPRowMargin"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer/XPIcon"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer/XPBar"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer/XPLabel"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/PlayerHPContainer/PlayerHPBar"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/PlayerHPContainer/PlayerHPBar/HPLabel"),
+		get_node_or_null("CanvasLayer/XPBar"),
+		get_node_or_null("CanvasLayer/XPBar/XPLabel"),
+		get_node_or_null("CanvasLayer/PlayerHPBar"),
+		get_node_or_null("CanvasLayer/PlayerHPBar/HPLabel"),
 		get_node_or_null("CanvasLayer/EnemyFloatingUI"),
-		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyFloatName"),
-		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyFloatHPBar"),
+		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyBarRow/EnemyFloatHPBar/EnemyFloatName"),
+		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyBarRow/EnemyFloatHPBar"),
+		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyBarRow/EnemyHPValueBox"),
 		get_node_or_null("CanvasLayer/EnemyFloatingUI/EnemyFloatAttackBar"),
 	]
 	for node in ignore_nodes:
@@ -420,8 +442,6 @@ func _configure_touch_mouse_filters():
 	# Containers with interactive children should pass through empty space.
 	var pass_nodes = [
 		get_node_or_null("CanvasLayer/MidHUD/VBox/GoldContainer"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/XPRowMargin/XPContainer"),
-		get_node_or_null("CanvasLayer/MidHUD/VBox/PlayerHPContainer"),
 		get_node_or_null("../BottomNavLayer/BottomPanel"),
 		get_node_or_null("../BottomNavLayer/BottomPanel/BottomLayout/ContentArea/TabContainer"),
 	]
@@ -455,12 +475,12 @@ func _init_enemy_rosters():
 		},
 		{
 			"name": "Toilet Paper Mummy",
-			"texture": "res://assets/sprites/Mumia-removebg-preview.png",
+			"texture": "res://assets/sprites/enemies/mummy.png",
 			"resource": "bandages",
 		},
 		{
 			"name": "Confused Snake",
-			"texture": "res://assets/sprites/Snake-removebg-preview.png",
+			"texture": "res://assets/sprites/enemies/snake.png",
 			"resource": "venom",
 		},
 		{
@@ -487,12 +507,12 @@ func _init_enemy_rosters():
 		},
 		{
 			"name": "Toilet Paper Mummy",
-			"texture": "res://assets/sprites/Mumia-removebg-preview.png",
+			"texture": "res://assets/sprites/enemies/mummy.png",
 			"resource": "bandages",
 		},
 		{
 			"name": "Confused Snake",
-			"texture": "res://assets/sprites/Snake-removebg-preview.png",
+			"texture": "res://assets/sprites/enemies/snake.png",
 			"resource": "venom",
 		},
 		{
@@ -715,6 +735,7 @@ func save_game(slot: int = 1):
 		"enemy_name": current_enemy.enemy_name if current_enemy else "",
 		"between_fights": not in_combat,
 		"last_save_time": Time.get_unix_time_from_system(),
+		"kills_since_interstitial": _kills_since_interstitial,
 		"prestige_level": player.prestige_level,
 		"soul_shards": player.soul_shards,
 		"daily_last_claim": player.daily_last_claim,
@@ -781,6 +802,8 @@ func load_game(slot: int = 1):
 	var saved_enemy_name = data.get("enemy_name", "")
 	var player_data = data["player"]
 	
+	# Restore interstitial kill counter (survives Android RAM kills)
+	_kills_since_interstitial = int(data.get("kills_since_interstitial", 0))
 	# Restore prestige data (persists across rebirths)
 	player.prestige_level = int(data.get("prestige_level", 0))
 	player.soul_shards = int(data.get("soul_shards", 0))
@@ -1079,6 +1102,19 @@ func _find_enemy_by_name(search_name: String) -> Dictionary:
 			return e
 	return {}
 
+func _get_sprite_content_size(texture: Texture2D) -> Vector2:
+	var path = texture.resource_path
+	if _sprite_content_size_cache.has(path):
+		return _sprite_content_size_cache[path]
+	var content_size = Vector2(texture.get_size())
+	var img = texture.get_image()
+	if img:
+		var used_rect = img.get_used_rect()
+		if used_rect.size.x > 0 and used_rect.size.y > 0:
+			content_size = Vector2(used_rect.size)
+	_sprite_content_size_cache[path] = content_size
+	return content_size
+
 func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	if current_enemy:
 		current_enemy.queue_free()
@@ -1168,17 +1204,35 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 		res_type = enemy_data.resource
 
 	# --- AUTOMATIC SCALING ---
-	var tex_size = enemy_sprite.texture.get_size()
-	var new_enemy_scale = target_size / max(tex_size.x, tex_size.y)
+	var content_size = _get_sprite_content_size(enemy_sprite.texture)
+	var new_enemy_scale = target_size / max(content_size.x, content_size.y)
 	enemy_sprite.scale = Vector2(new_enemy_scale, new_enemy_scale)
 	print("DEBUG: Enemy texture set to %s, scale: %.2f" % [enemy_name, new_enemy_scale])
 		
-	# Enemy positioned ~55% from top of viewport — visually centered on tall screens (9:20+)
-	# and approximately matches biome backgrounds (pyramids in Desert, ruins in Temple, etc).
-	# Previous value (202 base) placed enemy too high on modern tall phones.
-	var spawn_y = 280.0 + (target_size / 2.0) + 4.0
+	# Enemy centered in the play area between the top bars (enemy HP/attack, ~235)
+	# and the bottom HUD (coins/DPS at MID_HUD_OFFSET_TOP). ADAPTIVE to viewport
+	# height: stretch=canvas_items + aspect=expand expands logical height beyond
+	# 640 on tall/foldable screens, so a fixed "235 from top" left the enemy
+	# floating high. Centering keeps it visually placed on every aspect ratio.
+	var vh := get_viewport().get_visible_rect().size.y
+	var play_top := 235.0                 # just below enemy HP/attack bars
+	var play_bottom := vh - 215.0         # just above coins/DPS (MidHUD)
+	var spawn_y := (play_top + play_bottom) * 0.5
+	spawn_y = max(spawn_y, play_top + (target_size / 2.0) + 4.0)  # never overlap top bars
 	enemy_sprite.position = Vector2(180, spawn_y)
 	vfx.original_enemy_pos = enemy_sprite.position
+
+	# Keep the tap target (ClickArea) centered on the enemy sprite. The sprite is
+	# positioned adaptively (above), so the ClickArea must follow in code instead
+	# of a fixed scene offset — otherwise taps miss the enemy on tall/foldable
+	# screens. Slightly larger than the sprite for comfortable tapping.
+	if click_area:
+		var click_w := maxf(target_size * 1.35, 220.0)
+		var click_h := maxf(target_size * 1.5, 250.0)
+		click_area.offset_left = 180.0 - click_w / 2.0
+		click_area.offset_right = 180.0 + click_w / 2.0
+		click_area.offset_top = spawn_y - click_h / 2.0
+		click_area.offset_bottom = spawn_y + click_h / 2.0
 	
 	# Switch biome background based on stage
 	_update_biome_bg()
@@ -1201,6 +1255,8 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	current_enemy.died.connect(_on_enemy_died)
 	
 	stage_label.text = "Stage %d" % current_stage
+	if stage_bar:
+		stage_bar.update_stage(current_stage)
 	enemy_hud.hide_legacy()
 	notif.update_stage_info(current_stage, boss_roster)
 	# Single floating enemy UI: name/lvl + hp bar + attack bar
@@ -1433,10 +1489,7 @@ func _on_enemy_died(_xp, gold, res_type = ""):
 	
 	# Reset ad counter for this stage & update ad button
 	ad_uses_this_stage = 0
-	var ad_btn = get_node_or_null("%WatchAdButton")
-	if ad_btn:
-		ad_btn.disabled = player.current_hp >= player.max_hp
-		ad_btn.text = "FULL HEAL (Ad)"
+	_update_watch_ad_button()
 	
 	# Enemy died -> show ONLY victory screen
 	_update_loot_summary()
@@ -1578,14 +1631,21 @@ func _show_victory_popup_animated():
 				victory_label.queue_free()
 		)
 
-	# Enable buttons with bounce animation
+	# Enable buttons with bounce animation — WatchAdButton handled separately via _update_watch_ad_button
 	for btn in victory_buttons:
 		if is_instance_valid(btn):
+			if btn.name == "WatchAdButton":
+				continue  # managed by _update_watch_ad_button below
 			btn.disabled = false
 			var bt := create_tween()
 			bt.tween_property(btn, "modulate:a", 1.0, 0.2).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 			btn.pivot_offset = btn.size * 0.5
 			UIAnimations.bounce_control(btn, 1.12, 0.18)
+	# Restore WatchAdButton to correct state based on actual ad availability
+	var ad_btn_anim = get_node_or_null("%WatchAdButton")
+	if ad_btn_anim and is_instance_valid(ad_btn_anim):
+		ad_btn_anim.modulate.a = 1.0
+		_update_watch_ad_button()
 
 	if _next_stage_label and is_instance_valid(_next_stage_label):
 		_next_stage_label.free()
@@ -1925,46 +1985,29 @@ func _show_defeat_popup_with_revive():
 	)
 
 func _show_revive_ad(overlay: CanvasLayer):
-	# Desktop / editor — no AdMob initialized at all; simulate watched ad
 	if not _admob_available:
+		# Desktop/editor — symulacja
 		overlay.queue_free()
 		_grant_revive()
 		return
-	# Android with AdMob OK but no rewarded ad loaded (e.g. AdMob app still pending review,
-	# slow network, or ad consumed by another placement) — fallback to fake ad + grant revive.
-	# Better UX than silent "Continue → main menu" failure.
-	if not _rewarded_ad:
+	if _rewarded_ad == null:
+		# Reklama nie załadowana — na Androidzie idź do ekranu porażki (nie fake ad!)
 		overlay.queue_free()
-		_show_fake_revive_ad()
-		return
-
-	var ad_ref = _rewarded_ad
-	var reward_granted := {"done": false}
-
-	var reward_listener = OnUserEarnedRewardListener.new()
-	reward_listener.on_user_earned_reward = func(_reward):
-		reward_granted["done"] = true
-		overlay.queue_free()
-		_grant_revive()
-
-	var content_callback := FullScreenContentCallback.new()
-	content_callback.on_ad_dismissed_full_screen_content = func():
-		_rewarded_ad = null
 		_preload_rewarded_ad()
-		if not reward_granted["done"]:
-			# Ad dismissed without reward — give up
+		_go_to_defeat_screen()
+		return
+
+	_show_rewarded_ad_with_disclosure(
+		"revive with full HP",
+		func():
+			if is_instance_valid(overlay):
+				overlay.queue_free()
+			_grant_revive(),
+		func():
 			if is_instance_valid(overlay):
 				overlay.queue_free()
 			_go_to_defeat_screen()
-	content_callback.on_ad_failed_to_show_full_screen_content = func(err):
-		print("[AdMob] Revive ad failed to show: ", err)
-		_rewarded_ad = null
-		_preload_rewarded_ad()
-		if is_instance_valid(overlay):
-			overlay.queue_free()
-		_go_to_defeat_screen()
-	ad_ref.full_screen_content_callback = content_callback
-	ad_ref.show(reward_listener)
+	)
 
 func _grant_revive():
 	_revive_used_this_stage = true
@@ -2166,7 +2209,14 @@ func _update_rebirth_button():
 	_rebirth_btn = Button.new()
 	_rebirth_btn.text = "REBIRTH (+%d Shards)" % _get_rebirth_shards()
 	_rebirth_btn.custom_minimum_size = Vector2(200, 50)
-	_rebirth_btn.add_theme_color_override("font_color", Color(0.6, 0.3, 0.8))
+	# Match the new button style (kopiuj stylebox z istniejącego przycisku) + jasny czytelny tekst
+	var ref_btn = vbox.get_node_or_null("NextLevelButton")
+	if ref_btn:
+		_rebirth_btn.add_theme_stylebox_override("normal", ref_btn.get_theme_stylebox("normal"))
+		_rebirth_btn.add_theme_stylebox_override("pressed", ref_btn.get_theme_stylebox("pressed"))
+		_rebirth_btn.add_theme_stylebox_override("hover", ref_btn.get_theme_stylebox("normal"))
+		_rebirth_btn.add_theme_stylebox_override("focus", ref_btn.get_theme_stylebox("normal"))
+	_rebirth_btn.add_theme_color_override("font_color", Color(0.88, 0.74, 1.0))
 	_add_button_juice(_rebirth_btn)
 	_rebirth_btn.pressed.connect(_on_rebirth_pressed)
 	vbox.add_child(_rebirth_btn)
@@ -2313,34 +2363,35 @@ func _show_offline_reward_popup(gold_amount: int, seconds: int):
 	)
 	btn_row.add_child(x2_btn)
 
+	# Gra ładuje się szybciej niż AdMob zdąży pobrać reklamę — przy starcie
+	# x2 button czeka aż _rewarded_ad się załaduje, zamiast od razu dawać "(ad not ready)"
+	if _admob_available and _rewarded_ad == null and not DEBUG_FORCE_FAKE_ADS:
+		x2_btn.text = "Ad loading..."
+		x2_btn.disabled = true
+		var ad_check_timer := Timer.new()
+		ad_check_timer.wait_time = 0.5
+		overlay.add_child(ad_check_timer)
+		ad_check_timer.timeout.connect(func():
+			if claimed_state["done"] or not is_instance_valid(x2_btn):
+				ad_check_timer.stop()
+				return
+			if _rewarded_ad != null:
+				x2_btn.text = "x2 GOLD ▶"
+				x2_btn.disabled = false
+				ad_check_timer.stop()
+		)
+		ad_check_timer.start()
+
 func _show_offline_x2_ad(grant_and_close: Callable):
-	if not _admob_available or not _rewarded_ad or DEBUG_FORCE_FAKE_ADS:
-		# Fallback: grant 1x
-		grant_and_close.call(1, " (ad unavailable)")
+	if not _admob_available or _rewarded_ad == null or DEBUG_FORCE_FAKE_ADS:
+		grant_and_close.call(1, " (ad not ready)")
 		return
 
-	var ad_ref = _rewarded_ad
-	var reward_granted := {"done": false}
-
-	var reward_listener = OnUserEarnedRewardListener.new()
-	reward_listener.on_user_earned_reward = func(_reward):
-		reward_granted["done"] = true
-		grant_and_close.call(2, " (x2!)")
-
-	var content_callback := FullScreenContentCallback.new()
-	content_callback.on_ad_dismissed_full_screen_content = func():
-		_rewarded_ad = null
-		_preload_rewarded_ad()
-		# If ad was dismissed without reward, fallback to 1x
-		if not reward_granted["done"]:
-			grant_and_close.call(1, " (ad cancelled)")
-	content_callback.on_ad_failed_to_show_full_screen_content = func(err):
-		print("[AdMob] Offline x2 ad failed to show: ", err)
-		_rewarded_ad = null
-		_preload_rewarded_ad()
-		grant_and_close.call(1, " (ad failed)")
-	ad_ref.full_screen_content_callback = content_callback
-	ad_ref.show(reward_listener)
+	_show_rewarded_ad_with_disclosure(
+		"get x2 Gold for offline time",
+		func(): grant_and_close.call(2, " (x2!)"),
+		func(): grant_and_close.call(1, " (anulowano)")
+	)
 
 # === DAILY LOGIN / STREAK REWARDS ===
 const DAILY_REWARDS := [
@@ -2493,206 +2544,412 @@ func _on_settings_hud_pressed():
 	settings_layer.add_child(settings)
 	settings.setup()
 
-# === WATCH AD FOR FULL HEAL ===
-var ad_uses_this_stage: int = 0
-const MAX_AD_PER_STAGE: int = 1
-const DEBUG_FORCE_FAKE_ADS: bool = false # PRODUCTION MODE
+# ============================================================
+# === ADMOB SYSTEM (pełny rewrite v0.7.5) ===
+# ============================================================
 
-# AdMob Rewarded Ad
-var _rewarded_ad: RewardedAd = null
-var _admob_available: bool = false
-const REWARDED_AD_UNIT_ID = "ca-app-pub-4067533100503154/9484519330"
-
-# AdMob Banner Ad (ISSUE-02) — Joana Indiana
-const BANNER_AD_UNIT_ID = "ca-app-pub-4067533100503154/1590900646"
-var _banner_ad: AdView = null
-
-# AdMob Interstitial Ad (ISSUE-03)
-const INTERSTITIAL_FREQUENCY: int = 8
+# Stałe — Ad Unit IDs
+# PRODUKCYJNE (v0.7.9 — wersja publikowana na Play Store):
+const REWARDED_AD_UNIT_ID    = "ca-app-pub-4067533100503154/9484519330"
+const BANNER_AD_UNIT_ID      = "ca-app-pub-4067533100503154/1590900646"
 const INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-4067533100503154/7266733306"
-var _interstitial_ad: InterstitialAd = null
-var _kills_since_interstitial: int = 0
+# TESTOWE Google (do weryfikacji lokalnej, NIE wgrywać na Play Store z tymi ID):
+#const REWARDED_AD_UNIT_ID    = "ca-app-pub-3940256099942544/5224354917"
+#const BANNER_AD_UNIT_ID      = "ca-app-pub-3940256099942544/6300978111"
+#const INTERSTITIAL_AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
 
-# Revive after death (ISSUE-27) — 1 per stage, from stage 6+
-const REVIVE_MIN_STAGE: int = 6
-const REVIVE_TIMEOUT_SEC: int = 7
+const MAX_AD_PER_STAGE:       int  = 1
+const INTERSTITIAL_FREQUENCY: int  = 8
+const DEBUG_FORCE_FAKE_ADS:   bool = false
+
+# TYMCZASOWY on-screen debug AdMoba — pokazuje status ładowania każdego formatu
+# wprost na ekranie (loaded / failed[kod]). Ustaw false aby ukryć (po diagnozie).
+const ADMOB_DEBUG_OVERLAY:    bool = false  # PROD: overlay off (true tylko do diagnozy)
+var _admob_status: Dictionary = {"Banner": "init…", "Interstitial": "init…", "Rewarded": "init…"}
+var _admob_debug_label: Label = null
+
+# Stan systemu reklamowego
+var _admob_available:       bool = false
+var _admob_started:         bool = false  # guard: _start_admob() tylko raz (watchdog zgody)
+var _rewarded_ad:           RewardedAd       = null
+var _rewarded_loading:      bool = false  # blokada przed równoległymi requestami
+var _interstitial_ad:       InterstitialAd   = null
+var _banner_ad:             AdView           = null
+var _kills_since_interstitial: int = 0
+var ad_uses_this_stage:     int = 0
+
+# Referencje class-level (ochrona przed Garbage Collectorem Godota)
+var _admob_init_listener:         OnInitializationCompleteListener
+var _rewarded_loader:             RewardedAdLoader
+var _rewarded_callback:           RewardedAdLoadCallback
+var _reward_listener:             OnUserEarnedRewardListener
+var _content_callback:            FullScreenContentCallback
+var _banner_listener:             AdListener
+var _interstitial_loader:         InterstitialAdLoader
+var _interstitial_callback:       InterstitialAdLoadCallback
+var _interstitial_content_callback: FullScreenContentCallback
+
+# Revive po śmierci — 1 na stage, od stage 6+
+const REVIVE_MIN_STAGE:    int = 6
+const REVIVE_TIMEOUT_SEC:  int = 7
 var _revive_used_this_stage: bool = false
 
-func _init_admob():
-	if DEBUG_FORCE_FAKE_ADS:
-		print("[AdMob] Mode: FAKE ADS ENABLED")
-		_admob_available = false
-		return
-		
-	print("[AdMob] OS.get_name() = %s" % OS.get_name())
-	if OS.get_name() == "Android" or OS.get_name() == "iOS":
-		# Step 1: Request UMP consent before initializing ads
-		_request_consent()
+# ---- INICJALIZACJA ----
 
-func _request_consent():
-	print("[AdMob/UMP] Requesting consent info update...")
+func _admob_debug(format: String, status: String) -> void:
+	# Aktualizuje on-screen status danego formatu (Banner/Interstitial/Rewarded).
+	print("[AdMob] %s: %s" % [format, status])
+	_admob_status[format] = status
+	if not ADMOB_DEBUG_OVERLAY:
+		return
+	if _admob_debug_label == null or not is_instance_valid(_admob_debug_label):
+		var layer := CanvasLayer.new()
+		layer.layer = 195
+		add_child(layer)
+		_admob_debug_label = Label.new()
+		_admob_debug_label.position = Vector2(8, 90)
+		_admob_debug_label.add_theme_font_size_override("font_size", 14)
+		_admob_debug_label.add_theme_color_override("font_color", Color(0.6, 1.0, 0.6))
+		var ls := LabelSettings.new()
+		ls.outline_size = 4; ls.outline_color = Color.BLACK
+		_admob_debug_label.label_settings = ls
+		layer.add_child(_admob_debug_label)
+	_admob_debug_label.text = "ADMOB DEBUG\nBanner: %s\nInterstitial: %s\nRewarded: %s" % [
+		_admob_status.get("Banner", "?"),
+		_admob_status.get("Interstitial", "?"),
+		_admob_status.get("Rewarded", "?"),
+	]
+
+func _init_admob():
+	if OS.get_name() != "Android" and OS.get_name() != "iOS":
+		print("[AdMob] Platform: %s — ads disabled (desktop/editor)" % OS.get_name())
+		return
+	if DEBUG_FORCE_FAKE_ADS:
+		print("[AdMob] DEBUG_FORCE_FAKE_ADS=true — skipping real ads")
+		return
+	print("[AdMob] Starting UMP consent flow...")
+	_request_ump_consent()
+
+func _request_ump_consent():
 	var params := ConsentRequestParameters.new()
 	UserMessagingPlatform.consent_information.update(
 		params,
-		_on_consent_update_success,
-		_on_consent_update_failure
+		_on_ump_success,
+		_on_ump_failure
 	)
 
-func _on_consent_update_success():
-	print("[AdMob/UMP] Consent info updated OK")
-	var status: int = UserMessagingPlatform.consent_information.get_consent_status()
+func _on_ump_success():
+	var status := UserMessagingPlatform.consent_information.get_consent_status()
 	print("[AdMob/UMP] Consent status: %d" % status)
 	if status == ConsentInformation.ConsentStatus.REQUIRED:
 		if UserMessagingPlatform.consent_information.get_is_consent_form_available():
-			print("[AdMob/UMP] Consent form available — loading...")
-			UserMessagingPlatform.load_consent_form(_on_consent_form_loaded, _on_consent_form_load_failed)
-		else:
-			print("[AdMob/UMP] Consent required but form not available — proceeding")
-			_start_admob_after_consent()
-	else:
-		# NOT_REQUIRED or OBTAINED — proceed directly
-		print("[AdMob/UMP] Consent not required or already obtained — proceeding")
-		_start_admob_after_consent()
+			UserMessagingPlatform.load_consent_form(_on_ump_form_loaded, func(e): _start_admob())
+			# WATCHDOG: znany bug pluginu w EEA — callback formularza zgody potrafi
+			# się NIE wrócić, przez co _start_admob() nigdy nie rusza (zero reklam aż
+			# do restartu gry). Zgoda jest już wtedy rozstrzygnięta/zapisana, więc po
+			# 6s inicjalizujemy SDK i tak. _start_admob() jest idempotentne, więc jeśli
+			# callback jednak wróci — drugie wywołanie nic nie zrobi.
+			await get_tree().create_timer(6.0).timeout
+			if not _admob_started:
+				print("[AdMob/UMP] Form callback stalled — watchdog starting SDK")
+				_start_admob()
+			return
+	_start_admob()
 
-func _on_consent_update_failure(error: FormError):
-	print("[AdMob/UMP] Consent update failed: [%d] %s" % [error.error_code, error.message])
-	# Proceed anyway — ads may still work, just without personalization
-	_start_admob_after_consent()
+func _on_ump_failure(error: FormError):
+	print("[AdMob/UMP] Consent update failed [%d]: %s — proceeding anyway" % [error.error_code, error.message])
+	_start_admob()
 
-func _on_consent_form_loaded(form: ConsentForm):
-	print("[AdMob/UMP] Consent form loaded — showing...")
-	form.show(_on_consent_form_dismissed)
+func _on_ump_form_loaded(form: ConsentForm):
+	form.show(func(error: FormError):
+		if error:
+			print("[AdMob/UMP] Form error [%d]: %s" % [error.error_code, error.message])
+		_start_admob()
+	)
 
-func _on_consent_form_load_failed(error: FormError):
-	print("[AdMob/UMP] Consent form load failed: [%d] %s" % [error.error_code, error.message])
-	_start_admob_after_consent()
+func _start_admob():
+	if _admob_started:
+		return  # idempotent — watchdog zgody lub callback formularza, którekolwiek pierwsze
+	_admob_started = true
+	print("[AdMob] Initializing SDK...")
+	var cfg := RequestConfiguration.new()
+	cfg.max_ad_content_rating = RequestConfiguration.MAX_AD_CONTENT_RATING_PG
+	cfg.tag_for_child_directed_treatment = RequestConfiguration.TagForChildDirectedTreatment.FALSE
+	cfg.tag_for_under_age_of_consent = RequestConfiguration.TagForUnderAgeOfConsent.FALSE
+	# PROD: brak urządzeń testowych w kodzie → wszyscy (w tym dev) dostają
+	# prawdziwe reklamy. Do testów dodawaj urządzenie w AdMob Console →
+	# Urządzenia testowe (bez rebuilda), NIE tutaj.
+	cfg.test_device_ids = []
+	MobileAds.set_request_configuration(cfg)
 
-func _on_consent_form_dismissed(error: FormError):
-	if error:
-		print("[AdMob/UMP] Consent form dismissed with error: [%d] %s" % [error.error_code, error.message])
-	else:
-		var status: int = UserMessagingPlatform.consent_information.get_consent_status()
-		print("[AdMob/UMP] Consent form dismissed — status: %d" % status)
-	_start_admob_after_consent()
-
-func _start_admob_after_consent():
-	print("[AdMob] Initializing MobileAds after consent flow...")
-	
-	# Configure ad content rating and child-directed treatment BEFORE init
-	var request_config := RequestConfiguration.new()
-	request_config.max_ad_content_rating = RequestConfiguration.MAX_AD_CONTENT_RATING_G
-	request_config.tag_for_child_directed_treatment = RequestConfiguration.TagForChildDirectedTreatment.TRUE
-	request_config.tag_for_under_age_of_consent = RequestConfiguration.TagForUnderAgeOfConsent.TRUE
-	MobileAds.set_request_configuration(request_config)
-	print("[AdMob] RequestConfiguration set: rating=G, child_directed=TRUE, under_age=TRUE")
-	
-	var listener = OnInitializationCompleteListener.new()
-	listener.on_initialization_complete = func(status: InitializationStatus):
+	_admob_init_listener = OnInitializationCompleteListener.new()
+	_admob_init_listener.on_initialization_complete = func(_s: InitializationStatus):
 		_admob_available = true
-		print("[AdMob] Initialized OK — loading ads...")
-		await get_tree().create_timer(1.0).timeout
+		print("[AdMob] SDK ready — preloading all ad formats")
+		_admob_debug("Banner", "loading…")
+		_admob_debug("Interstitial", "loading…")
+		_admob_debug("Rewarded", "loading…")
 		_preload_rewarded_ad()
-		_init_banner_ad()
 		_preload_interstitial_ad()
-	MobileAds.initialize(listener)
+		_init_banner_ad()
+	MobileAds.initialize(_admob_init_listener)
+
+# ---- REWARDED AD ----
 
 func _preload_rewarded_ad():
-	if not _admob_available or DEBUG_FORCE_FAKE_ADS: return
-	var callback = RewardedAdLoadCallback.new()
-	callback.on_ad_loaded = func(ad: RewardedAd):
-		print("[AdMob] Rewarded ad loaded OK")
+	if not _admob_available or DEBUG_FORCE_FAKE_ADS:
+		return
+	if _rewarded_ad != null or _rewarded_loading:
+		return  # Już załadowana lub w trakcie ładowania
+	_rewarded_loading = true
+	print("[AdMob] Preloading rewarded ad...")
+	_rewarded_callback = RewardedAdLoadCallback.new()
+	_rewarded_callback.on_ad_loaded = func(ad: RewardedAd):
+		_rewarded_loading = false
 		_rewarded_ad = ad
-	callback.on_ad_failed_to_load = func(err):
-		print("[AdMob] Rewarded ad failed: ", err)
+		_admob_debug("Rewarded", "READY ✓")
+		_update_watch_ad_button()
+	_rewarded_callback.on_ad_failed_to_load = func(err: LoadAdError):
+		_rewarded_loading = false
+		_admob_debug("Rewarded", "failed[%d] (retry 30s)" % err.code)
 		_rewarded_ad = null
-		notif.queue_notification("Ad failed to load", Color(1.0, 0.5, 0.5), 2.0)
-	RewardedAdLoader.new().load(REWARDED_AD_UNIT_ID, AdRequest.new(), callback)
+		_update_watch_ad_button()
+		# Auto-retry po 30 sekundach
+		await get_tree().create_timer(30.0).timeout
+		if _rewarded_ad == null and _admob_available and not _rewarded_loading:
+			_preload_rewarded_ad()
+	_rewarded_loader = RewardedAdLoader.new()
+	_rewarded_loader.load(REWARDED_AD_UNIT_ID, AdRequest.new(), _rewarded_callback)
+
+func _show_rewarded_ad_with_disclosure(reward_desc: String, on_rewarded: Callable, on_cancel: Callable):
+	# Disclosure popup wymagany przez zasady AdMob
+	# Wywoływany PRZED pokazaniem reklamy — gracz musi wyrazić świadomą zgodę
+	if not _admob_available or _rewarded_ad == null:
+		on_cancel.call()
+		return
+
+	var overlay := CanvasLayer.new()
+	overlay.layer = 190
+	add_child(overlay)
+
+	var dimmer := ColorRect.new()
+	dimmer.color = Color(0, 0, 0, 0.75)
+	dimmer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	dimmer.mouse_filter = Control.MOUSE_FILTER_STOP
+	overlay.add_child(dimmer)
+
+	var panel := PanelContainer.new()
+	panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	panel.offset_left = -150; panel.offset_right = 150
+	panel.offset_top = -120; panel.offset_bottom = 120
+	var ps := StyleBoxFlat.new()
+	ps.bg_color = Color(0.1, 0.08, 0.05, 0.97)
+	ps.set_corner_radius_all(10)
+	ps.set_border_width_all(2)
+	ps.border_color = Color(0.85, 0.7, 0.2)
+	ps.content_margin_left = 18; ps.content_margin_right = 18
+	ps.content_margin_top = 16; ps.content_margin_bottom = 16
+	panel.add_theme_stylebox_override("panel", ps)
+	overlay.add_child(panel)
+
+	var vbox := VBoxContainer.new()
+	vbox.add_theme_constant_override("separation", 12)
+	vbox.alignment = BoxContainer.ALIGNMENT_CENTER
+	panel.add_child(vbox)
+
+	var title_lbl := Label.new()
+	title_lbl.text = "VIDEO AD"
+	title_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	title_lbl.add_theme_font_size_override("font_size", 16)
+	title_lbl.add_theme_color_override("font_color", Color.GOLD)
+	var tls := LabelSettings.new()
+	tls.outline_size = 3; tls.outline_color = Color.BLACK
+	title_lbl.label_settings = tls
+	vbox.add_child(title_lbl)
+
+	var desc_lbl := Label.new()
+	desc_lbl.text = "Watch the ad to the END\nto %s.\n\nDon't close the ad early — the reward\nis only granted after full viewing." % reward_desc
+	desc_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	desc_lbl.add_theme_font_size_override("font_size", 12)
+	desc_lbl.add_theme_color_override("font_color", Color(0.9, 0.9, 0.85))
+	desc_lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	vbox.add_child(desc_lbl)
+
+	var btn_row := HBoxContainer.new()
+	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
+	btn_row.add_theme_constant_override("separation", 12)
+	vbox.add_child(btn_row)
+
+	var cancel_btn := Button.new()
+	cancel_btn.text = "CANCEL"
+	cancel_btn.custom_minimum_size = Vector2(110, 44)
+	cancel_btn.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
+	_add_button_juice(cancel_btn)
+	btn_row.add_child(cancel_btn)
+
+	var watch_btn := Button.new()
+	watch_btn.text = "WATCH ▶"
+	watch_btn.custom_minimum_size = Vector2(130, 44)
+	watch_btn.add_theme_color_override("font_color", Color.GOLD)
+	_add_button_juice(watch_btn)
+	btn_row.add_child(watch_btn)
+
+	var resolved := {"done": false}
+
+	cancel_btn.pressed.connect(func():
+		if resolved["done"]: return
+		resolved["done"] = true
+		overlay.queue_free()
+		on_cancel.call()
+	)
+
+	watch_btn.pressed.connect(func():
+		if resolved["done"]: return
+		resolved["done"] = true
+		overlay.queue_free()
+		# Weryfikacja — reklama mogła zostać zniszczona podczas oczekiwania na klik
+		if _rewarded_ad == null:
+			on_cancel.call()
+			return
+		_reward_listener = OnUserEarnedRewardListener.new()
+		_reward_listener.on_user_earned_reward = func(_r):
+			on_rewarded.call()
+		_content_callback = FullScreenContentCallback.new()
+		_content_callback.on_ad_dismissed_full_screen_content = func():
+			_rewarded_ad = null
+			_rewarded_loading = false
+			_preload_rewarded_ad()
+		_content_callback.on_ad_failed_to_show_full_screen_content = func(err: AdError):
+			print("[AdMob] Failed to show rewarded: %s" % str(err))
+			_rewarded_ad = null
+			_rewarded_loading = false
+			_preload_rewarded_ad()
+			on_cancel.call()
+		_rewarded_ad.full_screen_content_callback = _content_callback
+		_rewarded_ad.show(_reward_listener)
+	)
+
+# ---- BANNER AD ----
 
 func _init_banner_ad():
-	if not _admob_available or DEBUG_FORCE_FAKE_ADS: return
-	if BANNER_AD_UNIT_ID.is_empty():
-		print("[AdMob] Banner unit ID not set — skipping banner")
+	if not _admob_available or DEBUG_FORCE_FAKE_ADS or BANNER_AD_UNIT_ID.is_empty():
 		return
-	_banner_ad = AdView.new(BANNER_AD_UNIT_ID, AdSize.BANNER, AdPosition.Values.BOTTOM)
-	var listener := AdListener.new()
-	listener.on_ad_loaded = func():
-		print("[AdMob] Banner loaded OK")
-		# Pokaż banner tylko jeśli jesteśmy na victory screenie
+	# TOP, nie BOTTOM: banner pokazuje się tylko na ekranie victory, gdzie górny
+	# HUD (stage bar / pasek wroga) jest ukryty — więc góra jest wolna. Na dole
+	# kolidował z paskiem INVENTORY/STATS. Podczas walki banner i tak jest hide().
+	_banner_ad = AdView.new(BANNER_AD_UNIT_ID, AdSize.BANNER, AdPosition.Values.TOP)
+	_banner_listener = AdListener.new()
+	_banner_listener.on_ad_loaded = func():
+		_admob_debug("Banner", "loaded ✓")
 		if victory_ui and victory_ui.visible:
 			_banner_ad.show()
-	listener.on_ad_failed_to_load = func(err):
-		print("[AdMob] Banner failed: ", err)
-	_banner_ad.ad_listener = listener
+	_banner_listener.on_ad_failed_to_load = func(err: LoadAdError):
+		_admob_debug("Banner", "failed[%d] (retry 30s)" % err.code)
+		# Auto-retry po 30s (wcześniej banner NIE ponawiał się wcale)
+		await get_tree().create_timer(30.0).timeout
+		if _admob_available and _banner_ad:
+			_banner_ad.load_ad(AdRequest.new())
+	_banner_ad.ad_listener = _banner_listener
 	_banner_ad.load_ad(AdRequest.new())
 	_banner_ad.hide()
 
+# ---- INTERSTITIAL AD ----
+
 func _preload_interstitial_ad():
-	if not _admob_available or DEBUG_FORCE_FAKE_ADS: return
-	if INTERSTITIAL_AD_UNIT_ID.is_empty():
-		print("[AdMob] Interstitial unit ID not set — skipping interstitial")
+	if not _admob_available or DEBUG_FORCE_FAKE_ADS or INTERSTITIAL_AD_UNIT_ID.is_empty():
 		return
 	if _interstitial_ad != null:
 		return
-
-	var load_callback := InterstitialAdLoadCallback.new()
-	load_callback.on_ad_loaded = func(ad: InterstitialAd):
-		print("[AdMob] Interstitial loaded OK")
-		var content_callback := FullScreenContentCallback.new()
-		content_callback.on_ad_dismissed_full_screen_content = func():
+	print("[AdMob] Preloading interstitial ad...")
+	_interstitial_callback = InterstitialAdLoadCallback.new()
+	_interstitial_callback.on_ad_loaded = func(ad: InterstitialAd):
+		_admob_debug("Interstitial", "READY ✓")
+		_interstitial_content_callback = FullScreenContentCallback.new()
+		_interstitial_content_callback.on_ad_dismissed_full_screen_content = func():
 			if _interstitial_ad:
 				_interstitial_ad.destroy()
 				_interstitial_ad = null
 			_preload_interstitial_ad()
-		content_callback.on_ad_failed_to_show_full_screen_content = func(err: AdError):
-			print("[AdMob] Interstitial show failed: ", err)
+		_interstitial_content_callback.on_ad_failed_to_show_full_screen_content = func(err: AdError):
+			print("[AdMob] Interstitial show failed: %s" % str(err))
 			if _interstitial_ad:
 				_interstitial_ad.destroy()
 				_interstitial_ad = null
 			_preload_interstitial_ad()
-		ad.full_screen_content_callback = content_callback
+		ad.full_screen_content_callback = _interstitial_content_callback
 		_interstitial_ad = ad
-	load_callback.on_ad_failed_to_load = func(err: LoadAdError):
-		print("[AdMob] Interstitial load failed: ", err)
+	_interstitial_callback.on_ad_failed_to_load = func(err: LoadAdError):
+		_admob_debug("Interstitial", "failed[%d] (retry 30s)" % err.code)
 		_interstitial_ad = null
-
-	InterstitialAdLoader.new().load(INTERSTITIAL_AD_UNIT_ID, AdRequest.new(), load_callback)
+		# Auto-retry po 30s (wcześniej ponawiał się tylko przy zabójstwach)
+		await get_tree().create_timer(30.0).timeout
+		if _interstitial_ad == null and _admob_available:
+			_preload_interstitial_ad()
+	_interstitial_loader = InterstitialAdLoader.new()
+	_interstitial_loader.load(INTERSTITIAL_AD_UNIT_ID, AdRequest.new(), _interstitial_callback)
 
 func _maybe_show_interstitial_after_kill():
-	if DEBUG_FORCE_FAKE_ADS or not _admob_available:
+	if not _admob_available or DEBUG_FORCE_FAKE_ADS:
 		return
-	if _interstitial_ad == null:
-		_preload_interstitial_ad()
-		return
-
 	_kills_since_interstitial += 1
 	if _kills_since_interstitial < INTERSTITIAL_FREQUENCY:
 		return
-
+	if _interstitial_ad == null:
+		# Reklama jeszcze się nie załadowała — cofnij licznik o 1, spróbuj znowu po następnym zabójstwie
+		print("[AdMob] Interstitial: trigger reached but not loaded — retry after next kill")
+		_kills_since_interstitial = INTERSTITIAL_FREQUENCY - 1
+		_preload_interstitial_ad()
+		return
 	_kills_since_interstitial = 0
-	print("[AdMob] Showing interstitial after %d kills" % INTERSTITIAL_FREQUENCY)
+	print("[AdMob] Showing interstitial")
 	_interstitial_ad.show()
 
+# ---- WATCH AD BUTTON (FULL HEAL) ----
+
+func _update_watch_ad_button():
+	var ad_btn = get_node_or_null("%WatchAdButton")
+	if not ad_btn:
+		return
+	var full_hp = player and player.current_hp >= player.max_hp
+	var limit_reached = ad_uses_this_stage >= MAX_AD_PER_STAGE
+	if full_hp or limit_reached:
+		ad_btn.disabled = true
+		if limit_reached:
+			ad_btn.text = "AD USED"
+	elif not _admob_available:
+		# Desktop/editor — zawsze aktywny (fake ad na testy)
+		ad_btn.disabled = false
+		ad_btn.text = "FULL HEAL (Ad)"
+	elif _rewarded_ad == null:
+		ad_btn.disabled = true
+		ad_btn.text = "Ad loading..."
+	else:
+		ad_btn.disabled = false
+		ad_btn.text = "FULL HEAL (Ad)"
+
 func _on_watch_ad_pressed():
-	print("[AdMob] WatchAd pressed: hp=%d/%d uses=%d available=%s rewarded=%s" % [player.current_hp, player.max_hp, ad_uses_this_stage, str(_admob_available), str(_rewarded_ad != null)])
 	if ad_uses_this_stage >= MAX_AD_PER_STAGE:
-		vfx.spawn_floating_text("AD LIMIT REACHED", Color.ORANGE)
-		print("[AdMob] WatchAd blocked: stage limit reached")
+		vfx.spawn_floating_text("LIMIT REKLAM", Color.ORANGE)
 		return
 	if player.current_hp >= player.max_hp:
-		vfx.spawn_floating_text("ALREADY FULL HP", Color.ORANGE)
-		print("[AdMob] WatchAd blocked: player already full HP")
+		vfx.spawn_floating_text("PEŁNE HP", Color.ORANGE)
 		return
 
-	if _admob_available and _rewarded_ad:
-		print("[AdMob] WatchAd: showing rewarded")
-		_show_real_ad()
-	elif not _admob_available:
-		print("[AdMob] WatchAd: AdMob unavailable — showing fake ad")
+	if not _admob_available:
+		# Desktop/editor — fake ad do testów UI
 		_show_fake_ad()
-	else:
-		print("[AdMob] WatchAd: ad not loaded yet — showing fake ad fallback, preload triggered")
+		return
+
+	if _rewarded_ad == null:
+		vfx.spawn_floating_text("Reklama się ładuje...", Color.GRAY)
 		_preload_rewarded_ad()
-		_show_fake_ad()
+		return
+
+	_show_rewarded_ad_with_disclosure(
+		"restore 100% HP",
+		_grant_ad_reward,
+		func(): vfx.spawn_floating_text("Ad cancelled", Color.GRAY)
+	)
 
 func _grant_ad_reward():
 	player.current_hp = player.max_hp
@@ -2704,78 +2961,48 @@ func _grant_ad_reward():
 		get_node("/root/AudioManager").play_coin_sound()
 	_update_consumables_ui()
 	save_game()
-	if %WatchAdButton:
-		%WatchAdButton.disabled = true
-		%WatchAdButton.text = "AD USED"
-
-func _show_real_ad():
-	var reward_listener = OnUserEarnedRewardListener.new()
-	reward_listener.on_user_earned_reward = func(_reward): _grant_ad_reward()
-	_rewarded_ad.full_screen_content_callback.on_ad_dismissed_full_screen_content = func():
-		_rewarded_ad = null
-		_preload_rewarded_ad()
-		vfx.play_battle_fade_in()
-	_rewarded_ad.show(reward_listener)
+	_update_watch_ad_button()
 
 func _show_fake_ad():
-	# Fake ad fallback shown when:
-	# • DEBUG_FORCE_FAKE_ADS = true (dev override)
-	# • _admob_available = false (desktop/editor — for testing)
-	# • _admob_available = true but _rewarded_ad failed to load (Android error fallback)
-	# Better UX than silent fail. Real AdMob still preferred — called by _show_real_ad first.
-	# Dedicated high-layer CanvasLayer covers HUD (enemy HP/timer bars).
+	# Tylko na desktop/editor do testów UI — na Android nigdy nie odpala się
 	var ad_layer := CanvasLayer.new()
 	ad_layer.layer = 200
 	add_child(ad_layer)
-
 	var backdrop = ColorRect.new()
 	backdrop.color = Color(0, 0, 0, 1.0)
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
 	ad_layer.add_child(backdrop)
-	
 	var center = VBoxContainer.new()
-	# Crucial fix: Make it grow symmetrically from its anchor point
 	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
 	center.grow_vertical = Control.GROW_DIRECTION_BOTH
 	center.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
 	center.alignment = BoxContainer.ALIGNMENT_CENTER
 	center.add_theme_constant_override("separation", 20)
 	backdrop.add_child(center)
-	
 	var title = Label.new()
-	title.text = "FAKE AD"
+	title.text = "FAKE AD (editor only)"
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 22)
+	title.add_theme_font_size_override("font_size", 18)
 	title.add_theme_color_override("font_color", Color.GOLD)
 	center.add_child(title)
-	
 	var progress = ProgressBar.new()
 	progress.custom_minimum_size = Vector2(250, 24)
-	progress.max_value = 5.0
-	progress.value = 0.0
+	progress.max_value = 5.0; progress.value = 0.0
 	progress.show_percentage = false
 	center.add_child(progress)
-	
 	var status = Label.new()
 	status.text = "Reward in 5s..."
 	status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	center.add_child(status)
-	
-	# Use Tween for the 5s timer - more reliable than Timer node
 	var ad_tween = create_tween()
-	# Update progress bar
 	ad_tween.tween_property(progress, "value", 5.0, 5.0)
-	
-	# Periodic status update
 	for i in range(5):
 		ad_tween.parallel().tween_callback(func(): status.text = "Reward in %ds..." % (5-i)).set_delay(float(i))
-	
-	# Final cleanup and reward
 	ad_tween.tween_callback(func():
 		_grant_ad_reward()
 		var out_t = create_tween()
-		out_t.tween_property(backdrop, "modulate:a", 0.0, 0.5).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_IN)
+		out_t.tween_property(backdrop, "modulate:a", 0.0, 0.5)
 		out_t.tween_callback(ad_layer.queue_free)
 	)
 
@@ -2810,7 +3037,7 @@ func _on_poison_tick():
 func _update_xp_label():
 	if not xp_label:
 		return
-	xp_label.text = "%d / %d" % [player.xp, player.xp_required]
+	xp_label.text = "XP  %d / %d" % [player.xp, player.xp_required]
 	if xp_bar:
 		xp_bar.min_value = 0
 		xp_bar.max_value = max(1, player.xp_required)
@@ -2829,7 +3056,7 @@ func _update_loot_summary():
 		var xp_lbl = Label.new()
 		xp_lbl.text = "%s XP" % format_number(kill_xp)
 		xp_lbl.add_theme_font_size_override("font_size", 11)
-		xp_lbl.add_theme_color_override("font_color", Color(0.5, 0.8, 1.0))
+		xp_lbl.add_theme_color_override("font_color", Color(0.2, 0.45, 0.78))
 		var xp_ls = LabelSettings.new()
 		xp_ls.outline_size = 2; xp_ls.outline_color = Color.BLACK
 		xp_lbl.label_settings = xp_ls
@@ -2837,13 +3064,13 @@ func _update_loot_summary():
 		loot_icons_grid.add_child(xp_lbl)
 		# Icon entries: Gold, resource, potion
 		var icon_entries: Array = [
-			{"tex": _get_icon_texture("res://assets/icons/coin.png"), "count": kill_gold, "color": Color.GOLD},
+			{"tex": _get_icon_texture("res://assets/icons/coin.png"), "count": kill_gold, "color": Color(0.74, 0.53, 0.06)},
 		]
 		if kill_resource != "" and kill_resource_amount > 0:
-			icon_entries.append({"tex": _get_resource_icon(kill_resource), "count": kill_resource_amount, "color": Color.MEDIUM_PURPLE})
+			icon_entries.append({"tex": _get_resource_icon(kill_resource), "count": kill_resource_amount, "color": Color(0.45, 0.27, 0.58)})
 		if kill_potion:
 			# Keep potion icon un-tinted so it matches the HUD button icon exactly.
-			icon_entries.append({"tex": POTION_ICON_TEXTURE, "count": 1, "color": Color.SPRING_GREEN, "icon_modulate": Color.WHITE})
+			icon_entries.append({"tex": POTION_ICON_TEXTURE, "count": 1, "color": Color(0.13, 0.5, 0.22), "icon_modulate": Color.WHITE})
 		for entry in icon_entries:
 			var col = VBoxContainer.new()
 			col.add_theme_constant_override("separation", 2)

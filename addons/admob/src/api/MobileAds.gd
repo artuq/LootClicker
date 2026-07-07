@@ -38,7 +38,7 @@ static func initialize(on_initialization_complete_listener: OnInitializationComp
 static func set_request_configuration(request_configuration: RequestConfiguration) -> void:
 	if _plugin:
 		#test_device_ids needs to be passed separarely because Dictionary can't serialize Arrays 
-		_plugin.set_request_configuration(request_configuration.convert_to_dictionary(), request_configuration.test_device_ids)
+		_plugin.set_request_configuration(request_configuration.convert_to_dictionary(), PackedStringArray(request_configuration.test_device_ids))
 
 static func get_initialization_status() -> InitializationStatus:
 	if _plugin:

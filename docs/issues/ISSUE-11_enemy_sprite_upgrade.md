@@ -1,12 +1,31 @@
 # ISSUE-11: Poprawa grafik wrogów (spójny styl artystyczny)
 
 **Priorytet:** 🟡 ŚREDNI  
-**Status:** ⏸️ ZAWIESZONE (2026-03-03)  
+**Status:** 🟢 W TOKU — wrogowie ZROBIENI, bossy zostały (aktualizacja 2026-06-15)  
 **Kategoria:** Grafika / Art  
 **Szacowany czas:** 4-6h  
-**Najlepszy model AI:** **Gemini 2.5 Pro** (generowanie sprite'ów PNG z transparencją, spójny styl) + Claude Sonnet 4.6 (integracja w Godot)
+**Najlepszy model AI:** **Gemini Nano Banana / Imagen 4** (generowanie sprite'ów PNG, chroma key magenta) + Claude Sonnet 4.6 (integracja w Godot)
 
-## Opis
+---
+
+## ✅ AKTUALIZACJA 2026-06-15 — wszystkie 15 wrogów wdrożone (styl V2)
+
+Styl finalny ewoluował z „hi-bit Stardew" (pierwotne założenie) na **pixel-art mix + agresja** z systemem STYLE LOCK (anchor = Angry Kaboom Squirrel). Pełne wytyczne i pipeline: **[ART_PLAN_V2.md](../ART_PLAN_V2.md)**.
+
+**Wdrożone (V2, 384×384, podmienione pod istniejącymi ścieżkami — kod `GameBattleManager.gd` bez zmian):**
+- ✅ E1-E8: squirrel, monkey, plant, mummy, snake, skeleton, golem, ghost
+- ✅ Jungle: jaguar_influencer · Temple: cursed_tourist
+- ✅ Desert (5): sand_karen, cursed_camel, dust_devil_brad, pyramid_scheme_scarab, sandstone_bouncer
+
+**Zostało:**
+- ⬜ Bossy: idol, brad, sphinx, saddam, ramboses — regen 512×512, prompty gotowe (ART_PLAN_V2 §3.6)
+- ⬜ Zapis anchora `assets/_anchor_squirrel.png`
+
+> Reguły spawnu biomów + roster są już zaimplementowane w `_init_enemy_rosters()` (rozszerzone o Desert w v0.7.0). Sekcje poniżej to pierwotny brief (6 wrogów / 3 bossy, styl Stardew) — zachowane jako kontekst historyczny.
+
+---
+
+## Opis (pierwotny brief)
 Obecnie wrogowie używają mieszanki stylów — zdjęcia JPEG z removebg i osobne sprite'y. Potrzebna jest spójna stylistyka.
 
 > **Styl wybrany (GitHub Issue #17):** **Hi-bit pixel art, Stardew Valley-like** — ciepłe kolory, cozy vibe, białe tło (removebg przed importem). NIEPŁATNE — AI prompt = identyczny styl dla wszystkich.
