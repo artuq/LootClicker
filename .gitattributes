@@ -1,2 +1,8 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# GitHub Linguist overrides – show only the project's own GDScript code
+addons/** linguist-vendored
+ios/plugins/** linguist-vendored
+*.import linguist-generated
+*.uid linguist-generated
