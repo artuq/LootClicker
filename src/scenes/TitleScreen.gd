@@ -7,8 +7,11 @@ var game_starting: bool = false
 var _transition_overlay: ColorRect = null
 
 func _ready():
-	# Force portrait orientation on Android
-	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
+	# Phones, tablets, foldables and desktop-windowed Android can choose their
+	# orientation. The UI uses expand/stretch and adapts to the available size.
+	var is_mobile := OS.has_feature("android") or OS.has_feature("ios")
+	if has_node("%ExitButton"):
+		%ExitButton.visible = not is_mobile
 
 	# Start title music via AudioManager (Autoload)
 	if get_node_or_null("/root/AudioManager"):
@@ -44,6 +47,16 @@ func _ready():
 	# Scene entry fade to avoid hard cut from splash.
 	UIAnimations.fade_in(self, 0.28)
 	_build_transition_overlay()
+
+	var engagement := get_node_or_null("/root/EngagementManager")
+	if engagement:
+		if not engagement.offline_reward_requested.is_connected(_on_offline_reward_requested):
+			engagement.offline_reward_requested.connect(_on_offline_reward_requested)
+		if engagement.consume_offline_reward_route():
+			call_deferred("_on_offline_reward_requested")
+	elif get_tree().get_meta("engagement_deeplink", "") == "offline_gold":
+		get_tree().remove_meta("engagement_deeplink")
+		call_deferred("_on_offline_reward_requested")
 
 func _build_transition_overlay():
 	if _transition_overlay and is_instance_valid(_transition_overlay):
@@ -119,4 +132,14 @@ func _go_to_game_scene():
 				btn.disabled = false
 
 func _on_exit_button_pressed():
+	if OS.has_feature("android") or OS.has_feature("ios"):
+		return
 	get_tree().quit()
+
+func _on_offline_reward_requested() -> void:
+	if game_starting:
+		return
+	if get_tree().has_meta("engagement_deeplink"):
+		get_tree().remove_meta("engagement_deeplink")
+	if FileAccess.file_exists("user://savegame_slot1.json"):
+		_start_game("continue")

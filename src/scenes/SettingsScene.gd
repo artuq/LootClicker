@@ -1,9 +1,11 @@
 extends Control
 
 @onready var volume_slider = %VolumeSlider
+@onready var analytics_toggle: CheckButton = %AnalyticsConsentButton
+@onready var notifications_toggle: CheckButton = %NotificationsButton
 
 const PRIVACY_TEXT := """Privacy Policy – Loot Clicker: Joanna Indiana
-Effective date: 2026-03-02
+Effective date: 2026-08-26
 
 This Privacy Policy explains how data is handled when you use Loot Clicker: Joanna Indiana.
 
@@ -12,16 +14,20 @@ The developer does not require account registration and does not directly collec
 
 The app uses third-party services that may collect device-related data:
 • Google AdMob (ads delivery and monetization)
-• Potential identifiers such as Advertising ID and basic diagnostics used by AdMob
+• Firebase Analytics (only after you opt in in Settings)
+• Google Play Billing (purchase processing and entitlement restoration)
+
+If analytics is enabled, the game sends gameplay events such as defeated boss stage, rewarded-ad placement, and session duration. Firebase may also process app-instance, device, and diagnostic information. You can withdraw analytics consent at any time in Settings.
 
 For details about Google's data practices, see:
 • https://policies.google.com/privacy
 • https://support.google.com/admob/answer/6128543
+• https://firebase.google.com/support/privacy
 
 2. Local Save Data
-The game stores progress locally on your device (for example: level, stats, resources, inventory). This data is used only to provide gameplay features (save/load progression).
+The game stores progress, settings, notification preferences, and a cached Remove Ads entitlement locally on your device. Google Play remains the source of truth for purchases.
 
-The developer does not receive this local save data from your device.
+Local return reminders are scheduled on your device for 12 and 24 hours after leaving the game. They can be disabled in Settings.
 
 3. No Account / No Login
 Loot Clicker does not require creating an account and does not provide login functionality.
@@ -30,7 +36,7 @@ Loot Clicker does not require creating an account and does not provide login fun
 The app is not intentionally designed to collect personal information from children. If legal requirements for child-directed treatment apply in your region, ad behavior is governed by AdMob configuration and Google policies.
 
 5. Data Sharing
-The developer does not sell personal data. Data processed by third-party SDKs (such as AdMob) is subject to those providers' terms and privacy policies.
+The developer does not sell personal data. Data processed by Google services is subject to Google's terms and privacy policies.
 
 6. Security
 Reasonable technical measures are used within the game project, but no method of transmission or storage is 100% secure.
@@ -50,6 +56,18 @@ func _ready():
 	var save_load_container = get_node_or_null("%SaveLoadContainer")
 	if save_load_container:
 		save_load_container.visible = false
+
+	var analytics = get_node_or_null("/root/AnalyticsManager")
+	if analytics:
+		analytics_toggle.set_pressed_no_signal(analytics.analytics_consent)
+	else:
+		analytics_toggle.disabled = true
+
+	var engagement = get_node_or_null("/root/EngagementManager")
+	if engagement:
+		notifications_toggle.set_pressed_no_signal(engagement.reminders_enabled)
+	else:
+		notifications_toggle.disabled = true
 
 func setup():
 	pass  # Volume-only settings, no save/load needed
@@ -72,6 +90,25 @@ func _on_volume_slider_value_changed(value: float):
 		var sm = get_node("/root/SettingsManager")
 		sm.master_volume = value
 		sm.apply_settings()
+
+func _on_store_button_pressed():
+	var layer = CanvasLayer.new()
+	layer.layer = 120
+	add_child(layer)
+	var store = load("res://src/scenes/StoreScene.tscn").instantiate()
+	layer.add_child(store)
+
+func _on_analytics_consent_toggled(enabled: bool):
+	var analytics = get_node_or_null("/root/AnalyticsManager")
+	if analytics:
+		analytics.set_collection_consent(enabled)
+		_spawn_feedback("Analytics enabled" if enabled else "Analytics disabled")
+
+func _on_notifications_toggled(enabled: bool):
+	var engagement = get_node_or_null("/root/EngagementManager")
+	if engagement:
+		engagement.set_reminders_enabled(enabled)
+		_spawn_feedback("Return reminders enabled" if enabled else "Return reminders disabled")
 
 func _on_back_button_pressed():
 	if get_node_or_null("/root/SettingsManager"):

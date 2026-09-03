@@ -9,6 +9,7 @@ const THUMBS := {
 	"jungle": preload("res://assets/ui/stage/thumb_jungle.png"),
 	"temple": preload("res://assets/ui/stage/thumb_temple.png"),
 	"desert": preload("res://assets/ui/stage/thumb_desert.png"),
+	"frozen": preload("res://assets/ui/stage/thumb_frozen.png"),
 }
 
 const WINDOW := 2          # ±2 → 5 węzłów (środkowy = aktywny)
@@ -40,7 +41,9 @@ func _biome_for(s: int) -> String:
 		return "jungle"
 	if s <= 40:
 		return "temple"
-	return "desert"
+	if s <= 60:
+		return "desert"
+	return "frozen"
 
 
 func _is_boss(s: int) -> bool:

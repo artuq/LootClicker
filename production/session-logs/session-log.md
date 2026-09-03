@@ -1293,3 +1293,1043 @@ src/scripts/EnemyHUD.gd
 src/scripts/NotificationManager.gd
 ---
 
+## Session End: 20260715_134652
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+---
+
+## Session End: 20260715_135102
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+---
+
+## Session End: 20260715_140018
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_140433
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_142609
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_143618
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_152058
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_153111
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_154252
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_154842
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+
+## Session End: 20260715_160910
+### Uncommitted Changes
+Screenshot_20260309_103518_Loot Clicker.jpg
+Screenshot_20260309_103518_Loot Clicker.jpg.import
+Screenshot_20260309_103521_Loot Clicker.jpg
+Screenshot_20260309_103521_Loot Clicker.jpg.import
+addons/admob/assets/android.png.import
+addons/admob/assets/arrow_left.svg.import
+addons/admob/assets/arrow_right.svg.import
+addons/admob/assets/donate/Ko-fi_Logo_RGB_ColorBg.png.import
+addons/admob/assets/donate/Patreon_logo_with_wordmark.svg.import
+addons/admob/assets/donate/PayPal.svg.import
+addons/admob/assets/fonts/arial.ttf.import
+addons/admob/assets/fonts/orange_juice_2_0.ttf.import
+addons/admob/assets/format-app-open.svg.import
+addons/admob/assets/format-banner.svg.import
+addons/admob/assets/format-interstitial.svg.import
+addons/admob/assets/format-native.svg.import
+addons/admob/assets/format-rewarded-interstitial.svg.import
+addons/admob/assets/icon-1024.png.import
+addons/admob/assets/icon-120.png.import
+addons/admob/assets/icon-15.png.import
+addons/admob/assets/icon-500.png.import
+addons/admob/assets/icon-76.png.import
+addons/admob/assets/ios.png.import
+addons/admob/assets/music.ogg.import
+addons/admob/assets/poing.jpeg.import
+addons/admob/assets/pos_bottom.svg.import
+addons/admob/assets/pos_bottom_left.svg.import
+addons/admob/assets/pos_bottom_right.svg.import
+addons/admob/assets/pos_center.svg.import
+addons/admob/assets/pos_left.svg.import
+addons/admob/assets/pos_right.svg.import
+addons/admob/assets/pos_top.svg.import
+addons/admob/assets/pos_top_left.svg.import
+addons/admob/assets/pos_top_right.svg.import
+addons/admob/sample/Main.gd.uid
+addons/admob/sample/SafeArea.gd.uid
+addons/admob/sample/tabs/Banner.gd.uid
+addons/admob/sample/tabs/Interstitial.gd.uid
+addons/admob/sample/tabs/MobileAds.gd.uid
+addons/admob/sample/tabs/Rewarded.gd.uid
+addons/admob/sample/tabs/RewardedInterstitial.gd.uid
+addons/admob/sample/tabs/Ump.gd.uid
+assets/sprites/Sadam-removebg-preview.png
+assets/sprites/enemies/boss_brad.png
+assets/sprites/enemies/boss_idol.png
+assets/sprites/enemies/boss_sphinx.png
+assets/sprites/enemies/desert/boss_ramboses.png
+assets/sprites/enemies/desert/cursed_camel.png
+assets/sprites/enemies/desert/dust_devil_brad.png
+assets/sprites/enemies/desert/pyramid_scheme_scarab.png
+assets/sprites/enemies/desert/sand_karen.png
+assets/sprites/enemies/desert/sandstone_bouncer.png
+assets/sprites/enemies/ghost.png
+assets/sprites/enemies/golem.png
+assets/sprites/enemies/jungle/jaguar_influencer.png
+assets/sprites/enemies/monkey.png
+assets/sprites/enemies/mummy.png
+assets/sprites/enemies/plant.png
+assets/sprites/enemies/skeleton.png
+assets/sprites/enemies/snake.png
+assets/sprites/enemies/squirrel.png
+assets/sprites/enemies/temple/cursed_tourist.png
+brand_kit/artq_games_logo.png.import
+brand_kit/loading_sound.mp3.import
+brand_kit/logo_1024x1024.png.import
+brand_kit/logo_192x192.png.import
+brand_kit/logo_432x432.png.import
+docs/ART_PLAN.md
+docs/Screenshot_20260218_185522_Loot Clicker.jpg.import
+docs/Screenshot_20260218_185706_Loot Clicker.jpg.import
+docs/Zrzut ekranu 2026-02-13 183404.png.import
+docs/screenshots/Screenshot_20250725-102642.png.import
+docs/screenshots/Screenshot_20250725-103522.png.import
+docs/screenshots/Screenshot_20260302_153559_Loot Clicker.jpg.import
+docs/screenshots/latest_game.png.import
+docs/screenshots/screen_153559.jpg.import
+docs/screenshots/screen_154245.jpg.import
+docs/screenshots/screen_20260302_153710.png.import
+docs/screenshots/screen_latest.png.import
+docs/screenshots/screen_skilltree_20260302_152005.png.import
+docs/screenshots/screen_skilltree_main_20260302_152022.png.import
+execution/test_card_layout.gd.uid
+export_presets.cfg
+logs/current_crash_screen.png.import
+production/session-logs/session-log.md
+project.godot
+screenshot.jpg
+screenshot.jpg.import
+src/scenes/GameBattleManager.gd
+src/scenes/SkillTreeScene.tscn
+src/scripts/StageBar.gd
+---
+

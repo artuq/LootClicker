@@ -749,51 +749,38 @@ joke. This is normal Tuesday for him.
 
 ## 4. Frozen Peaks biome (Phase 2 — stage 56-75)
 
+> ⚠️ **NANO BANANA / IMAGEN 4 - USTAWIENIA STARTOWE DLA CAŁEGO BIOMU**
+> **Model:** Imagen 4 (lub najwyższy dostępny)
+> **Negative Prompt (dla WROGÓW):** `white background, smooth gradient, airbrush, soft anti-aliasing, blurry, 3D render, glossy, photorealistic, cute, adorable, friendly, passive, chibi mascot, sticker, watermark, text, signature`
+> **Negative Prompt (dla TŁA):** `characters, people, UI elements, text, logo, watermark, signature, realistic photograph, 3D render, dark gritty horror, blurry, depth of field blur`
+> **Aspect Ratio:** 1:1 (Kwadrat) dla wrogów | 9:16 (Pionowy) dla tła
+> **Number of Images:** 4
+> **Image Reference:** `_anchor_squirrel.png` dla wrogów | `Jungle.jpeg` dla tła
+
 ### 4.1 Tło: `assets/sprites/FrozenPeaks.jpeg`
 
+- **Aspect:** 9:16
+- **Image reference:** `Jungle.jpeg` lub `Desert.jpeg`
+
 ```
-[PREFIX_BG]
-Frozen Peaks biome — snowy Himalayan mountains with ancient ice temple
-ruins. Foreground (lower 30%): snowy ground (#e8f4f8 base, #c4dce8
-shadow, sparse darker rocks #8e9aab poking through snow), small icicles
-hanging from a rock ledge in the immediate foreground. Midground
-(middle 30%): partially frozen stone temple ruins (#8e9aab stone, ice
-overlay #c4dce8 + #ffffff highlights), arched doorway entrance with
-icicles hanging from the arch, two stone pillars wrapped in glowing
-blue ice crystals (#5c9cc4 ice + #ffffff core glow). Background (upper
-40%): towering snow-capped Himalayan mountain peaks (#a8b8c8 rock base,
-#ffffff snow caps, atmospheric haze), gray-blue overcast sky (#8e9aab
-darker → #c4dce8 lighter) with snowfall (small white #ffffff pixel dots
-scattered as falling snow). Cold atmospheric depth. Pixel art painterly
-style.
+2D mobile game background, pixel art landscape, portrait orientation 9:16 aspect ratio (vertical mobile screen). Painted pixel-art style similar to classic Square Enix / Stardew Valley landscapes. Atmospheric depth with clear foreground / midground / background layers. NO characters, NO UI elements, NO text, NO logos. Soft ambient lighting, no harsh shadows. Vibrant saturated colors but readable behind game UI overlays (combat HUD will sit on top). Mobile-optimized composition — main visual focus in upper 60% of frame (lower 40% will be covered by HUD). Style consistent with existing LootClicker backgrounds.
+
+BIOME OVERRIDE:
+Frozen Peaks biome — snowy Himalayan mountains with ancient ice temple ruins. Foreground (lower 30%): snowy ground (#e8f4f8 base, #c4dce8 shadow, sparse darker rocks #8e9aab poking through snow), small icicles hanging from a rock ledge in the immediate foreground. Midground (middle 30%): partially frozen stone temple ruins (#8e9aab stone, ice overlay #c4dce8 + #ffffff highlights), arched doorway entrance with icicles hanging from the arch, two stone pillars wrapped in glowing blue ice crystals (#5c9cc4 ice + #ffffff core glow). Background (upper 40%): towering snow-capped Himalayan mountain peaks (#a8b8c8 rock base, #ffffff snow caps, atmospheric haze), gray-blue overcast sky (#8e9aab darker -> #c4dce8 lighter) with snowfall (small white #ffffff pixel dots scattered as falling snow). Cold atmospheric depth. Pixel art painterly style.
 ```
 
-### 4.2 Frozen enemies (5 sztuk)
+### 4.2 Frozen enemies (5 sztuk) - WERSJA V2 (AGRESYWNA)
 
-#### **F1: Frostbite Yeti Barista** (anchor)
+#### **F1: Frostbite Yeti Barista** (anchor dla reszty biomu)
 
 - **Plik:** `assets/sprites/enemies/frozen/yeti_barista.png`
 - **Resource:** `venom`
 - **Joke:** "Iced latte? It's all I serve here."
-- **Prompt (BEZ image reference):**
+- **Image reference:** `_anchor_squirrel.png`
 
 ```
-[PREFIX_ENEMY]
-Subject: a CHIBI cartoon YETI BARISTA character — frozen peaks biome
-enemy. Body: small fluffy yeti with white-blue tinted fur (#e8f4f8
-base, #c4dce8 shadow, #ffffff highlights), short stubby legs, big
-furry arms. Oversized chibi yeti head with large round eyes
-(#1a1a2e pupils + white #ffffff sclera + small #5c9cc4 ice-blue iris
-ring), small black nose (#1a1a2e), open mouth showing two small fangs
-(#ffffff) and a cartoon "ready to serve you" expression. CLOTHING — a
-brown coffee shop apron (#6a4a2a base, #4a2a14 shadow) tied around the
-waist with white #ffffff name tag pinned to chest. PROPS — holding a
-large white ceramic coffee cup (#ffffff base, #c4dce8 shadow on lower
-half, dark brown coffee inside visible from top #2a1810) in one paw,
-ICY MIST visibly rising from the cup (#c4dce8 + #ffffff misty pixels,
-spiraling upward in 3-4 wisps), other paw holds a small metal coffee
-scoop (#8c8c8c). FROZEN palette: cold blue accents, white fur, brown
-apron contrast.
+2D mobile game ENEMY sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky square pixels, hard aliased edges, limited flat color palette (like a 32-bit SNES / Stardew Valley / Cult of the Lamb sprite). NO smooth gradients, NO airbrush, NO soft anti-aliasing, NO glossy 3D shading. Flat cel-shading, max 3 tones per element, strong black outline 2-3px. 3/4 front-facing view (looks at viewer, slightly angled right). CHIBI PROPORTIONS — oversized head (40-50%), but the ATTITUDE is AGGRESSIVE and MENACING: angry furrowed brows, intense glaring eyes, bared sharp teeth / fangs, snarling mouth, dynamic threatening pose (lunging forward, claws/fists ready). The enemy is HOSTILE and ready to fight — NOT cute, NOT passive, NOT sad, NOT friendly. Still cartoon (no horror, no gore, no realism). Single character centered, fills ~85% of canvas. NO weapon unless specified, NO ground shadow, NO background scenery — isolated subject on a clean flat solid MAGENTA background #FF00FF (chroma key — cut to transparent in Photopea; magenta works even for white parts; the character has NO magenta on its body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, same pixel density, same flat cel-shading and tone count, same color saturation and palette feel, same chibi proportions and rendering technique. Do NOT invent or drift the style, do NOT hallucinate a different look. The ONLY thing that changes from the reference is the character's species/identity and pose. Same world, same brush. Biome palette OVERRIDES below.
+Subject: a CHIBI cartoon YETI BARISTA mid-RAGE MELTDOWN — frozen peaks biome enemy. Body: small fluffy yeti with white-blue tinted fur (#e8f4f8 base, #c4dce8 shadow, #ffffff highlights), short stubby legs, big furry arms. Oversized chibi yeti head, eyes BLAZING with fury (#1a1a2e pupils + bloodshot #cc3344 veins + small #5c9cc4 ice-blue iris ring), mouth wide open screaming in anger showing sharp fangs (#ffffff). CLOTHING — a brown coffee shop apron (#6a4a2a base, #4a2a14 shadow) tied around waist. PROPS — lunging FORWARD, hurling a large white ceramic coffee cup (#ffffff base) at the viewer like a weapon, HOT COFFEE splashing out aggressively (#2a1810 + #ffffff splash droplets), other paw gripping a metal coffee scoop (#8c8c8c) like a club. FROZEN palette. Hostile, aggressive.
 ```
 
 #### **F2: Sherpa Skeleton**
@@ -801,26 +788,11 @@ apron contrast.
 - **Plik:** `assets/sprites/enemies/frozen/sherpa_skeleton.png`
 - **Resource:** `bandages`
 - **Joke:** "I've been climbing for 200 years. Almost there."
-- **Image reference:** `yeti_barista.png`
-- **Prompt:**
+- **Image reference:** `yeti_barista.png` (oraz `_anchor_squirrel.png` dla pewności stylu)
 
 ```
-[PREFIX_ENEMY]
-Generate in the EXACT same chibi cartoon pixel art style, outline
-thickness, palette, and proportions as the reference image.
-Subject: a CHIBI cartoon SKELETON MOUNTAIN CLIMBER — frozen peaks biome
-enemy. Body: humanoid skeleton with off-white bones (#e0e0d8 bone base,
-#a8a89c shadow, #ffffff highlight). Oversized chibi skull head with
-hollow black eye sockets (#1a1a2e voids), forced grinning teeth.
-CLOTHING — a heavy red parka jacket (#cc3344 base, #8a1a28 shadow,
-#ff5566 highlight) zipped up over the skeleton's torso, fur-lined hood
-(#ffffff fluffy texture) currently down behind the head. PROPS — red
-mountain climbing GOGGLES (#cc3344 strap, #1a1a2e frame, #4a9eff
-reflective blue lens with #ffffff glint) worn across the skull's eye
-sockets. A COILED ROPE slung over one shoulder (#c4a060 tan rope coil,
-#8b6914 shadow). An ICE AXE held in one bony hand (#6b6b6b metal head,
-#8b6914 wooden handle, sharp pointed pick). Small ice crystals on the
-parka shoulders (#c4dce8). Cartoon "still optimistic" expression.
+2D mobile game ENEMY sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky square pixels, hard aliased edges, limited flat color palette (like a 32-bit SNES / Stardew Valley / Cult of the Lamb sprite). NO smooth gradients, NO airbrush, NO soft anti-aliasing, NO glossy 3D shading. Flat cel-shading, max 3 tones per element, strong black outline 2-3px. 3/4 front-facing view (looks at viewer, slightly angled right). CHIBI PROPORTIONS — oversized head (40-50%), but the ATTITUDE is AGGRESSIVE and MENACING: angry furrowed brows, intense glaring eyes, bared sharp teeth / fangs, snarling mouth, dynamic threatening pose (lunging forward, claws/fists ready). The enemy is HOSTILE and ready to fight — NOT cute, NOT passive, NOT sad, NOT friendly. Still cartoon (no horror, no gore, no realism). Single character centered, fills ~85% of canvas. NO weapon unless specified, NO ground shadow, NO background scenery — isolated subject on a clean flat solid MAGENTA background #FF00FF (chroma key — cut to transparent in Photopea; magenta works even for white parts; the character has NO magenta on its body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, same pixel density, same flat cel-shading and tone count, same color saturation and palette feel, same chibi proportions and rendering technique. Do NOT invent or drift the style, do NOT hallucinate a different look. The ONLY thing that changes from the reference is the character's species/identity and pose. Same world, same brush. Biome palette OVERRIDES below.
+Subject: a CHIBI cartoon SKELETON MOUNTAIN CLIMBER attacking — frozen peaks biome enemy. Body: humanoid skeleton with off-white bones (#e0e0d8 base, #a8a89c shadow). Oversized chibi skull head, eye sockets GLOWING ANGRY RED (#cc3344 glow + #ffffff core), forced angry snarling teeth. CLOTHING — a heavy red parka jacket (#cc3344 base, #8a1a28 shadow) zipped up over the skeleton's torso. PROPS — red mountain climbing GOGGLES (#1a1a2e frame, #4a9eff lens) pushed up on the skull. A COILED ROPE slung over one shoulder (#c4a060). POSE: lunging FORWARD, swinging a sharp ICE AXE violently at the viewer (#6b6b6b metal head, #8b6914 handle). Small ice crystals on the parka (#c4dce8). Aggressive, hostile undead.
 ```
 
 #### **F3: Avalanche Penguin**
@@ -828,26 +800,11 @@ parka shoulders (#c4dce8). Cartoon "still optimistic" expression.
 - **Plik:** `assets/sprites/enemies/frozen/avalanche_penguin.png`
 - **Resource:** `venom`
 - **Joke:** "Tap-tap-tap. BOOM."
-- **Image reference:** `yeti_barista.png`
-- **Prompt:**
+- **Image reference:** `yeti_barista.png` (oraz `_anchor_squirrel.png` dla pewności stylu)
 
 ```
-[PREFIX_ENEMY]
-Generate in the EXACT same chibi cartoon pixel art style, outline
-thickness, palette, and proportions as the reference image.
-Subject: a CHIBI cartoon PENGUIN with a FRYING PAN — frozen peaks biome
-enemy. Body: small round chibi penguin with black back/head (#1a1a2e
-base, #3a3a4a shadow, #5a5a6a highlight on rounded top of head) and
-WHITE belly oval (#ffffff base, #c4dce8 shadow at edges). Tiny orange
-feet (#f58a4a) and small orange beak (#f58a4a). Oversized chibi penguin
-head with large cross-eyed CROSSEYED expression (both pupils pointing
-inward toward beak, white #ffffff sclera, #1a1a2e pupils) — comedic
-"about to do something dumb" look. PROPS — clutching a LARGE CAST IRON
-FRYING PAN with BOTH tiny wings/flippers (#1a1a2e pan base, #4a4a4a
-slight highlight rim, brown wooden handle #6a4a2a with #4a2a14 grip
-detail), pan held horizontally as if about to slam down. A tiny puff
-of snow dust around the penguin's feet (#ffffff + #c4dce8 dots).
-Cartoon "about to cause an avalanche" energy.
+2D mobile game ENEMY sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky square pixels, hard aliased edges, limited flat color palette (like a 32-bit SNES / Stardew Valley / Cult of the Lamb sprite). NO smooth gradients, NO airbrush, NO soft anti-aliasing, NO glossy 3D shading. Flat cel-shading, max 3 tones per element, strong black outline 2-3px. 3/4 front-facing view (looks at viewer, slightly angled right). CHIBI PROPORTIONS — oversized head (40-50%), but the ATTITUDE is AGGRESSIVE and MENACING: angry furrowed brows, intense glaring eyes, bared sharp teeth / fangs, snarling mouth, dynamic threatening pose (lunging forward, claws/fists ready). The enemy is HOSTILE and ready to fight — NOT cute, NOT passive, NOT sad, NOT friendly. Still cartoon (no horror, no gore, no realism). Single character centered, fills ~85% of canvas. NO weapon unless specified, NO ground shadow, NO background scenery — isolated subject on a clean flat solid MAGENTA background #FF00FF (chroma key — cut to transparent in Photopea; magenta works even for white parts; the character has NO magenta on its body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, same pixel density, same flat cel-shading and tone count, same color saturation and palette feel, same chibi proportions and rendering technique. Do NOT invent or drift the style, do NOT hallucinate a different look. The ONLY thing that changes from the reference is the character's species/identity and pose. Same world, same brush. Biome palette OVERRIDES below.
+Subject: a CHIBI cartoon PENGUIN IN A BLIND RAGE — frozen peaks biome enemy. Body: small round chibi penguin with black back/head (#1a1a2e base, #3a3a4a shadow) and WHITE belly oval (#ffffff base). Tiny orange feet and beak (#f58a4a). Oversized head with FURIOUS intensely glaring eyes (#ffffff sclera, tiny #1a1a2e pinpoint pupils, deep angry V-brows #1a1a2e) — comedic "about to cause a disaster" psycho look. PROPS — clutching a LARGE CAST IRON FRYING PAN with BOTH tiny wings (#1a1a2e pan base, brown handle #6a4a2a). POSE: leaping FORWARD, slamming the frying pan down aggressively. A tiny puff of snow dust kicked up around feet (#ffffff + #c4dce8 dots). Hostile, aggressive energy.
 ```
 
 #### **F4: Ice Crystal Mage**
@@ -855,30 +812,11 @@ Cartoon "about to cause an avalanche" energy.
 - **Plik:** `assets/sprites/enemies/frozen/ice_crystal_mage.png`
 - **Resource:** `relic_shards`
 - **Joke:** "Cool. Literally."
-- **Image reference:** `yeti_barista.png`
-- **Prompt:**
+- **Image reference:** `yeti_barista.png` (oraz `_anchor_squirrel.png` dla pewności stylu)
 
 ```
-[PREFIX_ENEMY]
-Generate in the EXACT same chibi cartoon pixel art style, outline
-thickness, palette, and proportions as the reference image.
-Subject: a CHIBI cartoon ICE MAGE character — frozen peaks biome enemy.
-Body: humanoid figure made of TRANSLUCENT ICE (#5c9cc4 ice-blue base,
-#88c4e8 highlight, #ffffff frozen interior crystals visible through
-the body — suggested with small white pixel clusters inside the
-silhouette as if looking into ice). Oversized chibi head with glowing
-icy blue eyes (#88c4e8 iris + #ffffff hot core dot, no pupils — pure
-glow). Mouth: small icicle-like mouth pixels (#ffffff). CLOTHING — a
-flowing wizard ROBE made of darker frozen ice (#5c9cc4 base, #3a5870
-shadow folds, #c4dce8 highlight on raised folds), draped to cover most
-of the body. A tall pointed wizard HAT made of ice (#5c9cc4 base,
-#ffffff frosty highlights, #c4dce8 brim shadow), with a small dark
-blue band (#2a4a7a) around the base of the hat. PROPS — holding a wooden
-staff (#8b6914 wood, #6a4a2a darker shadow) topped with a glowing
-hexagonal ICE CRYSTAL (#88c4e8 + #ffffff bright core + #4a9eff outer
-glow, 6-sided geometric shape clearly visible). Magical mist of ice
-particles spiraling around the staff tip (#ffffff + #c4dce8 sparse
-dots). Cartoon "smugly cold" expression.
+2D mobile game ENEMY sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky square pixels, hard aliased edges, limited flat color palette (like a 32-bit SNES / Stardew Valley / Cult of the Lamb sprite). NO smooth gradients, NO airbrush, NO soft anti-aliasing, NO glossy 3D shading. Flat cel-shading, max 3 tones per element, strong black outline 2-3px. 3/4 front-facing view (looks at viewer, slightly angled right). CHIBI PROPORTIONS — oversized head (40-50%), but the ATTITUDE is AGGRESSIVE and MENACING: angry furrowed brows, intense glaring eyes, bared sharp teeth / fangs, snarling mouth, dynamic threatening pose (lunging forward, claws/fists ready). The enemy is HOSTILE and ready to fight — NOT cute, NOT passive, NOT sad, NOT friendly. Still cartoon (no horror, no gore, no realism). Single character centered, fills ~85% of canvas. NO weapon unless specified, NO ground shadow, NO background scenery — isolated subject on a clean flat solid MAGENTA background #FF00FF (chroma key — cut to transparent in Photopea; magenta works even for white parts; the character has NO magenta on its body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, same pixel density, same flat cel-shading and tone count, same color saturation and palette feel, same chibi proportions and rendering technique. Do NOT invent or drift the style, do NOT hallucinate a different look. The ONLY thing that changes from the reference is the character's species/identity and pose. Same world, same brush. Biome palette OVERRIDES below.
+Subject: a CHIBI cartoon ICE MAGE casting an aggressive spell — frozen peaks biome enemy. Body: humanoid figure made of TRANSLUCENT ICE (#5c9cc4 ice-blue base, #ffffff frozen interior crystals). Oversized chibi head with piercing ANGRY glowing icy blue eyes (#88c4e8 iris + #ffffff hot core dot), angry furrowed ice-brows. CLOTHING — a flowing wizard ROBE made of darker frozen ice (#5c9cc4 base, #3a5870 shadow folds). A tall pointed wizard HAT made of ice. PROPS — lunging FORWARD, pointing a wooden staff (#8b6914 wood) topped with a glowing hexagonal ICE CRYSTAL (#88c4e8 + #ffffff bright core) directly at the viewer like a weapon. Magical mist of sharp ice shards firing from the staff tip (#ffffff + #c4dce8 angular pixels). Aggressive, hostile.
 ```
 
 #### **F5: Frozen Tourist**
@@ -886,60 +824,22 @@ dots). Cartoon "smugly cold" expression.
 - **Plik:** `assets/sprites/enemies/frozen/frozen_tourist.png`
 - **Resource:** `bandages`
 - **Joke:** "Mówiłem mu żeby wziął kurtkę."
-- **Image reference:** `yeti_barista.png`
-- **Prompt:**
+- **Image reference:** `yeti_barista.png` (oraz `_anchor_squirrel.png` dla pewności stylu)
 
 ```
-[PREFIX_ENEMY]
-Generate in the EXACT same chibi cartoon pixel art style, outline
-thickness, palette, and proportions as the reference image.
-Subject: a CHIBI cartoon TOURIST FROZEN IN A BLOCK OF ICE — frozen peaks
-biome enemy. Body: cubic block of translucent ice (#88c4e8 base, #5c9cc4
-shadow on side, #ffffff highlight on top corners, slight #4a9eff inner
-glow) with a clearly visible CHIBI TOURIST trapped inside, frozen
-mid-pose. Visible through the ice: a chibi human tourist with pale
-blue-tinted skin (#a8c4d8 frozen skin tone — clearly cold), wearing a
-bright Hawaiian shirt (#ffffff base with #cc3344 hibiscus pattern and
-#3d6e3a palm leaves — same shirt style as Cursed Tourist from temple
-biome for visual continuity), khaki shorts (#c4a570), and flip-flops
-(#3a3530). Expression: shocked surprised face (eyes wide #ffffff sclera
-+ #1a1a2e pupils, mouth open in an "O" shape #1a1a2e). The tourist is
-posed like he was JUST about to do something casual when he got
-frozen instantly. PROPS visible inside ice: a small camera (#2a2a2a)
-on a neck strap. The ice block has small frost cracks on the surface
-(thin #ffffff lines, geometric). Cartoon "I told him to bring a coat"
-absurdity.
+2D mobile game ENEMY sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky square pixels, hard aliased edges, limited flat color palette (like a 32-bit SNES / Stardew Valley / Cult of the Lamb sprite). NO smooth gradients, NO airbrush, NO soft anti-aliasing, NO glossy 3D shading. Flat cel-shading, max 3 tones per element, strong black outline 2-3px. 3/4 front-facing view (looks at viewer, slightly angled right). CHIBI PROPORTIONS — oversized head (40-50%), but the ATTITUDE is AGGRESSIVE and MENACING: angry furrowed brows, intense glaring eyes, bared sharp teeth / fangs, snarling mouth, dynamic threatening pose (lunging forward, claws/fists ready). The enemy is HOSTILE and ready to fight — NOT cute, NOT passive, NOT sad, NOT friendly. Still cartoon (no horror, no gore, no realism). Single character centered, fills ~85% of canvas. NO weapon unless specified, NO ground shadow, NO background scenery — isolated subject on a clean flat solid MAGENTA background #FF00FF (chroma key — cut to transparent in Photopea; magenta works even for white parts; the character has NO magenta on its body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, same pixel density, same flat cel-shading and tone count, same color saturation and palette feel, same chibi proportions and rendering technique. Do NOT invent or drift the style, do NOT hallucinate a different look. The ONLY thing that changes from the reference is the character's species/identity and pose. Same world, same brush. Biome palette OVERRIDES below.
+Subject: a CHIBI cartoon TOURIST TRAPPED IN A BLOCK OF ICE — frozen peaks biome enemy. Body: cubic block of translucent ice (#88c4e8 base, #5c9cc4 shadow, #ffffff highlights, small frost cracks #ffffff) with a CHIBI TOURIST trapped inside. Visible through the ice: a chibi human tourist with pale blue-tinted skin (#a8c4d8), wearing a bright Hawaiian shirt (#ffffff base with #cc3344 hibiscus), khaki shorts. EXPRESSION: instead of scared, the frozen face is ABSOLUTELY FURIOUS — deep angry scowl, and his eyes are GLOWING PIERCING RED with rage through the ice (#cc3344 glow + #ffffff core) like a trapped demon. He is frozen in a highly aggressive "shaking his fists" pose. PROPS: a small camera (#2a2a2a) around his neck. The ice block itself is tilted forward as if sliding aggressively to attack. Comedic but hostile.
 ```
 
 ### 4.3 Boss: **Yeti CEO** (stage 65)
 
 - **Plik:** `assets/sprites/enemies/frozen/boss_yeti_ceo.png`
 - **Greeting:** "Q4 results: cold. Very cold."
-- **Image reference:** `boss_brad.png`
-- **Prompt:**
+- **Image reference:** `boss_brad.png` (lub finalny Yeti Barista jako anchor)
 
 ```
-[PREFIX_BOSS]
-Generate in the EXACT same chibi cartoon pixel art style, outline
-thickness, palette, and proportions as the reference boss image.
-Subject: a CHIBI cartoon YETI CEO BOSS — Yeti CEO of "Cold Industries
-Inc." Body: large muscular yeti with thick white-blue tinted fur
-(#e8f4f8 fur base, #c4dce8 shadow, #ffffff highlights), broad shoulders,
-visible muscle definition under the fur. CHIBI BUT IMPOSING — oversized
-yeti head (~55% of height) with thick eyebrows (#1a1a2e arched angrily),
-piercing icy blue eyes (#5c9cc4 iris + #ffffff core dots), open mouth
-showing two prominent canine fangs (#ffffff). CLOTHING — a BUSINESS SUIT
-custom-tailored for a yeti: dark navy blue suit jacket (#2a4a7a base,
-#1a2a4a shadow, #4a6e9e highlight) with white dress shirt collar visible
-(#ffffff), bright red power tie (#cc3344). The suit is stretched over
-the massive yeti shoulders. PROPS — left paw holds a corporate AWARD
-TROPHY (golden plaque #ffd700 base, #8b6914 wooden base shadow,
-engraved with "CEO 2026" #1a1a2e text), right paw holds an ANNUAL
-REPORT folder (dark blue folder #2a4a7a with #ffd700 gold trim, white
-paper sticking out #ffffff). Pinstripe details on the suit lapels
-(#1a2a4a thin stripes). Subtle icy aura around the silhouette (#5c9cc4
-+ #ffffff outer glow, 8-10 px). Cartoon "I have bad news for shareholders"
-power-pose expression.
+2D mobile game BOSS sprite, chibi proportions BUT rendered as TRUE PIXEL ART — visible chunky pixels, hard aliased edges, limited flat palette (SNES / Stardew Valley / Cult of the Lamb look). NO smooth gradients, NO anti-aliasing, NO 3D glossy shading. Strong black outline 3-4px, flat cel-shading max 4 tones. 3/4 front-facing, LARGER and MORE DETAILED than regular enemies. MENACING + IMPOSING presence: intense glowing/glaring eyes, aggressive confident posture, dramatic. Intimidating but still cartoon (no horror/gore). Props/accessories visible (crown, weapon, gear). Single boss centered, fills ~90% of canvas. NO ground shadow, NO scenery — isolated subject on solid MAGENTA background #FF00FF (chroma key — cut to transparent; works for white parts; boss has NO magenta on body). Square 1:1 canvas 1024×1024. CRITICAL STYLE LOCK: match the ATTACHED REFERENCE IMAGE exactly — same outline thickness, pixel density, flat shading, saturation, palette feel and rendering. Do NOT drift or hallucinate the style. Only the character identity and pose change. Biome palette OVERRIDES below. CRITICAL: the outline around the ENTIRE silhouette MUST be solid BLACK (#1a1a2e), 3-4px, exactly like the reference image's outline — NOT gold, NOT colored, NOT glowing. Only eyes/aura/props may glow gold; the body outline stays black. Flat 3-tone cel-shading on the body/materials — no gradients.
+Subject: a CHIBI cartoon YETI CEO BOSS mid-CORPORATE RAGE — Yeti CEO of "Cold Industries Inc." Body: large muscular yeti with thick white-blue tinted fur (#e8f4f8 base, #c4dce8 shadow, #ffffff highlights), broad imposing shoulders. Oversized yeti head (~55% of height) with thick angry eyebrows (#1a1a2e), piercing blazing eyes (#5c9cc4 iris + bloodshot red veins #cc3344), mouth open roaring in a corporate meltdown showing sharp fangs (#ffffff). CLOTHING — a dark navy blue BUSINESS SUIT (#2a4a7a base, #1a2a4a shadow) stretched over massive muscles, bright red power tie (#cc3344) flying wildly. PROPS — lunging FORWARD, one paw aggressively smashing a corporate "Q4 LOSSES" chart board (#ffffff board, crashing red line #cc3344), other paw swinging a golden CEO AWARD TROPHY (#ffd700 base) like a club. Subtle icy aura (#5c9cc4 + #ffffff outer glow, 8-10 px). Highly aggressive, hostile.
 ```
 
 ---

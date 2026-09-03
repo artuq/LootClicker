@@ -139,7 +139,11 @@ var resource_icon_paths: Dictionary = {
 var icon_texture_cache: Dictionary = {}
 
 # Tutorial texture (passed to TutorialManager)
-const TUTORIAL_HAND_TEXTURE: Texture2D = preload("res://assets/ui/tutorial/hand_cursor.png")
+var TUTORIAL_HAND_TEXTURE: Texture2D = (
+	load("res://assets/ui/tutorial/hand_cursor.png")
+	if ResourceLoader.exists("res://assets/ui/tutorial/hand_cursor.png")
+	else null
+)
 
 # Constants for scaling and balance
 const HP_BASE = 20
@@ -1221,6 +1225,7 @@ func spawn_enemy(saved_hp: int = -1, saved_name: String = ""):
 	spawn_y = max(spawn_y, play_top + (target_size / 2.0) + 4.0)  # never overlap top bars
 	enemy_sprite.position = Vector2(180, spawn_y)
 	vfx.original_enemy_pos = enemy_sprite.position
+	vfx.original_enemy_scale = enemy_sprite.scale
 
 	# Keep the tap target (ClickArea) centered on the enemy sprite. The sprite is
 	# positioned adaptively (above), so the ClickArea must follow in code instead
@@ -1363,7 +1368,7 @@ func _on_enemy_attack():
 		var result = player.take_damage(current_enemy.damage)
 		
 		# Enemy White Flash & Lunge
-		var base_scale = enemy_sprite.scale
+		var base_scale: Vector2 = vfx.original_enemy_scale if (vfx and vfx.original_enemy_scale != Vector2.ZERO) else enemy_sprite.scale
 		var flash_tween = create_tween()
 		enemy_sprite.modulate = Color(10, 10, 10) # White flash
 		enemy_sprite.scale = base_scale * 1.1
@@ -2543,6 +2548,16 @@ func _on_settings_hud_pressed():
 	settings.tree_exited.connect(settings_layer.queue_free)
 	settings_layer.add_child(settings)
 	settings.setup()
+
+func _on_remove_ads_button_pressed():
+	vfx.clear_floating_texts()
+	get_tree().paused = true
+	var store_layer := CanvasLayer.new()
+	store_layer.layer = 150
+	add_child(store_layer)
+	var store = load("res://src/scenes/StoreScene.tscn").instantiate()
+	store.tree_exited.connect(store_layer.queue_free)
+	store_layer.add_child(store)
 
 # ============================================================
 # === ADMOB SYSTEM (pełny rewrite v0.7.5) ===

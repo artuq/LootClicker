@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://ctd0my3oi3sl7"
+uid="uid://dna41btlg8wa1"
 path="res://.godot/imported/arial.ttf-fe0778ff57d670e2130b0e68f952b7b5.fontdata"
 
 [deps]
@@ -23,7 +23,7 @@ allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null

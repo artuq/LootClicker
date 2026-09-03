@@ -1,29 +1,32 @@
 # Privacy Policy – Loot Clicker: Joanna Indiana
 
-Effective date: 2026-03-02
+Effective date: 2026-08-26
 
 This Privacy Policy explains how data is handled when you use **Loot Clicker: Joanna Indiana**.
 
 ## 1. Data We Collect
 
-The developer does not require account registration and does not directly collect personal data such as name, email, or address.
+The developer does not require account registration and does not directly collect personal data such as your name, email address, or postal address.
 
-The app uses third-party services that may collect device-related data:
+The app uses these Google services, which may process device-related data:
 
-- **Google AdMob** (ads delivery and monetization)
-- Potential identifiers such as Advertising ID and basic diagnostics used by AdMob
+- **Google AdMob** for advertising and monetization. AdMob may process the Advertising ID and ad-delivery or diagnostic information.
+- **Firebase Analytics**, only after you opt in in the game's Settings. The game sends defeated boss stage, rewarded-ad placement, and session-duration events. Firebase may also process app-instance, device, and diagnostic information.
+- **Google Play Billing** for purchase processing and restoration of the Remove Ads entitlement. Payment details are handled by Google Play and are not stored by the game.
+
+You can withdraw analytics consent at any time in Settings. Firebase Analytics collection starts disabled until consent is granted.
 
 For details about Google's data practices, see:
 
 - https://policies.google.com/privacy
 - https://support.google.com/admob/answer/6128543
+- https://firebase.google.com/support/privacy
 
-## 2. Local Save Data
+## 2. Local Data and Notifications
 
-The game stores progress locally on your device (for example: level, stats, resources, inventory).
-This data is used only to provide gameplay features (save/load progression).
+The game stores progress, settings, notification preferences, and a cached Remove Ads entitlement locally on your device. Google Play remains the source of truth for purchases.
 
-The developer does not receive this local save data from your device.
+Optional local notifications are scheduled on your device 12 and 24 hours after leaving the game. They link to the offline-gold reward and can be disabled in Settings. Notification scheduling does not require a developer-operated server.
 
 ## 3. No Account / No Login
 
@@ -31,13 +34,11 @@ Loot Clicker does not require creating an account and does not provide login fun
 
 ## 4. Children
 
-The app is not intentionally designed to collect personal information from children.
-If legal requirements for child-directed treatment apply in your region, ad behavior is governed by AdMob configuration and Google policies.
+The app is not intentionally designed to collect personal information from children. If child-directed requirements apply in your region, advertising behavior is governed by AdMob configuration, consent choices, and Google policies.
 
 ## 5. Data Sharing
 
-The developer does not sell personal data.
-Data processed by third-party SDKs (such as AdMob) is subject to those providers' terms and privacy policies.
+The developer does not sell personal data. Data processed by Google services is subject to Google's terms and privacy policies.
 
 ## 6. Security
 

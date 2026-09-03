@@ -7,7 +7,6 @@ var _is_transitioning: bool = false
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	DisplayServer.screen_set_orientation(DisplayServer.SCREEN_PORTRAIT)
 	skip_input_action = "ui_accept"
 	if not finished.is_connected(_on_splash_finished):
 		finished.connect(_on_splash_finished)

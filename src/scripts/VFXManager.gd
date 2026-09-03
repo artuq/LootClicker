@@ -11,6 +11,8 @@ var canvas_layer: CanvasLayer
 # Shake
 var shake_intensity: float = 0.0
 var original_enemy_pos: Vector2
+var original_enemy_scale: Vector2 = Vector2.ONE
+var hit_tween: Tween
 
 # Idle animation
 var idle_tween: Tween
@@ -75,13 +77,17 @@ func play_hit_effect(is_crit: bool):
 		pause_tween.tween_interval(0.04)
 		pause_tween.tween_callback(func(): get_tree().paused = false)
 
-	# Squash & Stretch
-	var base_scale = enemy_sprite.scale
-	var hit_tween = create_tween()
+	# Squash & Stretch - always base on original_enemy_scale to prevent compounding on fast clicks
+	if original_enemy_scale == Vector2.ZERO:
+		original_enemy_scale = enemy_sprite.scale
+	if hit_tween and hit_tween.is_valid():
+		hit_tween.kill()
+	enemy_sprite.scale = original_enemy_scale
+	hit_tween = create_tween()
 	var squash_x: float = 0.7 if is_crit else 0.82
 	var stretch_y: float = 1.25 if is_crit else 1.12
-	enemy_sprite.scale = Vector2(base_scale.x * squash_x, base_scale.y * stretch_y)
-	hit_tween.tween_property(enemy_sprite, "scale", base_scale, 0.25).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	enemy_sprite.scale = Vector2(original_enemy_scale.x * squash_x, original_enemy_scale.y * stretch_y)
+	hit_tween.tween_property(enemy_sprite, "scale", original_enemy_scale, 0.25).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
 
 
 func spawn_floating_text(text: String, color: Color, is_crit: bool = false):

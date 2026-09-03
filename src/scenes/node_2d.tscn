@@ -555,6 +555,19 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
 theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
 text = "MAIN MENU"
 
+[node name="RemoveAdsButton" type="Button" parent="VictoryLayer/VictoryUI/VBox"]
+unique_name_in_owner = true
+process_mode = 3
+custom_minimum_size = Vector2(200, 44)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.84, 0.35, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxTexture_btn")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_btn_pr")
+theme_override_styles/hover = SubResource("StyleBoxTexture_btn")
+theme_override_styles/focus = SubResource("StyleBoxTexture_btn")
+text = "REMOVE ADS"
+
 [node name="BottomNavLayer" type="CanvasLayer" parent="." unique_id=792636724]
 layer = 110
 
@@ -689,3 +702,4 @@ icon = ExtResource("40_stats")
 [connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/NextLevelButton" to="GameManager" method="_on_next_level_button_pressed"]
 [connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/OpenTreeButton" to="GameManager" method="_on_open_skill_tree"]
 [connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/MainMenuButton" to="GameManager" method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="VictoryLayer/VictoryUI/VBox/RemoveAdsButton" to="GameManager" method="_on_remove_ads_button_pressed"]

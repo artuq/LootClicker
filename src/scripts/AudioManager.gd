@@ -213,6 +213,9 @@ func play_ui_click_sound():
 func play_ui_hover_sound():
 	_play_generated_sound("ui_hover")
 
+func play_sound(type: String, p_shift: float = 1.0):
+	_play_generated_sound(type, p_shift)
+
 func _play_generated_sound(type: String, p_shift: float = 1.0):
 	var player = AudioStreamPlayer.new()
 	add_child(player)

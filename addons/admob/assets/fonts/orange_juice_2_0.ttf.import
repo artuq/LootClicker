@@ -2,7 +2,7 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://buyygjfri0u11"
+uid="uid://b52fq8yg1j6w7"
 path="res://.godot/imported/orange_juice_2_0.ttf-1061d5a1e1302985873db78327347349.fontdata"
 
 [deps]
@@ -23,7 +23,7 @@ allow_system_fallback=true
 force_autohinter=false
 modulate_color_glyphs=false
 hinting=1
-subpixel_positioning=1
+subpixel_positioning=4
 keep_rounding_remainders=true
 oversampling=0.0
 Fallbacks=null
